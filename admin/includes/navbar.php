@@ -18,3 +18,5 @@
         </div>
     </div>
 </nav>
+
+<script src="../assets/js/perfect-scrollbar.min.js"></script>

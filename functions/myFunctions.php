@@ -21,6 +21,15 @@ function getAllOrders()
 2 - Parcel has been delivered
 3 - Parcel has been cancelled
  */
+
+ function getAllPreparingOrders()
+{
+    global $con;
+    $query = "SELECT * FROM orders WHERE orders_status='0'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
 function getAllShippedOutOrders()
 {
     global $con;

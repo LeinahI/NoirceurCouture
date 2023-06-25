@@ -11,10 +11,11 @@ include('../middleware/adminMW.php');
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Shipped Out Orders
-                        <a href="ordersCancelled.php" class="btn btn-light float-end">View Cancelled</a>
-                        <a href="ordersDeliver.php" class="btn btn-light float-end mx-2">View Delivered</a>
-                        <a href="ordersShipped.php" class="btn btn-light float-end ">View Shipped Out</a>
-                        <a href="orders.php" class="btn btn-light float-end mx-2">View All</a>
+                        <a href="ordersCancelled.php" class="btn btn-light float-end ms-2">View Cancelled</a>
+                        <a href="ordersDeliver.php" class="btn btn-light float-end ms-2">View Delivered</a>
+                        <a href="ordersShipped.php" class="btn btn-light float-end ms-2">View Shipped Out</a>
+                        <a href="ordersPreparing.php" class="btn btn-light float-end ms-2">View Preparing Orders</a>
+                        <a href="orders.php" class="btn btn-light float-end ms-2">View All</a>
                     </h2>
                 </div>
                 <div class="card-body">
@@ -46,12 +47,8 @@ include('../middleware/adminMW.php');
                                             <a href="viewOrderDetails.php?trck=<?= $item['orders_tracking_no'] ?>" class="btn btn-primary">View Details</a>
                                         </td>
                                     </tr>
-                                <?php
-                                }
-                            } else {
-                                ?>
-                                <h1 class="text-center">You haven't ordered yet.</h1>
                             <?php
+                                }
                             }
                             ?>
                         </tbody>

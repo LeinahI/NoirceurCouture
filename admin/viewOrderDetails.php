@@ -91,7 +91,6 @@ $data = mysqli_fetch_array($orderData);
                             <hr>
                             <div class="scrollBarCO" style="height: 427px; overflow-y: scroll;">
                                 <?php
-                                /*  $user_id = $_SESSION['auth_user']['user_ID']; */
                                 $groupedItems = [];
                                 $totalPrice = 0;
                                 $itemQty = adminGetOrderedItemQty($tracking_no);
@@ -159,6 +158,7 @@ $data = mysqli_fetch_array($orderData);
                                         <div class="col-md-6">
                                             <form action="authcode.php" method="post">
                                                 <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no'] ?>">
+                                                <input type="hidden" name="ordersID" value="<?= $data['orders_id'] ?>">
                                                 <div class="form-floating">
                                                     <select name="orderStatus" class="form-select ps-2" id="orderStat">
                                                         <option value="0" <?= $data['orders_status'] == 0 ? "selected" : "" ?>>Preparing to ship</option>
@@ -168,7 +168,6 @@ $data = mysqli_fetch_array($orderData);
                                                     </select>
                                                     <label for="slug_input">Parcel Status</label>
                                                 </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -184,3 +183,18 @@ $data = mysqli_fetch_array($orderData);
 </div>
 
 <?php include('includes/footer.php'); ?>
+
+<script>
+    function disableSelect() {
+        var selectElement = document.getElementById("orderStat");
+        var selectedOption = selectElement.options[selectElement.selectedIndex].value;
+        if (selectedOption === "3") {
+            selectElement.disabled = true;
+        }
+
+        if (selectedOption === "2") {
+            selectElement.disabled = true;
+        }
+    }
+    disableSelect();
+</script>

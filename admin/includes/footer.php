@@ -17,18 +17,6 @@
 <!-- SweetAlert JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
-<!-- Alertify js -->
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-
-<script>
-    /* Alertify start */
-    <?php if (isset($_SESSION['Errormsg'])) { ?>
-        alertify.set('notifier', 'position', 'top-right');
-        alertify.success('<?= $_SESSION['Errormsg']; ?>');
-    <?php unset($_SESSION['Errormsg']);
-    } ?>
-    /* Alertify end */
-</script>
 </body>
 
 </html>
