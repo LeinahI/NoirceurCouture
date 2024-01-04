@@ -13,8 +13,8 @@ include('../models/myFunctions.php'); ?>
             ?>
                     <div class="card">
                         <div class="card-header">
-                            <h2>Edit <?= $data['product_name'] ?> Details</h2>
-                            <a href="product.php" class="btn btn-primary float-end">Back</a>
+                            <span class="fs-2 fw-bold">Edit <?= $data['product_name'] ?> Details</span>
+                            <a href="product.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
                             <form action="authcode.php" method="POST" enctype="multipart/form-data">

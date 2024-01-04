@@ -2,6 +2,14 @@
 <?php include('../partials/__header.php');
 ?>
 
+<style>
+.img-fixed-height {
+    height: 200px; /* Set the height to your desired value */
+    width: auto;
+    object-fit: cover; /* This property ensures that the image retains its aspect ratio while covering the specified height */
+}
+</style>
+
 <div class="py-3 bg-primary">
     <div class="container">
         <h6 class="text-white">Home / Collections / </h6>
@@ -26,7 +34,7 @@
                                 <a href="products.php?category=<?= $item['category_slug'] ?>">
                                     <div class="card shadow">
                                         <div class="card-body">
-                                            <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image" class="w-100">
+                                            <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image" class="w-100 img-fixed-height">
                                             <h4><?= $item['category_name'] ?></h4>
                                         </div>
                                     </div>

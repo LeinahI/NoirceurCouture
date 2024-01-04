@@ -8,6 +8,11 @@ function getAll($table)
     return $query_run; // Return the query result, not the query itself
 }
 
+/* SlideShow */
+
+
+
+
 function getAllUsers()
 {
     global $con;

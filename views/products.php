@@ -9,6 +9,14 @@ if (isset($_GET['category'])) {
         $cid = $category['category_id'];
 ?>
         <style>
+            .img-fixed-height {
+                height: 272px;
+                /* Set the height to your desired value */
+                width: auto;
+                object-fit: cover;
+                /* This property ensures that the image retains its aspect ratio while covering the specified height */
+            }
+
             .card {
                 height: 100%;
             }
@@ -52,7 +60,7 @@ if (isset($_GET['category'])) {
                                                 <div class="card shadow">
                                                     <div class="card-body d-flex flex-column justify-content-between">
                                                         <div>
-                                                            <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
+                                                            <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
                                                             <h4><?= $item['product_name'] ?></h4>
                                                         </div>
                                                     </div>

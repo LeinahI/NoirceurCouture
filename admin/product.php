@@ -9,7 +9,9 @@ include('../middleware/adminMW.php'); ?>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-primary">
-                <h2 class="text-white">All Products</h2>
+                <h2 class="text-white">All Products
+                    <a href="addProduct.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">post_add</i> Add Product</a>
+                </h2>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

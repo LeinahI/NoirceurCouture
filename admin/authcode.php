@@ -174,6 +174,11 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     } else {
         redirectSwal("category.php", "Something went wrong. Please try again later.", "error");
     }
+
+    mysqli_stmt_close($stmt_category);
+    mysqli_stmt_close($stmt_products);
+    mysqli_stmt_close($stmt_delete_products);
+    mysqli_stmt_close($stmt_delete_category);
 } else if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $category_id = $_POST['selectBrandCategoryID'];
     $name = $_POST['productnameInput'];
@@ -429,6 +434,64 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             } else {
                 redirectSwal("editusers.php?id=$userId", "Something went wrong", "error");
             }
+        }
+    }
+} else if (isset($_POST['addSlideshowBtn'])) {
+    $category_id = $_POST['selectBrandID'];
+
+    // Check if category_id already exists in slideshow table
+    $check_query = "SELECT * FROM slideshow WHERE category_id = ?";
+    $stmt_check = mysqli_prepare($con, $check_query);
+    mysqli_stmt_bind_param($stmt_check, "i", $category_id);
+    mysqli_stmt_execute($stmt_check);
+    mysqli_stmt_store_result($stmt_check);
+
+    if (mysqli_stmt_num_rows($stmt_check) > 0) {
+        redirectSwal("addImage.php", "Image for this Category is already existing!", "error");
+    } else {
+        // File upload
+        $image = $_FILES['uploadSlideshowImage']['name'];
+        $image_tmp = $_FILES['uploadSlideshowImage']['tmp_name'];
+
+        $path = "../assets/uploads/slideshow/";
+        $image_ext = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+
+        if (!in_array($image_ext, $allowed_extensions)) {
+            redirectSwal("addImage.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
+        }
+
+        // Set the file name
+        $date = date("m-d-Y-H-i-s");
+        $fileName = $category_id . '-' . $date . '.' . $image_ext;
+        $destination = $path . $fileName;
+
+        // Insert category_id and image filename into the slideshow table
+        $slideshow_query = "INSERT INTO slideshow (category_id, ss_image) VALUES (?, ?)";
+        $stmt_insert = mysqli_prepare($con, $slideshow_query);
+
+        if ($stmt_insert) {
+            mysqli_stmt_bind_param($stmt_insert, "is", $category_id, $fileName);
+            $execute_result = mysqli_stmt_execute($stmt_insert);
+
+            if ($execute_result) {
+                if (mysqli_stmt_affected_rows($stmt_insert) > 0) {
+                    move_uploaded_file($image_tmp, $destination);
+                    redirectSwal("addImage.php", "Image added successfully!", "success");
+                } else {
+                    redirectSwal("addImage.php", "Failed to add image. Please try again.", "error");
+                }
+            } else {
+                // Print the error message for debugging
+                echo "Error executing statement: " . mysqli_stmt_error($stmt_insert);
+                redirectSwal("addImage.php", "Error executing statement. Please try again.", "error");
+            }
+
+            mysqli_stmt_close($stmt_insert);
+        } else {
+            // Print the error message for debugging
+            echo "Error preparing statement: " . mysqli_error($con);
+            redirectSwal("addImage.php", "Error preparing statement. Please try again.", "error");
         }
     }
 }

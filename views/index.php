@@ -41,7 +41,7 @@ if (isset($_SESSION['Errormsg'])) {
                                             <div class="card " style="height: 100%;">
                                                 <div class="card-body d-flex flex-column justify-content-between" style="height: 100%;">
                                                     <div>
-                                                        <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
+                                                        <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" height="217.2px" class="w-100">
                                                         <h6><?= $product_name; ?></h6>
                                                         <h6 class="text-center fw-bold">₱<?= number_format($item['product_srp'], 2) ?></h6>
                                                     </div>
@@ -81,7 +81,7 @@ if (isset($_SESSION['Errormsg'])) {
                 </div>
             </div>
         </div>
-        <img class="img-fluid" src="../assets/slideShow/nctr.jpg" />
+        <img class="img-fluid" src="../assets/images/index/nctr.jpg" />
     </div>
 </div>
 

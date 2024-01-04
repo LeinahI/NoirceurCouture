@@ -5,7 +5,9 @@ include('../middleware/adminMW.php'); ?>
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-primary">
-                    <h2 class="text-white">Add Brand Category</h2>
+                    <h2 class="text-white">Add Brand Category
+                        <a href="category.php" class="btn btn-light float-end ms-2">Go Back</a>
+                    </h2>
                 </div>
                 <div class="card-body">
                     <form action="authcode.php" method="POST" enctype="multipart/form-data">

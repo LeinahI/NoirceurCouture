@@ -4,36 +4,35 @@
 <!-- Demo styles -->
 <style>
     .swiper {
-        width: 100%;
-        height: 100%;
+        width: 1296px;
+        height: 729px;
     }
 </style>
 
 <!-- Swiper -->
-    <div class="container">
-        <div class="swiper mySwiper responsive">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide0_S'YTE.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide1_GroundY.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide2_Demonia.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide3_AnthonyWang.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide4_TrippNYC.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <img class="slideImages img-fluid" src="../assets/slideShow/Slide5_DarkSplash.jpg" />
-                </div>
-            </div>
+<div class="container">
+    <div class="swiper mySwiper responsive">
+        <div class="swiper-wrapper">
+            <?php
+            require_once '../models/slideShowFunction.php';
+            $slideshowImages = getSlideShow();
+
+            if (count($slideshowImages) > 0) {
+                foreach ($slideshowImages as $item) {
+            ?>
+                    <div class="swiper-slide">
+                        <img class="slideImages img-fluid h-100 w-100" src="../assets/uploads/slideshow/<?= $item['ss_image'] ?>" alt="slideshow image" />
+                    </div>
+            <?php
+                }
+            } else {
+                // Handle case where there are no slideshow images
+                echo 'No slideshow images available.';
+            }
+            ?>
         </div>
     </div>
+</div>
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

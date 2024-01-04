@@ -13,8 +13,8 @@ include('../models/myFunctions.php'); ?>
             ?>
                     <div class="card">
                         <div class="card-header">
-                            <h2>Edit <?= $data['user_firstName'] ?> Details</h2>
-                            <a href="users.php" class="btn btn-primary float-end">Back</a>
+                            <span class="fs-2 fw-bold">Edit <?= $data['user_firstName'] ?> Details</span>
+                            <a href="users.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
                             <!-- Edit Category start -->
