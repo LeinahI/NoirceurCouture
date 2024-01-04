@@ -1,4 +1,4 @@
-<?php include('includes/header.php'); ?>
+<?php include('partials/header.php'); ?>
 <?php include('../middleware/adminMW.php');
 ?>
 <div class="container">
@@ -96,4 +96,4 @@
         </div>
     </div>
 </div>
-<?php include('includes/footer.php'); ?>
+<?php include('partials/footer.php'); ?>

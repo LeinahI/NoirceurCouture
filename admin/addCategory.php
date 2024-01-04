@@ -1,4 +1,4 @@
-<?php include('includes/header.php');
+<?php include('partials/header.php');
 include('../middleware/adminMW.php'); ?>
 <div class="container">
     <div class="row">
@@ -6,6 +6,7 @@ include('../middleware/adminMW.php'); ?>
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Add Brand Category</h2>
+                    
                 </div>
                 <div class="card-body">
                     <form action="authcode.php" method="POST" enctype="multipart/form-data">
@@ -64,4 +65,4 @@ include('../middleware/adminMW.php'); ?>
     </div>
 </div>
 
-<?php include('includes/footer.php'); ?>
+<?php include('partials/footer.php'); ?>

@@ -1,5 +1,5 @@
-<?php include('includes/header.php');
-include('../functions/myFunctions.php'); ?>
+<?php include('partials/header.php');
+include('../models/myFunctions.php'); ?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -14,6 +14,7 @@ include('../functions/myFunctions.php'); ?>
                     <div class="card">
                         <div class="card-header">
                             <h2>Edit <?= $data['product_name'] ?> Details</h2>
+                            <a href="product.php" class="btn btn-primary float-end">Back</a>
                         </div>
                         <div class="card-body">
                             <form action="authcode.php" method="POST" enctype="multipart/form-data">
@@ -70,7 +71,7 @@ include('../functions/myFunctions.php'); ?>
                                         <div class="col-md-6 mb-3">
                                             <label for="">Current image:</label>
                                             <input type="hidden" name="oldProductImage" value="<?= $data['product_image'] ?>">
-                                            <img src="../uploads/products/<?= $data['product_image'] ?>" height="50px" alt="brand">
+                                            <img src="../assets/uploads/products/<?= $data['product_image'] ?>" height="50px" alt="brand">
                                         </div>
                                         <div class="col-md-12" style="display:flex;">
                                             <div class="form-floating col-md-6 mb-3">
@@ -79,7 +80,7 @@ include('../functions/myFunctions.php'); ?>
                                             </div>
                                             <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
                                                 <input type="checkbox" class="btn-check" <?= $data['product_status'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="status_checkbox">Status</label>
+                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_status'] ? "Hidden" : "Visible" ?></label>
 
                                                 <input type="checkbox" class="btn-check" <?= $data['product_popular'] ? "checked" : "" ?> id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
                                                 <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>
@@ -133,6 +134,18 @@ include('../functions/myFunctions.php'); ?>
             srpInput.value = '';
         }
     });
+    //Visible & hidden
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkbox = document.getElementById("status_checkbox");
+        var label = document.getElementById("status_label");
+
+        checkbox.addEventListener("change", function() {
+            // Send an AJAX request to update the status in the database
+            // For simplicity, we'll just toggle the label text on the client side
+            label.textContent = checkbox.checked ? "Hidden" : "Visible";
+        });
+    });
 </script>
 
-<?php include('includes/footer.php'); ?>
+
+<?php include('partials/footer.php'); ?>

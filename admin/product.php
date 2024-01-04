@@ -1,4 +1,4 @@
-<?php include('includes/header.php');
+<?php include('partials/header.php');
 include('../middleware/adminMW.php'); ?>
 
 <!-- DataTables CSS -->
@@ -21,7 +21,7 @@ include('../middleware/adminMW.php'); ?>
                                 <th>Image</th>
                                 <th>Quantity</th>
                                 <th>Brand</th>
-                                <th>Status</th>
+                                <th>Visibility</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -50,7 +50,7 @@ include('../middleware/adminMW.php'); ?>
                                             ?>
                                         </td>
 
-                                        <td><img src="../uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
+                                        <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td><?= $item['product_qty']; ?></td>
                                         <?php
                                         $categories = getAll("categories");
@@ -133,4 +133,4 @@ include('../middleware/adminMW.php'); ?>
     });
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php include('partials/footer.php'); ?>

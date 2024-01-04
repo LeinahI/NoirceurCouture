@@ -1,5 +1,5 @@
 <?php
-include('includes/header.php');
+include('partials/header.php');
 include('../middleware/adminMW.php');/* Authenticate.php */
 
 if (isset($_GET['trck'])) {
@@ -122,7 +122,7 @@ $data = mysqli_fetch_array($orderData);
                                                 <div class="row align-items-center">
                                                     <div class="col-md-2">
                                                         <center>
-                                                            <img src="../uploads/products/<?= $item['product_image'] ?>" alt="Product Image" width="80px">
+                                                            <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" width="80px">
                                                         </center>
                                                     </div>
                                                     <div class="col-md-5">
@@ -182,7 +182,7 @@ $data = mysqli_fetch_array($orderData);
     </div>
 </div>
 
-<?php include('includes/footer.php'); ?>
+<?php include('partials/footer.php'); ?>
 
 <script>
     function disableSelect() {

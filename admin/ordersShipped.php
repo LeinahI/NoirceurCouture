@@ -1,4 +1,4 @@
-<?php include('includes/header.php');
+<?php include('partials/header.php');
 include('../middleware/adminMW.php');
 
 ?>
@@ -13,7 +13,7 @@ include('../middleware/adminMW.php');
                     <h2 class="text-white">Shipped Out Orders
                         <a href="ordersCancelled.php" class="btn btn-light float-end ms-2">View Cancelled</a>
                         <a href="ordersDeliver.php" class="btn btn-light float-end ms-2">View Delivered</a>
-                        <a href="ordersShipped.php" class="btn btn-light float-end ms-2">View Shipped Out</a>
+                        <a href="ordersShipped.php" class="btn btn-light float-end ms-2"><span class="text-primary">View Shipped Out</span></a>
                         <a href="ordersPreparing.php" class="btn btn-light float-end ms-2">View Preparing Orders</a>
                         <a href="orders.php" class="btn btn-light float-end ms-2">View All</a>
                     </h2>
@@ -83,4 +83,4 @@ include('../middleware/adminMW.php');
     });
 </script>
 
-<?php include('includes/footer.php'); ?>
+<?php include('partials/footer.php'); ?>

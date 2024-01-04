@@ -56,7 +56,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: "POST",
-            url: "functions/handleCart.php",
+            url: "/NoirceurCouture/models/handleCart.php",
             data: {
                 "product_id": prod_id,
                 "product_qty": prod_qty,
@@ -104,7 +104,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "functions/handleCart.php",
+            url: "/NoirceurCouture/models/handleCart.php",
             data: {
                 "product_id": prod_id,
                 "product_qty": prod_qty,
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "functions/handleCart.php",
+            url: "/NoirceurCouture/models/handleCart.php",
             data: {
                 "cart_id": cart_id,
                 "scope": "delete"
@@ -153,7 +153,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: "POST",
-            url: "functions/handleLikes.php",
+            url: "/NoirceurCouture/models/handleLikes.php",
             data: {
                 "product_id": prod_id,
                 "product_slug": prod_slug,
@@ -199,7 +199,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "functions/handleLikes.php",
+            url: "/NoirceurCouture/models/handleLikes.php",
             data: {
                 "cart_id": cart_id,
                 "scope": "deleteLike"
