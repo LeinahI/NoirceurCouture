@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Asia/Manila');
 include('../models/dbcon.php');
 include('../models/myFunctions.php');
 
@@ -37,16 +38,9 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             redirectSwal("addCategory.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
         }
 
-        // Image size validation
-        $image_info = getimagesize($image_tmp);
-        $original_width = $image_info[0];
-        $original_height = $image_info[1];
-
-        if ($original_width != 720 || $original_height != 400) {
-            redirectSwal("addCategory.php", "Invalid image dimensions. The image must be exactly 400px height and 720px width.", "error");
-        }
-
-        $fileName = time() . '.' . $image_ext;
+        /* Set the file name */
+        $date = date("m-d-Y-H-i-s");
+        $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
 
         $categ_query = "INSERT INTO categories (category_name, category_slug, category_description, category_status, category_popular, category_image,
@@ -105,44 +99,27 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $image_tmp = $_FILES['uploadNewImageInput']['tmp_name'];
 
         if ($new_image != "") {
-            $image_info = getimagesize($image_tmp);
-            $original_width = $image_info[0];
-            $original_height = $image_info[1];
+            // Set the file name if a new image is uploaded
+            $date = date("m-d-Y-H-i-s");
+            $fileName = $slug . '-' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
+            $destination = "../assets/uploads/brands/" . $fileName;
 
-            if ($original_width != 720 || $original_height != 400) {
-                redirectSwal("editCategory.php?id=$category_id", "Invalid image dimensions. The image must be exactly 400px height and 720px width.", "error");
+            if (file_exists("../assets/uploads/brands/" . $old_image)) {
+                unlink("../assets/uploads/brands/" . $old_image); // Delete Old Image
             }
-
-            $updated_fileName = $new_image;
-            $image_tmp = $_FILES['uploadNewImageInput']['tmp_name'];
+            move_uploaded_file($image_tmp, $destination);
         } else {
-            $updated_fileName = $old_image;
+            // Keep the original file name if no new image is uploaded
+            $fileName = $old_image;
         }
-
-        $path = "../assets/uploads/brands/";
-        $image_ext = strtolower(pathinfo($updated_fileName, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
-
-        if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("editCategory.php?id=$category_id", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
-        }
-
-        $fileName = $updated_fileName;
-        $destination = $path . $fileName;
 
         $categ_query = "UPDATE categories SET category_name = ?, category_slug = ?, category_description = ?, category_status = ?, category_popular = ?,
-                    category_image = ?, category_meta_title = ?, category_meta_description = ?, category_meta_keywords = ? WHERE category_id = ?";
+                        category_image = ?, category_meta_title = ?, category_meta_description = ?, category_meta_keywords = ? WHERE category_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
         mysqli_stmt_bind_param($stmt, "sssiissssi", $name, $slug, $desc, $categ_status, $categ_popular, $fileName, $meta_title, $meta_desc, $meta_kw, $category_id);
         $categ_query_run = mysqli_stmt_execute($stmt);
 
         if ($categ_query_run) {
-            if ($new_image != "") {
-                if (file_exists("../assets/uploads/brands/" . $old_image)) {
-                    unlink("../assets/uploads/brands/" . $old_image); // Delete Old Image
-                }
-                move_uploaded_file($image_tmp, $destination);
-            }
             redirectSwal("editCategory.php?id=$category_id", "Category updated successfully!", "success");
         } else {
             redirectSwal("editCategory.php?id=$category_id", "Something went wrong. Please try again later.", "error");
@@ -151,19 +128,49 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
 } else if (isset($_POST['deleteCategoryBtn'])) { //!Delete whole Brand Category
     $category_id = mysqli_real_escape_string($con, $_POST['categoryID']);
 
-    $category_query = "SELECT * FROM categories WHERE category_id='$category_id'";
-    $category_query_run = mysqli_query($con, $category_query);
-    $category_data = mysqli_fetch_array($category_query_run);
+    // Fetch category data
+    $category_query = "SELECT * FROM categories WHERE category_id=?";
+    $stmt_category = mysqli_prepare($con, $category_query);
+    mysqli_stmt_bind_param($stmt_category, "i", $category_id);
+    mysqli_stmt_execute($stmt_category);
+    $category_data = mysqli_stmt_get_result($stmt_category);
+    $category_data = mysqli_fetch_array($category_data);
     $image_delete = $category_data['category_image'];
 
-    $delete_query = "DELETE FROM categories WHERE category_id='$category_id'";
-    $delete_query_run = mysqli_query($con, $delete_query);
+    // Fetch product data
+    $products_query = "SELECT product_image FROM products WHERE category_id=?";
+    $stmt_products = mysqli_prepare($con, $products_query);
+    mysqli_stmt_bind_param($stmt_products, "i", $category_id);
+    mysqli_stmt_execute($stmt_products);
+    $product_images_result = mysqli_stmt_get_result($stmt_products);
 
-    if ($delete_query_run) {
-        if (file_exists("../assets/uploads/brands/") . $image_delete) {
-            unlink("../assets/uploads/brands/" . $image_delete); //Delete Image
+    // Delete products associated with the category
+    $delete_products_query = "DELETE FROM products WHERE category_id=?";
+    $stmt_delete_products = mysqli_prepare($con, $delete_products_query);
+    mysqli_stmt_bind_param($stmt_delete_products, "i", $category_id);
+    mysqli_stmt_execute($stmt_delete_products);
+
+    // Delete the category
+    $delete_category_query = "DELETE FROM categories WHERE category_id=?";
+    $stmt_delete_category = mysqli_prepare($con, $delete_category_query);
+    mysqli_stmt_bind_param($stmt_delete_category, "i", $category_id);
+    $delete_category_query_run = mysqli_stmt_execute($stmt_delete_category);
+
+    if ($delete_category_query_run) {
+        // Delete the category image
+        if (file_exists("../assets/uploads/brands/" . $image_delete)) {
+            unlink("../assets/uploads/brands/" . $image_delete);
         }
-        redirectSwal("category.php", "Category deleted successfully!", "success");
+
+        // Delete associated product images
+        while ($product_image_data = mysqli_fetch_assoc($product_images_result)) {
+            $product_image = $product_image_data['product_image'];
+            if (file_exists("../assets/uploads/products/" . $product_image)) {
+                unlink("../assets/uploads/products/" . $product_image);
+            }
+        }
+
+        redirectSwal("category.php", "Category and associated products deleted successfully!", "success");
     } else {
         redirectSwal("category.php", "Something went wrong. Please try again later.", "error");
     }
@@ -206,16 +213,9 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             redirectSwal("addProduct.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
         }
 
-        // Image size validation
-        $image_info = getimagesize($image_tmp);
-        $original_width = $image_info[0];
-        $original_height = $image_info[1];
-
-        if ($original_width != 1000 || $original_height != 1000) {
-            redirectSwal("addProduct.php", "Invalid image dimensions. The image must be exactly 1000px height and width.", "error");
-        }
-
-        $fileName = time() . '.' . $image_ext;
+        /* Set the file name */
+        $date = date("m-d-Y-H-i-s");
+        $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
 
         $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_small_description, product_description, product_original_price,
@@ -264,21 +264,19 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
 
         if ($new_image != "") {
-            $updated_fileName = $new_image;
+            // Set the file name if a new image is uploaded
+            $date = date("m-d-Y-H-i-s");
+            $fileName = $slug . '-' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
+            $destination = "../assets/uploads/products/" . $fileName;
+
+            if (file_exists("../assets/uploads/products/" . $old_image)) {
+                unlink("../assets/uploads/products/" . $old_image); // Delete Old Image
+            }
+            move_uploaded_file($image_tmp, $destination);
         } else {
-            $updated_fileName = $old_image;
+            // Keep the original file name if no new image is uploaded
+            $fileName = $old_image;
         }
-
-        $path = "../assets/uploads/products/";
-        $image_ext = strtolower(pathinfo($updated_fileName, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
-
-        if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("editProduct.php?id=$product_id", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
-        }
-
-        $fileName = $updated_fileName;
-        $destination = $path . $fileName;
 
         $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_small_description = ?, product_description = ?,
         product_original_price = ?, product_srp = ?, product_image = ?, product_qty = ?, product_status = ?, product_popular = ?, product_meta_title = ?,

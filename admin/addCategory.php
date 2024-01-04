@@ -6,7 +6,6 @@ include('../middleware/adminMW.php'); ?>
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Add Brand Category</h2>
-                    
                 </div>
                 <div class="card-body">
                     <form action="authcode.php" method="POST" enctype="multipart/form-data">

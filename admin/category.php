@@ -50,7 +50,9 @@ include('../middleware/adminMW.php'); ?>
                                                                     <h5 class="modal-title" id="exampleModalLabel">Delete Category <span><?= $item['category_id']; ?></span></h5>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Are you sure you want to delete this category?
+                                                                    Are you sure you want to delete <b><?= $item['category_name']; ?></b>?
+                                                                    <br>
+                                                                    All products associated with <b><?= $item['category_name']; ?></b> will also be deleted.
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
