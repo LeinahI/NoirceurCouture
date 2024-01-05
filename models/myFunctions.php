@@ -134,7 +134,14 @@ function getByUserId($table, $id)
     return $result;
 }
 
-
+/* Get by slideshow id */
+function slideShowId($table, $id)
+{
+    global $con;
+    $query = "SELECT * FROM $table WHERE ss_id = '$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
 
 function getByIdProduct($table, $id)
 {

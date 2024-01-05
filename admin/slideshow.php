@@ -34,12 +34,12 @@ include('../middleware/adminMW.php'); ?>
                                     <tr>
                                         <td><?= $item['ss_id']; ?></td>
 
-                                        <td><img src="../assets/uploads/slideshow/<?= $item['ss_image']; ?>" height="100px" alt="slideshow image"></td>
+                                        <td><img src="../assets/uploads/slideshow/<?= $item['ss_image']; ?>" height="100px" class="w-40 border" alt="slideshow image"></td>
                                         <td>
                                             <div style="display: flex;">
-                                                <a href="editProduct.php?id=<?= $item['ss_id']; ?>" class="btn btn-primary mx-2">Edit</a>
+                                                <a href="editImage.php?id=<?= $item['ss_id']; ?>" class="btn btn-primary mx-2">Edit</a>
                                                 <form action="authcode.php" method="POST">
-                                                    <input type="hidden" name="productID" value="<?= $item['ss_id'] ?>">
+                                                    <input type="hidden" name="ssID" value="<?= $item['ss_id'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['ss_id'] ?>">Delete</button>
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="deleteModal<?= $item['ss_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -49,11 +49,11 @@ include('../middleware/adminMW.php'); ?>
                                                                     <h5 class="modal-title" id="exampleModalLabel">Delete Product <span><?= $item['ss_id']; ?></span></h5>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Are you sure you want to delete this product?
+                                                                    Are you sure you want to delete this image?
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                                    <input type="submit" class="btn btn-primary" name="deleteProductBtn" value="Delete">
+                                                                    <input type="submit" class="btn btn-primary" name="deleteSlideshowBtn" value="Delete">
                                                                 </div>
                                                             </div>
                                                         </div>
