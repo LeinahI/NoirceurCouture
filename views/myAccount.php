@@ -18,23 +18,7 @@ include('../middleware/userMW.php');
     }
     ?>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card p-3 border rounded-3 shadow">
-                <div class="row">
-                    <div class="card-title">
-                        My Account
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <a href="myAccount.php" class="text-dark">My Profile</a>
-                        </div>
-                        <div>
-                            <a href="myAddress.php" class="text-dark">My Address</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">
             <div>
                 <?php
@@ -49,7 +33,7 @@ include('../middleware/userMW.php');
                             <h5 class="card-title">My Profile</h5>
                         </div>
                         <div class="card-body">
-                            <form action="authcode.php" method="POST">
+                            <form action="../models/authcode.php" method="POST">
                                 <div class="container-fluid">
                                     <div class="row">
                                         <input type="hidden" name="userID" value="<?= $data['user_ID'] ?>">

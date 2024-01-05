@@ -41,7 +41,7 @@ include('../middleware/adminMW.php'); ?>
                                         <td>
                                             <div style="display: flex;">
                                                 <a href="editCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                <form action="authcode.php" method="POST">
+                                                <form action="./models/category-auth.php" method="POST">
                                                     <input type="hidden" name="categoryID" value="<?= $item['category_id'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['category_id'] ?>">Delete</button>
                                                     <!-- Modal -->
@@ -106,6 +106,9 @@ include('../middleware/adminMW.php'); ?>
                 search: "_INPUT_",
                 searchPlaceholder: "Search records"
             },
+            order: [
+                [0, 'desc'] // Assuming the first column (index 0) contains timestamps or dates
+            ]
         });
     });
 </script>

@@ -10,7 +10,7 @@ include('../middleware/adminMW.php'); ?>
                     </h2>
                 </div>
                 <div class="card-body">
-                    <form action="authcode.php" method="POST" enctype="multipart/form-data">
+                    <form action="models/slide-show-auth.php" method="POST" enctype="multipart/form-data">
                         <div class="container-fluid">
                             <div class="form-floating col-md-12 mb-3">
                                 <select name="selectBrandID" class="form-select ps-2">

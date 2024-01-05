@@ -21,7 +21,7 @@
                 foreach ($slideshowImages as $item) {
             ?>
                     <div class="swiper-slide">
-                        <img class="slideImages img-fluid h-100 w-100" src="../assets/uploads/slideshow/<?= $item['ss_image'] ?>" alt="slideshow image" />
+                        <img class="slideImages img-fluid h-100 w-100 border border-top-0" src="../assets/uploads/slideshow/<?= $item['ss_image'] ?>" alt="slideshow image" />
                     </div>
             <?php
                 }

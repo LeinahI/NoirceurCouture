@@ -57,7 +57,7 @@ include('../middleware/adminMW.php');
                                         <td class="text-center">
                                             <div class="d-flex">
                                                 <a href="editusers.php?id=<?= $item['user_ID']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                <form action="authcode.php" method="POST">
+                                                <form action="models/user-auth.php" method="POST">
                                                     <input type="hidden" name="user_ID" value="<?= $item['user_ID'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['user_ID'] ?>">Delete</button>
                                                     <!-- Modal -->
@@ -114,6 +114,9 @@ include('../middleware/adminMW.php');
                 search: "_INPUT_",
                 searchPlaceholder: "Search records"
             },
+            order: [
+                [0, 'desc'] // Assuming the first column (index 0) contains timestamps or dates
+            ]
         });
     });
 </script>

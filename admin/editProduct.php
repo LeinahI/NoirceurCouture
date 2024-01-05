@@ -17,7 +17,7 @@ include('../models/myFunctions.php'); ?>
                             <a href="product.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
-                            <form action="authcode.php" method="POST" enctype="multipart/form-data">
+                            <form action="models/product-auth.php" method="POST" enctype="multipart/form-data">
                                 <div class="container-fluid">
                                     <div class="row col-md-12">
                                         <!-- Add Category start -->

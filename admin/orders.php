@@ -80,6 +80,9 @@ include('../middleware/adminMW.php');
                 search: "_INPUT_",
                 searchPlaceholder: "Search records"
             },
+            order: [
+                [0, 'desc'] // Assuming the first column (index 0) contains timestamps or dates
+            ]
         });
     });
 </script>

@@ -110,13 +110,13 @@ if (isset($_POST['userUpdateAccBtn'])) {
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
-        header("Location: myAccount.php");
+        header("Location: ../views/myAccount.php");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
-        header("Location: myAccount.php");
+        header("Location: ../views/myAccount.php");
         $_SESSION['Errormsg'] = "Email already in use, please try something different";
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
-        header("Location: myAccount.php");
+        header("Location: ../views/myAccount.php");
         $_SESSION['Errormsg'] = "Phone number already in use, please try something different";
     } else {
         if ($uPass) {
@@ -127,10 +127,10 @@ if (isset($_POST['userUpdateAccBtn'])) {
             $update_query_run = mysqli_stmt_execute($stmt);
 
             if ($update_query_run) {
-                header("Location: myAccount.php");
+                header("Location: ../views/myAccount.php");
                 $_SESSION['Errormsg'] = "Account updated successfully";
             } else {
-                header("Location: myAccount.php");
+                header("Location: ../views/myAccount.php");
                 $_SESSION['Errormsg'] = "Something went wrong";
             }
         }
@@ -159,7 +159,7 @@ if (isset($_POST['userAddAddrBtn'])) {
 
         if ($stmt->num_rows > 0) {
             $_SESSION['Errormsg'] = "Add address button can't be use anymore";
-            header("Location: myAddress.php");
+            header("Location: ../views/myAddress.php");
             exit;
         }
 
@@ -169,10 +169,10 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->bind_param("isssss", $userId, $fullN, $email, $pcode, $phoneNum, $fullAddr);
 
         if ($stmt->execute()) {
-            header("Location: myAddress.php");
+            header("Location: ../views/myAddress.php");
             $_SESSION['Errormsg'] = "Address added successfully";
         } else {
-            header("Location: myAddress.php");
+            header("Location: ../views/myAddress.php");
             $_SESSION['Errormsg'] = "Something went wrong";
         }
         $stmt->close();
@@ -198,10 +198,10 @@ if (isset($_POST['userUpdateAddrBtn'])) {
         $stmt->bind_param("sssssi", $fullN, $email, $pcode, $phoneNum, $fullAddr, $userId);
 
         if ($stmt->execute()) {
-            header("Location: myAddress.php");
+            header("Location: ../views/myAddress.php");
             $_SESSION['Errormsg'] = "Address updated successfully";
         } else {
-            header("Location: myAddress.php");
+            header("Location: ../views/myAddress.php");
             $_SESSION['Errormsg'] = "Something went wrong";
         }
 

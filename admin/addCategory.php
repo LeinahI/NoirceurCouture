@@ -10,7 +10,7 @@ include('../middleware/adminMW.php'); ?>
                     </h2>
                 </div>
                 <div class="card-body">
-                    <form action="authcode.php" method="POST" enctype="multipart/form-data">
+                    <form action="./models/category-auth.php" method="POST" enctype="multipart/form-data">
                         <div class="container-fluid">
                             <div class=" col-md-12">
                                 <!-- Add Category start -->

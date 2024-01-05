@@ -67,7 +67,7 @@ include('../middleware/adminMW.php'); ?>
                                         <td>
                                             <div style="display: flex;">
                                                 <a href="editProduct.php?id=<?= $item['product_id']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                <form action="authcode.php" method="POST">
+                                                <form action="models/product-auth.php" method="POST">
                                                     <input type="hidden" name="productID" value="<?= $item['product_id'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['product_id'] ?>">Delete</button>
                                                     <!-- Modal -->
@@ -131,6 +131,9 @@ include('../middleware/adminMW.php'); ?>
                 search: "_INPUT_",
                 searchPlaceholder: "Search records"
             },
+            order: [
+                [0, 'desc'] // Assuming the first column (index 0) contains timestamps or dates
+            ]
         });
     });
 </script>

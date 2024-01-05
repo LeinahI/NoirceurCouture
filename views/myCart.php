@@ -132,7 +132,7 @@ include('../middleware/userMW.php');
     </div>
 </div>
 
-<div style="margin-top:20%;">
+<div class="mt-5">
     <?php include('footer.php'); ?>
 </div>
 

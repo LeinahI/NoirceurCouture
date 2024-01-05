@@ -18,7 +18,7 @@ include('../models/myFunctions.php'); ?>
                         </div>
                         <div class="card-body">
                             <!-- Edit Category start -->
-                            <form action="authcode.php" method="POST" enctype="multipart/form-data">
+                            <form action="./models/category-auth.php" method="POST" enctype="multipart/form-data">
                                 <div class="container-fluid">
                                     <div class="row col-md-12">
                                         

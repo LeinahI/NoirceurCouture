@@ -57,7 +57,7 @@ include('../models/userFunctions.php');
             -moz-appearance: textfield;
         }
 
-        textarea{
+        textarea {
             resize: none;
         }
 
@@ -67,41 +67,6 @@ include('../models/userFunctions.php');
 
         .scrollBarCO::-webkit-scrollbar {
             display: none;
-        }
-
-        .main-content {
-            position: relative;
-        }
-
-        .main-content .owl-theme .custom-nav {
-            position: absolute;
-            top: 20%;
-            left: 0;
-            right: 0;
-        }
-
-        .main-content .owl-theme .custom-nav .owl-prev,
-        .main-content .owl-theme .custom-nav .owl-next {
-            position: absolute;
-            height: 100px;
-            color: inherit;
-            background: none;
-            border: none;
-            z-index: 100;
-        }
-
-        .main-content .owl-theme .custom-nav .owl-prev i,
-        .main-content .owl-theme .custom-nav .owl-next i {
-            font-size: 2.5rem;
-            color: #cecece;
-        }
-
-        .main-content .owl-theme .custom-nav .owl-prev {
-            left: 0;
-        }
-
-        .main-content .owl-theme .custom-nav .owl-next {
-            right: 0;
         }
     </style>
 </head>

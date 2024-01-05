@@ -34,7 +34,7 @@ if (isset($_GET['product'])) {
                 <div class="row">
                     <div class="col-md-4">
                         <div class="shadow">
-                            <img src="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" class="w-100">
+                            <img src="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" height="416" class="w-100">
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -91,55 +91,10 @@ if (isset($_GET['product'])) {
             </div>
         </div>
 
-        <div class="mt-3 mb-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4 class="text-center">Trending Products</h4>
-                        <hr>
-                        <div class="row">
-                            <div class="main-content">
-                                <div class="owl-carousel">
-                                    <?php
-                                    $popularProducts = getAllPopular();
-
-                                    if (mysqli_num_rows($popularProducts) > 0) {
-                                        foreach ($popularProducts as $item) {
-                                            $product_name = $item['product_name'];
-                                            if (strlen($product_name) > 15) {
-                                                $product_name = substr($product_name, 0, 20) . '...';
-                                            }
-                                    ?>
-                                            <div class="item">
-                                                <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                                    <div class="card " style="height: 100%;">
-                                                        <div class="card-body d-flex flex-column justify-content-between" style="height: 100%;">
-                                                            <div>
-                                                                <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
-                                                                <h6><?= $product_name; ?></h6>
-                                                                <h6 class="text-center fw-bold">₱<?= number_format($item['product_srp'], 2) ?></h6>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                                <div class="owl-theme">
-                                    <div class="owl-controls">
-                                        <div class="custom-nav owl-nav"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <?php
+        include('../partials/sameshop.php');
+        include('../partials/trending.php');
+        ?>
         <div class="mt-5">
             <?php include('footer.php'); ?>
         </div>
@@ -153,26 +108,3 @@ if (isset($_GET['product'])) {
 
 include('../partials/__footer.php');
 ?>
-<script>
-    $('.main-content .owl-carousel').owlCarousel({
-        loop: true,
-        margin: 10,
-        nav: true,
-        navText: [
-            '<i class="fa fa-angle-left" aria-hidden="true"></i>',
-            '<i class="fa fa-angle-right" aria-hidden="true"></i>'
-        ],
-        navContainer: '.main-content .custom-nav',
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 3
-            },
-            1000: {
-                items: 5
-            }
-        }
-    });
-</script>

@@ -49,7 +49,7 @@
                             <?= $_SESSION['auth_user']['user_username'] ?>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="myOrders.php">My Orders</a></li>
+                            <li><a class="dropdown-item" href="myOrders.php">My Purchase</a></li>
                             <li><a class="dropdown-item" href="myAccount.php">My Account</a></li>
                             <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
                         </ul>

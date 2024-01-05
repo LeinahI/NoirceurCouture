@@ -18,23 +18,7 @@ include('../middleware/userMW.php');
     }
     ?>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card p-3 border rounded-3 shadow">
-                <div class="row">
-                    <div class="card-title">
-                        My Account
-                    </div>
-                    <div class="card-body">
-                        <div>
-                            <a href="myAccount.php" class="text-dark">My Profile</a>
-                        </div>
-                        <div>
-                            <a href="#" class="text-dark">My Address</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">
             <div>
                 <?php
@@ -50,6 +34,8 @@ include('../middleware/userMW.php');
                 $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
+
+                $existingAddress = !empty($fulladdr);
                 ?>
 
                 <div class="card p-3 border rounded-3 shadow">
@@ -57,7 +43,7 @@ include('../middleware/userMW.php');
                         <h5 class="card-title">My Address</h5>
                     </div>
                     <div class="card-body">
-                        <form action="authcode.php" method="POST">
+                        <form action="../models/authcode.php" method="POST">
                             <div class="container-fluid">
                                 <div class="row">
                                     <input type="hidden" name="userID" value="<?= $id ?>">
@@ -93,12 +79,19 @@ include('../middleware/userMW.php');
                                         </div>
                                     </div>
                                     <!-- Pass and CPass end -->
-                                    <div class="form-floating col-md-6 ps-0">
-                                        <button type="submit" name="userAddAddrBtn" class="btn btn-success col-md-12">Add Address</button>
-                                    </div>
-                                    <div class="form-floating col-md-6 ps-0">
-                                        <button type="submit" name="userUpdateAddrBtn" class="btn btn-primary col-md-12">Update My Address</button>
-                                    </div>
+
+                                    <!-- Add & Update button -->
+                                    <?php if ($existingAddress) { ?>
+                                        <!-- If an existing address exists -->
+                                        <div class="form-floating col-md-12 ps-0">
+                                            <button type="submit" name="userUpdateAddrBtn" class="btn btn-primary col-md-12">Update My Address</button>
+                                        </div>
+                                    <?php } else { ?>
+                                        <!-- If no existing address exists -->
+                                        <div class="form-floating col-md-12 ps-0">
+                                            <button type="submit" name="userAddAddrBtn" class="btn btn-success col-md-12">Add Address</button>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </form>

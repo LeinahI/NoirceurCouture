@@ -156,7 +156,7 @@ $data = mysqli_fetch_array($orderData);
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <form action="authcode.php" method="post">
+                                            <form action="models/item-status-auth.php" method="post">
                                                 <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no'] ?>">
                                                 <input type="hidden" name="ordersID" value="<?= $data['orders_id'] ?>">
                                                 <div class="form-floating">

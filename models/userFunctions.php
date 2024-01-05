@@ -19,6 +19,14 @@ function getAllPopular() /* Trending */
     return $query_run; // Return the query result, not the query itself
 }
 
+function getAllSameShop($id) /* Trending */
+{
+    global $con;
+    $query = "SELECT * FROM products WHERE category_id='$id'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run; // Return the query result, not the query itself
+}
+
 function getProdByCategory($category_id)
 {
     global $con;
