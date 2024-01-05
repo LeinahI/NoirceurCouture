@@ -23,12 +23,12 @@ if (isset($_SESSION['auth'])) {
                     unset($_SESSION['Errormsg']);
                 }
                 ?>
-                <div class="card">
+                <div class="card bg-main">
                     <div class="card-header text-center">
                         <h4>Registration Form</h4>
                     </div>
                     <div class="card-body">
-                        <form action="authcode.php" method="POST">
+                        <form action="../models/authcode.php" method="POST">
                             <div class="container-fluid">
                                 <div class="row">
                                     <!-- Fname and Lname start -->
@@ -76,7 +76,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>Have an account? <a href="login.php">Log in</a></h6>
+                                        <h6>Have an account? <a href="login.php" class="text-accent">Log in</a></h6>
                                     </div>
                                 </div>
                             </div>

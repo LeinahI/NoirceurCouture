@@ -23,19 +23,19 @@ if (isset($_POST['userRegisterBtn'])) {
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
-        redirect("register.php", "Invalid Philippine phone number format");
+        redirect("../views/register.php", "Invalid Philippine phone number format");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
         /* header("Location:register.php");
         $_SESSION['Errormsg'] = "Email already in use try something different"; */
-        redirect("register.php", "Email already in use try something different");
+        redirect("../views/register.php", "Email already in use try something different");
     } else if (mysqli_num_rows($check_uname_query_run) > 0) {
         /* header("Location:register.php");
         $_SESSION['Errormsg'] = "username already in use try something different"; */
-        redirect("register.php", "username already in use try something different");
+        redirect("../views/register.php", "username already in use try something different");
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
         /* header("Location:register.php");
         $_SESSION['Errormsg'] = "phone number already in use try something different"; */
-        redirect("register.php", "phone number already in use try something different");
+        redirect("../views/register.php", "phone number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
             //Insert User Data
@@ -44,12 +44,12 @@ if (isset($_POST['userRegisterBtn'])) {
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
                 /* Swal */
-                redirectSwal("login.php", "New account added", "success");
+                redirectSwal("../views/login.php", "New account added", "success");
             } else {
-                redirect("register.php", "something went wrong");
+                redirect("../views/register.php", "something went wrong");
             }
         } else {
-            redirect("register.php", "Passwords doesn't match");
+            redirect("../views/register.php", "Passwords doesn't match");
         }
     }
 }
@@ -83,9 +83,11 @@ if (isset($_POST['loginBtn'])) {
 
         $_SESSION['user_role'] = $userRole;
         if ($userRole == 1) {
-            redirectSwal("../admin/index.php", "Welcome to admin page", "success");
+            /* redirectSwal("../admin/index.php", "Welcome to admin page", "success"); */
+            header('Location: ../admin/index.php');
         } else {
-            redirectSwal("../views/index.php", "Log in Successfully", "success");
+            /* redirectSwal("../views/index.php", "Log in Successfully", "success"); */
+            header('Location: ../views/index.php');
         }
     } else {
         redirect("../views/login.php", "Invalid Credentials Try again");

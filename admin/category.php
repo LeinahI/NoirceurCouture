@@ -36,7 +36,9 @@ include('../middleware/adminMW.php'); ?>
                                     <tr>
                                         <td><?= $item['category_id']; ?></td>
                                         <td><?= $item['category_name']; ?></td>
-                                        <td><img src="../assets/uploads/brands/<?= $item['category_image']; ?>" height="50px" alt="<?= $item['category_name']; ?>"></td>
+                                        <td>
+                                            <img src="../assets/uploads/brands/<?= $item['category_image']; ?>" height="50px" alt="<?= $item['category_name']; ?>">
+                                        </td>
                                         <td><?= $item['category_status'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
                                             <div style="display: flex;">
@@ -54,7 +56,7 @@ include('../middleware/adminMW.php'); ?>
                                                                 <div class="modal-body">
                                                                     Are you sure you want to delete <b><?= $item['category_name']; ?></b>?
                                                                     <br>
-                                                                    All products associated with <b><?= $item['category_name']; ?></b> will also be deleted.
+                                                                    All products & image associated with <b><?= $item['category_name']; ?></b> will also be deleted.
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -87,9 +89,8 @@ include('../middleware/adminMW.php'); ?>
 </div>
 
 <!--jquery cdn start-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="../assets/js/jquery.min.js"></script>
 <!--jquery cdn end-->
-
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
 <script>
@@ -112,5 +113,6 @@ include('../middleware/adminMW.php'); ?>
         });
     });
 </script>
+
 
 <?php include('partials/footer.php'); ?>

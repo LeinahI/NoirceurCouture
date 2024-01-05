@@ -28,7 +28,7 @@ include('../middleware/userMW.php');
                 if (mysqli_num_rows($user) > 0) {
                     $data = mysqli_fetch_array($user);
                 ?>
-                    <div class="card p-3 border rounded-3 shadow">
+                    <div class="card p-3 border rounded-3 shadow bg-main">
                         <div class="card-header">
                             <h5 class="card-title">My Profile</h5>
                         </div>

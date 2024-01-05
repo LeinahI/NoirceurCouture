@@ -16,25 +16,25 @@ if (isset($_GET['product'])) {
 ?>
         <div class="py-3 bg-primary">
             <div class="container">
-                <h6 class="text-white">
-                    <a href="brands.php" class="text-white">Home /</a>
-                    <a href="brands.php" class="text-white">Collections /</a>
+                <h6 class="text-dark">
+                    <a href="brands.php" class="text-dark">Home /</a>
+                    <a href="brands.php" class="text-dark">Collections /</a>
                     <?php
                     if ($category) {
                     ?>
-                        <a href="products.php?category=<?= $category['category_slug'] ?>" class="text-white"><?= $category['category_name'] ?> /</a>
+                        <a href="products.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?> /</a>
                     <?php } ?>
                     <?= $product['product_name'] ?>
                 </h6>
             </div>
         </div>
 
-        <div class="bg-light py-4">
+        <div class="bg-main py-4">
             <div class="container productData mt-3">
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="shadow">
-                            <img src="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" height="416" class="w-100">
+                        <div class="shadow imgBox">
+                            <img src="../assets/uploads/products/<?= $product['product_image'] ?>" data-origin="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" height="416" class="w-100">
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -50,7 +50,7 @@ if (isset($_GET['product'])) {
                                 echo '<br>'; // Add line break if there are more than 5 words
                                 echo implode(' ', array_slice($words, 5)); // Display the remaining words on the next line
                             } ?>
-                            <span class="float-end text-danger">
+                            <span class="float-end text-accent">
                                 <?php if ($product['product_popular']) {
                                     echo "Trending";
                                 } ?>
@@ -60,7 +60,7 @@ if (isset($_GET['product'])) {
                         <hr>
                         <div class="row">
                             <div>
-                                <h5 class="fw-bold">₱<?= number_format($product['product_srp'], 2) ?></h5>
+                                <h5 class="fw-bold text-accent">₱<?= number_format($product['product_srp'], 2) ?></h5>
                                 <input type="hidden" class="product_link" value="<?= $product['product_slug'] ?>">
                             </div>
                             <div>

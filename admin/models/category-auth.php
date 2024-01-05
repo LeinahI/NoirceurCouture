@@ -144,11 +144,24 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     mysqli_stmt_execute($stmt_products);
     $product_images_result = mysqli_stmt_get_result($stmt_products);
 
+    // Fetch slideshow data
+    $slideshow_query = "SELECT ss_image FROM slideshow WHERE category_id=?";
+    $stmt_slideshow = mysqli_prepare($con, $slideshow_query);
+    mysqli_stmt_bind_param($stmt_slideshow, "i", $category_id);
+    mysqli_stmt_execute($stmt_slideshow);
+    $slideshow_images_result = mysqli_stmt_get_result($stmt_slideshow);
+
     // Delete products associated with the category
     $delete_products_query = "DELETE FROM products WHERE category_id=?";
     $stmt_delete_products = mysqli_prepare($con, $delete_products_query);
     mysqli_stmt_bind_param($stmt_delete_products, "i", $category_id);
     mysqli_stmt_execute($stmt_delete_products);
+
+    // Delete slideshow associated with the category
+    $delete_slideshow_query = "DELETE FROM slideshow WHERE category_id=?";
+    $stmt_delete_slideshow = mysqli_prepare($con, $delete_slideshow_query);
+    mysqli_stmt_bind_param($stmt_delete_slideshow, "i", $category_id);
+    mysqli_stmt_execute($stmt_delete_slideshow);
 
     // Delete the category
     $delete_category_query = "DELETE FROM categories WHERE category_id=?";
@@ -170,7 +183,15 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             }
         }
 
-        redirectSwal("../category.php", "Category and associated products deleted successfully!", "success");
+        // Delete associated slideshow images
+        while ($slideshow_image_data = mysqli_fetch_assoc($slideshow_images_result)) {
+            $slideshow_image = $slideshow_image_data['ss_image'];
+            if (file_exists("../../assets/uploads/slideshow/" . $slideshow_image)) {
+                unlink("../../assets/uploads/slideshow/" . $slideshow_image);
+            }
+        }
+
+        redirectSwal("../category.php", "Category and associated product, & image deleted successfully!", "success");
     } else {
         redirectSwal("../category.php", "Something went wrong. Please try again later.", "error");
     }

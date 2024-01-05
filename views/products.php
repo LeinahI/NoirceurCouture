@@ -28,9 +28,9 @@ if (isset($_GET['category'])) {
 
         <div class="py-3 bg-primary">
             <div class="container">
-                <h6 class="text-white">
-                    <a href="brands.php" class="text-white">Home /</a>
-                    <a href="brands.php" class="text-white">Collections /</a>
+                <h6 class="text-dark">
+                    <a href="brands.php" class="text-dark">Home /</a>
+                    <a href="brands.php" class="text-dark">Collections /</a>
                     <?= $category['category_name'] ?>
                 </h6>
             </div>
@@ -58,7 +58,7 @@ if (isset($_GET['category'])) {
                                         <div class="col-md-3 mb-3">
                                             <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
                                                 <div class="card shadow">
-                                                    <div class="card-body d-flex flex-column justify-content-between">
+                                                    <div class="card-body d-flex flex-column justify-content-between bg-primary">
                                                         <div>
                                                             <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
                                                             <h4><?= $item['product_name'] ?></h4>

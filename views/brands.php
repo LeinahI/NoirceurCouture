@@ -12,7 +12,7 @@
 
 <div class="py-3 bg-primary">
     <div class="container">
-        <h6 class="text-white">Home / Collections / </h6>
+        <h6 class="text-dark">Home / Collections / </h6>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
                             <div class="col-md-4 mb-3">
                                 <a href="products.php?category=<?= $item['category_slug'] ?>">
                                     <div class="card shadow">
-                                        <div class="card-body">
+                                        <div class="card-body bg-primary">
                                             <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image" class="w-100 img-fixed-height">
                                             <h4><?= $item['category_name'] ?></h4>
                                         </div>

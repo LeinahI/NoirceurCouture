@@ -8,11 +8,11 @@ include('../middleware/userMW.php');/* Authenticate.php */
             <div class="row">
                 <?php include('../partials/sidebar.php') ?>
                 <div class="col-md-9">
-                    <div class="card p-3 border rounded-3 shadow">
+                    <div class="card p-3 border rounded-3 shadow bg-main">
                         <div class="card-header">
                             <h5 class="card-title">My Purchase</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body ">
                             <table class="table table-bordered table-hover table-striped shadow">
                                 <thead>
                                     <tr class="text-center">

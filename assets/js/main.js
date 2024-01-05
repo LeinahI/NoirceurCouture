@@ -128,12 +128,12 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response == 200) {
-                    swal({
+                    /* swal({
                         title: "Product deleted successfully",
                         icon: "success",
                         button: 'OK',
-                    });
-                    $('#mycart').load(location.href + " #mycart");
+                    });*/
+                    $('#mycart').load(location.href + " #mycart"); 
                 } else {
                     swal({
                         title: response,
@@ -206,11 +206,11 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response == 200) {
-                    swal({
+                    /* swal({
                         title: "Product unliked successfully",
                         icon: "success",
                         button: 'OK',
-                    });
+                    }); */
                     $('#mylikes').load(location.href + " #mylikes");
                 } else {
                     swal({

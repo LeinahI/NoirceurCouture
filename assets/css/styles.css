@@ -1,0 +1,81 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+/**************
+Boostrap styles start
+***************/
+
+/*! Backgrounds */
+.bg-primary {
+  background-color: #e7ded8 !important;
+}
+.bg-main {
+  background-color: #f6ede7 !important;
+}
+.bg-secondary {
+  background-color: #7b7774 !important;
+}
+.bg-accent {
+  background-color: #bb6c54 !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #E7DED8 !important;
+  color: #171412 !important;
+  border-color: #e7ded8 !important;
+}
+
+.btn-accent {
+  background-color: #bb6c54 !important;
+  color: #F6EDE7 !important;
+  border-color: #bb6c54 !important;
+}
+
+/*? Text */
+.text-dark {
+  color: #171412 !important;
+}
+.text-accent {
+  color: #bb6c54 !important;
+}
+.text-brown {
+  color: #7b7774 !important;
+}
+
+/**************
+Boostrap styles end
+***************/
+
+body {
+  overflow-x: hidden;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  resize: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.scrollBarCO::-webkit-scrollbar {
+  display: none;
+}
+
+/* Owl Carousel */
+.itemproduct:hover {
+  border: 2px solid #bb6c54; /* Use the primary color or any color you want */
+}

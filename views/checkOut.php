@@ -9,10 +9,10 @@ if (mysqli_num_rows($cartCheck) < 1) {
 ?>
 <div class="py-3 bg-primary">
     <div class="container">
-        <h6 class="text-white">
-            <a href="#" class="text-white">Home /</a>
-            <a href="myCart.php" class="text-white">Cart /</a>
-            <a href="#" class="text-white">Check out /</a>
+        <h6>
+            <a href="#" class="text-dark">Home /</a>
+            <a href="myCart.php" class="text-dark">Cart /</a>
+            <a href="#" class="text-dark">Check out /</a>
         </h6>
     </div>
 </div>
@@ -33,7 +33,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
         }
         ?>
         <div class="card shadow">
-            <div class="card-body">
+            <div class="card-body bg-main">
                 <form action="../models/placeOrder.php" method="POST">
                     <div class="row">
                         <div class="col-md-6">
@@ -111,10 +111,10 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 foreach ($groupedItems as $categoryName => $categoryItems) {
                                 ?>
                                     <div class="card mb-3 border rounded-3">
-                                        <div class="card-header">
+                                        <div class="card-header bg-primary">
                                             <h5 class="card-title"><?= $categoryName ?></h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body bg-primary">
                                             <?php foreach ($categoryItems as $index => $cItem) {
                                                 $itemTotalPrice = $cItem['product_srp'] * $cItem['product_qty'];
                                                 $totalPrice += $itemTotalPrice;
@@ -144,12 +144,12 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 ?>
                             </div>
                             <div class="card">
-                                <div class="card-body">
-                                    <h5>Order Total&nbsp;(<span class="text-danger"><?= $itemQty ?>&nbsp;item</span>): <span class="text-danger">₱<?= number_format($totalPrice, 2) ?></span></h5>
+                                <div class="card-body bg-primary">
+                                    <h5>Order Total&nbsp;(<span class="text-accent"><?= $itemQty ?>&nbsp;item</span>): <span class="text-accent">₱<?= number_format($totalPrice, 2) ?></span></h5>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body bg-primary">
                                     <input type="hidden" name="paymentMode" value="Cash on Delivery">
-                                    <button type="submit" name="placeOrderBtn" class="btn btn-success w-100 mb-3">COD | Place Order</button>
+                                    <button type="submit" name="placeOrderBtn" class="btn btn-accent w-100 mb-3">COD | Place Order</button>
                                 </div>
                             </div>
                         </div>

@@ -72,7 +72,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
         <div class="mx-3">
-            <a class="btn bg-gradient-primary mt-4 w-100" href="../views/logout.php" type="button">Log Out</a>
+            <a class="btn bg-gradient-primary mt-4 w-100" href="../models/logout.php" type="button">Log Out</a>
         </div>
     </div>
 </aside>

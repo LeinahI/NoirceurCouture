@@ -26,7 +26,7 @@ include('../partials/trending.php');
     <div class="container">
         <div class="position-absolute z-2" style="translate: 800px 300px;">
             <div class="card" style="width: 24rem;">
-                <div class="card-body">
+                <div class="card-body bg-main">
                     <h5 class="card-title text-center fw-bold">Welcome to the Noirceur</h5>
                     <p class="card-text text-center">Noirceur Couture is the go-to place for individuals who seek avant-garde and other subculture wear from well-known brands. <br>
                         As a trusted distributor, we bring you an extensive collection of curated pieces from top fashion brands around the world. <br>

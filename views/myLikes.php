@@ -4,9 +4,9 @@ include('../middleware/userMW.php');
 ?>
 <div class="py-3 bg-primary">
     <div class="container">
-        <h6 class="text-white">
-            <a href="#" class="text-white">Home /</a>
-            <a href="#" class="text-white">Likes</a>
+        <h6>
+            <a href="#" class="text-dark">Home /</a>
+            <a href="#" class="text-dark">Likes</a>
         </h6>
     </div>
 </div>

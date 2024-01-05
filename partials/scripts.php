@@ -48,6 +48,16 @@
         }
     });
 </script>
+
+<!-- imgZoom -->
+<script>
+    $('.imgBox').imgZoom({
+        boxWidth: 416,
+        boxHeight: 416,
+        marginLeft: 5,
+    });
+</script>
+
 <?php
 
 if (isset($_SESSION['status']) && $_SESSION['status'] != '') {

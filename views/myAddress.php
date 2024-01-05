@@ -38,7 +38,7 @@ include('../middleware/userMW.php');
                 $existingAddress = !empty($fulladdr);
                 ?>
 
-                <div class="card p-3 border rounded-3 shadow">
+                <div class="card p-3 border rounded-3 shadow bg-main">
                     <div class="card-header">
                         <h5 class="card-title">My Address</h5>
                     </div>

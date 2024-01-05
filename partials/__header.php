@@ -36,40 +36,9 @@ include('../models/userFunctions.php');
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
-    <style>
-        * {
-            font-family: 'Roboto', sans-serif;
-
-        }
-
-        body {
-            overflow-x: hidden;
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Firefox */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        textarea {
-            resize: none;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        .scrollBarCO::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 
-<body>
+<body class="bg-main">
     <?php include('navbar.php'); ?>

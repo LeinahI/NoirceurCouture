@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="text-center text-lg-start bg-dark text-muted">
+<footer class="text-center text-lg-start bg-primary text-muted">
     <hr>
     <!-- Section: Links  -->
     <section class="">
@@ -9,7 +9,7 @@
                 <!-- Grid column -->
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-light">
                     <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4 text-dark">
                         Collections
                     </h6>
                     <?php
@@ -19,7 +19,7 @@
                         foreach ($categories as $item) {
                     ?>
                             <div class="col-md-12 mb-3">
-                                <a class="text-white" href="products.php?category=<?= $item['category_slug'] ?>">
+                                <a class="text-dark" href="products.php?category=<?= $item['category_slug'] ?>">
                                     <h6></h6><?= $item['category_name'] ?></h6>
                                 </a>
                             </div>
@@ -33,9 +33,9 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3  mx-auto mb-md-0 mb-4 text-light">
+                <div class="col-md-3  mx-auto mb-md-0 mb-4 text-dark">
                     <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+                    <h6 class="text-uppercase fw-bold mb-4 ">Contact</h6>
                     <p><i class="fas fa-home me-3"></i>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
                     <p>
                         <i class="fas fa-envelope me-3"></i>
@@ -58,9 +58,9 @@
     <!-- Section: Links  -->
 
     <!-- Copyright -->
-    <div class="text-center p-4 text-light">
+    <div class="text-center p-4 text-dark">
         © <?= date('Y') ?>
-        <a class="text-reset fw-bold" href="index.php">Noirceur Couture.</a>
+        <a class="text-dark fw-bold" href="index.php">Noirceur Couture.</a>
         All rights reserved.
     </div>
     <!-- Copyright -->

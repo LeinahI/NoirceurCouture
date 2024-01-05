@@ -4,9 +4,9 @@ include('../middleware/userMW.php');
 ?>
 <div class="py-3 bg-primary">
     <div class="container">
-        <h6 class="text-white">
-            <a href="#" class="text-white">Home /</a>
-            <a href="#" class="text-white">Cart</a>
+        <h6>
+            <a href="#" class="text-dark">Home /</a>
+            <a href="#" class="text-dark">Cart</a>
         </h6>
     </div>
 </div>
@@ -16,7 +16,7 @@ include('../middleware/userMW.php');
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card p-3 border rounded-3 shadow">
+                    <div class="card p-3 border rounded-3 shadow bg-main">
                         <div class="row">
                             <div class="col-md-5">
                                 <h6>Product</h6>
@@ -53,7 +53,7 @@ include('../middleware/userMW.php');
                             // Display grouped items
                             foreach ($groupedItems as $categoryName => $categoryItems) {
                         ?>
-                                <div class="card my-4 p-3 border rounded-3 shadow">
+                                <div class="card my-4 p-3 border rounded-3 shadow bg-main">
                                     <div class="card-header">
                                         <h5 class="card-title"><?= $categoryName ?></h5>
                                     </div>
@@ -88,7 +88,7 @@ include('../middleware/userMW.php');
                                                     <h5 class="productPrice">₱<?= number_format($itemTotalPrice, 2) ?></h5>
                                                 </div>
                                                 <div class="col-md-1">
-                                                    <button class="btn btn-danger deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
+                                                    <button class="btn btn-accent deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
                                                 </div>
                                             </div>
                                         <?php } ?>
@@ -114,14 +114,14 @@ include('../middleware/userMW.php');
         <div class="row">
             <div class="col-md-12">
                 <!-- Footer -->
-                <footer class="bg-dark text-center text-white">
+                <footer class="bg-main text-center text-white">
                     <div class="p-4">
                         <section class="pb-5">
-                            <div class="float-end">
+                            <div class="float-end text-dark">
                                 <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
                                                         echo getCartQty();
                                                     } ?></span> items): ₱<span><?= number_format($totalPrice, 2) ?>
-                                        &nbsp;&nbsp;&nbsp;</span><a href="checkOut.php" class="btn btn-primary text-white chkOutBtn">Check out</a></h5>
+                                        &nbsp;&nbsp;&nbsp;</span><a href="checkOut.php" class="btn btn-accent text-white chkOutBtn">Check out</a></h5>
                             </div>
                         </section>
                     </div>

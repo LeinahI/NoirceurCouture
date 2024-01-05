@@ -5,10 +5,10 @@ include('../middleware/userMW.php');/* Authenticate.php */
 ?>
 <div class="py-3 bg-primary">
     <div class="container">
-        <h6 class="text-white">
-            <a href="#" class="text-white">Home /</a>
-            <a href="myOrders.php" class="text-white">My Orders /</a>
-            <a href="#" class="text-white">Your Order Details</a>
+        <h6>
+            <a href="#" class="text-dark">Home /</a>
+            <a href="myOrders.php" class="text-dark">My Purchase /</a>
+            <a href="#" class="text-dark">Your Order Details</a>
         </h6>
     </div>
 </div>
@@ -43,11 +43,11 @@ $data = mysqli_fetch_array($orderData);
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header bg-main">
                         <span class="fs-3">Your Order Details</span>
                         <a href="myOrders.php" class="btn btn-primary float-end">Back</a>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body bg-main">
                         <div class="row">
 
                             <div class="col-md-6">
@@ -122,7 +122,7 @@ $data = mysqli_fetch_array($orderData);
                                             }
                                             $groupedItems[$categoryName][] = $item;
                                     ?>
-                                            <div class="card mb-3 border rounded-3">
+                                            <div class="card mb-3 rounded-3 bg-primary">
                                                 <div class="card-header">
                                                     <h5 class="card-title"><?= $categoryName ?></h5>
                                                 </div>
@@ -154,8 +154,8 @@ $data = mysqli_fetch_array($orderData);
                                     ?>
                                 </div>
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h5>Order Total&nbsp;(<span class="text-danger"><?= $itemQty ?>&nbsp;item</span>): <span class="text-danger">₱<?= number_format($totalPrice, 2) ?></span></h5>
+                                    <div class="card-body bg-primary">
+                                        <h5>Order Total&nbsp;(<span class="text-accent"><?= $itemQty ?>&nbsp;item</span>): <span class="text-accent">₱<?= number_format($totalPrice, 2) ?></span></h5>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-floating">

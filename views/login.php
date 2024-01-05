@@ -23,7 +23,7 @@ if (isset($_SESSION['auth'])) {
                     unset($_SESSION['Errormsg']);
                 }
                 ?>
-                <div class="card">
+                <div class="card bg-main">
                     <div class="card-header text-center">
                         <h4>Log in</h4>
                     </div>
@@ -48,7 +48,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>New to Noirceur Couture? <a href="register.php">Register</a></h6>
+                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-accent">Register</a></h6>
                                     </div>
                                 </div>
                             </div>

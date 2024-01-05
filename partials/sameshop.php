@@ -34,6 +34,7 @@
     .owl-two .owl-theme .custom-nav .owl-next {
         right: 0;
     }
+    
 </style>
 <div class="mt-3">
     <div class="container">
@@ -56,12 +57,12 @@
                             ?>
                                     <div class="item">
                                         <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                            <div class="card">
-                                                <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="card itemproduct">
+                                                <div class="card-body d-flex flex-column justify-content-between bg-primary">
                                                     <div>
                                                         <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" height="217.2px" class="w-100">
-                                                        <h6><?= $product_name; ?></h6>
-                                                        <h6 class="text-start fw-bold">₱<?= number_format($item['product_srp'], 2) ?></h6>
+                                                        <h6 class="text-dark"><?= $product_name; ?></h6>
+                                                        <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
                                                     </div>
                                                 </div>
                                             </div>
