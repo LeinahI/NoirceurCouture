@@ -70,7 +70,7 @@ if (isset($_GET['product'])) {
                                     <button class="input-group-text incrementProductBtn">+</button>
                                 </div>
                                 <div>
-                                    <h5 class="fw-bold"><?= $product['product_qty'] ?>&nbsp;pieces available</h5>
+                                    <h5 class="fw-bold"><span class="prodRmn"><?= $product['product_qty'] ?></span>&nbsp;pieces available</h5>
                                 </div>
                             </div>
                         </div>

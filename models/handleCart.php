@@ -10,6 +10,7 @@ if (isset($_SESSION['auth'])) {
                 $user_id = $_SESSION['auth_user']['user_ID'];
                 $prod_id = $_POST['product_id'];
                 $prod_qty = $_POST['product_qty'];
+                $prod_rmn = $_POST['product_rmn'];
                 $prod_slug = $_POST['product_slug'];
 
                 $chk_existing_cart = "SELECT * FROM carts WHERE product_id='$prod_id' AND user_ID='$user_id' ";
@@ -18,18 +19,36 @@ if (isset($_SESSION['auth'])) {
                 if (mysqli_num_rows($chk_existing_cart_run) > 0) {
                     echo "existing";
                 } else {
-                    $insert_query = "INSERT INTO carts(user_ID, product_id, product_qty, product_slug)
-                    VALUES ('$user_id','$prod_id','$prod_qty','$prod_slug')";
-
-                    $insert_query_run = mysqli_query($con, $insert_query);
-
-                    if ($insert_query_run) {
-                        echo 201;
+                    // Check if requested quantity is greater than remaining quantity
+                    if ($prod_qty > $prod_rmn) {
+                        // Quantity exceeds remaining quantity
+                        echo "qtyerr";
                     } else {
-                        echo 500;
+                        // Check if product_qty is greater than 0
+                        if ($prod_qty > 0) {
+                            // Check if requested quantity exceeds remaining quantity
+                            if ($prod_qty > $prod_rmn) {
+                                echo "qtyerr"; // Quantity exceeds remaining quantity
+                            } else {
+                                // Insert into the cart
+                                $insert_query = "INSERT INTO carts(user_ID, product_id, product_qty, product_slug) VALUES ('$user_id','$prod_id','$prod_qty','$prod_slug')";
+                                $insert_query_run = mysqli_query($con, $insert_query);
+
+                                if ($insert_query_run) {
+                                    echo 201; // Successfully added to the cart
+                                } else {
+                                    echo 500; // Error adding to the cart
+                                }
+                            }
+                        } else {
+                            // Product is sold out
+                            echo "soldout";
+                        }
                     }
                 }
                 break;
+
+
             case "update":
                 $user_id = $_SESSION['auth_user']['user_ID'];
                 $prod_id = $_POST['product_id'];

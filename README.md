@@ -5,6 +5,12 @@
 https://www.realtimecolors.com/?colors=171412-f6ede7-E7DED8-7B7774-bb6c54&fonts=Raleway-Raleway
 https://dribbble.com/shots/22737212-Fashion-E-commerce-Website
 
+MISSING
+- Dashboard Cancelled Orders
+- seller panel
+- printable reports
+- Online Payments
+
 ```
 NoirceurCouture
 ├─ assets

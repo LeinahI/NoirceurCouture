@@ -57,7 +57,7 @@ include('../models/myFunctions.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Product Description</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp">
+                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" onwheel="return false;" min="0">
                                             <label for="floatingInput" class="ps-3">Original Price in ₱</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
@@ -75,7 +75,7 @@ include('../models/myFunctions.php'); ?>
                                         </div>
                                         <div class="col-md-12" style="display:flex;">
                                             <div class="form-floating col-md-6 mb-3">
-                                                <input type="number" class="form-control ps-3" value="<?= $data['product_qty'] ?>" id="qty_input" name="quantityInput" required placeholder="qty">
+                                                <input type="number" class="form-control ps-3" value="<?= $data['product_qty'] ?>" id="qty_input" name="quantityInput" required placeholder="qty" onwheel="return false;" min="0">
                                                 <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                             </div>
                                             <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">

@@ -2,7 +2,8 @@
 include('dbcon.php');
 include('myFunctions.php');
 session_start();
-/* User Registration function start */
+
+/* User Registration statement */
 if (isset($_POST['userRegisterBtn'])) {
     $fname = mysqli_real_escape_string($con, $_POST['firstName']);
     $lname = mysqli_real_escape_string($con, $_POST['lastName']);
@@ -53,9 +54,8 @@ if (isset($_POST['userRegisterBtn'])) {
         }
     }
 }
-/* User Registration function end */
 
-/* User Log in function start */
+/* User Log in statement */
 if (isset($_POST['loginBtn'])) {
     $loginInput = mysqli_real_escape_string($con, $_POST['loginInput']);
     $loginPass = mysqli_real_escape_string($con, $_POST['loginPasswordInput']);
@@ -93,9 +93,8 @@ if (isset($_POST['loginBtn'])) {
         redirect("../views/login.php", "Invalid Credentials Try again");
     }
 }
-/* User Log in function end */
 
-/* User Profile Update function start */
+/* User Profile Update statement */
 if (isset($_POST['userUpdateAccBtn'])) {
     $userId = mysqli_real_escape_string($con, $_POST['userID']);
     $firstName = mysqli_real_escape_string($con, $_POST['firstName']);
@@ -138,9 +137,8 @@ if (isset($_POST['userUpdateAccBtn'])) {
         }
     }
 }
-/* User Profile Update function end */
 
-/* User Address Add function start */
+/* User Address Add statement */
 if (isset($_POST['userAddAddrBtn'])) {
     $userId = $_POST['userID'];
     $fullN = $_POST['fullName'];
@@ -180,9 +178,8 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->close();
     }
 }
-/* User Address Add function end */
 
-/* User Address Update function start */
+/* User Address Update statement */
 if (isset($_POST['userUpdateAddrBtn'])) {
     $userId = $_POST['userID'];
     $fullN = $_POST['fullName'];
@@ -210,5 +207,3 @@ if (isset($_POST['userUpdateAddrBtn'])) {
         $stmt->close();
     }
 }
-
-/* User Address Update function end */
