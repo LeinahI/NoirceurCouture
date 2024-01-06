@@ -77,7 +77,9 @@ if (isset($_GET['product'])) {
 
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <button class="btn btn-primary px-4 addToCartBtn" value="<?= $product['product_id'] ?>"><i class=" fa fa-shopping-cart me-2"></i>Add to cart</button>
+                                <button class="btn btn-primary px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
+                                    <?= ($product['product_qty'] == 0) ? 'Sold Out' : '<i class="fa fa-shopping-cart me-2"></i>Add to cart' ?>
+                                </button>
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-danger px-4 addToLikesBtn" value="<?= $product['product_id'] ?>"><i class="fa fa-heart me-2"></i>Add to Likes</button>

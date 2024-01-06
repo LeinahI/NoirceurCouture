@@ -100,7 +100,7 @@ $(document).ready(function () {
           });
         } else if (response == "qtyerr") {
           swal({
-            title: "Order Quantity is higher than item remaining",
+            title: "Order Quantity is higher than remaining item",
             icon: "error",
             button: "OK",
           });
