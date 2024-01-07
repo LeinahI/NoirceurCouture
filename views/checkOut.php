@@ -45,34 +45,55 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 $data = mysqli_fetch_array($user);
 
                                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
+                                $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                                 $email = isset($data['address_email']) ? $data['address_email'] : '';
+                                $state = isset($data['address_state']) ? $data['address_state'] : '';
+                                $city = isset($data['address_city']) ? $data['address_city'] : '';
                                 $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
+                                $country = isset($data['address_country']) ? $data['address_country'] : '';
                                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
 
                                 ?>
-                                <div class="form-floating col-md-6 mb-3">
+                                <!-- Fname -->
+                                <div class=" col-md-12 mb-3">
                                     <div class="form-floating ps-0 mb-3">
                                         <input type="text" class="form-control" id="delivery_fname" value="<?= $fname ?>" name="fullName" placeholder="nasd">
                                         <label for="floatingInput">Full Name</label>
                                         <small class="text-danger fname"></small>
                                     </div>
                                 </div>
-                                <div class="form-floating col-md-6 mb-3">
+                                <!-- Email & number -->
+                                <div class=" col-md-6 mb-3">
                                     <div class="form-floating ps-0 mb-3">
                                         <input type="email" class="form-control" id="delivery_emailAddr" value="<?= $email ?>" name="emailAddress" placeholder="asd@g.co">
                                         <label for="floatingInput">Email Address</label>
                                         <small class="text-danger email"></small>
                                     </div>
                                 </div>
-                                <div class="form-floating col-md-6 mb-3">
+                                <div class=" col-md-6 mb-3">
                                     <div class="form-floating ps-0 mb-3">
                                         <input type="number" class="form-control" id="delivery_phoneNum" value="<?= $phone ?>" name="phoneNumber" placeholder="12">
                                         <label for="floatingInput">Phone Number</label>
                                         <small class="text-danger phone"></small>
                                     </div>
                                 </div>
-                                <div class="form-floating col-md-6 mb-3">
+                                <!-- State City Country -->
+                                <div class=" col-md-4 mb-3">
+                                    <div class="form-floating ps-0 mb-3">
+                                        <input type="text" class="form-control" id="delivery_state" value="<?= $state ?>" name="state" placeholder="asd123">
+                                        <label for="floatingInput">State</label>
+                                        <small class="text-danger state"></small>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4 mb-3">
+                                    <div class="form-floating ps-0 mb-3">
+                                        <input type="text" class="form-control" id="delivery_city" value="<?= $city ?>" name="city" placeholder="asd123">
+                                        <label for="floatingInput">City</label>
+                                        <small class="text-danger city"></small>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4 mb-3">
                                     <div class="form-floating ps-0 mb-3">
                                         <input type="text" class="form-control" id="delivery_postCode" value="<?= $pcode ?>" name="postalCode" placeholder="asd123">
                                         <label for="floatingInput">Postal Code</label>
@@ -81,8 +102,18 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 </div>
                                 <div class="form-floating col-md-12 mb-3">
                                     <div class="form-floating ps-0 mb-3">
+                                        <select class="form-select" id="delivery_country" name="country">
+                                            <?php include('../partials/country-options.php') ?>
+                                        </select>
+                                        <label for="floatingInput">Country</label>
+                                        <small class="text-danger country"></small>
+                                    </div>
+                                </div>
+                                <!-- Address -->
+                                <div class="form-floating col-md-12 mb-3">
+                                    <div class="form-floating ps-0 mb-3">
                                         <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
-                                        <label for="floatingInput">Full Adress</label>
+                                        <label for="floatingInput">Address</label>
                                         <small class="text-danger address"></small>
                                     </div>
                                 </div>
@@ -171,7 +202,12 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
 --------------------------->
 <script src="https://www.paypal.com/sdk/js?client-id=AVe3Db1QSdssjRZm8rLrGrd6eWNPiBPsU-ax8oQU2BfXO1UANt6WPddNUjHAsMwQpS375AHeSRrrCMEq&currency=PHP&disable-funding=card"></script>
 <script>
-    /* COD */
+    /* display selected country */
+    var selectedCountry = "<?php echo $country; ?>";
+    // Set the selected attribute based on the PHP variable
+    document.getElementById("delivery_country").value = selectedCountry;
+
+    /* Cash on Delivery */
     var rn = Math.floor(Math.random() * (9999999 - 10000 + 1)) + 1000;
     // Extract the last 4 digits of the phone number
     var phoneNum = $('#delivery_phoneNum').val();
@@ -190,6 +226,9 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
         var email = $('#delivery_emailAddr').val();
         var phoneNum = $('#delivery_phoneNum').val();
         var postalCode = $('#delivery_postCode').val();
+        var state = $('#delivery_state').val();
+        var city = $('#delivery_city').val();
+        var country = $('#delivery_country').val();
         var fullAddr = $('#delivery_fullAddr').val();
 
         // Check each variable
@@ -205,6 +244,21 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
 
         if (phoneNum.length === 0) {
             $(".phone").text("*This field is required");
+            isValid = false;
+        }
+
+        if (state.length === 0) {
+            $(".state").text("*This field is required");
+            isValid = false;
+        }
+
+        if (city.length === 0) {
+            $(".city").text("*This field is required");
+            isValid = false;
+        }
+
+        if (country.length === 0) {
+            $(".country").text("*This field is required");
             isValid = false;
         }
 
@@ -238,6 +292,23 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                             }
                         }
                     },
+                    shipping: {
+                        method: "United States Postal Service",
+                        address: {
+                            name: {
+                                full_name: "<?= $fname ?>",
+                            },
+                            address_line_1: "<?= $fulladdr ?>",
+                            /* Full address */
+                            admin_area_2: "<?= $city ?>",
+                            /* City */
+                            admin_area_1: "<?= $state ?>",
+                            /* State */
+                            postal_code: "<?= $pcode ?>",
+                            /* Zipcode */
+                            country_code: "<?= $country ?>" /* Country */
+                        }
+                    }
                 }]
             });
         },
@@ -253,6 +324,9 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                 var email = $('#delivery_emailAddr').val();
                 var phoneNum = $('#delivery_phoneNum').val();
                 var postalCode = $('#delivery_postCode').val();
+                var state = $('#delivery_state').val();
+                var city = $('#delivery_city').val();
+                var country = $('#delivery_country').val();
                 var fullAddr = $('#delivery_fullAddr').val();
 
                 var data = {
@@ -260,6 +334,9 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                     'emailAddress': email,
                     'phoneNumber': phoneNum,
                     'postalCode': postalCode,
+                    'state': state,
+                    'city': city,
+                    'country': country,
                     'fullAddress': fullAddr,
                     'paymentMode': "Paypal",
                     'paymentID': transaction.id,

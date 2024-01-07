@@ -42,48 +42,39 @@ $data = mysqli_fetch_array($orderData);
                 </div>
                 <div class="card-body mb-n3">
                     <div class="row">
-
                         <div class="col-md-6">
                             <h4>Delivery Address</h4>
                             <hr>
-                            <div class="row">
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_full_name']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Full Name</label>
-                                    </div>
+                            <div class="card mb-3 border rounded-3">
+                                <div class="card-header">
+                                    <h4>Tracking #: <?= $data['orders_tracking_no']; ?></h4>
                                 </div>
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_email']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Email</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_phone']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Phone Number</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_tracking_no']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Tracking Number</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_address']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Full Address</label>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <div class="form-floating col-md-12 ps-0">
-                                        <input type="text" class="form-control ps-2" id="delivery_fname" value="<?= $data['orders_postal_code']; ?>" readonly placeholder="nasd">
-                                        <label for="delivery_fname">Postal Code</label>
+                                <div class="card-body mt-n5">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-12">
+                                            <h5><?= $data['orders_full_name']; ?></h5>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h5><?= $data['orders_email']; ?></h5>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h5><?= $data['orders_phone']; ?></h5>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h5>
+                                                <?= $data['orders_city']; ?>,
+                                                <?= $data['orders_state']; ?>,
+                                                <?= $data['orders_postal_code']; ?>,
+                                                <?= $data['orders_country']; ?>
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h5><?= $data['orders_address']; ?></h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="col-md-6">

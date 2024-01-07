@@ -31,7 +31,10 @@ include('../middleware/userMW.php');
                 $id = isset($dataid['user_ID']) ? $dataid['user_ID'] : '';
                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                 $email = isset($data['address_email']) ? $data['address_email'] : '';
+                $state = isset($data['address_state']) ? $data['address_state'] : '';
+                $city = isset($data['address_city']) ? $data['address_city'] : '';
                 $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
+                $country = isset($data['address_country']) ? $data['address_country'] : '';
                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
 
@@ -49,36 +52,52 @@ include('../middleware/userMW.php');
                                     <input type="hidden" name="userID" value="<?= $id ?>">
 
                                     <!-- Fname and Lname start -->
-                                    <div class="form-floating col-md-6 ps-0 mb-3">
+                                    <div class="form-floating col-md-12 ps-0 mb-3">
                                         <input type="text" class="form-control" id="user_fname" name="fullName" value="<?= $fname ?>" required placeholder="nam">
                                         <label for="floatingInput">Full Name</label>
-                                    </div>
-                                    <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="email" class="form-control" id="user_email" name="email" value="<?= $email ?>" required placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
                                     </div>
                                     <!-- Fname and Lname end -->
 
                                     <!-- Email and Number start -->
                                     <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_fname" name="postalCode" value="<?= $pcode ?>" required placeholder="nam">
-                                        <label for="floatingInput">Postal Code</label>
+                                        <input type="email" class="form-control" id="user_email" name="email" value="<?= $email ?>" required placeholder="name@example.com">
+                                        <label for="floatingInput">Email address</label>
                                     </div>
+
                                     <div class="form-floating col-md-6 ps-0 mb-3">
                                         <input type="number" class="form-control" id="user_email" name="phoneNumber" value="<?= $phone ?>" required placeholder="09">
                                         <label for="floatingInput">Phone Number</label>
                                     </div>
                                     <!-- Email and Number end -->
 
-                                    <!-- Pass and CPass start -->
+                                    <!-- City State Country -->
+                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                        <input type="text" class="form-control" id="delivery_postCode" value="<?= $state ?>" name="state" placeholder="st">
+                                        <label for="floatingInput">State</label>
+                                    </div>
+                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                        <input type="text" class="form-control" id="delivery_postCode" value="<?= $city ?>" name="city" placeholder="ct">
+                                        <label for="floatingInput">City</label>
+                                    </div>
+                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                        <input type="text" class="form-control" id="user_fname" value="<?= $pcode ?>" name="postalCode" required placeholder="nam">
+                                        <label for="floatingInput">Postal Code</label>
+                                    </div>
+                                    <div class="form-floating ps-0 mb-3">
+                                        <select class="form-select" id="country" name="country">
+                                            <?php include('../partials/country-options.php') ?>
+                                        </select>
+                                        <label for="floatingInput">Country</label>
+                                    </div>
+
+                                    <!--Addr start -->
                                     <div class="form-floating col-md-12 ps-0 mb-3">
                                         <div class="form-floating ps-0 mb-3">
                                             <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
-                                            <label for="floatingInput">Full Address</label>
+                                            <label for="floatingInput">Address</label>
                                             <small class="text-danger address"></small>
                                         </div>
                                     </div>
-                                    <!-- Pass and CPass end -->
 
                                     <!-- Add & Update button -->
                                     <?php if ($existingAddress) { ?>
@@ -102,6 +121,11 @@ include('../middleware/userMW.php');
     </div>
 </div>
 <script>
+    /* display selected country */
+    var selectedCountry = "<?php echo $country; ?>";
+    // Set the selected attribute based on the PHP variable
+    document.getElementById("country").value = selectedCountry;
+
     const togglePassword = document
         .querySelector('#togglePassword');
     const password = document.querySelector('#old_password');

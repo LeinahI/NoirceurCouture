@@ -114,7 +114,7 @@ include('../middleware/userMW.php');
         <div class="row">
             <div class="col-md-12">
                 <!-- Footer -->
-                <footer class="bg-main text-center text-white">
+                <footer class="bg-main text-center text-white shadow">
                     <div class="p-4">
                         <section class="pb-5">
                             <div class="float-end text-dark">
