@@ -64,8 +64,14 @@ $(document).ready(function () {
   $(".addToCartBtn").click(function (e) {
     e.preventDefault();
 
-    var prod_qty = parseInt($(this).closest(".productData").find(".inputQty").val(), 10);
-    var prod_rmn = parseInt($(this).closest(".productData").find(".prodRmn").text(), 10);
+    var prod_qty = parseInt(
+      $(this).closest(".productData").find(".inputQty").val(),
+      10
+    );
+    var prod_rmn = parseInt(
+      $(this).closest(".productData").find(".prodRmn").text(),
+      10
+    );
     var prod_slug = $(this).closest(".productData").find(".product_link").val();
     var prod_id = $(this).val();
 

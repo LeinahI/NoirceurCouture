@@ -43,7 +43,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 <?php
                                 $user = getUserAddress();
                                 $data = mysqli_fetch_array($user);
-                        
+
                                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                                 $email = isset($data['address_email']) ? $data['address_email'] : '';
                                 $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
@@ -55,7 +55,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                     <div class="form-floating ps-0 mb-3">
                                         <input type="text" class="form-control" id="delivery_fname" value="<?= $fname ?>" name="fullName" placeholder="nasd">
                                         <label for="floatingInput">Full Name</label>
-                                        <small class="text-danger name"></small>
+                                        <small class="text-danger fname"></small>
                                     </div>
                                 </div>
                                 <div class="form-floating col-md-6 mb-3">
@@ -149,7 +149,10 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 </div>
                                 <div class="card-body bg-primary">
                                     <input type="hidden" name="paymentMode" value="Cash on Delivery">
+                                    <input type="hidden" name="paymentID" value="" id="paymentIDInput">
+
                                     <button type="submit" name="placeOrderBtn" class="btn btn-accent w-100 mb-3">COD | Place Order</button>
+                                    <div id="paypal-button-container"></div>
                                 </div>
                             </div>
                         </div>
@@ -161,3 +164,126 @@ if (mysqli_num_rows($cartCheck) < 1) {
 </div>
 <?php include('footer.php'); ?>
 <?php include('../partials/__footer.php'); ?>
+
+<!--------------------------
+PAYPAL Integration
+This Code helps with integration: https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem
+--------------------------->
+<script src="https://www.paypal.com/sdk/js?client-id=AVe3Db1QSdssjRZm8rLrGrd6eWNPiBPsU-ax8oQU2BfXO1UANt6WPddNUjHAsMwQpS375AHeSRrrCMEq&currency=PHP&disable-funding=card"></script>
+<script>
+    /* COD */
+    var rn = Math.floor(Math.random() * (9999999 - 10000 + 1)) + 1000;
+    // Extract the last 4 digits of the phone number
+    var phoneNum = $('#delivery_phoneNum').val();
+    var postalCode = $('#delivery_postCode').val();
+    var last4Digits = phoneNum.slice(-4);
+    var last4text = postalCode.slice(-4);
+    var paymentID = "COD" + rn + last4Digits + last4text;
+    document.getElementById("paymentIDInput").value = paymentID;
+
+    /* Delivery Addr validate function */
+    function validateForm() {
+        var isValid = true;
+
+        // Get the values
+        var fname = $('#delivery_fname').val();
+        var email = $('#delivery_emailAddr').val();
+        var phoneNum = $('#delivery_phoneNum').val();
+        var postalCode = $('#delivery_postCode').val();
+        var fullAddr = $('#delivery_fullAddr').val();
+
+        // Check each variable
+        if (fname.length === 0) {
+            $(".fname").text("This field is required");
+            isValid = false;
+        }
+
+        if (email.length === 0) {
+            $(".email").text("*This field is required");
+            isValid = false;
+        }
+
+        if (phoneNum.length === 0) {
+            $(".phone").text("*This field is required");
+            isValid = false;
+        }
+
+        if (postalCode.length === 0) {
+            $(".postal").text("*This field is required");
+            isValid = false;
+        }
+
+        if (fullAddr.length === 0) {
+            $(".address").text("*This field is required");
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            if (!validateForm()) {
+                return false;
+            }
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        currency_code: 'PHP',
+                        value: '<?= $totalPrice ?>',
+                        breakdown: {
+                            item_total: {
+                                unit_amount: <?= $itemQty ?>,
+                                currency_code: 'PHP',
+                                value: '<?= $totalPrice ?>',
+                            }
+                        }
+                    },
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(orderData) {
+                /* console.log('Capture Result', orderData, JSON.stringify(orderData, null, 2)); */
+
+                console.log(orderData)
+                const transaction = orderData.purchase_units[0].payments.captures[0];
+                /* alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for available details`); */
+
+                var fname = $('#delivery_fname').val();
+                var email = $('#delivery_emailAddr').val();
+                var phoneNum = $('#delivery_phoneNum').val();
+                var postalCode = $('#delivery_postCode').val();
+                var fullAddr = $('#delivery_fullAddr').val();
+
+                var data = {
+                    'fullName': fname,
+                    'emailAddress': email,
+                    'phoneNumber': phoneNum,
+                    'postalCode': postalCode,
+                    'fullAddress': fullAddr,
+                    'paymentMode': "Paypal",
+                    'paymentID': transaction.id,
+                    'placeOrderBtn': true,
+                };
+
+                $.ajax({
+                    method: "POST",
+                    url: "../models/placeOrder.php",
+                    data: data,
+                    success: function(response) {
+                        // Show SweetAlert on the current page
+                        swal({
+                            title: "Order Placed Successfully",
+                            icon: "success",
+                            button: "OK",
+                        }).then(() => {
+                            // Redirect to myOrders.php after user clicks OK
+                            window.location.href = "myOrders.php";
+                        });
+                    }
+                });
+
+            });
+        }
+    }).render('#paypal-button-container');
+</script>

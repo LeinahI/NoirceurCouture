@@ -12,17 +12,17 @@ if (isset($_SESSION['auth'])) {
         $pCode = mysqli_real_escape_string($con, $_POST['postalCode']);
         $fAddr = mysqli_real_escape_string($con, $_POST['fullAddress']);
         $pay_mode = mysqli_real_escape_string($con, $_POST['paymentMode']);
-        /* $payment_id = mysqli_real_escape_string($con, $_POST['paymentID']); */
-        $payment_id = rand(1111, 99999) . substr($cpNum, 2);
+        $payment_id = mysqli_real_escape_string($con, $_POST['paymentID']);
+        /* $payment_id = rand(1111, 99999) . substr($cpNum, 2); */ //For randoming
 
         $phonePatternPH = '/^09\d{9}$/';
 
         if ($fName == "" || $email == "" || $cpNum == "" || $pCode == "" || $fAddr == "") {
-            redirect("../checkOut.php", "All fields are mandatory");
+            redirect("../views/checkOut.php", "All fields are mandatory");
         }
 
         if (!preg_match($phonePatternPH, $cpNum)) {
-            redirect("../checkOut.php", "Invalid Philippine phone number format");
+            redirect("../views/checkOut.php", "Invalid Philippine phone number format");
         } else {
 
             $user_ID = $_SESSION['auth_user']['user_ID'];
@@ -72,8 +72,12 @@ if (isset($_SESSION['auth'])) {
                 $deleteCartQuery = "DELETE FROM carts WHERE user_ID='$user_ID'";
                 $deleteCartQuery_run = mysqli_query($con, $deleteCartQuery);
 
-                redirectSwal("../views/myOrders.php", "Order Placed Successfully", "success");
-                die();
+                if ($pay_mode == "Cash on Delivery") {
+                    redirectSwal("../views/myOrders.php", "Order Placed Successfully", "success");
+                    die();
+                } else {
+                    echo 201;
+                }
             }
         }
     }
