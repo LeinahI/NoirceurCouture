@@ -52,16 +52,9 @@ include('../models/myFunctions.php'); ?>
                                             <textarea class="form-control ps-3" id="metaDescription_input" name="metaDescriptionInput" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['category_meta_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Meta Description</label>
                                         </div>
-                                        <div class="form-floating col-md-12 mb-3">
-                                            <textarea class="form-control ps-3" id="metaKeywords_input" name="metaKeywordsInput" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['category_meta_keywords'] ?></textarea>
-                                            <label for="floatingPassword" class="ps-3">Meta Keywords</label>
-                                        </div>
                                         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                             <input type="checkbox" class="btn-check" <?= $data['category_status'] ? "checked" : "" ?> id="status_checkbox" name="statusCheckbox" autocomplete="off">
                                             <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['category_status'] ? "Hidden" : "Visible" ?></label>
-
-                                            <input type="checkbox" class="btn-check" <?= $data['category_popular'] ? "checked" : "" ?> id="popular_checkbox" name="popularCheckbox" autocomplete="off">
-                                            <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>
                                         </div>
                                         <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="addCategory_btn" name="updateCategoryBtn" class="col-md-12 btn btn-primary">Update Data</button>

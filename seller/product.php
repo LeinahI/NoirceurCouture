@@ -1,5 +1,5 @@
 <?php include('partials/header.php');
-include('../middleware/adminMW.php'); ?>
+include('../middleware/sellerMW.php'); ?>
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
@@ -18,8 +18,6 @@ include('../middleware/adminMW.php'); ?>
                     <table class="table table-bordered table-hover table-striped" id="prodTable">
                         <thead class="table-active">
                             <tr>
-                                <th>Store ID</th>
-                                <th>Store Name</th>
                                 <th>Product ID</th>
                                 <th>Product Name</th>
                                 <th>Image</th>
@@ -30,21 +28,13 @@ include('../middleware/adminMW.php'); ?>
                         </thead>
                         <tbody>
                             <?php
-                            $product = getAll("products");
+                            $product = getByCategAndProduct($_SESSION['auth_user']['user_ID']);
 
                             if (mysqli_num_rows($product) > 0) {
 
                                 foreach ($product as $item) {
                             ?>
                                     <tr>
-                                        <?php
-                                        $categories = getAll("categories");
-                                        if (mysqli_num_rows($categories) > 0) {
-                                            $brandName = getBrandName($item['category_id']); // Assuming you have a function to retrieve the brand name based on the category ID
-                                        }
-                                        ?>
-                                        <td><?= $item['category_id']; ?></td>
-                                        <td><?= $brandName; ?></td>
                                         <td><?= $item['product_id']; ?></td>
                                         <td style="word-wrap: break-word;">
                                             <?php
@@ -63,7 +53,14 @@ include('../middleware/adminMW.php'); ?>
 
                                         <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td><?= $item['product_qty']; ?></td>
-
+                                        <?php
+                                        $categories = getAll("categories");
+                                        if (mysqli_num_rows($categories) > 0) {
+                                            $brandName = getBrandName($item['category_id']); // Assuming you have a function to retrieve the brand name based on the category ID
+                                        ?>
+                                        <?php
+                                        }
+                                        ?>
                                         <td><?= $item['product_status'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
                                             <div style="display: flex;">

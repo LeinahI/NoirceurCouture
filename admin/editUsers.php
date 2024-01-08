@@ -6,7 +6,7 @@ include('../models/myFunctions.php'); ?>
             <?php
             if (isset($_GET['id'])) {
                 $ids = $_GET['id'];
-                $category = getByUserId("users", $ids);
+                $category = getByUserandSellerId($ids);
 
                 if (mysqli_num_rows($category) > 0) {
                     $data = mysqli_fetch_array($category);
@@ -48,15 +48,46 @@ include('../models/myFunctions.php'); ?>
                                             <span class="input-group-text border-0 position-absolute end-4 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                                <div class="form-floating">
-                                                    <select name="userRole" class="form-select ps-2" id="orderStat" required>
-                                                        <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
-                                                        <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
-                                                        <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
-                                                    </select>
-                                                    <label for="slug_input">User Role</label>
-                                                </div>
+                                            <div class="form-floating">
+                                                <select name="userRole" class="form-select ps-2" id="orderStat" required>
+                                                    <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
+                                                    <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
+                                                    <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
+                                                </select>
+                                                <label for="slug_input">User Role</label>
+                                            </div>
                                         </div>
+                                        <?php
+                                        if ($data['user_role'] == 2) {
+                                            // Display the HTML code for seller verification
+                                        ?>
+                                            <h4>Other Seller Details</h4>
+                                            <div class="col-md-12 mb-3">
+                                                <div class="form-floating">
+                                                    <select name="userSellerType" class="form-select ps-2" id="orderStat" required>
+                                                        <option value="individual" <?= $data['seller_seller_type'] == 'individual' ? "selected" : "" ?>>Individual</option>
+                                                        <option value="business" <?= $data['seller_seller_type'] == 'business' ? "selected" : "" ?>>Business</option>
+                                                    </select>
+                                                    <label for="slug_input">Seller Type</label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <h5>Is verified?</h5>
+                                                <div class="btn-group" role="group">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio1" value="1" <?= $data['seller_confirmed'] == 1 ? 'checked' : '' ?> required>
+                                                        <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio2" value="0" <?= $data['seller_confirmed'] == 0 ? 'checked' : '' ?> required>
+                                                        <label class="form-check-label" for="inlineRadio2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
+
                                         <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="addCategory_btn" name="updateUserBtn" class="col-md-12 btn btn-primary">Update User Details</button>
                                         </div>

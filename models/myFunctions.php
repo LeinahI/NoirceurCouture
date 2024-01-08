@@ -8,9 +8,25 @@ function getAll($table)
     return $query_run; // Return the query result, not the query itself
 }
 
-/* SlideShow */
-
-
+/* getAllproductCateg */
+function getByCategAndProduct($id)
+{
+    global $con;
+    $query = "SELECT products.*, categories.*
+               FROM products 
+               LEFT JOIN categories ON products.category_id  = categories.category_id
+               WHERE categories.category_user_ID ='$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+/* getAllbyCategory */
+function getAllbyCategory($table, $id)
+{
+    global $con;
+    $query = "SELECT * FROM $table WHERE category_id='$id'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run; // Return the query result, not the query itself
+}
 
 
 function getAllUsers()
@@ -21,6 +37,28 @@ function getAllUsers()
     return $query_run;
 }
 
+
+/* GetAllSellerApplication */
+function GetAllSellerApplication()
+{
+    global $con;
+    $query = "SELECT usd.*, u.user_firstName, u.user_lastName
+    FROM users_seller_details usd
+    INNER JOIN users u ON usd.seller_user_ID = u.user_ID
+    WHERE usd.seller_confirmed = '0'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+/********************************
+ ************Admin Orders Function
+ ********************************/
+/* 
+0 - Preparing to ship
+1 - Parcel is out for delivery
+2 - Parcel has been delivered
+3 - Parcel has been cancelled
+ */
 function getAllOrders()
 {
     global $con;
@@ -29,13 +67,6 @@ function getAllOrders()
     return $query_run;
 }
 
-/* 
-0 - Preparing to ship
-1 - Parcel is out for delivery
-2 - Parcel has been delivered
-3 - Parcel has been cancelled
- */
-
 function getAllPreparingOrders()
 {
     global $con;
@@ -43,7 +74,6 @@ function getAllPreparingOrders()
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
 function getAllShippedOutOrders()
 {
     global $con;
@@ -51,7 +81,6 @@ function getAllShippedOutOrders()
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
 function getAllDeliveredOrders()
 {
     global $con;
@@ -59,7 +88,6 @@ function getAllDeliveredOrders()
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
 function getAllCancelledOrders()
 {
     global $con;
@@ -67,11 +95,81 @@ function getAllCancelledOrders()
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
+/********************************
+ ************Seller Orders Function
+ ********************************/
+/* Most Complex Join */
+function getAllOrdersbyStore($id)
+{
+    global $con;
+    $query = "SELECT *
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$id';";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+function getAllPreparingOrdersbyStore($id)
+{
+    global $con;
+    $query = "SELECT *
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$id' AND o.orders_status='0'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+function getAllShippedOutOrdersbyStore($id)
+{
+    global $con;
+    $query = "SELECT *
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$id' AND o.orders_status='1'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+function getAllDeliveredOrdersbyStore($id)
+{
+    global $con;
+    $query = "SELECT *
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$id' AND o.orders_status='2'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+function getAllCancelledOrdersbyStore($id)
+{
+    global $con;
+    $query = "SELECT *
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$id' AND o.orders_status='3'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+
 
 function getAllUserCount()
 {
     global $con;
-    $query = "SELECT COUNT(*) AS user_count FROM users WHERE user_role = 0";
+    $query = "SELECT COUNT(*) AS user_count FROM users WHERE user_role <> 1";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
@@ -130,6 +228,30 @@ function getByUserId($table, $id)
 {
     global $con;
     $query = "SELECT * FROM $table WHERE user_ID = '$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getByCategAndUserId($id)
+{
+    global $con;
+    $query = "SELECT users.*, categories.*
+               FROM users 
+               LEFT JOIN categories ON users.user_ID = categories.category_user_ID
+               WHERE users.user_ID ='$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getByUserandSellerId($id)
+{
+    global $con;
+
+    $query = "SELECT users.*, users_seller_details.* 
+              FROM users 
+              LEFT JOIN users_seller_details ON users.user_ID = users_seller_details.seller_user_ID 
+              WHERE users.user_ID = '$id'";
+
     $result = mysqli_query($con, $query);
     return $result;
 }

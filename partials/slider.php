@@ -27,7 +27,7 @@
                 }
             } else {
                 // Handle case where there are no slideshow images
-                echo 'No slideshow images available.';
+                /* echo 'No slideshow images available.'; */
             }
             ?>
         </div>

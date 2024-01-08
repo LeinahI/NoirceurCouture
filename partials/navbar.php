@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-primary shadow"> <!--  sticky-top -->
     <div class="container">
-        <a href="index.php" class="navbar-brand">
+        <a href="../views/index.php" class="navbar-brand">
             <img src="../assets/images/logo/NoirceurCouture_BK.png" height="30" alt="LOGO">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,12 +9,12 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'brands.php') echo 'hidden'; ?>>
-                    <a class="nav-link text-brown" href="brands.php">Collections</a>
+                    <a class="nav-link text-brown" href="../views/brands.php">Collections</a>
                 </li>
                 <!-- myCart start -->
                 <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'myCart.php') echo 'hidden'; ?>>
                     <!-- user cart qty -->
-                    <a class="nav-link" href="myCart.php"><i class="fa-solid fa-cart-shopping text-accent"></i>&nbsp;
+                    <a class="nav-link" href="../views/myCart.php"><i class="fa-solid fa-cart-shopping text-accent"></i>&nbsp;
                         <?php if (isset($_SESSION['auth'])) {
                             $cartQty = getCartQty();
                         ?>
@@ -29,7 +29,7 @@
                 <!-- Wish List start -->
                 <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'myLikes.php') echo 'hidden'; ?>>
                     <!-- user cart qty -->
-                    <a class="nav-link" href="myLikes.php"><i class="fa-solid fa-heart text-accent"></i>&nbsp;
+                    <a class="nav-link" href="../views/myLikes.php"><i class="fa-solid fa-heart text-accent"></i>&nbsp;
                         <?php if (isset($_SESSION['auth'])) {
                             $cartQty = getLikesQty();
                         ?>
@@ -58,13 +58,13 @@
                 } else {
                 ?>
                     <li class="nav-item">
-                        <a class="nav-link text-brown" href="#">Start Selling</a>
+                        <a class="nav-link text-brown" href="../seller/seller-registration.php">Start Selling</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-brown" href="register.php">Register</a>
+                        <a class="nav-link text-brown" href="../views/register.php">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-brown" href="login.php">Log in</a>
+                        <a class="nav-link text-brown" href="../views/login.php">Log in</a>
                     </li>
                 <?php
                 }

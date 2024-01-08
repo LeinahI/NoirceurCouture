@@ -1,5 +1,6 @@
 <?php include('partials/header.php');
-include('../models/myFunctions.php'); ?>
+include('../middleware/sellerMW.php');
+ ?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">

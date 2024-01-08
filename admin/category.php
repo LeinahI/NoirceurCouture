@@ -9,8 +9,8 @@ include('../middleware/adminMW.php'); ?>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header bg-primary">
-                <h2 class="text-white">All Brand Categories
-                    <a href="addCategory.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">post_add</i> Add Brand</a>
+                <h2 class="text-white">All Stores
+                    <a href="addCategory.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">post_add</i> Add Store</a>
                 </h2>
             </div>
             <div class="card-body">
@@ -18,10 +18,11 @@ include('../middleware/adminMW.php'); ?>
                     <table class="table table-bordered table-hover table-striped" id="categTable">
                         <thead class="table-active">
                             <tr>
-                                <th>ID</th>
+                                <th>store ID</th>
+                                <th>user ID</th>
                                 <th>Name</th>
                                 <th>Image</th>
-                                <th>Visibility</th>
+                                <th>Store Visibility</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -35,11 +36,12 @@ include('../middleware/adminMW.php'); ?>
                             ?>
                                     <tr>
                                         <td><?= $item['category_id']; ?></td>
+                                        <td><?= $item['category_user_ID']; ?></td>
                                         <td><?= $item['category_name']; ?></td>
                                         <td>
                                             <img src="../assets/uploads/brands/<?= $item['category_image']; ?>" height="50px" alt="<?= $item['category_name']; ?>">
                                         </td>
-                                        <td><?= $item['category_status'] == '0' ? "Visible" : "Hidden"; ?></td>
+                                        <td><?= $item['category_status'] == '0' ? "Visible" : "Hidden"; ?></td><!-- Visibility store -->
                                         <td>
                                             <div style="display: flex;">
                                                 <a href="editCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">Edit</a>
@@ -72,14 +74,8 @@ include('../middleware/adminMW.php'); ?>
                             <?php
                                 }
                             } else {
-                                //  echo "No records found";
-                                $_SESSION['status'] = "No records found";
-                                $_SESSION['status_code'] = "error";
-
-                                // redirectSwal("No records found","error");
                             }
                             ?>
-
                         </tbody>
                     </table>
                 </div>

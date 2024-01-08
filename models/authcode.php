@@ -26,16 +26,10 @@ if (isset($_POST['userRegisterBtn'])) {
     if (!preg_match($phonePatternPH, $phoneNum)) {
         redirect("../views/register.php", "Invalid Philippine phone number format");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
-        /* header("Location:register.php");
-        $_SESSION['Errormsg'] = "Email already in use try something different"; */
         redirect("../views/register.php", "Email already in use try something different");
     } else if (mysqli_num_rows($check_uname_query_run) > 0) {
-        /* header("Location:register.php");
-        $_SESSION['Errormsg'] = "username already in use try something different"; */
         redirect("../views/register.php", "username already in use try something different");
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
-        /* header("Location:register.php");
-        $_SESSION['Errormsg'] = "phone number already in use try something different"; */
         redirect("../views/register.php", "phone number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
@@ -55,15 +49,78 @@ if (isset($_POST['userRegisterBtn'])) {
     }
 }
 
+/* Seller Registration statement */
+if (isset($_POST['sellerRegisterBtn'])) {
+    $fname = mysqli_real_escape_string($con, $_POST['firstName']);
+    $lname = mysqli_real_escape_string($con, $_POST['lastName']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $phoneNum = mysqli_real_escape_string($con, $_POST['phoneNumber']);
+    $uname = mysqli_real_escape_string($con, $_POST['username']);
+    $uPass = mysqli_real_escape_string($con, $_POST['userPassword']);
+    $uCPass = mysqli_real_escape_string($con, $_POST['userConfirmPassword']);
+    $role = 2;/* 0 = buyer, 1 = admin, 2 seller */
+    $phonePatternPH = '/^09\d{9}$/';
+    $sellerType = isset($_POST['sellerType']) ? mysqli_real_escape_string($con, $_POST['sellerType']) : 'individual';
+
+    $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
+    $check_email_query_run = mysqli_query($con, $check_email_query);
+
+    $check_uname_query = "SELECT user_username FROM users WHERE user_username = '$uname'";
+    $check_uname_query_run = mysqli_query($con, $check_uname_query);
+
+    $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum'";
+    $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
+
+    if (!preg_match($phonePatternPH, $phoneNum)) {
+        redirect("../seller/seller-registration.php", "Invalid Philippine phone number format");
+    } else if (mysqli_num_rows($check_email_query_run) > 0) {
+        redirect("../seller/seller-registration.php", "Email already in use try something different");
+    } else if (mysqli_num_rows($check_uname_query_run) > 0) {
+        redirect("../seller/seller-registration.php", "username already in use try something different");
+    } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
+        redirect("../seller/seller-registration.php", "phone number already in use try something different");
+    } else {
+        if ($uPass == $uCPass) {
+            //Insert User Data
+            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_role)
+                VALUES('$fname','$lname','$email','$phoneNum','$uname','$uPass','$role')";
+
+            $insert_query_run = mysqli_query($con, $insert_query);
+            if ($insert_query_run) {
+                // Get the last inserted user ID of user
+                $lastUserID = mysqli_insert_id($con);
+
+                // Insert into users_seller_details
+                $seller_details_query = "INSERT INTO users_seller_details (seller_user_ID, seller_seller_type) VALUES ('$lastUserID', '$sellerType')";
+                $seller_details_query_run = mysqli_query($con, $seller_details_query);
+
+                if ($seller_details_query_run) {
+                    // Redirect with success message
+                    redirectSwal("../views/login.php", "Seller account added. Wait for administrator confirmation.", "success");
+                } else {
+                    // Handle the error and redirect
+                    redirect("../seller/seller-registration.php", "Error inserting seller details: " . mysqli_error($con));
+                }
+            } else {
+                redirect("../seller/seller-registration.php", "something went wrong");
+            }
+        } else {
+            redirect("../seller/seller-registration.php", "Passwords doesn't match");
+        }
+    }
+}
+
 /* User Log in statement */
 if (isset($_POST['loginBtn'])) {
     $loginInput = mysqli_real_escape_string($con, $_POST['loginInput']);
     $loginPass = mysqli_real_escape_string($con, $_POST['loginPasswordInput']);
 
-    $login_Inputs_query = "SELECT * FROM users WHERE 
-       (user_email = '$loginInput' AND user_password = '$loginPass')
-    OR (user_username = '$loginInput' AND user_password = '$loginPass')
-    OR (user_phone = '$loginInput' AND user_password = '$loginPass')";
+    $login_Inputs_query = "SELECT u.*, s.seller_confirmed FROM users u
+        LEFT JOIN users_seller_details s ON u.user_ID = s.seller_user_ID
+        WHERE 
+        (u.user_email = '$loginInput' AND u.user_password = '$loginPass')
+        OR (u.user_username = '$loginInput' AND u.user_password = '$loginPass')
+        OR (u.user_phone = '$loginInput' AND u.user_password = '$loginPass')";
     $login_Inputs_query_run = mysqli_query($con, $login_Inputs_query);
 
     if (mysqli_num_rows($login_Inputs_query_run) > 0) {
@@ -72,20 +129,28 @@ if (isset($_POST['loginBtn'])) {
         $userdata = mysqli_fetch_array($login_Inputs_query_run);
         $userid = $userdata['user_ID'];
         $username = $userdata['user_username'];
+        $fname = $userdata['user_firstName'];
         $useremail = $userdata['user_email'];
         $userRole = $userdata['user_role'];
+        $sellerConfirmed = $userdata['seller_confirmed'];
 
         $_SESSION['auth_user'] = [
             'user_ID' => $userid,
             'user_username' => $username,
-            'user_email' => $useremail
+            'user_firstName' => $fname,
+            'user_email' => $useremail,
+            'seller_confirmed' => $sellerConfirmed,
         ];
 
         $_SESSION['user_role'] = $userRole;
+        $_SESSION['seller_confirmed'] = $sellerConfirmed;
         if ($userRole == 1) {
             /* redirectSwal("../admin/index.php", "Welcome to admin page", "success"); */
             header('Location: ../admin/index.php');
-        } else {
+        } else if ($userRole == 2) {
+            redirectSwal("../seller/index.php", "Welcome to seller Dashboard", "success");
+            /* header('Location: ../seller/index.php'); */
+        } else if ($userRole == 0) {
             /* redirectSwal("../views/index.php", "Log in Successfully", "success"); */
             header('Location: ../views/index.php');
         }
@@ -93,6 +158,7 @@ if (isset($_POST['loginBtn'])) {
         redirect("../views/login.php", "Invalid Credentials Try again");
     }
 }
+
 
 /* User Profile Update statement */
 if (isset($_POST['userUpdateAccBtn'])) {

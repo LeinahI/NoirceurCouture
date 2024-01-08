@@ -12,7 +12,7 @@ MISSING
 - Dashboard Cancelled Orders
 - seller panel
 - printable reports
-- Online Payments
+- Online Payments - Done
 
 ```
 NoirceurCouture

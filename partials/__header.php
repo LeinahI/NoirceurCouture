@@ -5,7 +5,15 @@ if (isset($_SESSION['auth'])) {
         /* redirect("../index.php", "You're not authorized to access this page"); */
         $_SESSION['status'] = "admin account can't go there";
         $_SESSION['status_code'] = "error";
-        header("Location:admin/index.php");
+        header("Location:../admin/index.php");
+        exit();
+        /* Alert popup will show at index.php */
+    }
+    if ($_SESSION['user_role'] == 2) {
+        /* redirect("../index.php", "You're not authorized to access this page"); */
+        $_SESSION['status'] = "seller account can't go there";
+        $_SESSION['status_code'] = "error";
+        header("Location:../seller/index.php");
         exit();
         /* Alert popup will show at index.php */
     }

@@ -23,7 +23,7 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     mysqli_stmt_store_result($stmt);
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
-        redirectSwal("addCategory.php", "Category name already exists. Please choose a different name.", "error");
+        redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
     } else {
         $image = $_FILES['uploadImageInput']['name'];
         $image_tmp = $_FILES['uploadImageInput']['tmp_name'];
@@ -33,7 +33,7 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
 
         if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("addCategory.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
+            redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
         }
 
         /* Set the file name */
@@ -60,9 +60,9 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
 
         if ($categ_query_run) {
             move_uploaded_file($image_tmp, $destination);
-            redirectSwal("../addCategory.php", "Category added successfully!", "success");
+            redirectSwal("../your-store.php", "Store added successfully!", "success");
         } else {
-            redirectSwal("../addCategory.php", "Something went wrong. Please try again later.", "error");
+            redirectSwal("../your-store.php", "Something went wrong. Please try again later.", "error");
         }
     }
 } else if (isset($_POST['updateCategoryBtn'])) { //!Update Brand Category details
@@ -73,7 +73,6 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
     $desc = $_POST['descriptionInput'];
-    $categ_status = isset($_POST['statusCheckbox']) ? '1' : '0';
     $meta_title = $_POST['metaTitleInput'];
     $meta_desc = $_POST['metaDescriptionInput'];
 
@@ -85,11 +84,11 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     mysqli_stmt_store_result($stmt);
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
-        redirectSwal("../editCategory.php?id=$category_id", "Category name already exists. Please choose a different name.", "error");
+        redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
     } else {
         $old_image = $_POST['oldImage'];
-        $new_image = $_FILES['uploadNewImageInput']['name'];
-        $image_tmp = $_FILES['uploadNewImageInput']['tmp_name'];
+        $new_image = $_FILES['uploadImageInput']['name'];
+        $image_tmp = $_FILES['uploadImageInput']['tmp_name'];
 
         if ($new_image != "") {
             // Set the file name if a new image is uploaded
@@ -106,16 +105,16 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE categories SET category_name = ?, category_slug = ?, category_description = ?, category_status = ?,
+        $categ_query = "UPDATE categories SET category_name = ?, category_slug = ?, category_description = ?,
                         category_image = ?, category_meta_title = ?, category_meta_description = ? WHERE category_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
-        mysqli_stmt_bind_param($stmt, "sssisssi", $name, $slug, $desc, $categ_status, $fileName, $meta_title, $meta_desc, $category_id);
+        mysqli_stmt_bind_param($stmt, "ssssssi", $name, $slug, $desc, $fileName, $meta_title, $meta_desc, $category_id);
         $categ_query_run = mysqli_stmt_execute($stmt);
 
         if ($categ_query_run) {
-            redirectSwal("../editCategory.php?id=$category_id", "Category updated successfully!", "success");
+            redirectSwal("../your-store.php", "Store updated successfully!", "success");
         } else {
-            redirectSwal("../editCategory.php?id=$category_id", "Something went wrong. Please try again later.", "error");
+            redirectSwal("../your-store.php", "Something went wrong. Please try again later.", "error");
         }
     }
 } else if (isset($_POST['deleteCategoryBtn'])) { //!Delete whole Brand Category

@@ -26,7 +26,7 @@
                     <?php
                         }
                     } else {
-                        echo "No data available";
+                        /* echo "No data available"; */
                     }
                     ?>
                 </div>

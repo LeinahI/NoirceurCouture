@@ -13,9 +13,6 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
     $uname = $_POST['username'];
     $uPass = $_POST['userPassword'];
     $role = $_POST['userRole'];
-
-    $sellerType = $_POST['userSellerType'];
-    $sellerConfirmed = isset($_POST['isConfirmed']) ? mysqli_real_escape_string($con, $_POST['isConfirmed']) : '0';
     $phonePatternPH = '/^09\d{9}$/';
 
     // Check if user already exists
@@ -34,19 +31,11 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
     } else {
         if ($uPass) {
             // Update User Data
-            $update_user_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_username=?, user_phone=?, user_password=?, user_role=? WHERE user_ID=?";
-            $stmt_user = mysqli_prepare($con, $update_user_query);
-            mysqli_stmt_bind_param($stmt_user, "ssssssii", $firstName, $lastName, $email, $uname, $phoneNum, $uPass, $role, $userId);
-            $update_user_query_run = mysqli_stmt_execute($stmt_user);
-
-            // Update Seller Details
-            $update_seller_details_query = "UPDATE users_seller_details SET seller_seller_type=?, seller_confirmed=? WHERE seller_user_ID=?";
-            $stmt_seller_details = mysqli_prepare($con, $update_seller_details_query);
-            mysqli_stmt_bind_param($stmt_seller_details, "sii", $sellerType, $sellerConfirmed, $userId);
-            $update_seller_details_query_run = mysqli_stmt_execute($stmt_seller_details);
-
-            // Check if both updates were successful
-            if ($update_user_query_run && $update_seller_details_query_run) {
+            $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_username=?, user_phone=?, user_password=?, user_role=? WHERE user_ID=?";
+            $stmt = mysqli_prepare($con, $update_query);
+            mysqli_stmt_bind_param($stmt, "ssssssii", $firstName, $lastName, $email, $uname, $phoneNum, $uPass, $role, $userId);
+            $update_query_run = mysqli_stmt_execute($stmt);
+            if ($update_query_run) {
                 redirectSwal("../editusers.php?id=$userId", "Account updated successfully", "success");
             } else {
                 redirectSwal("../editusers.php?id=$userId", "Something went wrong", "error");

@@ -65,14 +65,8 @@ include('../middleware/adminMW.php'); ?>
                             <?php
                                 }
                             } else {
-                                //  echo "No records found";
-                                $_SESSION['status'] = "No records found";
-                                $_SESSION['status_code'] = "error";
-
-                                // redirectSwal("No records found","error");
                             }
                             ?>
-
                         </tbody>
                     </table>
                 </div>
