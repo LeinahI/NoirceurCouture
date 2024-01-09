@@ -10,6 +10,7 @@ include('../models/myFunctions.php'); ?>
 
                 if (mysqli_num_rows($product) > 0) {
                     $data = mysqli_fetch_array($product);
+                    $discount = $data['product_discount'];
             ?>
                     <div class="card">
                         <div class="card-header">
@@ -57,12 +58,29 @@ include('../models/myFunctions.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Product Description</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" onwheel="return false;" min="0">
-                                            <label for="floatingInput" class="ps-3">Original Price in ₱</label>
+                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" oninput="calculateFinalPrice()" min="0">
+                                            <label for="orp_input" class="ps-3">Original Price in ₱</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
+                                            <select class="form-select ps-2" id="discountPercentage" name="priceDiscount" onchange="calculateFinalPrice()">
+                                                <option value="0" <?php echo ($discount == 0) ? 'selected' : ''; ?> selected>no discount</option>
+                                                <option value="10" <?php echo ($discount == 10) ? 'selected' : ''; ?>>10% off</option>
+                                                <option value="20" <?php echo ($discount == 20) ? 'selected' : ''; ?>>20% off</option>
+                                                <option value="30" <?php echo ($discount == 30) ? 'selected' : ''; ?>>30% off</option>
+                                                <option value="40" <?php echo ($discount == 40) ? 'selected' : ''; ?>>40% off</option>
+                                                <option value="50" <?php echo ($discount == 50) ? 'selected' : ''; ?>>50% off</option>
+                                                <option value="60" <?php echo ($discount == 60) ? 'selected' : ''; ?>>60% off</option>
+                                                <option value="70" <?php echo ($discount == 70) ? 'selected' : ''; ?>>70% off</option>
+                                                <option value="75" <?php echo ($discount == 75) ? 'selected' : ''; ?>>75% off</option>
+                                                <option value="80" <?php echo ($discount == 80) ? 'selected' : ''; ?>>80% off</option>
+                                                <option value="85" <?php echo ($discount == 85) ? 'selected' : ''; ?>>85% off</option>
+                                                <option value="90" <?php echo ($discount == 90) ? 'selected' : ''; ?>>90% off</option>
+                                            </select>
+                                            <label for="discountPercentage" class="ps-3">Discount Percentage</label>
+                                        </div>
+                                        <div class="form-floating col-md-12 mb-3">
                                             <input type="number" class="form-control ps-3" value="<?= $data['product_srp'] ?>" id="srp_input" name="suggestedRetailPriceInput" readonly required placeholder="srp">
-                                            <label for="floatingPassword" class="ps-3">Suggested Retail Price in ₱ (SRP)</label>
+                                            <label for="srp_input" class="ps-3">Final Price in ₱</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
                                             <input type="file" class="form-control ps-3" id="uploadProductImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadProductImageInput">
@@ -121,19 +139,18 @@ include('../models/myFunctions.php'); ?>
     </div>
 </div>
 <script>
-    const orpInput = document.getElementById('orp_input');
-    const srpInput = document.getElementById('srp_input');
+    function calculateFinalPrice() {
+        // Get original price and discount percentage
+        let originalPrice = parseFloat(document.getElementById('orp_input').value);
+        let discountPercentage = parseFloat(document.getElementById('discountPercentage').value);
 
-    orpInput.addEventListener('input', () => {
-        const orpValue = orpInput.value;
-        if (orpValue !== '') {
-            const increaseAmount = parseFloat(orpValue) * 0.3;
-            const srpValue = parseFloat(orpValue) + increaseAmount;
-            srpInput.value = srpValue.toFixed(2);
-        } else {
-            srpInput.value = '';
-        }
-    });
+        // Calculate final price
+        let finalPrice = originalPrice - (originalPrice * (discountPercentage / 100));
+
+        // Update the final price input
+        document.getElementById('srp_input').value = finalPrice.toFixed(2);
+    }
+
     //Visible & hidden
     document.addEventListener("DOMContentLoaded", function() {
         var checkbox = document.getElementById("status_checkbox");

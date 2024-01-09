@@ -18,7 +18,7 @@ include('../middleware/adminMW.php');
                         <a href="orders.php" class="btn btn-light float-end ms-2">View All</a>
                     </h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     <table class="table table-bordered table-hover table-striped" id="ordTable">
                         <thead>
                             <tr class="text-center">

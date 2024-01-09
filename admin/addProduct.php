@@ -6,7 +6,7 @@ include('../middleware/adminMW.php'); ?>
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Add Product
-                    <a href="product.php" class="btn btn-light float-end ms-2">Go Back</a>
+                        <a href="product.php" class="btn btn-light float-end ms-2">Go Back</a>
                     </h2>
                 </div>
                 <div class="card-body">
@@ -52,13 +52,30 @@ include('../middleware/adminMW.php'); ?>
                                 </div>
                                 <div class="row">
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" id="orp_input" name="originalPriceInput" required placeholder="orp">
-                                        <label for="floatingInput" class="ps-3">Original Price in ₱</label>
+                                        <input type="number" class="form-control ps-3" id="orp_input" name="originalPriceInput" required placeholder="orp" oninput="calculateFinalPrice()" min="0" onwheel="return false;">
+                                        <label for="orp_input" class="ps-3">Original Price in ₱</label>
                                     </div>
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="text" class="form-control ps-3" id="srp_input" name="suggestedRetailPriceInput" readonly required placeholder="srp">
-                                        <label for="floatingPassword" class="ps-3">Suggested Retail Price in ₱ (SRP)</label>
+                                        <select class="form-select ps-2" id="discountPercentage" name="priceDiscount" onchange="calculateFinalPrice()">
+                                            <option value="0" selected>no discount</option>
+                                            <option value="10">10% off</option>
+                                            <option value="20">20% off</option>
+                                            <option value="30">30% off</option>
+                                            <option value="40">40% off</option>
+                                            <option value="50">50% off</option>
+                                            <option value="60">60% off</option>
+                                            <option value="70">70% off</option>
+                                            <option value="75">75% off</option>
+                                            <option value="80">80% off</option>
+                                            <option value="85">85% off</option>
+                                            <option value="90">90% off</option>
+                                        </select>
+                                        <label for="discountPercentage" class="ps-3">Discount Percentage</label>
                                     </div>
+                                </div>
+                                <div class="form-floating col-md-12 mb-3">
+                                    <input type="number" class="form-control ps-3" id="srp_input" name="suggestedRetailPriceInput" readonly required placeholder="srp">
+                                    <label for="srp_input" class="ps-3">Final Price in ₱</label>
                                 </div>
                                 <div class="form-floating col-md-12 mb-3">
                                     <input type="file" class="form-control ps-3" id="uploadProductImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadProductImageInput" required>
@@ -67,7 +84,7 @@ include('../middleware/adminMW.php'); ?>
 
                                 <div class="col-md-12" style="display:flex;">
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" id="qty_input" name="quantityInput" required placeholder="qty">
+                                        <input type="number" class="form-control ps-3" id="qty_input" name="quantityInput" required placeholder="qty" onwheel="return false;">
                                         <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                     </div>
                                     <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
@@ -103,19 +120,17 @@ include('../middleware/adminMW.php'); ?>
     </div>
 </div>
 <script>
-    const orpInput = document.getElementById('orp_input');
-    const srpInput = document.getElementById('srp_input');
+    function calculateFinalPrice() {
+        // Get original price and discount percentage
+        let originalPrice = parseFloat(document.getElementById('orp_input').value);
+        let discountPercentage = parseFloat(document.getElementById('discountPercentage').value);
 
-    orpInput.addEventListener('input', () => {
-        const orpValue = orpInput.value;
-        if (orpValue !== '') {
-            const increaseAmount = parseFloat(orpValue) * 0.3;
-            const srpValue = parseFloat(orpValue) + increaseAmount;
-            srpInput.value = srpValue.toFixed(2);
-        } else {
-            srpInput.value = '';
-        }
-    });
+        // Calculate final price
+        let finalPrice = originalPrice - (originalPrice * (discountPercentage / 100));
+
+        // Update the final price input
+        document.getElementById('srp_input').value = finalPrice.toFixed(2);
+    }
 </script>
 
 <?php include('partials/footer.php'); ?>

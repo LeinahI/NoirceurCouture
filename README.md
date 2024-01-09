@@ -9,10 +9,11 @@ https://dribbble.com/shots/22737212-Fashion-E-commerce-Website
 
 
 MISSING
-- Dashboard Cancelled Orders
-- seller panel
-- printable reports
+- Dashboard Cancelled Orders -
+- seller panel - Done
+- printable reports -
 - Online Payments - Done
+- Discount Function(admin/seller side) - Done
 
 ```
 NoirceurCouture

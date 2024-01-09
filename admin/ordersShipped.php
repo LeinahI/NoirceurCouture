@@ -9,7 +9,7 @@ include('../middleware/adminMW.php');
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-primary">
+                <div class="card-header  bg-primary">
                     <h2 class="text-white">Shipped Out Orders
                         <a href="ordersCancelled.php" class="btn btn-light float-end ms-2">View Cancelled</a>
                         <a href="ordersDeliver.php" class="btn btn-light float-end ms-2">View Delivered</a>
@@ -18,7 +18,7 @@ include('../middleware/adminMW.php');
                         <a href="orders.php" class="btn btn-light float-end ms-2">View All</a>
                     </h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     <table class="table table-bordered table-hover table-striped" id="ordTable">
                         <thead>
                             <tr class="text-center">
