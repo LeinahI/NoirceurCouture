@@ -14,7 +14,7 @@ function getAllActive($table)
 function getAllPopular() /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE product_popular='1'";
+    $query = "SELECT * FROM products WHERE product_popular='1' AND product_status != '1'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -22,7 +22,7 @@ function getAllPopular() /* Trending */
 function getAllSameShop($id) /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE category_id='$id'";
+    $query = "SELECT * FROM products WHERE category_id='$id' AND product_status != '1'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -58,17 +58,37 @@ function getSlugActiveProducts($table, $slug)
     $result = mysqli_query($con, $query);
     return $result;
 }
+function deleteExcessCartItems($user_id)
+{
+    global $con;
+    $deleteQuery = "DELETE c
+    FROM carts c
+    INNER JOIN products p ON c.product_id = p.product_id
+    WHERE c.user_ID = '$user_id' AND c.product_qty > p.product_qty;
+    ";
+
+    $result = mysqli_query($con, $deleteQuery);
+
+    if (!$result) {
+        // Handle the case where the query failed
+        echo "Delete query failed: " . mysqli_error($con);
+    }
+}
 
 function getCartItems()
 {
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
-    $query = "SELECT c.cart_id as cid, c.product_id, c.product_qty, c.product_slug, p.product_id as pid, p.product_name, p.product_image, p.product_srp, cat.category_name
+
+    deleteExcessCartItems($user_id);
+
+    $query = "SELECT c.cart_id as cid, c.product_id, c.product_qty, c.product_slug, p.product_id as pid, p.product_name, p.product_image,
+    p.product_srp, p.product_original_price, p.product_discount, p.product_qty as product_remain, cat.category_name, cat.category_slug
     FROM carts c
     INNER JOIN products p ON c.product_id = p.product_id
     INNER JOIN categories cat ON p.category_id = cat.category_id
-    WHERE c.user_ID='$user_id'
-    ORDER BY c.cart_id DESC";
+    WHERE c.user_ID='$user_id'AND p.product_qty >= c.product_qty  
+    ORDER BY c.cart_id DESC;";
 
     $result = mysqli_query($con, $query);
     return $result;
@@ -79,8 +99,9 @@ function getCartQty()
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
     $query = "SELECT COUNT(*) AS total_entries
-          FROM carts
-          WHERE user_ID = '$user_id'";
+    FROM carts c
+    INNER JOIN products p ON c.product_id = p.product_id
+    WHERE user_ID = '$user_id' AND p.product_qty >= c.product_qty ";
 
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_assoc($result);
@@ -89,11 +110,13 @@ function getCartQty()
     return $cart_qty;
 }
 
+
+
 function getLikesItems()
 {
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
-    $query = "SELECT l.likes_Id as lid, l.product_id, l.product_slug, p.product_id as pid, p.product_name, p.product_image, p.product_srp, cat.category_name
+    $query = "SELECT l.likes_Id as lid, l.product_id, l.product_slug, p.product_id as pid, p.product_name, p.product_image, p.product_srp, cat.category_name, cat.category_slug
     FROM likes l
     INNER JOIN products p ON l.product_id = p.product_id
     INNER JOIN categories cat ON p.category_id = cat.category_id

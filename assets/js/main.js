@@ -1,25 +1,29 @@
 $(document).ready(function () {
   /* Increment QTY Function */
+  /* Increment QTY Function */
   $(".incrementProductBtn").click(function (e) {
     e.preventDefault();
 
     var inputQty = $(this).closest(".input-group").find(".inputQty");
     var productQty = parseInt(inputQty.val());
     var productPrice = parseFloat(inputQty.data("price"));
+    var remainingItems = parseInt(inputQty.data("remain"));
 
-    if (productQty < 3) {
+    if (productQty < remainingItems) {
       productQty++;
       inputQty.val(productQty);
     }
 
     var totalPrice = productPrice * productQty;
-    var formattedPrice =
-      "₱" +
-      totalPrice.toLocaleString("en-PH", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-    $(this).closest(".productData").find(".productPrice").text(formattedPrice);
+
+    // Update the product price
+    $(this)
+      .closest(".productData")
+      .find(".productPrice")
+      .text(formatPrice(totalPrice));
+
+    // Update the overall price
+    updateOverallPrice();
   });
 
   /* Decrement QTY Function */
@@ -36,14 +40,35 @@ $(document).ready(function () {
     }
 
     var totalPrice = productPrice * productQty;
-    var formattedPrice =
-      "₱" +
-      totalPrice.toLocaleString("en-PH", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-    $(this).closest(".productData").find(".productPrice").text(formattedPrice);
+
+    // Update the product price
+    $(this)
+      .closest(".productData")
+      .find(".productPrice")
+      .text(formatPrice(totalPrice));
+
+    // Update the overall price
+    updateOverallPrice();
   });
+
+  function formatPrice(price) {
+    return price.toLocaleString("en-PH", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  function updateOverallPrice() {
+    var total = 0;
+
+    $(".productPrice").each(function () {
+      var price = parseFloat($(this).text().replace("₱", "").replace(",", ""));
+      total += price;
+    });
+
+    // Update the overall price in the HTML
+    $(".overallPrice").text(formatPrice(total));
+  }
 
   /* Input QTY function */
   $(".inputQty").change(function () {
@@ -87,6 +112,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 201) {
+          updateCartItemsOnAdd();
           swal({
             title: "Product added to cart",
             icon: "success",
@@ -130,7 +156,23 @@ $(document).ready(function () {
     });
   });
 
-  /* Update item QTY cart function */
+  /* Update cart qty */
+  function updateCartItemsOnAdd() {
+    var productViewContainer = $("#productView");
+
+    // Clear the existing content inside the .cart-items container
+    productViewContainer.empty();
+
+    // Reload the content inside the .cart-items container
+    $.ajax({
+      url: "#", // Replace with the actual file path
+      success: function (newContent) {
+        productViewContainer.html(newContent);
+      },
+    });
+  }
+
+  /* Update item QTY cart function that display on C */
   $(document).on("click", ".updateQty", function (e) {
     var prod_qty = $(this).closest(".productData").find(".inputQty").val();
     var prod_id = $(this).closest(".productData").find(".productID").val();
@@ -160,22 +202,34 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 200) {
-          /* swal({
-                        title: "Product deleted successfully",
-                        icon: "success",
-                        button: 'OK',
-                    });*/
-          $("#mycart").load(location.href + " #mycart");
+          updateCartItemsOnDelete();
         } else {
-          swal({
+          /* swal({
             title: response,
             icon: "error",
             button: "OK",
-          });
+          }); */
         }
       },
     });
   });
+
+  /* Update Cart Items */
+  function updateCartItemsOnDelete() {
+    var cartItemsContainer = $("#mycart");
+
+    // Clear the existing content inside the .cart-items container
+    cartItemsContainer.empty();
+
+    // Reload the content inside the .cart-items container
+    $.ajax({
+      type: "GET",
+      url: "#", // Replace with the actual file path
+      success: function (newContent) {
+        cartItemsContainer.html(newContent);
+      },
+    });
+  }
 
   /* Add item to Likes function */
   $(".addToLikesBtn").click(function (e) {
@@ -194,11 +248,12 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 201) {
-          swal({
+          updateLikeItemsOnAdd();
+          /* swal({
             title: "Product added to Likes",
             icon: "success",
             button: "OK",
-          });
+          }); */
         } else if (response == "existing") {
           swal({
             title: "Product already in your Likes",
@@ -224,6 +279,22 @@ $(document).ready(function () {
       },
     });
   });
+
+  /* Update cart qty */
+  function updateLikeItemsOnAdd() {
+    var productViewContainer = $("#productView");
+
+    // Clear the existing content inside the .cart-items container
+    productViewContainer.empty();
+
+    // Reload the content inside the .cart-items container
+    $.ajax({
+      url: "#", // Replace with the actual file path
+      success: function (newContent) {
+        productViewContainer.html(newContent);
+      },
+    });
+  }
 
   /* Delete Item Like function */
   $(document).on("click", ".deleteItemLike", function (e) {

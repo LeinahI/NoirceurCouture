@@ -33,7 +33,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
         }
         ?>
         <div class="card shadow">
-            <div class="card-body bg-main">
+            <div class="card-body bg-main rounded-3">
                 <form action="../models/placeOrder.php" method="POST">
                     <div class="row">
                         <div class="col-md-6">
@@ -120,7 +120,12 @@ if (mysqli_num_rows($cartCheck) < 1) {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h5>Products Ordered</h5>
+                            <div>
+                                <span class="fs-5">Products Ordered
+                                    <a href="myCart.php" class="btn btn-primary float-end">Back</a>
+                                </span>
+
+                            </div>
                             <hr>
                             <?php
                             $items = getCartItems();
@@ -136,7 +141,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 }
                                 $groupedItems[$categoryName][] = $cItem;
                             } ?>
-                            <div class="scrollBarCO" style="height: 450px; overflow-y: scroll;">
+                            <div class="scrollBarCO overflow-y-auto" style="height: 450px;">
                                 <?php
                                 // Display grouped items
                                 foreach ($groupedItems as $categoryName => $categoryItems) {
@@ -162,6 +167,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                     <div class="col-md-3">
                                                         <h5 class="text-end">₱<?= number_format($itemTotalPrice, 2) ?></h5>
                                                     </div>
+                                                    <!--  -->
                                                     <div class="col-md-2 text-center">
                                                         <h5><?= $cItem['product_qty'] ?></h5>
                                                     </div>

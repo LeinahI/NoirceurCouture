@@ -25,12 +25,10 @@ include('../middleware/userMW.php');
                                 $cItem['product_name'] = substr($cItem['product_name'], 0, 15) . '...';
                             }
                     ?>
-                            <div class="card mx-2 mb-3" style="width: 18rem;">
-                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>">
-                                    <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
-                                </a>
+                            <div class="card itemproduct bg-primary mx-2" style="width: 18rem;">
                                 <div class="card-body">
                                     <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
+                                        <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
                                         <h5 class="card-title"><?= $cItem['product_name'] ?></h5>
                                     </a>
 

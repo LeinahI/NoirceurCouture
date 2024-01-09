@@ -1,109 +1,166 @@
-<?php include('../partials/__header.php');
-
-include('../middleware/userMW.php');
-?>
-<div class="py-3 bg-primary">
-    <div class="container">
-        <h6>
-            <a href="#" class="text-dark">Home /</a>
-            <a href="#" class="text-dark">Cart</a>
-        </h6>
-    </div>
-</div>
-
 <div id="mycart">
-    <div class="mt-5">
+    <?php include('../partials/__header.php');
+
+    include('../middleware/userMW.php');
+    ?>
+    <div class="py-3 bg-primary">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card p-3 border rounded-3 shadow bg-main">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <h6>Product</h6>
-                            </div>
-                            <div class="col-md-2">
-                                <h6>Unit Price</h6>
-                            </div>
-                            <div class="col-md-2">
-                                <h6>Quantity</h6>
-                            </div>
-                            <div class="col-md-2">
-                                <h6>Total Price</h6>
-                            </div>
-                            <div class="col-md-1">
-                                <h6>Action</h6>
+            <h6>
+                <a href="#" class="text-dark">Home /</a>
+                <a href="#" class="text-dark">Cart</a>
+            </h6>
+        </div>
+    </div>
+
+    <div class="cart-items">
+        <div class="mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card p-3 border rounded-3 shadow bg-main">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <h6>Product</h6>
+                                </div>
+                                <div class="col-md-2 pl-2 d-flex justify-content-center">
+                                    <h6>Unit Price</h6>
+                                </div>
+                                <div class="col-md-2 pl-0 d-flex justify-content-center">
+                                    <h6>Quantity</h6>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6>Total Price</h6>
+                                </div>
+                                <div class="col-md-1">
+                                    <h6>Action</h6>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <?php
-                        $items = getCartItems();
-                        $groupedItems = [];
-                        $totalPrice = 0;
-                        // Group items by category_name
-                        foreach ($items as $cItem) {
-                            $categoryName = $cItem['category_name'];
-                            if (!isset($groupedItems[$categoryName])) {
-                                $groupedItems[$categoryName] = [];
-                            }
-                            $groupedItems[$categoryName][] = $cItem;
-                        }
+                        <div>
+                            <?php
+                            $items = getCartItems();
+                            $groupedItems = [];
+                            $itemArray = [];
+                            $totalPrice = 0;
 
-                        if (mysqli_num_rows($items) > 0) {
-                            // Display grouped items
-                            foreach ($groupedItems as $categoryName => $categoryItems) {
-                        ?>
-                                <div class="card my-4 p-3 border rounded-3 shadow bg-main">
-                                    <div class="card-header">
-                                        <h5 class="card-title"><?= $categoryName ?></h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <?php foreach ($categoryItems as $index => $cItem) {
-                                            $itemTotalPrice = $cItem['product_srp'] * $cItem['product_qty'];
-                                            $totalPrice += $itemTotalPrice;
-                                        ?>
-                                            <div class="productData row align-items-center <?= ($index < count($categoryItems) - 1) ? 'mb-3' : '' ?>">
-                                                <div class="col-md-2">
-                                                    <center>
-                                                        <a href="productView.php?product=<?= $cItem['product_slug'] ?>"><img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="100px"></a>
-                                                    </center>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
-                                                        <h5><?= $cItem['product_name'] ?></h5>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <h5>₱<?= number_format($cItem['product_srp'], 2) ?></h5>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
-                                                    <div class="input-group mb-3" style="width:120px;">
-                                                        <button class="input-group-text decrementProductBtn updateQty">-</button>
-                                                        <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>">
-                                                        <button class="input-group-text incrementProductBtn updateQty">+</button>
+                            // Fetch data from the result set and store it in an array
+
+                            while ($cItem = mysqli_fetch_assoc($items)) {
+                                $itemArray[] = $cItem;
+                            }
+
+                            // Group items by category_name
+                            foreach ($items as $cItem) {
+                                $categoryName = $cItem['category_name'];
+                                $categslug = $cItem['category_slug'];
+
+                                if (!isset($groupedItems[$categoryName])) {
+                                    $groupedItems[$categoryName] = [
+                                        'items' => [],
+                                        'categslug' => $categslug,
+                                    ];
+                                }
+
+                                $groupedItems[$categoryName]['items'][] = $cItem;
+                            }
+                            if (count($itemArray) > 0) {
+                                // Display grouped items
+                                foreach ($groupedItems as $categoryName => $categoryData) {
+                                    $categslug = $categoryData['categslug'];
+
+                            ?>
+                                    <div class="card my-4 p-3 border rounded-3 shadow bg-main">
+                                        <div class="card-header">
+                                            <h5 class="card-title">
+                                                <a href="products.php?category=<?= $categslug ?>" class="text-dark">
+                                                    <?= $categoryName ?>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body overflow-x-auto">
+                                            <?php
+                                            foreach ($categoryData['items'] as $index => $cItem) {
+
+                                                $itemTotalPrice = $cItem['product_srp'] * $cItem['product_qty'];
+                                                $totalPrice += $itemTotalPrice;
+                                                $srp = $cItem['product_srp'];
+                                                $orig_price = $cItem['product_original_price'];
+                                                $discount = $cItem['product_discount'];
+                                            ?>
+                                                <div class="productData row align-items-center <?= ($index < count($categoryData['items']) - 1) ? 'mb-3' : '' ?>">
+
+
+                                                    <!-- Product Image -->
+                                                    <div class="col-md-2">
+                                                        <center>
+                                                            <a href="productView.php?product=<?= $cItem['product_slug'] ?>"><img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="100px"></a>
+                                                        </center>
+                                                    </div>
+                                                    <!-- Product Name -->
+                                                    <div class="col-md-3">
+                                                        <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
+                                                            <h5><?= $cItem['product_name'] ?></h5>
+                                                        </a>
+                                                    </div>
+                                                    <!-- Product Price -->
+                                                    <div class="col-md-2">
+                                                        <?php
+                                                        if ($srp == $orig_price) {
+                                                        ?>
+                                                            <h6 class="d-flex justify-content-center">₱<?= number_format($srp, 2) ?></h6>
+                                                        <?php
+                                                        } else if ($srp != $orig_price) {
+                                                        ?>
+                                                            <span class="d-flex justify-content-center">
+                                                                <h6 class="text-secondary text-decoration-line-through mr-2">₱<?= number_format($orig_price, 2) ?></h6>
+                                                                &nbsp;
+                                                                <h6>₱<?= number_format($srp, 2) ?></h6>
+                                                            </span>
+                                                            <span class="d-flex justify-content-center text-accent">
+                                                                Discount <?= $discount ?>%
+                                                            </span>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                    <!-- Product Quantity -->
+                                                    <div class="col-md-2">
+                                                        <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
+                                                        <div class="d-flex justify-content-center">
+                                                            <div class="input-group mb-2" style="width:120px;">
+                                                                <button class="input-group-text decrementProductBtn updateQty">-</button>
+                                                                <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>" data-remain="<?= $cItem['product_remain'] ?>">
+                                                                <button class="input-group-text incrementProductBtn updateQty">+</button>
+                                                            </div>
+                                                        </div>
+                                                        <span class="d-flex justify-content-center text-accent itemLeft">
+                                                            <?= $cItem['product_remain'] ?> items left
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Total Price -->
+                                                    <div class="col-md-2 text-accent">
+                                                        <h5>₱<span class="productPrice"><?= number_format($itemTotalPrice, 2) ?></span></h5>
+                                                    </div>
+                                                    <!-- Delete Btn -->
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-accent deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <h5 class="productPrice">₱<?= number_format($itemTotalPrice, 2) ?></h5>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <button class="btn btn-accent deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
+                                            <?php } ?>
+                                        </div>
                                     </div>
+                                <?php
+                                }
+                            } else {
+                                ?>
+                                <div class="mt-5 text-center">
+                                    <h1>Your cart is empty</h1>
                                 </div>
                             <?php
                             }
-                        } else {
                             ?>
-                            <div class="mt-5 text-center">
-                                <h1>Your cart is empty</h1>
-                            </div>
-                        <?php
-                        }
-                        ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,8 +177,12 @@ include('../middleware/userMW.php');
                             <div class="float-end text-dark">
                                 <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
                                                         echo getCartQty();
-                                                    } ?></span> items): ₱<span><?= number_format($totalPrice, 2) ?>
-                                        &nbsp;&nbsp;&nbsp;</span><a href="checkOut.php" class="btn btn-accent text-white chkOutBtn">Check out</a></h5>
+                                                    } ?>
+                                    </span>
+                                    items):
+                                    <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
+                                    <a href="checkOut.php" class="ml-3 btn btn-accent text-white chkOutBtn">Check out</a>
+                                </h5>
                             </div>
                         </section>
                     </div>
@@ -130,10 +191,10 @@ include('../middleware/userMW.php');
             </div>
         </div>
     </div>
-</div>
 
-<div class="mt-5">
-    <?php include('footer.php'); ?>
-</div>
+    <div class="mt-5">
+        <?php include('footer.php'); ?>
+    </div>
 
-<?php include('../partials/__footer.php'); ?>
+    <?php include('../partials/__footer.php'); ?>
+</div>

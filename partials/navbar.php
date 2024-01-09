@@ -73,3 +73,18 @@
         </div>
     </div>
 </nav>
+
+<script>
+    // Event delegation for dropdown
+    $('body').on('click', '.nav-link.dropdown-toggle', function(e) {
+        e.preventDefault();
+        $(this).next('.dropdown-menu').toggle();
+    });
+
+    // Event delegation for dropdown items
+    $('body').on('click', '.dropdown-menu a', function(e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        window.location.href = href; // Redirect to the selected link
+    });
+</script>
