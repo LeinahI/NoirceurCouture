@@ -20,6 +20,7 @@ include('../middleware/sellerMW.php'); ?>
                             <tr>
                                 <th>Product ID</th>
                                 <th>Product Name</th>
+                                <th>Price ₱</th>
                                 <th>Image</th>
                                 <th>Quantity</th>
                                 <th>Visibility</th>
@@ -50,7 +51,7 @@ include('../middleware/sellerMW.php'); ?>
                                             }
                                             ?>
                                         </td>
-
+                                        <td class="text-end">₱<?= $item['product_srp'] ?></td>
                                         <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td><?= $item['product_qty']; ?></td>
                                         <?php

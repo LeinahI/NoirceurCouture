@@ -163,53 +163,69 @@ function getAllCancelledOrdersbyStore($id)
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
-
-
-function getAllUserCount()
+/********************************
+ ************Seller and Admin Reports Dashboard
+ ********************************/
+function getCancelledOrdersCount($userid)
 {
     global $con;
-    $query = "SELECT COUNT(*) AS user_count FROM users WHERE user_role <> 1";
+    $query = "SELECT 
+        o.orders_id,
+        c.category_id,
+        COUNT(o.orders_status) as total_cancelled_orders
+        FROM orders o
+        JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+        JOIN products p ON p.product_id = oi.orderItems_product_id
+        JOIN categories c ON p.category_id = c.category_id
+        WHERE c.category_user_ID = '$userid' AND orders_status = 3";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
 
-
-function getAllProductsCount()
+function getAllProductsCount($userid)
 {
     global $con;
-    $query = "SELECT SUM(`product_qty`) AS prod_total FROM products";
+    $query = "SELECT 
+    p.product_id,
+    p.category_id,
+    SUM(p.product_qty) AS total_prod_qty
+    FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$userid'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
 
-function getRevenue()
+function getRevenue($userid)
 {
     global $con;
-    $query = "SELECT SUM(total_original_price) AS overall_total_original_price
-    FROM (
-        SELECT 
-            product_id,
-            SUM(product_qty * product_srp) AS total_original_price
-        FROM
-            products
-        GROUP BY
-            product_id
-    ) AS subquery;";
+    $query = "SELECT 
+    p.product_id,
+    p.category_id,
+    p.product_srp,
+    SUM(p.product_qty * p.product_srp) AS total_if_sold
+    FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$userid'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
 
-function getRevenueDeliver()
+function getRevenueDeliver($userid)
 {
     global $con;
     $query = "SELECT SUM(orders_total_price) AS total_orders_price
-    FROM orders
-    WHERE orders_status = 2;";
+    FROM orders o
+    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_user_ID = '$userid' AND o.orders_status = 2;";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
+/********************************
+ ************Seller and Admin Reports    Dashboard
+ ********************************/
 function redirect($url, $Errormsg)
 {
     $_SESSION['Errormsg'] = $Errormsg;

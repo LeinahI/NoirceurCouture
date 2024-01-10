@@ -7,16 +7,16 @@
         <h2>Admin Dashboard</h2>
         <div class="row mt-4">
             <?php
-            $user = getAllUserCount();
-            $userCount = mysqli_fetch_array($user);
+            $user = getCancelledOrdersCount($_SESSION['auth_user']['user_ID']);
+            $cancelCount = mysqli_fetch_array($user);
 
-            $prod = getAllProductsCount();
+            $prod = getAllProductsCount($_SESSION['auth_user']['user_ID']);
             $prodCount = mysqli_fetch_array($prod);
 
-            $rev = getRevenue();
+            $rev = getRevenue($_SESSION['auth_user']['user_ID']);
             $revTotal = mysqli_fetch_array($rev);
 
-            $revdel = getRevenueDeliver();
+            $revdel = getRevenueDeliver($_SESSION['auth_user']['user_ID']);
             $revdelTotal = mysqli_fetch_array($revdel);
 
             ?>
@@ -45,8 +45,8 @@
                             <i class="material-icons opacity-10">groups</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Total Users</p>
-                            <h4 class="mb-0"><?= $userCount['user_count']; ?></h4>
+                            <p class="text-sm mb-0 text-capitalize">Total Orders Cancelled</p>
+                            <h4 class="mb-0"><?= $cancelCount['total_cancelled_orders']; ?></h4>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize ">Expected Revenue</p>
-                            <h4 class="mb-0 ">₱<?= number_format($revTotal['overall_total_original_price'], 2); ?></h4>
+                            <h4 class="mb-0 ">₱<?= number_format($revTotal['total_if_sold'], 2); ?></h4>
                         </div>
                     </div>
 
@@ -82,7 +82,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize ">All products Total Qty.</p>
-                            <h4 class="mb-0 "><?= $prodCount['prod_total'] ?? 0; ?></h4>
+                            <h4 class="mb-0 "><?= $prodCount['total_prod_qty'] ?? 0; ?></h4>
                         </div>
                     </div>
 

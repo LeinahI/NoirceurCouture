@@ -9,7 +9,7 @@ https://dribbble.com/shots/22737212-Fashion-E-commerce-Website
 
 
 MISSING
-- Dashboard Cancelled Orders -
+- Dashboard Cancelled Orders - Done
 - seller panel - Done
 - printable reports - 
 - Online Payments - Done
