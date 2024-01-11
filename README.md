@@ -27,7 +27,6 @@ NoirceurCouture
 ├─ middleware
 ├─ models
 ├─ partials
-├─ README.md
 ├─ seller
 │  ├─ assets
 │  │  ├─ css
