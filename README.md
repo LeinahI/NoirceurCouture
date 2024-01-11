@@ -1,5 +1,5 @@
 # NoirceurCouture
-<p>NoirceurCouture is a Business-to-Consumer (B2C) and Consumer-to-Consumer (C2C) e-commerce platform.</p>
+![NoirceurCouture](https://github.com/LeinahI/NoirceurCouture/assets/53577436/04d31568-5d84-4ba2-a2f0-bf95d0ed596c)
 
 [![Leinah](https://custom-icon-badges.demolab.com/badge/made%20by%20-Leinah-556bf2?logo=github&logoColor=white&labelColor=101827)](https://github.com/LeinahI)
 [![License](https://img.shields.io/github/license/LeinahI/NoirceurCouture?color=dddddd&labelColor=000000)](https://github.com/LeinahI/NoirceurCouture/blob/main/LICENSE)
