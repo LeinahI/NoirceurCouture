@@ -34,10 +34,10 @@ include('../middleware/adminMW.php'); ?>
                                 <!-- Add Image start -->
                                 <div class="form-floating col-md-12 mb-3">
                                     <input type="file" class="form-control ps-3" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadSlideshowImage" required>
-                                    <label for="floatingPassword" class="ps-3">Upload Product Image</label>
+                                    <label for="floatingPassword" class="ps-3">Upload Image Slideshow</label>
                                 </div>
                                 <div class="text-center col-md-12 mb-3">
-                                    <button type="submit" id="addProduct_btn" name="addSlideshowBtn" class="col-md-12 btn btn-primary">Add Product</button>
+                                    <button type="submit" id="addProduct_btn" name="addSlideshowBtn" class="col-md-12 btn btn-primary">Add Image Slideshow</button>
                                 </div>
                                 <!-- Add Category end -->
                             </div>

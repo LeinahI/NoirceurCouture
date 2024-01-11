@@ -10,65 +10,110 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
     $lastName = $_POST['lastName'];
     $email = $_POST['email'];
     $phoneNum = $_POST['phoneNumber'];
-    $uname = $_POST['username'];
     $uPass = $_POST['userPassword'];
-    $role = $_POST['userRole'];
     $phonePatternPH = '/^09\d{9}$/';
 
     // Check if user already exists
     $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email' AND user_id != '$userId'";
     $check_email_query_run = mysqli_query($con, $check_email_query);
 
+    // Check if phone already exists
     $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum' AND user_id != '$userId'";
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
-        redirectSwal("../editusers.php?id=$userId", "Invalid Philippine phone number format.", "error");
+        redirectSwal("../account-details.php", "Invalid Philippine phone number format.", "error");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
-        redirectSwal("../editusers.php?id=$userId", "Email already in use, please try something different.", "error");
+        redirectSwal("../account-details.php", "Email already in use, please try something different.", "error");
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
-        redirectSwal("../editusers.php?id=$userId", "Phone number already in use, please try something different.", "error");
+        redirectSwal("../account-details.php", "Phone number already in use, please try something different.", "error");
     } else {
         if ($uPass) {
             // Update User Data
-            $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_username=?, user_phone=?, user_password=?, user_role=? WHERE user_ID=?";
+            $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_phone=?, user_password=? WHERE user_ID=?";
             $stmt = mysqli_prepare($con, $update_query);
-            mysqli_stmt_bind_param($stmt, "ssssssii", $firstName, $lastName, $email, $uname, $phoneNum, $uPass, $role, $userId);
+            mysqli_stmt_bind_param($stmt, "sssssi", $firstName, $lastName, $email, $phoneNum, $uPass, $userId);
             $update_query_run = mysqli_stmt_execute($stmt);
             if ($update_query_run) {
-                redirectSwal("../editusers.php?id=$userId", "Account updated successfully", "success");
+                redirectSwal("../account-details.php", "Account updated successfully", "success");
             } else {
-                redirectSwal("../editusers.php?id=$userId", "Something went wrong", "error");
+                redirectSwal("../account-details.php", "Something went wrong", "error");
             }
         }
     }
-} else if (isset($_POST['deleteUserBtn'])) { //!Delete user
-    $user_id = mysqli_real_escape_string($con, $_POST['user_ID']);
+} 
 
-    // Check if the user with the specified user_ID exists
-    $check_user_query = "SELECT * FROM users WHERE user_ID=?";
-    $stmt_check_user = mysqli_prepare($con, $check_user_query);
-    mysqli_stmt_bind_param($stmt_check_user, "i", $user_id);
-    mysqli_stmt_execute($stmt_check_user);
-    $check_user_query_run = mysqli_stmt_get_result($stmt_check_user);
+/* User Address Add statement */
+if (isset($_POST['sellerAddAddrBtn'])) {
+    $userId = $_POST['userID'];
+    $fullN = $_POST['fullName'];
+    $email = $_POST['email'];
+    $phoneNum = $_POST['phoneNumber'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $country = $_POST['country'];
+    $pcode = $_POST['postalCode'];
+    $fullAddr = $_POST['fullAddress'];
+    $phonePatternPH = '/^09\d{9}$/';
 
-    if (mysqli_num_rows($check_user_query_run) > 0) {
-        // User exists, proceed with deletion
-        $delete_query = "DELETE FROM users WHERE user_ID=?";
-        $stmt_delete_user = mysqli_prepare($con, $delete_query);
-        mysqli_stmt_bind_param($stmt_delete_user, "i", $user_id);
-        $delete_query_run = mysqli_stmt_execute($stmt_delete_user);
-
-        if ($delete_query_run) {
-            redirectSwal("../users.php", "User deleted successfully!", "success");
-        } else {
-            redirectSwal("../users.php", "Something went wrong. Please try again later.", "error");
-        }
+    if (!preg_match($phonePatternPH, $phoneNum)) {
+        header("Location: ../account-details.php");
+        $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
-        // User does not exist
-        redirectSwal("../users.php", "User not found.", "error");
-    }
+        // Check if userID already exists
+        $stmt = $con->prepare("SELECT address_user_ID FROM addresses WHERE address_user_ID = ?");
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $stmt->store_result();
 
-    mysqli_stmt_close($stmt_check_user);
-    mysqli_stmt_close($stmt_delete_user);
+        if ($stmt->num_rows > 0) {
+            $_SESSION['Errormsg'] = "Add address button can't be use anymore";
+            header("Location: ../account-details.php");
+            exit;
+        }
+
+        // Prepare and bind the parameters for inserting a new address
+        $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_state, address_city, address_postal_code, address_country, address_phone, address_fullAddress)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("issssssss", $userId, $fullN, $email, $state, $city, $pcode, $country, $phoneNum, $fullAddr);
+
+        if ($stmt->execute()) {
+            header("Location: ../views/account-details.php");
+            $_SESSION['Errormsg'] = "Address added successfully";
+        } else {
+            header("Location: ../views/account-details.php");
+            $_SESSION['Errormsg'] = "Something went wrong";
+        }
+        $stmt->close();
+    }
+}
+
+/* User Address Update statement */
+if (isset($_POST['sellerUpdateAddrBtn'])) {
+    $userId = $_POST['userID'];
+    $fullN = $_POST['fullName'];
+    $email = $_POST['email'];
+    $pcode = $_POST['postalCode'];
+    $phoneNum = $_POST['phoneNumber'];
+    $fullAddr = $_POST['fullAddress'];
+    $state = $_POST['state'];
+    $city = $_POST['city'];
+    $country = $_POST['country'];
+    $phonePatternPH = '/^09\d{9}$/';
+
+    if (!preg_match($phonePatternPH, $phoneNum)) {
+        $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
+    } else {
+        // Prepare and bind the parameters
+        $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_state = ?, address_city = ?, address_postal_code = ?, address_country = ?, address_phone = ?, address_fullAddress = ? WHERE address_user_ID = ?");
+        $stmt->bind_param("ssssssssi", $fullN, $email, $state, $city, $pcode, $country, $phoneNum, $fullAddr, $userId);
+
+        if ($stmt->execute()) {
+            redirectSwal("../account-details.php", "Address updated successfully", "success");
+        } else {
+            redirectSwal("../account-details.php", "Something went wrong", "error");
+        }
+
+        $stmt->close();
+    }
 }

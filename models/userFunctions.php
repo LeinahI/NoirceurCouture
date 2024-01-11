@@ -176,8 +176,11 @@ function getUserAddress()
     WHERE a.address_user_ID = '$user_id'";
 
     $result = mysqli_query($con, $query);
+
     return $result;
 }
+
+
 
 function checkItemExists()
 {

@@ -1,34 +1,40 @@
 # NoirceurCouture
- NoirceurCouture a gothic & Avant Garde fashion retail online shop
- As turn of events, I will update this system with SMTP and other features that I think are necessary for this purpose.
-https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem
-https://www.realtimecolors.com/?colors=171412-f6ede7-E7DED8-7B7774-bb6c54&fonts=Raleway-Raleway
-https://dribbble.com/shots/22737212-Fashion-E-commerce-Website
+<p>NoirceurCouture is a Business-to-Consumer (B2C) and Consumer-to-Consumer (C2C) e-commerce platform.</p>
+<p>As turn of events, I will update this system with Seller Side and Paypal Integration.</p>
 
-
-
-
-MISSING
-- Dashboard Cancelled Orders - Done
-- seller panel - Done
-- printable reports - 
-- Online Payments - Done
-- Discount Function(admin/seller side) - Done
-
+Folder Structure
 ```
 NoirceurCouture
+├─ admin
+│  ├─ assets
+│  │  ├─ css
+│  │  └─ js
+│  ├─ models
+│  ├─ partials
 ├─ assets
 │  ├─ css
 │  ├─ images
+│  │  ├─ index
+│  │  └─ logo
 │  ├─ js
-│  │  └─ main.js
 │  └─ uploads
-├─ LICENSE
+│     ├─ brands
+│     ├─ products
+│     └─ slideshow
 ├─ middleware
 ├─ models
-│  ├─ handleCart.php
 ├─ partials
+├─ README.md
+├─ seller
+│  ├─ assets
+│  │  ├─ css
+│  │  └─ js
+│  ├─ models
+│  ├─ partials
 └─ views
-   ├─ productView.php
-
 ```
+
+Helpful Links of how I develop it
+https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem
+https://www.realtimecolors.com/?colors=171412-f6ede7-E7DED8-7B7774-bb6c54&fonts=Raleway-Raleway
+https://dribbble.com/shots/22737212-Fashion-E-commerce-Website

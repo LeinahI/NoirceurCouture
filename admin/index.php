@@ -2,13 +2,15 @@
 <?php include('../middleware/adminMW.php');
 ?>
 <div class="container">
-    <div class="row"></div>
     <div class="col-md-12">
-        <h2>Admin Dashboard</h2>
+        <div class="card-header">
+            <span class="fs-2 fw-bold">Admin Dashboard</span>
+            <span class="fs-3 float-end">Welcome <span class="fw-bold"><?= $_SESSION['auth_user']['user_firstName']; ?></span></span>
+        </div>
         <div class="row mt-4">
             <?php
-            $user = getCancelledOrdersCount($_SESSION['auth_user']['user_ID']);
-            $cancelCount = mysqli_fetch_array($user);
+            $cancel = getCancelledOrdersCount($_SESSION['auth_user']['user_ID']);
+            $cancelCount = mysqli_fetch_array($cancel);
 
             $prod = getAllProductsCount($_SESSION['auth_user']['user_ID']);
             $prodCount = mysqli_fetch_array($prod);
@@ -21,14 +23,14 @@
 
             ?>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card">
-                    <div class="card-header p-3 pt-2">
+                <div class="card bg-dark">
+                    <div class="card-header bg-dark p-3 pt-2">
                         <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">shopping_cart</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Total Revenue from Delivered</p>
-                            <h4 class="mb-0">₱<?= number_format($revdelTotal['total_orders_price'], 2); ?></h4>
+                            <p class="text-sm mb-0 text-white text-capitalize">Total Revenue from Delivered</p>
+                            <h4 class="mb-0 text-white">₱<?= number_format($revdelTotal['total_orders_price'], 2); ?></h4>
                         </div>
                     </div>
 
@@ -39,14 +41,14 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card  mb-2">
-                    <div class="card-header p-3 pt-2">
-                        <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary shadow text-center border-radius-xl mt-n4 position-absolute">
-                            <i class="material-icons opacity-10">groups</i>
+                <div class="card bg-warning mb-2">
+                    <div class="card-header bg-warning p-3 pt-2">
+                        <div class="icon icon-lg icon-shape bg-gradient-warning shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">assignment_return</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Total Orders Cancelled</p>
-                            <h4 class="mb-0"><?= $cancelCount['total_cancelled_orders']; ?></h4>
+                            <p class="text-sm text-white mb-0 text-capitalize">Total Orders Cancelled</p>
+                            <h4 class="mb-0 text-white"><?= $cancelCount['total_cancelled_orders']; ?></h4>
                         </div>
                     </div>
 
@@ -57,14 +59,14 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card  mb-2">
-                    <div class="card-header p-3 pt-2 bg-transparent">
-                        <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                <div class="card bg-success mb-2">
+                    <div class="card-header p-3 pt-2 bg-success">
+                        <div class="icon icon-lg icon-shape bg-gradient-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">store</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize ">Expected Revenue</p>
-                            <h4 class="mb-0 ">₱<?= number_format($revTotal['total_if_sold'], 2); ?></h4>
+                            <p class="text-sm mb-0 text-capitalize text-white ">Expected Revenue by Product</p>
+                            <h4 class="mb-0 text-white">₱<?= number_format($revTotal['total_if_sold'], 2); ?></h4>
                         </div>
                     </div>
 
@@ -75,14 +77,14 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                <div class="card ">
-                    <div class="card-header p-3 pt-2 bg-transparent">
-                        <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                <div class="card bg-info">
+                    <div class="card-header p-3 pt-2 bg-info">
+                        <div class="icon icon-lg icon-shape bg-gradient-info shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">inventory_2</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize ">All products Total Qty.</p>
-                            <h4 class="mb-0 "><?= $prodCount['total_prod_qty'] ?? 0; ?></h4>
+                            <p class="text-sm mb-0 text-capitalize text-white">All products Total Count</p>
+                            <h4 class="mb-0 text-white"><?= $prodCount['total_prod_qty'] ?? 0; ?></h4>
                         </div>
                     </div>
 

@@ -95,7 +95,6 @@ include('../middleware/userMW.php');
                                         <div class="form-floating ps-0 mb-3">
                                             <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
                                             <label for="floatingInput">Address</label>
-                                            <small class="text-danger address"></small>
                                         </div>
                                     </div>
 

@@ -164,7 +164,7 @@ function getAllCancelledOrdersbyStore($id)
     return $query_run;
 }
 /********************************
- ************Seller and Admin Reports Dashboard
+ ************Seller and Admin Reports Dashboard start
  ********************************/
 function getCancelledOrdersCount($userid)
 {
@@ -223,8 +223,33 @@ function getRevenueDeliver($userid)
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
+
+function getTrendingItem($userid)
+{
+    global $con;
+    $query = "SELECT 
+    oi.orderItems_order_id,
+    MAX(oi.orderItems_qty) as trending,
+    c.category_name,
+    p.product_name,
+    p.product_srp,
+    p.product_image,
+    o.orders_total_price,
+    c.category_user_ID
+    FROM order_items oi
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    JOIN orders o ON oi.orderItems_order_id = o.orders_id
+    WHERE c.category_user_ID = '$userid'
+    GROUP BY oi.orderItems_order_id
+    ORDER BY trending DESC
+    LIMIT 1
+";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
 /********************************
- ************Seller and Admin Reports    Dashboard
+ ************Seller and Admin Dashboard & Reports end
  ********************************/
 function redirect($url, $Errormsg)
 {
@@ -256,6 +281,20 @@ function getByCategAndUserId($id)
                LEFT JOIN categories ON users.user_ID = categories.category_user_ID
                WHERE users.user_ID ='$id'";
     $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getPickupAddress()
+{
+    global $con;
+    $user_id = $_SESSION['auth_user']['user_ID'];
+    $query = "SELECT a.*, u.user_ID
+    FROM addresses AS a
+    INNER JOIN users AS u ON a.address_user_ID = u.user_ID
+    WHERE a.address_user_ID = '$user_id'";
+
+    $result = mysqli_query($con, $query);
+
     return $result;
 }
 

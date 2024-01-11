@@ -1,7 +1,6 @@
 <?php include('partials/header.php');
 include('../middleware/sellerMW.php'); ?>
 <div class="container">
-    <div class="row"></div>
     <div class="col-md-12">
         <div class="card-header">
             <span class="fs-2 fw-bold">Seller Dashboard</span>
