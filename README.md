@@ -1,6 +1,5 @@
 # NoirceurCouture
 <p>NoirceurCouture is a Business-to-Consumer (B2C) and Consumer-to-Consumer (C2C) e-commerce platform.</p>
-<p>As turn of events, I will update this system with Seller Side and Paypal Integration.</p>
 
 Folder Structure
 ```
