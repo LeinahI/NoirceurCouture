@@ -51,7 +51,7 @@ NoirceurCouture
 - [Fontawesome](https://fontawesome.com/): Fontawesome provides SVG icons that can instantly be customized.
 - [Materialize CSS](https://materializecss.com/): Materialize CSS is a design language that combines the classic principles of successful design.
 - [jQuery](https://jquery.com/): jQuery is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API
-- [Paypal Checkout](https://developer.paypal.com/home): Paypal Checkout provides a Paypal Gateway for the vital purpose of the online shopping.
+- [Paypal Checkout](https://developer.paypal.com/home): Paypal Checkout provides a Payment Gateway for the vital purpose of the online shopping.
 
 </details><br/>
 
