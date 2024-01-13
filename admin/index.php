@@ -21,6 +21,12 @@
             $revdel = getRevenueDeliver($_SESSION['auth_user']['user_ID']);
             $revdelTotal = mysqli_fetch_array($revdel);
 
+            $trendItem = getTrendingItem($_SESSION['auth_user']['user_ID']);
+            $trend = mysqli_fetch_array($trendItem);
+
+            $trendSold = getTrendingItemSold($_SESSION['auth_user']['user_ID']);
+            $itemSold = mysqli_fetch_array($trendSold);
+
             ?>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card bg-dark">
@@ -94,6 +100,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6 mt-4">
+                <div class="card bg-primary">
+                    <div class="card-header p-3 pt-2 bg-primary text-white">
+                        <div class="icon icon-md icon-shape bg-gradient-primary shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">whatshot</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="fs-3 mb-0 text-capitalize">most sellable product</p>
+                            <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="150px">
+                            <div class="d-flex flex-row-reverse">
+                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name']; ?></h3>
+                                <h3 class="mb-0 text-white">₱<?= number_format($trend['product_srp'], 2); ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-3">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mt-4">
+                <div class="card bg-success d-flex flex-column h-100">
+                    <div class="card-header p-3 pt-2 bg-success text-white">
+                        <div class="icon icon-md icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="material-icons opacity-10">attach_money</i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="fs-3 mb-0 text-capitalize">most sellable product count</p>
+                            <div class="mt-4">
+                                <br><br><br>
+                                <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
+                                <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end p-3 ">
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

@@ -109,6 +109,10 @@ include('../middleware/adminMW.php'); ?>
 
         $trendItem = getTrendingItem($_SESSION['auth_user']['user_ID']);
         $trend = mysqli_fetch_array($trendItem);
+
+        $trendSold = getTrendingItemSold($_SESSION['auth_user']['user_ID']);
+        $itemSold = mysqli_fetch_array($trendSold);
+        
         ?>
         <div class="card-body">
             <!-- Printable page -->
@@ -239,8 +243,8 @@ include('../middleware/adminMW.php'); ?>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">most sellable product count</p>
                                         <div class="mt-4">
-                                            <h3 class="mb-0 text-white"><?= $trend['trending']; ?> pcs</h3>
-                                            <h3 class="mb-0 text-white">₱<?= number_format($trend['orders_total_price'], 2); ?></h3>
+                                            <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
+                                            <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
                                         </div>
                                     </div>
                                 </div>

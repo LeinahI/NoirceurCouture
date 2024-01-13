@@ -235,12 +235,13 @@ function getTrendingItem($userid)
     p.product_srp,
     p.product_image,
     o.orders_total_price,
+    o.orders_status,
     c.category_user_ID
     FROM order_items oi
     JOIN products p ON oi.orderItems_product_id = p.product_id
     JOIN categories c ON p.category_id = c.category_id
     JOIN orders o ON oi.orderItems_order_id = o.orders_id
-    WHERE c.category_user_ID = '$userid'
+    WHERE c.category_user_ID = '$userid' AND o.orders_status = 2
     GROUP BY oi.orderItems_order_id
     ORDER BY trending DESC
     LIMIT 1
@@ -248,6 +249,31 @@ function getTrendingItem($userid)
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
+
+function getTrendingItemSold($userid){
+    global $con;
+    $query = "SELECT 
+    oi.orderItems_product_id,
+    SUM(oi.orderItems_qty) as item_sold,
+    c.category_name,
+    p.product_name,
+   	SUM(o.orders_total_price) as total_price_sold,
+    o.orders_status,
+    c.category_user_ID
+    FROM order_items oi
+    JOIN products p ON oi.orderItems_product_id = p.product_id
+    JOIN categories c ON p.category_id = c.category_id
+    JOIN orders o ON oi.orderItems_order_id = o.orders_id
+    WHERE c.category_user_ID = '$userid' AND o.orders_status = 2
+    GROUP BY oi.orderItems_product_id
+    ORDER BY item_sold DESC
+    LIMIT 1
+";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
+
 /********************************
  ************Seller and Admin Dashboard & Reports end
  ********************************/
