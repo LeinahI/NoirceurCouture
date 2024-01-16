@@ -126,8 +126,8 @@ include('../middleware/sellerMW.php'); ?>
                     <!-- Brand Name and Logo -->
                     <section class="store-user mt-3 px-3">
                         <div class="logo d-flex align-items-center">
-                            <img src="../assets/uploads/brands/<?= $categImage; ?>" style="margin-right: 15px;" height="50px">
-                            <h2 class="text-primary"><?= $categName ?></h2>
+                            <img src="../assets/uploads/brands/<?= $categImage; ?>" alt="brand_image" style="margin-right: 15px;" height="50px">
+                            <h2 class="text-primary" alt="brand_name"><?= $categName ?></h2>
                         </div>
                     </section>
                     <!-- Main Reports -->
@@ -221,10 +221,10 @@ include('../middleware/sellerMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">most sellable product</p>
-                                        <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="80px">
+                                        <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" alt="product_image" height="80px">
                                         <div class="d-flex flex-row-reverse">
-                                            <h5 class="mb-0 text-white"><?= $trend['product_name']; ?></h5>
-                                            <h5 class="mb-0 text-white">₱<?= number_format($trend['product_srp'], 2); ?></h5>
+                                            <h5 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name'] ?? "none"; ?></h5>
+                                            <h5 class="mb-0 text-white">₱<?= number_format($trend['product_srp'] ?? 0, 2); ?></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -234,16 +234,16 @@ include('../middleware/sellerMW.php'); ?>
                         </div>
                         <!-- Total Count Sold of Most sellable Product -->
                         <div class="col-md-6">
-                            <div class="card bg-success ">
+                            <div class="card bg-success">
                                 <div class="card-header p-3 pt-2 bg-success text-white">
                                     <div class="icon icon-md icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
                                         <i class="material-icons opacity-10">attach_money</i>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">most sellable product count</p>
-                                        <div class="mt-4">
-                                            <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
-                                            <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
+                                        <div class="mt-4 mt-4 d-flex flex-row-reverse">
+                                            <h5 class="mb-0 text-white" style="margin-left: 20px;"><?= $itemSold['item_sold'] ?? 0; ?> pcs</h5>
+                                            <h5 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'] ?? 0, 2); ?></h5>
                                         </div>
                                     </div>
                                 </div>

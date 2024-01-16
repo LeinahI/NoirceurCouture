@@ -11,17 +11,14 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $sm_desc = $_POST['smallDescriptionInput'];
     $desc = $_POST['productdescriptionInput'];
     $orig_price = $_POST['originalPriceInput'];
     $discount = $_POST['priceDiscount'];
     $srp = $_POST['suggestedRetailPriceInput'];
     $qty = $_POST['quantityInput'];
-    $product_status = isset($_POST['productstatusCheckbox']) ? '1' : '0';
     $product_popular = isset($_POST['productpopularCheckbox']) ? '1' : '0';
     $meta_title = $_POST['productmetaTitleInput'];
     $meta_desc = $_POST['productmetaDescriptionInput'];
-    $meta_kw = $_POST['productmetaKeywordsInput'];
 
     // Check if product name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ?";
@@ -49,10 +46,10 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
         $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
 
-        $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_small_description, product_description, product_original_price,
-                        product_discount, product_srp, product_image, product_qty, product_status, product_popular, product_meta_title, product_meta_keywords, product_meta_description)
-                        VALUES('$category_id','$name','$slug','$sm_desc','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_status','$product_popular',
-                        '$meta_title','$meta_desc','$meta_kw')";
+        $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_description, product_original_price,
+                        product_discount, product_srp, product_image, product_qty, product_popular, product_meta_title, product_meta_description)
+                        VALUES('$category_id','$name','$slug','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
+                        '$meta_title','$meta_desc')";
         $product_categ_query_run = mysqli_query($con, $product_categ_query);
         if ($product_categ_query_run) {
             move_uploaded_file($image_tmp, $destination);
@@ -69,7 +66,6 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $sm_desc = $_POST['smallDescriptionInput'];
     $desc = $_POST['productdescriptionInput'];
     $orig_price = $_POST['originalPriceInput'];
     $discount = $_POST['priceDiscount'];
@@ -79,7 +75,6 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $product_popular = isset($_POST['productpopularCheckbox']) ? '1' : '0';
     $meta_title = $_POST['productmetaTitleInput'];
     $meta_desc = $_POST['productmetaDescriptionInput'];
-    $meta_kw = $_POST['productmetaKeywordsInput'];
 
     // Check if category name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ? AND product_id != ?";
@@ -110,17 +105,16 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_small_description = ?, product_description = ?,
+        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_description = ?,
         product_original_price = ?, product_discount = ?, product_srp = ?, product_image = ?, product_qty = ?, product_status = ?, product_popular = ?, product_meta_title = ?,
-        product_meta_keywords = ?, product_meta_description = ? WHERE product_id = ?";
+        product_meta_description = ? WHERE product_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
         mysqli_stmt_bind_param(
             $stmt,
-            "issssdidsiiisssi",
+            "isssdidsiiissi",
             $category_id,
             $name,
             $slug,
-            $sm_desc,
             $desc,
             $orig_price,
             $discount,
@@ -130,7 +124,6 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $product_status,
             $product_popular,
             $meta_title,
-            $meta_kw,
             $meta_desc,
             $product_id
         );

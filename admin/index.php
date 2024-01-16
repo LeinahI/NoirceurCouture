@@ -9,25 +9,25 @@
         </div>
         <div class="row mt-4">
             <?php
-            $cancel = getCancelledOrdersCount($_SESSION['auth_user']['user_ID']);
-            $cancelCount = mysqli_fetch_array($cancel);
-
-            $prod = getAllProductsCount($_SESSION['auth_user']['user_ID']);
-            $prodCount = mysqli_fetch_array($prod);
-
-            $rev = getRevenue($_SESSION['auth_user']['user_ID']);
-            $revTotal = mysqli_fetch_array($rev);
-
-            $revdel = getRevenueDeliver($_SESSION['auth_user']['user_ID']);
-            $revdelTotal = mysqli_fetch_array($revdel);
-
-            $trendItem = getTrendingItem($_SESSION['auth_user']['user_ID']);
-            $trend = mysqli_fetch_array($trendItem);
-
-            $trendSold = getTrendingItemSold($_SESSION['auth_user']['user_ID']);
-            $itemSold = mysqli_fetch_array($trendSold);
+            $adminCateg = getAdminCategories($_SESSION['auth_user']['user_ID']);
 
             ?>
+            <div class="form-floating col-md-12 mb-5">
+                <select class="form-select border border-primary ps-2" id="selectCategory">
+                    <?php
+                    if (mysqli_num_rows($adminCateg) > 0) {
+                        foreach ($adminCateg as $item) {
+                    ?>
+                            <option value="<?= $item['category_id'] ?>"><?= $item['category_name'] ?></option>
+                    <?php
+                        }
+                    } else {
+                        echo "No Category Available";
+                    }
+                    ?>
+                </select>
+                <label for="selectCategory" class="ps-3">Select Brand Category</label>
+            </div>
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card bg-dark">
                     <div class="card-header bg-dark p-3 pt-2">
@@ -36,7 +36,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-white text-capitalize">Total Revenue from Delivered</p>
-                            <h4 class="mb-0 text-white">₱<?= number_format($revdelTotal['total_orders_price'], 2); ?></h4>
+                            <h4 class="mb-0 text-white">₱<span id="revenueDeliver"></span></h4>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm text-white mb-0 text-capitalize">Total Orders Cancelled</p>
-                            <h4 class="mb-0 text-white"><?= $cancelCount['total_cancelled_orders']; ?></h4>
+                            <h4 class="mb-0 text-white" id="orderCancelled"></h4>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize text-white ">Expected Revenue by Product</p>
-                            <h4 class="mb-0 text-white">₱<?= number_format($revTotal['total_if_sold'], 2); ?></h4>
+                            <h4 class="mb-0 text-white">₱<span id="expectedRevenue"></span></h4>
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize text-white">All products Total Count</p>
-                            <h4 class="mb-0 text-white"><?= $prodCount['total_prod_qty'] ?? 0; ?></h4>
+                            <h4 class="mb-0 text-white" id="allProductCount"></h4>
                         </div>
                     </div>
 
@@ -104,15 +104,15 @@
             <div class="col-md-6 mt-4">
                 <div class="card bg-primary">
                     <div class="card-header p-3 pt-2 bg-primary text-white">
-                        <div class="icon icon-md icon-shape bg-gradient-primary shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+                        <div class="icon icon-xl icon-shape bg-gradient-primary shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">whatshot</i>
                         </div>
                         <div class="text-end pt-1">
                             <p class="fs-3 mb-0 text-capitalize">most sellable product</p>
-                            <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="150px">
+                            <img id="trendImageName" height="150px" alt="product_image">
                             <div class="d-flex flex-row-reverse">
-                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name']; ?></h3>
-                                <h3 class="mb-0 text-white">₱<?= number_format($trend['product_srp'], 2); ?></h3>
+                                <h3 class="mb-0 text-white" style="margin-left: 20px;" id="trendProductName"></h3>
+                                <h3 class="mb-0 text-white">₱<span id="trendProductPrice"></span></h3>
                             </div>
                         </div>
                     </div>
@@ -122,21 +122,20 @@
             </div>
 
             <div class="col-md-6 mt-4">
-                <div class="card bg-success d-flex flex-column h-100">
+                <div class="card bg-success">
                     <div class="card-header p-3 pt-2 bg-success text-white">
-                        <div class="icon icon-md icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
+                        <div class="icon icon-xl icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">attach_money</i>
                         </div>
                         <div class="text-end pt-1">
                             <p class="fs-3 mb-0 text-capitalize">most sellable product count</p>
-                            <div class="mt-4">
-                                <br><br><br>
-                                <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
-                                <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
+                            <div class="mt-4 d-flex flex-row-reverse">
+                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><span id="itemSold"></span>&nbsp;pcs</h3>
+                                <h3 class="mb-0 text-white">₱<span id="priceSold"></span></h3>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer text-end p-3 ">
+                    <div class="card-footer p-3">
                     </div>
                 </div>
             </div>
@@ -144,5 +143,48 @@
         </div>
     </div>
 </div>
-</div>
+
 <?php include('partials/footer.php'); ?>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add change event listener to the select tag
+        $('#selectCategory').change(function() {
+            // Get the selected category ID
+            var categoryId = $(this).val();
+            var userId = <?= $_SESSION['auth_user']['user_ID'] ?? 'null'; ?>;
+
+            // Send an AJAX request to your PHP script
+            $.ajax({
+                type: 'POST',
+                url: 'models/dashboard-model.php',
+                data: {
+                    categoryId: categoryId,
+                    userID: userId
+                },
+                dataType: 'json', // Specify the expected data type
+                success: function(response) {
+
+                    // Update HTML elements with the received data
+                    $('#allProductCount').text(response.productCount);
+                    $('#expectedRevenue').text(response.revenueTotal);
+                    $('#orderCancelled').text(response.cancelTotal);
+                    $('#revenueDeliver').text(response.revenueDeliverTotal);
+                    $('#trendProductName').text(response.trendName);
+                    $('#trendProductPrice').text(response.trendPrice);
+                    $('#trendImageName').attr('src', '../assets/uploads/products/' + response.trendImage);
+                    $('#itemSold').text(response.itemSold);
+                    $('#priceSold').text(response.priceSold);
+                },
+                error: function() {
+                    console.log('Error in AJAX request');
+                }
+            });
+        });
+
+        // Trigger the change event on page load only if a category is selected
+        if ($('#selectCategory').val()) {
+            $('#selectCategory').trigger('change');
+        }
+    });
+</script>

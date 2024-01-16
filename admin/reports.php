@@ -87,13 +87,33 @@ include('../middleware/adminMW.php'); ?>
             <h2 class="text-white">Your Reports
                 <button class="btn btn-light float-end ms-2" onclick="window.print()"><i class="material-icons opacity-10">print</i> Print Report</button>
             </h2>
+            <?php
+            $adminCateg = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
+            $data = mysqli_fetch_array($adminCateg);
+            ?>
+            <div class="form-floating col-md-12">
+                <select class="form-select border bg-primary ps-2 text-white" id="selectCategory">
+                    <?php
+                    if (mysqli_num_rows($adminCateg) > 0) {
+                        foreach ($adminCateg as $item) {
+                    ?>
+                            <option value="<?= $item['category_id'] ?>"><?= $item['category_name'] ?></option>
+                    <?php
+                        }
+                    } else {
+                        echo "No Category Available";
+                    }
+                    ?>
+                </select>
+                <label for="selectCategory" class="ps-3 text-white">Select Brand Category</label>
+            </div>
         </div>
         <?php
-        $categUser = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
-        $data = mysqli_fetch_array($categUser);
+        /* $categUser = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
+        $data = mysqli_fetch_array($categUser); */
 
         $categImage = isset($data['category_image']) ? $data['category_image'] : '';
-        $categName = isset($data['category_name']) ? $data['category_name'] : '';
+        /* $categName = isset($data['category_name']) ? $data['category_name'] : ''; */
 
         $revdel = getRevenueDeliver($_SESSION['auth_user']['user_ID']);
         $revdelTotal = mysqli_fetch_array($revdel);
@@ -112,7 +132,7 @@ include('../middleware/adminMW.php'); ?>
 
         $trendSold = getTrendingItemSold($_SESSION['auth_user']['user_ID']);
         $itemSold = mysqli_fetch_array($trendSold);
-        
+
         ?>
         <div class="card-body">
             <!-- Printable page -->
@@ -127,8 +147,8 @@ include('../middleware/adminMW.php'); ?>
                     <!-- Brand Name and Logo -->
                     <section class="store-user mt-3 px-3">
                         <div class="logo d-flex align-items-center">
-                            <img src="../assets/uploads/brands/<?= $categImage; ?>" style="margin-right: 15px;" height="50px">
-                            <h2 class="text-primary"><?= $categName ?></h2>
+                            <img id="categImage" alt="brand_image" style="margin-right: 15px;" height="50px">
+                            <h2 class="text-primary" id="categName"></h2>
                         </div>
                     </section>
                     <!-- Main Reports -->
@@ -142,7 +162,7 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">Total Revenue from Delivered</p>
-                                        <h3 class="mb-0 text-white">₱<?= number_format($revdelTotal['total_orders_price'], 2); ?></h3>
+                                        <h3 class="mb-0 text-white">₱<span id="revenueDeliver"></span></h3>
                                     </div>
                                 </div>
                                 <hr class="dark horizontal my-0">
@@ -159,7 +179,7 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">Total Orders Cancelled</p>
-                                        <h3 class="mb-0 text-white"><?= $cancelCount['total_cancelled_orders']; ?></h3>
+                                        <h3 class="mb-0 text-white" id="orderCancelled"></h3>
                                     </div>
                                 </div>
                                 <hr class="dark horizontal my-0">
@@ -176,7 +196,7 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">Expected Revenue by Product</p>
-                                        <h3 class="mb-0 text-white">₱<?= number_format($revTotal['total_if_sold'], 2); ?></h3>
+                                        <h3 class="mb-0 text-white">₱ <span id="expectedRevenue"></span></h3>
                                     </div>
                                 </div>
                                 <hr class="dark horizontal my-0">
@@ -193,7 +213,7 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">All products Total Count</p>
-                                        <h3 class="mb-0 text-white"><?= $prodCount['total_prod_qty'] ?? 0; ?></h3>
+                                        <h3 class="mb-0 text-white" id="allProductCount"></h3>
                                     </div>
                                 </div>
 
@@ -222,10 +242,10 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">most sellable product</p>
-                                        <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="80px">
+                                        <img id="trendImageName" height="80px" alt="product_image">
                                         <div class="d-flex flex-row-reverse">
-                                            <h5 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name']; ?></h5>
-                                            <h5 class="mb-0 text-white">₱<?= number_format($trend['product_srp'], 2); ?></h5>
+                                            <h5 class="mb-0 text-white" style="margin-left: 20px;" id="trendProductName"></h5>
+                                            <h5 class="mb-0 text-white">₱ <span id="trendProductPrice"></span></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -242,9 +262,9 @@ include('../middleware/adminMW.php'); ?>
                                     </div>
                                     <div class="text-end pt-1">
                                         <p class="fs-6 mb-0 text-capitalize">most sellable product count</p>
-                                        <div class="mt-4">
-                                            <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
-                                            <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
+                                        <div class="mt-4 d-flex flex-row-reverse">
+                                            <h5 class="mb-0 text-white" style="margin-left: 20px;"><span id="itemSold"></span>&nbsp;pcs</h5>
+                                            <h5 class="mb-0 text-white">₱<span id="priceSold"></span></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -280,11 +300,49 @@ include('../middleware/adminMW.php'); ?>
         </div>
     </div>
 </div>
-
-<!--jquery cdn start-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<!--jquery cdn end-->
-
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
 <?php include('partials/footer.php'); ?>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Add change event listener to the select tag
+        $('#selectCategory').change(function() {
+            // Get the selected category ID
+            var categoryId = $(this).val();
+            var userId = <?= $_SESSION['auth_user']['user_ID'] ?? 'null'; ?>;
+
+            // Send an AJAX request to your PHP script
+            $.ajax({
+                type: 'POST',
+                url: 'models/dashboard-model.php',
+                data: {
+                    categoryId: categoryId,
+                    userID: userId
+                },
+                dataType: 'json', // Specify the expected data type
+                success: function(response) {
+
+                    // Update HTML elements with the received data
+                    $('#allProductCount').text(response.productCount);
+                    $('#expectedRevenue').text(response.revenueTotal);
+                    $('#orderCancelled').text(response.cancelTotal);
+                    $('#revenueDeliver').text(response.revenueDeliverTotal);
+                    $('#trendProductName').text(response.trendName);
+                    $('#trendProductPrice').text(response.trendPrice);
+                    $('#trendImageName').attr('src', '../assets/uploads/products/' + response.trendImage);
+                    $('#itemSold').text(response.itemSold);
+                    $('#priceSold').text(response.priceSold);
+                    $('#categName').text(response.categName);
+                    $('#categImage').attr('src', '../assets/uploads/brands/' + response.categImage);
+                },
+                error: function() {
+                    console.log('Error in AJAX request');
+                }
+            });
+        });
+
+        // Trigger the change event on page load only if a category is selected
+        if ($('#selectCategory').val()) {
+            $('#selectCategory').trigger('change');
+        }
+    });
+</script>

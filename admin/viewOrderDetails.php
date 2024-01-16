@@ -24,6 +24,21 @@ if (isset($_GET['trck'])) {
 }
 
 $data = mysqli_fetch_array($orderData);
+
+// Set the session variable to the current page
+$_SESSION['last_visited_page'] = $_SERVER['PHP_SELF'];
+
+// Set the default page
+$backPage = 'orders.php';
+
+// Check if the session variable is set
+if (isset($_SESSION['last_visited_page'])) {
+    // Use the last visited page from the session
+    $backPage = $_SESSION['last_visited_page'];
+}
+
+// Reset the session variable
+unset($_SESSION['last_visited_page']);
 ?>
 
 <style>
@@ -38,7 +53,7 @@ $data = mysqli_fetch_array($orderData);
             <div class="card">
                 <div class="card-header">
                     <span class="fs-2 fw-bold">Order Details</span>
-                    <a href="orders.php" class="btn btn-primary float-end">Back</a>
+                    <a id="backButton" class="btn btn-primary float-end">Back</a>
                 </div>
                 <div class="card-body mb-n3">
                     <div class="row">
@@ -176,6 +191,22 @@ $data = mysqli_fetch_array($orderData);
 <?php include('partials/footer.php'); ?>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var referringPage = document.referrer;
+        var validReferringPages = [
+            "ordersCancelled.php",
+            "ordersDeliver.php",
+            "ordersPreparing.php",
+            "ordersShipped.php"
+        ];
+
+        // Set the "Back" button link dynamically
+        var backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.href = validReferringPages.includes(referringPage) ? referringPage : "orders.php";
+        }
+    });
+    
     function disableSelect() {
         var selectElement = document.getElementById("orderStat");
         var selectedOption = selectElement.options[selectElement.selectedIndex].value;

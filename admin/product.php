@@ -79,7 +79,7 @@ include('../middleware/adminMW.php'); ?>
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalLabel">Delete Product <span><?= $item['product_id']; ?></span></h5>
                                                                 </div>
-                                                                <div class="modal-body">
+                                                                <div class="modal-body text-wrap">
                                                                     Are you sure you want to delete this product?
                                                                 </div>
                                                                 <div class="modal-footer">

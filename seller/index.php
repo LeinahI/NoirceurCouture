@@ -107,10 +107,10 @@ include('../middleware/sellerMW.php'); ?>
                         </div>
                         <div class="text-end pt-1">
                             <p class="fs-3 mb-0 text-capitalize">most sellable product</p>
-                            <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="150px">
+                            <img src="../assets/uploads/products/<?= $trend['product_image']; ?>" height="150px" alt="product_image">
                             <div class="d-flex flex-row-reverse">
-                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name']; ?></h3>
-                                <h3 class="mb-0 text-white">₱<?= number_format($trend['product_srp'], 2); ?></h3>
+                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><?= $trend['product_name'] ?? "none"; ?></h3>
+                                <h3 class="mb-0 text-white">₱<?= number_format($trend['product_srp'] ?? 0, 2); ?></h3>
                             </div>
                         </div>
                     </div>
@@ -120,17 +120,16 @@ include('../middleware/sellerMW.php'); ?>
             </div>
 
             <div class="col-md-6 mt-4">
-                <div class="card bg-success d-flex flex-column h-100">
+                <div class="card bg-success">
                     <div class="card-header p-3 pt-2 bg-success text-white">
                         <div class="icon icon-md icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
                             <i class="material-icons opacity-10">attach_money</i>
                         </div>
                         <div class="text-end pt-1">
                             <p class="fs-3 mb-0 text-capitalize">most sellable product count</p>
-                            <div class="mt-4">
-                                <br><br><br>
-                                <h3 class="mb-0 text-white"><?= $itemSold['item_sold']; ?> pcs</h3>
-                                <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'], 2); ?></h3>
+                            <div class="mt-4 mt-4 d-flex flex-row-reverse">
+                                <h3 class="mb-0 text-white" style="margin-left: 20px;"><?= $itemSold['item_sold'] ?? 0; ?> pcs</h3>
+                                <h3 class="mb-0 text-white">₱<?= number_format($itemSold['total_price_sold'] ?? 0, 2); ?></h3>
                             </div>
                         </div>
                     </div>

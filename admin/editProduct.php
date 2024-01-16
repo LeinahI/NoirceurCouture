@@ -50,10 +50,6 @@ include('../models/myFunctions.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Product Slug</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_small_description'] ?>" id="smallDesc_input" name="smallDescriptionInput" required placeholder="sdesc">
-                                            <label for="smallDesc_input" class="ps-3">Product Small Description</label>
-                                        </div>
-                                        <div class="form-floating col-md-12 mb-3">
                                             <textarea class="form-control ps-3" placeholder="d" id="description_input" name="productdescriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Product Description</label>
                                         </div>
@@ -112,10 +108,6 @@ include('../models/myFunctions.php'); ?>
                                             <textarea class="form-control ps-3" placeholder="d" id="metaDescription_input" name="productmetaDescriptionInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_meta_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Product Meta Description</label>
                                         </div>
-                                        <div class="form-floating col-md-12 mb-3">
-                                            <textarea class="form-control ps-3" placeholder="d" id="metaKeywords_input" name="productmetaKeywordsInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_meta_description'] ?></textarea>
-                                            <label for="floatingPassword" class="ps-3">Product Meta Keywords</label>
-                                        </div>
                                         <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="editProduct_btn" name="updateProductBtn" class="col-md-12 btn btn-primary">Update Data</button>
                                         </div>
@@ -139,6 +131,34 @@ include('../models/myFunctions.php'); ?>
     </div>
 </div>
 <script>
+    /* Auto input other fields */
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name_input");
+        var slugInput = document.getElementById("slug_input");
+        var metaTitle = document.getElementById("metaTitle_input");
+        var descriptionInput = document.getElementById("description_input");
+        var metaDescription = document.getElementById("metaDescription_input");
+
+        /* For slug and meta title */
+        nameInput.addEventListener("input", function() {
+            // Update the value of the slug input based on the name input
+            slugInput.value = generateSlug(nameInput.value);
+            metaTitle.value = nameInput.value;
+        });
+
+        /* for meta description */
+        descriptionInput.addEventListener("input", function() {
+            metaDescription.value = descriptionInput.value;
+        });
+
+        // Function to generate a slug from the given string
+        function generateSlug(str) {
+            // Replace spaces with dashes and convert to lowercase
+            return str.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+    });
+
+    /* Calculate final Price */
     function calculateFinalPrice() {
         // Get original price and discount percentage
         let originalPrice = parseFloat(document.getElementById('orp_input').value);

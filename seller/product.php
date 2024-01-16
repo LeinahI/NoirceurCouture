@@ -77,7 +77,7 @@ include('../middleware/sellerMW.php'); ?>
                                                                     <h5 class="modal-title" id="exampleModalLabel">Delete Product <span><?= $item['product_id']; ?></span></h5>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Are you sure you want to delete this product?
+                                                                    Are you sure you want to delete <b><?= $productName ?></b>?
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>

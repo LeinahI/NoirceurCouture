@@ -21,7 +21,7 @@ include('../models/myFunctions.php'); ?>
                             <form action="./models/category-auth.php" method="POST" enctype="multipart/form-data">
                                 <div class="container-fluid">
                                     <div class="row col-md-12">
-                                        
+
                                         <div class="form-floating col-md-6 mb-3">
                                             <input type="hidden" name="categoryID" value="<?= $data['category_id'] ?>">
                                             <input type="text" class="form-control ps-3" value="<?= $data['category_name'] ?>" id="name_input" name="nameInput" required placeholder="Name">
@@ -35,14 +35,14 @@ include('../models/myFunctions.php'); ?>
                                             <textarea class="form-control ps-3" id="description_input" name="descriptionInput" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['category_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Description</label>
                                         </div>
-                                        <div class="form-floating col-md-6 mb-3" >
+                                        <div class="form-floating col-md-6 mb-3">
                                             <input type="file" class="form-control ps-3" id="uploadImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadNewImageInput">
                                             <label for="floatingPassword" class="ps-3">Upload Image</label>
                                         </div>
-                                        <div class="col-md-6 mb-3" >
-                                                <label for="">Current image:</label>
-                                                <input type="hidden" name="oldImage" value="<?= $data['category_image'] ?>">
-                                                <img src="../assets/uploads/brands/<?= $data['category_image'] ?>" height="50px" alt="brand">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="">Current image:</label>
+                                            <input type="hidden" name="oldImage" value="<?= $data['category_image'] ?>">
+                                            <img src="../assets/uploads/brands/<?= $data['category_image'] ?>" height="50px" alt="brand">
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
                                             <input type="text" class="form-control ps-3" value="<?= $data['category_meta_title'] ?>" id="metaTitle_input" name="metaTitleInput" required placeholder="Slug">
@@ -79,6 +79,34 @@ include('../models/myFunctions.php'); ?>
     </div>
 </div>
 <script>
+    /* Automatic Input */
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name_input");
+        var slugInput = document.getElementById("slug_input");
+        var metaTitle = document.getElementById("metaTitle_input");
+        var descriptionInput = document.getElementById("description_input");
+        var metaDescription = document.getElementById("metaDescription_input");
+
+        /* For slug and meta title */
+        nameInput.addEventListener("input", function() {
+            // Update the value of the slug input based on the name input
+            slugInput.value = generateSlug(nameInput.value);
+            metaTitle.value = nameInput.value;
+        });
+
+        /* for meta description */
+        descriptionInput.addEventListener("input", function() {
+            metaDescription.value = descriptionInput.value;
+        });
+
+        // Function to generate a slug from the given string
+        function generateSlug(str) {
+            // Replace spaces with dashes and convert to lowercase
+            return str.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+    });
+
+
     //Visible & hidden
     document.addEventListener("DOMContentLoaded", function() {
         var checkbox = document.getElementById("status_checkbox");

@@ -66,3 +66,30 @@ include('../middleware/adminMW.php'); ?>
 </div>
 
 <?php include('partials/footer.php'); ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name_input");
+        var slugInput = document.getElementById("slug_input");
+        var metaTitle = document.getElementById("metaTitle_input");
+        var descriptionInput = document.getElementById("description_input");
+        var metaDescription = document.getElementById("metaDescription_input");
+
+        /* For slug and meta title */
+        nameInput.addEventListener("input", function() {
+            // Update the value of the slug input based on the name input
+            slugInput.value = generateSlug(nameInput.value);
+            metaTitle.value = nameInput.value;
+        });
+
+        /* for meta description */
+        descriptionInput.addEventListener("input", function() {
+            metaDescription.value = descriptionInput.value;
+        });
+
+        // Function to generate a slug from the given string
+        function generateSlug(str) {
+            // Replace spaces with dashes and convert to lowercase
+            return str.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+    });
+</script>

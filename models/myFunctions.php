@@ -166,6 +166,14 @@ function getAllCancelledOrdersbyStore($id)
 /********************************
  ************Seller and Admin Reports Dashboard start
  ********************************/
+function getAdminCategories($userid)
+{
+    global $con;
+    $query = "SELECT * FROM categories WHERE category_user_ID = '$userid'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run; // Return the query result, not the query itself
+}
+
 function getCancelledOrdersCount($userid)
 {
     global $con;
@@ -250,7 +258,8 @@ function getTrendingItem($userid)
     return $query_run;
 }
 
-function getTrendingItemSold($userid){
+function getTrendingItemSold($userid)
+{
     global $con;
     $query = "SELECT 
     oi.orderItems_product_id,

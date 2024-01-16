@@ -41,7 +41,7 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
             }
         }
     }
-} 
+}
 
 /* User Address Add statement */
 if (isset($_POST['sellerAddAddrBtn'])) {
@@ -78,11 +78,9 @@ if (isset($_POST['sellerAddAddrBtn'])) {
         $stmt->bind_param("issssssss", $userId, $fullN, $email, $state, $city, $pcode, $country, $phoneNum, $fullAddr);
 
         if ($stmt->execute()) {
-            header("Location: ../views/account-details.php");
-            $_SESSION['Errormsg'] = "Address added successfully";
+            redirectSwal("../account-details.php", "Address updated successfully", "success");
         } else {
-            header("Location: ../views/account-details.php");
-            $_SESSION['Errormsg'] = "Something went wrong";
+            redirectSwal("../account-details.php", "Something went wrong", "error");
         }
         $stmt->close();
     }

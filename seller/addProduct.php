@@ -31,7 +31,7 @@ include('../middleware/sellerMW.php');
                                         }
                                         ?>
                                     </select>
-                                    <label for="selbr" class="ps-3">Select Brand Category</label>
+                                    <label for="selbr" class="ps-3">Brand Category</label>
                                 </div>
                                 <div class="row">
                                     <div class="form-floating col-md-6 mb-3">
@@ -42,10 +42,6 @@ include('../middleware/sellerMW.php');
                                         <input type="text" class="form-control ps-3" id="slug_input" name="productslugInput" required placeholder="Slug">
                                         <label for="floatingPassword" class="ps-3">Product Slug</label>
                                     </div>
-                                </div>
-                                <div class="form-floating col-md-12 mb-3">
-                                    <input type="text" class="form-control ps-3" id="smallDesc_input" name="smallDescriptionInput" required placeholder="sdesc">
-                                    <label for="smallDesc_input" class="ps-3">Product Small Description</label>
                                 </div>
                                 <div class="form-floating col-md-12 mb-3">
                                     <textarea class="form-control ps-3" placeholder="d" id="description_input" name="productdescriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"></textarea>
@@ -89,9 +85,6 @@ include('../middleware/sellerMW.php');
                                         <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                     </div>
                                     <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
-                                        <input type="checkbox" class="btn-check" id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
-                                        <label class="btn btn-outline-primary" for="status_checkbox">Status</label>
-
                                         <input type="checkbox" class="btn-check" id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
                                         <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>
                                     </div>
@@ -103,10 +96,6 @@ include('../middleware/sellerMW.php');
                                 <div class="form-floating col-md-12 mb-3">
                                     <textarea class="form-control ps-3" placeholder="d" id="metaDescription_input" name="productmetaDescriptionInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"></textarea>
                                     <label for="floatingPassword" class="ps-3">Product Meta Description</label>
-                                </div>
-                                <div class="form-floating col-md-12 mb-3">
-                                    <textarea class="form-control ps-3" placeholder="d" id="metaKeywords_input" name="productmetaKeywordsInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"></textarea>
-                                    <label for="floatingPassword" class="ps-3">Product Meta Keywords</label>
                                 </div>
                                 <div class="text-center col-md-12 mb-3">
                                     <button type="submit" id="addProduct_btn" name="addProductBtn" class="col-md-12 btn btn-primary">Add Product</button>
@@ -121,6 +110,34 @@ include('../middleware/sellerMW.php');
     </div>
 </div>
 <script>
+    /* Automatic Input */
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name_input");
+        var slugInput = document.getElementById("slug_input");
+        var metaTitle = document.getElementById("metaTitle_input");
+        var descriptionInput = document.getElementById("description_input");
+        var metaDescription = document.getElementById("metaDescription_input");
+
+        /* For slug and meta title */
+        nameInput.addEventListener("input", function() {
+            // Update the value of the slug input based on the name input
+            slugInput.value = generateSlug(nameInput.value);
+            metaTitle.value = nameInput.value;
+        });
+
+        /* for meta description */
+        descriptionInput.addEventListener("input", function() {
+            metaDescription.value = descriptionInput.value;
+        });
+
+        // Function to generate a slug from the given string
+        function generateSlug(str) {
+            // Replace spaces with dashes and convert to lowercase
+            return str.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+    });
+
+    /* Calculate Price */
     function calculateFinalPrice() {
         // Get original price and discount percentage
         let originalPrice = parseFloat(document.getElementById('orp_input').value);

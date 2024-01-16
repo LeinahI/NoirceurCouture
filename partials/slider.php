@@ -1,14 +1,6 @@
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
 
-<!-- Demo styles -->
-<style>
-    .swiper {
-        width: 1296px;
-        height: 729px;
-    }
-</style>
-
 <!-- Swiper -->
 <div class="container">
     <div class="swiper mySwiper responsive">
@@ -21,7 +13,7 @@
                 foreach ($slideshowImages as $item) {
             ?>
                     <div class="swiper-slide">
-                        <img class="slideImages img-fluid h-100 w-100 border border-top-0" src="../assets/uploads/slideshow/<?= $item['ss_image'] ?>" alt="slideshow image" />
+                        <img class="slideImages img-fluid border border-top-0" src="../assets/uploads/slideshow/<?= $item['ss_image'] ?>" />
                     </div>
             <?php
                 }
