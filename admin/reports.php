@@ -76,7 +76,7 @@ include('../middleware/adminMW.php'); ?>
         #printableArea {
             position: absolute;
             left: -50px;
-            top: -25px;
+            top: 0px;
         }
 
         .page {
@@ -112,32 +112,6 @@ include('../middleware/adminMW.php'); ?>
                 <label for="selectCategory" class="ps-3 text-white">Select Brand Category</label>
             </div>
         </div>
-        <?php
-        /* $categUser = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
-        $data = mysqli_fetch_array($categUser); */
-
-        $categImage = isset($data['category_image']) ? $data['category_image'] : '';
-        /* $categName = isset($data['category_name']) ? $data['category_name'] : ''; */
-
-        $revdel = getRevenueDeliver($_SESSION['auth_user']['user_ID']);
-        $revdelTotal = mysqli_fetch_array($revdel);
-
-        $cancel = getCancelledOrdersCount($_SESSION['auth_user']['user_ID']);
-        $cancelCount = mysqli_fetch_array($cancel);
-
-        $rev = getRevenue($_SESSION['auth_user']['user_ID']);
-        $revTotal = mysqli_fetch_array($rev);
-
-        $prod = getAllProductsCount($_SESSION['auth_user']['user_ID']);
-        $prodCount = mysqli_fetch_array($prod);
-
-        $trendItem = getTrendingItem($_SESSION['auth_user']['user_ID']);
-        $trend = mysqli_fetch_array($trendItem);
-
-        $trendSold = getTrendingItemSold($_SESSION['auth_user']['user_ID']);
-        $itemSold = mysqli_fetch_array($trendSold);
-
-        ?>
         <div class="card-body">
             <!-- Printable page -->
             <div class="p-5 page" size="A4" id="printableArea">

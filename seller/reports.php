@@ -72,7 +72,15 @@ include('../middleware/sellerMW.php'); ?>
         #printableArea {
             position: absolute;
             left: -50px;
-            top: -25px;
+            top: 0px;
+        }
+
+        .navbar {
+            visibility: hidden;
+        }
+
+        .sidenav {
+            visibility: hidden;
         }
 
         .page {
