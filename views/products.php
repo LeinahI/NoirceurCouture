@@ -41,6 +41,7 @@ if (isset($_GET['category'])) {
                 <div class="row">
                     <div class="col-md-12">
                         <h1><?= $category['category_name'] ?></h1>
+                        <h5><?= $category['category_description'] ?></h5>
                         <hr>
                         <div class="row">
                             <?php

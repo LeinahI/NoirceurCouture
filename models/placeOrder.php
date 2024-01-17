@@ -42,7 +42,7 @@ if (isset($_SESSION['auth'])) {
                 }
             }
 
-            $tracking_no = "nrcrCtr" . rand(1111, 9999) . substr($cpNum, 2);
+            $tracking_no = "nrcrCtr" . substr($cpNum, 2) . rand(1111, 9999);
             $placeOrder_query = "INSERT INTO orders(orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_state, orders_city, orders_country, orders_postal_code,
             orders_total_price, orders_payment_mode, orders_payment_id)
             VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$fAddr', '$state', '$city','$country','$pCode','$totalPrice', '$pay_mode', '$payment_id')";

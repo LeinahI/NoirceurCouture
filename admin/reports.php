@@ -69,6 +69,10 @@ include('../middleware/adminMW.php'); ?>
             visibility: hidden;
         }
 
+        .sidenav{
+            visibility: hidden;
+        }
+
         #printableArea {
             position: absolute;
             left: -50px;

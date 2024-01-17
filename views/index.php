@@ -1,5 +1,4 @@
-<?php include('../partials/__header.php');
-?>
+<?php include('../partials/__header.php');?>
 <?php
 if (isset($_SESSION['Errormsg'])) {
 ?>
@@ -16,15 +15,23 @@ if (isset($_SESSION['Errormsg'])) {
     unset($_SESSION['Errormsg']);
 }
 ?>
-
 <?php
 include('../partials/slider.php');
 include('../partials/trending.php');
 ?>
 
+<style>
+  @media (max-width: 1399px) {
+    .text-display {
+      display: none;
+    }
+  }
+</style>
+
+
 <div class="mt-5 mb-5">
     <div class="container">
-        <div class="position-absolute z-2" style="translate: 800px 300px;">
+        <div class="position-absolute z-2 text-display" style="translate: 800px 300px;">
             <div class="card" style="width: 24rem;">
                 <div class="card-body bg-main">
                     <h5 class="card-title text-center fw-bold">Welcome to the Noirceur</h5>
