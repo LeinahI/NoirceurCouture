@@ -24,12 +24,6 @@ include('../middleware/adminMW.php'); ?>
         box-shadow: var(--pageShadow);
     }
 
-    .page[size="A4"] {
-        width: 21cm;
-        height: 29.7cm;
-        overflow: hidden;
-    }
-
     .logo img {
         /* Store Logo */
         height: 80px;
@@ -64,23 +58,29 @@ include('../middleware/adminMW.php'); ?>
         font-size: 12px;
     }
 
+    .page[size="A4"] {
+        width: 21cm;
+        height: 29.6cm;
+        overflow: hidden;
+    }
+
     @media print {
         .card-body *:not(#printableArea):not(#printableArea *) {
             visibility: hidden;
         }
 
-        .sidenav{
+        .sidenav {
             visibility: hidden;
         }
 
-        .navbar{
+        .navbar {
             visibility: hidden;
         }
 
         #printableArea {
             position: absolute;
             left: -50px;
-            top: 0px;
+            top: -34px;
         }
 
         .page {

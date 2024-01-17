@@ -149,8 +149,15 @@ if (isset($_POST['loginBtn'])) {
             /* redirectSwal("../admin/index.php", "Welcome to admin page", "success"); */
             header('Location: ../admin/index.php');
         } else if ($userRole == 2) {
-            redirectSwal("../seller/index.php", "Welcome to seller Dashboard", "success");
-            /* header('Location: ../seller/index.php'); */
+
+            $check_address_query = "SELECT * FROM addresses WHERE address_user_ID = '$userid' ";
+            $check_address_query_run = mysqli_query($con, $check_address_query);
+            if (mysqli_num_rows($check_address_query_run) == 0) {
+                redirectSwal("../seller/account-details.php", "Add your pickup address first", "warning");
+            } else{
+                redirectSwal("../seller/index.php", "Welcome to seller Dashboard", "success");
+            }
+            
         } else if ($userRole == 0) {
             /* redirectSwal("../views/index.php", "Log in Successfully", "success"); */
             header('Location: ../views/index.php');

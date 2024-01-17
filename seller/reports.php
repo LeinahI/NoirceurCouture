@@ -24,12 +24,6 @@ include('../middleware/sellerMW.php'); ?>
         box-shadow: var(--pageShadow);
     }
 
-    .page[size="A4"] {
-        width: 21cm;
-        height: 29.7cm;
-        overflow: hidden;
-    }
-
     .logo img {
         /* Store Logo */
         height: 80px;
@@ -64,6 +58,11 @@ include('../middleware/sellerMW.php'); ?>
         font-size: 12px;
     }
 
+    .page[size="A4"] {
+        width: 21cm;
+        height: 29.6cm;
+        overflow: hidden;
+    }
     @media print {
         .card-body *:not(#printableArea):not(#printableArea *) {
             visibility: hidden;
@@ -72,7 +71,7 @@ include('../middleware/sellerMW.php'); ?>
         #printableArea {
             position: absolute;
             left: -50px;
-            top: 0px;
+            top: -34px;
         }
 
         .navbar {
@@ -84,7 +83,7 @@ include('../middleware/sellerMW.php'); ?>
         }
 
         .page {
-            box-shadow: none;
+             box-shadow: none;
         }
     }
 </style>

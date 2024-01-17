@@ -22,8 +22,14 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
+    /* Check if seller have pickup addr */
+    $check_address_query = "SELECT * FROM addresses WHERE address_user_ID = '$user_ID' ";
+    $check_address_query_run = mysqli_query($con, $check_address_query);
+
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
+    } else if (mysqli_num_rows($check_address_query_run) == 0) {
+        redirectSwal("../account-details.php", "Add your pickup address first before creating a store", "warning");
     } else {
         $image = $_FILES['uploadImageInput']['name'];
         $image_tmp = $_FILES['uploadImageInput']['tmp_name'];
@@ -58,7 +64,11 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         );
         $categ_query_run = mysqli_stmt_execute($stmt);
 
+
+
+
         if ($categ_query_run) {
+
             move_uploaded_file($image_tmp, $destination);
             redirectSwal("../your-store.php", "Store added successfully!", "success");
         } else {
