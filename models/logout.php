@@ -6,5 +6,4 @@ if (isset($_SESSION['auth'])) {
     unset($_SESSION['auth_user']);
     header("Location:../views/index.php");
     $_SESSION['Errormsg'] = "Logged out successfully";
-    /* $_SESSION['status_code'] = "success"; */
 }

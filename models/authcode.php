@@ -140,6 +140,7 @@ if (isset($_POST['loginBtn'])) {
             'user_firstName' => $fname,
             'user_email' => $useremail,
             'seller_confirmed' => $sellerConfirmed,
+            'user_role' => $userRole,
         ];
 
         $_SESSION['user_role'] = $userRole;

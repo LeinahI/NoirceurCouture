@@ -47,16 +47,23 @@ include('../models/myFunctions.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Password</label>
                                             <span class="input-group-text border-0 position-absolute end-4 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                         </div>
-                                        <div class="col-md-12 mb-3">
-                                            <div class="form-floating">
-                                                <select name="userRole" class="form-select ps-2" id="orderStat" required>
-                                                    <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
-                                                    <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
-                                                    <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
-                                                </select>
-                                                <label for="slug_input">User Role</label>
+                                        <?php
+                                        if (!($data['user_ID'] == 1 && $data['user_role'] == 1)) {
+                                            // Only show the select tag if the user is not admin with ID 1
+                                        ?>
+                                            <div class="col-md-12 mb-3">
+                                                <div class="form-floating">
+                                                    <select name="userRole" class="form-select ps-2" id="orderStat" required>
+                                                        <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
+                                                        <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
+                                                        <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
+                                                    </select>
+                                                    <label for="slug_input">User Role</label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php
+                                        }
+                                        ?>
                                         <?php
                                         if ($data['user_role'] == 2) {
                                             // Display the HTML code for seller verification
