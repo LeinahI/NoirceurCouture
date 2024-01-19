@@ -23,25 +23,36 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                 $ordersCreatedAt = $cItem['orders_createdAt'];
                                 $categoryName = $cItem['category_name'];
                                 $categorySlug = $cItem['category_slug'];
-                                /* Item status */
-                                $toShip = $cItem['orders_status'];
-                                $toReceive = $cItem['orders_status'];
-                                $delivered = $cItem['orders_status'];
-                                $cancelled = $cItem['orders_status'];
+
+                                // Initialize status variables
+                                $toShip = 0;
+                                $toReceive = 0;
+                                $delivered = 0;
+                                $cancelled = 0;
 
                                 if (!isset($groupedItems[$ordersCreatedAt][$categoryName])) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName] = [];
+                                    $groupedItems[$ordersCreatedAt][$categoryName] = [
+                                        'items' => [],
+                                        'statuses' => [
+                                            'toShip' => 0,
+                                            'toReceive' => 0,
+                                            'delivered' => 0,
+                                            'cancelled' => 0,
+                                        ],
+                                    ];
                                 }
 
-                                $groupedItems[$ordersCreatedAt][$categoryName][] = $cItem;
-                            }
+                                $groupedItems[$ordersCreatedAt][$categoryName]['items'][] = $cItem;
 
-                            // Sort items within each category by orders_createdAt in descending order
-                            foreach ($groupedItems as &$createdAtData) {
-                                foreach ($createdAtData as &$categoryData) {
-                                    usort($categoryData, function ($a, $b) {
-                                        return strtotime($b['orders_createdAt']) - strtotime($a['orders_createdAt']);
-                                    });
+                                // Update status variables based on the current item
+                                if ($cItem['orders_status'] == 0) {
+                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toShip'] = 1;
+                                } else if ($cItem['orders_status'] == 1) {
+                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toReceive'] = 1;
+                                } else if ($cItem['orders_status'] == 2) {
+                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['delivered'] = 1;
+                                } else if ($cItem['orders_status'] == 3) {
+                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['cancelled'] = 1;
                                 }
                             }
 
@@ -54,14 +65,25 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                         <h5 class="card-title">
                                             <span class="fw-bold"><?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?></span>
                                             <span class="float-end">
-                                                <?php if ($toShip == 0) {
-                                                    echo "Preparing to ship";
-                                                } else if ($toReceive == 1) {
-                                                    echo "Parcel is out for delivery";
-                                                } else if ($delivered == 2) {
-                                                    echo "Parcel has been delivered";
-                                                } else if ($cancelled == 3) {
-                                                    echo "Parcel has been cancelled";
+                                                <?php
+                                                $displayedStatus = false;
+                                                foreach ($createdAtData as $categoryName => $categoryData) {
+                                                    if (!$displayedStatus) {
+                                                        // Display the corresponding status
+                                                        if ($categoryData['statuses']['toShip'] == 1) {
+                                                            echo "Preparing to ship";
+                                                            $displayedStatus = true;
+                                                        } else if ($categoryData['statuses']['toReceive'] == 1) {
+                                                            echo "Parcel is out for delivery";
+                                                            $displayedStatus = true;
+                                                        } else if ($categoryData['statuses']['delivered'] == 1) {
+                                                            echo "Parcel has been delivered";
+                                                            $displayedStatus = true;
+                                                        } else if ($categoryData['statuses']['cancelled'] == 1) {
+                                                            echo "Parcel has been cancelled";
+                                                            $displayedStatus = true;
+                                                        }
+                                                    }
                                                 }
                                                 ?>
                                             </span>
@@ -70,21 +92,14 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                     <div class="card-body overflow-x-auto">
                                         <?php
                                         foreach ($createdAtData as $categoryName => $categoryData) {
-                                        ?>
-                                            <span class="fw-bold fs-4">
-                                                <a class="text-accent" href="products.php?category=<?= $categorySlug ?>">
-                                                    <?= $categoryName ?>
-                                                </a>
-                                            </span>
-                                            <?php
-                                            foreach ($categoryData as $cItem) {
+                                            foreach ($categoryData['items'] as $cItem) {
                                                 $itemTotalPrice = $cItem['orderItems_price'] * $cItem['orderItems_qty'];
                                                 $totalPrice += $itemTotalPrice;
 
                                                 $orderItemPrice = $cItem['orderItems_price'];
                                                 $orig_price = $cItem['product_original_price'];
                                                 $discount = $cItem['product_discount'];
-                                            ?>
+                                        ?>
                                                 <a href="viewOrderDetails.php?trck=<?= $cItem['orders_tracking_no'] ?>" class="text-dark text-decoration-none">
                                                     <div class="productData row align-items-center py-2">
                                                         <!-- Your existing code for displaying product details goes here -->
@@ -125,6 +140,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                             <?php
                             }
                             ?>
+
                         </div>
                     </div>
                 </div>
