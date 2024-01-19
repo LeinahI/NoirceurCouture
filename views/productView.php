@@ -94,7 +94,6 @@
                             <hr>
                             <div class="row">
                                 <div class="d-flex align-items-center">
-
                                     <?php
                                     if ($srp == $orig_price) {
                                     ?>

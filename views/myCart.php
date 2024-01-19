@@ -69,7 +69,7 @@
                                     $categslug = $categoryData['categslug'];
 
                             ?>
-                                    <div class="card my-4 p-3 border rounded-3 shadow bg-main">
+                                    <div class="card my-4 border rounded-3 shadow bg-main">
                                         <div class="card-header">
                                             <h5 class="card-title">
                                                 <a href="products.php?category=<?= $categslug ?>" class="text-dark">
