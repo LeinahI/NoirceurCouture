@@ -114,7 +114,7 @@ $data = mysqli_fetch_array($orderData);
                                             <div class="card mb-3 rounded-3 bg-primary">
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
-                                                        <?= $categoryName ?>
+                                                        <span><?= $categoryName ?></span>
                                                         <span><a href="products.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a></span>
                                                     </h5>
                                                 </div>

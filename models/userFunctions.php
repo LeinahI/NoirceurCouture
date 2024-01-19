@@ -94,6 +94,22 @@ function getCartItems()
     return $result;
 }
 
+function getOrderedItems()
+{
+    global $con;
+    $user_id = $_SESSION['auth_user']['user_ID'];
+
+    $query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, o.orders_createdAt, o.orders_status, oi.*, p.*, c.category_name, c.category_slug
+        FROM orders o
+        INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
+        INNER JOIN products p ON p.product_id = oi.orderItems_product_id
+        INNER JOIN categories c ON c.category_id = p.category_id
+        WHERE o.orders_user_ID = '$user_id' ORDER BY orders_id DESC";
+
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
 function getCartQty()
 {
     global $con;
