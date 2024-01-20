@@ -24,7 +24,6 @@ include('../middleware/sellerMW.php');
                                 <th>Order ID</th>
                                 <th>Full Name</th>
                                 <th>Tracking No.</th>
-                                <th>Price</th>
                                 <th>Date</th>
                                 <th>Action</th>
                             </tr>
@@ -40,7 +39,6 @@ include('../middleware/sellerMW.php');
                                         <td class="text-center"> <?= $item['orders_id'] ?> </td>
                                         <td class="text-center"> <?= $item['orders_full_name'] ?> </td>
                                         <td class="text-center"> <?= $item['orders_tracking_no'] ?> </td>
-                                        <td class="text-end">₱<?= $item['orders_total_price'] ?> </td>
                                         <td class="text-center"> <?= date('F d, Y h:i:s A', strtotime($item['orders_createdAt'])) ?> </td>
                                         <td class="text-center">
                                             <a href="viewOrderDetails.php?trck=<?= $item['orders_tracking_no'] ?>" class="btn btn-primary">View Details</a>

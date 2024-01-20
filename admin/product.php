@@ -14,8 +14,8 @@ include('../middleware/adminMW.php'); ?>
                 </h2>
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped" id="prodTable">
+                <div class="table-responsive" style="overflow-x: scroll; scrollbar-width: none;">
+                    <table class="table table-bordered table-hover table-striped" id="prodTable" >
                         <thead class="table-active">
                             <tr>
                                 <th>Store ID</th>

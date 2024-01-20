@@ -107,7 +107,7 @@ function getAllOrdersbyStore($id)
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id
     JOIN categories c ON p.category_id = c.category_id
-    WHERE c.category_user_ID = '$id';";
+    WHERE c.category_user_ID = '$id'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
@@ -389,7 +389,27 @@ function adminGetOrderedItemQty($tracking_number)
     $query = "SELECT oi.orderItems_order_id, SUM(oi.orderItems_qty) AS total_qty
     FROM order_items oi
     INNER JOIN orders o ON oi.orderItems_order_id = o.orders_id
+    INNER JOIN products p ON p.product_id = oi.orderItems_product_id
+    INNER JOIN categories c ON c.category_id = p.category_id
     WHERE o.orders_tracking_no = '$tracking_number'
+    GROUP BY oi.orderItems_order_id";
+
+    $result = mysqli_query($con, $query);
+    $row = mysqli_fetch_assoc($result);
+    $cart_qty = $row['total_qty'];
+    return $cart_qty;
+}
+
+function sellerGetOrderedItemQty($tracking_number)
+{
+    global $con;
+    $user_id = $_SESSION['auth_user']['user_ID'];
+    $query = "SELECT oi.orderItems_order_id, SUM(oi.orderItems_qty) AS total_qty
+    FROM order_items oi
+    INNER JOIN orders o ON oi.orderItems_order_id = o.orders_id
+    INNER JOIN products p ON p.product_id = oi.orderItems_product_id
+    INNER JOIN categories c ON c.category_id = p.category_id
+    WHERE o.orders_tracking_no = '$tracking_number' AND c.category_user_ID = '$user_id'
     GROUP BY oi.orderItems_order_id";
 
     $result = mysqli_query($con, $query);

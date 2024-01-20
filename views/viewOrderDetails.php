@@ -85,8 +85,7 @@ $data = mysqli_fetch_array($orderData);
                             <div class="col-md-12 mt-4">
                                 <h2>Order Item Details</h2>
                                 <hr>
-                                <div class="scrollBarCO" style="height: 386px; overflow-y: scroll; scrollbar-width: none;">
-                                    <?php
+                                <?php
                                     $user_id = $_SESSION['auth_user']['user_ID'];
                                     $groupedItems = [];
                                     $totalPrice = 0;
@@ -100,6 +99,9 @@ $data = mysqli_fetch_array($orderData);
 
                                     $order_query_run = mysqli_query($con, $order_query);
 
+                                    ?>
+                                <div id="itemsContainer" style="height: <?= count($groupedItems) > 1 ? '386px' : 'auto'; ?>; overflow-y: scroll; scrollbar-width: none;">
+                                     <?php
                                     if (mysqli_num_rows($order_query_run) > 0) {
                                         foreach ($order_query_run as $item) {
                                             $itemTotalPrice = $item['orderItems_price'] * $item['orderItems_qty'];
@@ -201,3 +203,18 @@ $data = mysqli_fetch_array($orderData);
 </div>
 
 <?php include('../partials/__footer.php'); ?>
+
+<script>
+    // JavaScript code to adjust the height based on the number of items
+    document.addEventListener("DOMContentLoaded", function() {
+        var itemsContainer = document.getElementById("itemsContainer");
+        var groupedItemsCount = <?= count($groupedItems); ?>;
+
+        // Check if there's more than one group, set height accordingly
+        if (groupedItemsCount > 1) {
+            itemsContainer.style.height = "386px";
+        } else {
+            itemsContainer.style.height = "auto";
+        }
+    });
+</script>

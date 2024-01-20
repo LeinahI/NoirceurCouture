@@ -84,13 +84,14 @@ $data = mysqli_fetch_array($orderData);
                                 <?php
                                 $groupedItems = [];
                                 $totalPrice = 0;
-                                $itemQty = adminGetOrderedItemQty($tracking_no);
+                                $user_id = $_SESSION['auth_user']['user_ID'];
+                                $itemQty = sellerGetOrderedItemQty($tracking_no);
                                 $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name
                                                 FROM orders o
                                                 INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
                                                 INNER JOIN products p ON p.product_id = oi.orderItems_product_id
                                                 INNER JOIN categories c ON c.category_id = p.category_id
-                                                WHERE o.orders_tracking_no = '$tracking_no'";
+                                                WHERE o.orders_tracking_no = '$tracking_no' AND c.category_user_ID = '$user_id'";
 
                                 $order_query_run = mysqli_query($con, $order_query);
 
