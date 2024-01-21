@@ -4,7 +4,7 @@ if (isset($_SESSION['Errormsg'])) {
 ?>
     <div class="container mt-3 position-absolute start-50 translate-middle-x z-2">
         <div class="row">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
                 <?= $_SESSION['Errormsg']; ?>.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

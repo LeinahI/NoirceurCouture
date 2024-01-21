@@ -7,14 +7,25 @@ include('../middleware/userMW.php');
     <?php
     if (isset($_SESSION['Errormsg'])) {
     ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
             <?= $_SESSION['Errormsg']; ?>.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+
     <?php
         /* Alert popup will show here */
         unset($_SESSION['Errormsg']);
+    }
+    if (isset($_SESSION['Successmsg'])) {
+    ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-triangle-exclamation" style="color: #1e5815;"></i>
+            <?= $_SESSION['Successmsg']; ?>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php
+        unset($_SESSION['Successmsg']);
     }
     ?>
     <div class="row">

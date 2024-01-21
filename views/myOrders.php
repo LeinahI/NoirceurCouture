@@ -60,7 +60,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                             foreach ($groupedItems as $ordersCreatedAt => $createdAtData) {
                                 $totalPrice = 0; // Reset $totalPrice for each ordersCreatedAt
                             ?>
-                                <div class="card my-4 border rounded-3 shadow bg-main">
+                                <div class="card mb-3 border rounded-3 shadow bg-main">
                                     <div class="card-header">
                                         <h5 class="card-title">
                                             <span class="fw-bold"><?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?></span>

@@ -203,7 +203,7 @@ if (isset($_POST['userUpdateAccBtn'])) {
 
             if ($update_query_run) {
                 header("Location: ../views/myAccount.php");
-                $_SESSION['Errormsg'] = "Account updated successfully";
+                $_SESSION['Successmsg'] = "Account updated successfully";
             } else {
                 header("Location: ../views/myAccount.php");
                 $_SESSION['Errormsg'] = "Something went wrong";

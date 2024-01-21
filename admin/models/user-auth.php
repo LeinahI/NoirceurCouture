@@ -25,12 +25,17 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
     $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum' AND user_id != '$userId'";
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
+    $check_username_query = "SELECT user_username FROM users WHERE user_username = '$uname' AND user_id != '$userId'";
+    $check_username_query_run = mysqli_query($con, $check_username_query);
+
     if (!preg_match($phonePatternPH, $phoneNum)) {
         redirectSwal("../editusers.php?id=$userId", "Invalid Philippine phone number format.", "error");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
         redirectSwal("../editusers.php?id=$userId", "Email already in use, please try something different.", "error");
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
         redirectSwal("../editusers.php?id=$userId", "Phone number already in use, please try something different.", "error");
+    } else if (mysqli_num_rows($check_username_query_run) > 0) {
+        redirectSwal("../editusers.php?id=$userId", "Username already in use, please try something different.", "error");
     } else {
         if ($uPass) {
             // Update User Data
