@@ -13,7 +13,7 @@ include('../models/myFunctions.php'); ?>
             ?>
                     <div class="card">
                         <div class="card-header">
-                            <span class="fs-2 fw-bold">Edit <?= $data['user_firstName'] ?> Details</span>
+                            <span class="fs-2 fw-bold">View <?= $data['user_firstName'] ?> Details</span>
                             <a href="users.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
@@ -23,37 +23,37 @@ include('../models/myFunctions.php'); ?>
                                     <div class="row col-md-12">
                                         <div class="form-floating col-md-6 mb-3">
                                             <input type="hidden" name="userID" value="<?= $data['user_ID'] ?>">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['user_firstName'] ?>" id="fname" name="firstName" required placeholder="Name">
+                                            <input type="text" class="form-control ps-3" value="<?= $data['user_firstName'] ?>" id="fname" name="firstName" readonly placeholder="Name">
                                             <label for="floatingInput" class="ps-3">First Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['user_lastName'] ?>" id="lname" name="lastName" required placeholder="Slug">
+                                            <input type="text" class="form-control ps-3" value="<?= $data['user_lastName'] ?>" id="lname" name="lastName" readonly placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Last Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="email" class="form-control ps-3" value="<?= $data['user_email'] ?>" id="email" name="email" required placeholder="Name">
+                                            <input type="email" class="form-control ps-3" value="<?= $data['user_email'] ?>" id="email" name="email" readonly placeholder="Name">
                                             <label for="floatingInput" class="ps-3">Email</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['user_phone'] ?>" id="pnum" name="phoneNumber" required placeholder="Slug">
+                                            <input type="number" class="form-control ps-3" value="<?= $data['user_phone'] ?>" id="pnum" name="phoneNumber" readonly placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Phone Number</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['user_username'] ?>" id="uname" name="username" required placeholder="Name">
+                                            <input type="text" class="form-control ps-3" value="<?= $data['user_username'] ?>" id="uname" name="username" readonly placeholder="Name">
                                             <label for="floatingInput" class="ps-3">Username</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3 position-relative">
-                                            <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="pass" name="userPassword" required placeholder="Slug">
+                                            <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="pass" name="userPassword" readonly placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Password</label>
                                             <span class="input-group-text border-0 position-absolute end-4 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                         </div>
                                         <?php
-                                        if (!($data['user_ID'] == 1 && $data['user_role'] == 1)) {
+                                        /* if (!($data['user_ID'] == 1 && $data['user_role'] == 1)) { */
                                             // Only show the select tag if the user is not admin with ID 1
                                         ?>
                                             <div class="col-md-12 mb-3">
                                                 <div class="form-floating">
-                                                    <select name="userRole" class="form-select ps-2" id="orderStat" required>
+                                                    <select name="userRole" class="form-select ps-2" id="orderStat" disabled>
                                                         <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
                                                         <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
                                                         <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
@@ -62,7 +62,7 @@ include('../models/myFunctions.php'); ?>
                                                 </div>
                                             </div>
                                         <?php
-                                        }
+                                        /* } */
                                         ?>
                                         <?php
                                         if ($data['user_role'] == 2) {
@@ -71,7 +71,7 @@ include('../models/myFunctions.php'); ?>
                                             <h4>Other Seller Details</h4>
                                             <div class="col-md-12 mb-3">
                                                 <div class="form-floating">
-                                                    <select name="userSellerType" class="form-select ps-2" id="orderStat" required>
+                                                    <select name="userSellerType" class="form-select ps-2" id="orderStat" disabled>
                                                         <option value="individual" <?= $data['seller_seller_type'] == 'individual' ? "selected" : "" ?>>Individual</option>
                                                         <option value="business" <?= $data['seller_seller_type'] == 'business' ? "selected" : "" ?>>Business</option>
                                                     </select>
@@ -82,11 +82,11 @@ include('../models/myFunctions.php'); ?>
                                                 <h5>Is verified?</h5>
                                                 <div class="btn-group" role="group">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio1" value="1" <?= $data['seller_confirmed'] == 1 ? 'checked' : '' ?> required>
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio1" value="1" <?= $data['seller_confirmed'] == 1 ? 'checked' : '' ?> disabled>
                                                         <label class="form-check-label" for="inlineRadio1">Yes</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio2" value="0" <?= $data['seller_confirmed'] == 0 ? 'checked' : '' ?> required>
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio2" value="0" <?= $data['seller_confirmed'] == 0 ? 'checked' : '' ?> disabled>
                                                         <label class="form-check-label" for="inlineRadio2">No</label>
                                                     </div>
                                                 </div>
@@ -95,9 +95,9 @@ include('../models/myFunctions.php'); ?>
                                         }
                                         ?>
 
-                                        <div class="text-center col-md-12 mb-3">
+                                        <!-- <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="addCategory_btn" name="updateUserBtn" class="col-md-12 btn btn-primary">Update User Details</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </form>

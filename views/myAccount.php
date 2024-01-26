@@ -88,7 +88,7 @@ include('../middleware/userMW.php');
                                         <!-- Pass and CPass end -->
 
                                         <div class="text-center ps-0">
-                                            <button type="submit" name="userUpdateAccBtn" class="btn btn-primary col-md-12">Update Credentials</button>
+                                            <button type="submit" name="userUpdateAccBtn" class="btn btn-accent col-md-12">Update Credentials</button>
                                         </div>
                                     </div>
                                 </div>

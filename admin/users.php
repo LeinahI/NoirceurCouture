@@ -22,7 +22,7 @@ include('../middleware/adminMW.php');
                                 <th>Last Name</th>
                                 <th>username</th>
                                 <th>Role</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,45 +52,7 @@ include('../middleware/adminMW.php');
                                         <td class="text-start"><?= $roleName ?> </td>
                                         <td>
                                             <div class="d-flex">
-                                                <?php
-                                                if ($item['user_role'] == 1) {
-                                                ?>
-                                                    <a href="editusers.php?id=<?= $item['user_ID']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                <?php
-                                                } else {
-                                                ?>
-                                                    <a href="editusers.php?id=<?= $item['user_ID']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                    <form action="models/user-auth.php" method="POST">
-                                                        <input type="hidden" name="user_ID" value="<?= $item['user_ID'] ?>" />
-                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['user_ID'] ?>">
-                                                            Delete
-                                                        </button>
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal<?= $item['user_ID'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalLabel">
-                                                                            Delete User <span><?= $item['user_ID']; ?></span>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Are you sure you want to delete&nbsp;<b><?= $item['user_firstName']; ?></b>?
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                                                                            Close
-                                                                        </button>
-                                                                        <input type="submit" class="btn btn-primary" name="deleteUserBtn" value="Delete" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-
-                                                <?php
-                                                }
-                                                ?>
+                                                <a href="editusers.php?id=<?= $item['user_ID']; ?>" class="btn btn-primary mx-2">View</a>
                                             </div>
                                         </td>
                                     </tr>

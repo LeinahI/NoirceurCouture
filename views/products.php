@@ -1,6 +1,9 @@
 <?php /* <!-- also calledCategories.php --> */
 include('../partials/__header.php');
 
+include(__DIR__ . '/../models/isAccountDeleted.php');
+checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
+
 if (isset($_GET['category'])) {
     $category_slug = $_GET['category'];
     $category_data = getSlugActiveCategories("categories", $category_slug);

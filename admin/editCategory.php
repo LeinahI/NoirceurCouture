@@ -13,7 +13,7 @@ include('../models/myFunctions.php'); ?>
             ?>
                     <div class="card">
                         <div class="card-header">
-                            <span class="fs-2 fw-bold">Edit <?= $data['category_name'] ?> Details</span>
+                            <span class="fs-2 fw-bold">View <?= $data['category_name'] ?> Details</span>
                             <a href="category.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
@@ -56,9 +56,10 @@ include('../models/myFunctions.php'); ?>
                                             <input type="checkbox" class="btn-check" <?= $data['category_status'] ? "checked" : "" ?> id="status_checkbox" name="statusCheckbox" autocomplete="off">
                                             <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['category_status'] ? "Hidden" : "Visible" ?></label>
                                         </div>
-                                        <div class="text-center col-md-12 mb-3">
+
+                                        <!-- <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="addCategory_btn" name="updateCategoryBtn" class="col-md-12 btn btn-primary">Update Data</button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </form>

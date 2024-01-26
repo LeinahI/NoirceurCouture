@@ -62,3 +62,32 @@ NoirceurCouture
 - [PayPal Checkout Javascript function](https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem)
 - [Realtime Colors](https://www.realtimecolors.com/?colors=171412-f6ede7-E7DED8-7B7774-bb6c54&fonts=Raleway-Raleway)
 - [e-commerce inspiration](https://dribbble.com/shots/22737212-Fashion-E-commerce-Website)
+
+## TODO Updates for Noirceur Couture 2.0
+Admin Role
+- At dashboard will track the total of buyer, sellers, users, account deleted, banned users, suspended users.
+- Cannot be a seller anymore.
+- Cannot add, edit, and delete stores, products & users.
+- Their task is only to moderate the stores, products, users, & seller application.
+- Admin can suspend(limited time) and ban(permanent) users & sellers.
+- Account Deletion Request form added on Admin UI.
+- Admin can accept and reject user account deletion request.
+
+Buyer Role
+- Buyer can have multiple addresses and set which is default address.
+- Buyer can request account deletion.
+- Buyer have now notification tab that can see order and Noirceur Couture Updates.
+- Buyer can rate products.
+- Can cancel order when the order are preparing to ship.
+- Can set the order status to Delivered.
+
+Seller Role
+- Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.
+- Seller can request to delete account.
+- Seller cannot set the parcel is delivered anymore.
+
+Buyer UI Changes
+- on products.php?category=... It will show the profile and ratings, products, and date joined.
+- On myAddress.php will have multiple cards for multiple address.
+- On myOrders.php they will separate the orders when user ordered on two or multiple different stores.
+- on checkOut.php user can choose which adress they use to deliver the parcel and add new address.

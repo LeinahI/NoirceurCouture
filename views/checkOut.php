@@ -73,7 +73,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 </div>
                                 <div class=" col-md-6 mb-3">
                                     <div class="form-floating ps-0 mb-3">
-                                        <input type="number" class="form-control" id="delivery_phoneNum" value="<?= $phone ?>" name="phoneNumber" placeholder="12">
+                                        <input type="number" class="form-control" id="delivery_phoneNum" value="<?= $phone ?>" name="phoneNumber" placeholder="09" onkeypress="inpNum(event)">
                                         <label for="floatingInput">Phone Number</label>
                                         <small class="text-danger phone"></small>
                                     </div>
@@ -208,6 +208,136 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
 --------------------------->
 <script src="https://www.paypal.com/sdk/js?client-id=AVe3Db1QSdssjRZm8rLrGrd6eWNPiBPsU-ax8oQU2BfXO1UANt6WPddNUjHAsMwQpS375AHeSRrrCMEq&currency=PHP&disable-funding=card"></script>
 <script>
+    /* Prevent user to write letter or symbols in phone number */
+    function inpNum(e) {
+        e = e || window.event;
+        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        var charStr = String.fromCharCode(charCode);
+
+        // Allow only numeric characters
+        if (!charStr.match(/^[0-9]+$/)) {
+            e.preventDefault();
+        }
+
+        // Allow a maximum of 11 digits
+        var inputValue = e.target.value || '';
+        var numericValue = inputValue.replace(/[^0-9]/g, '');
+
+        if (numericValue.length == 11) {
+            e.preventDefault();
+        }
+
+        // Apply Philippine phone number format (optional)
+        if (numericValue.length === 1 && numericValue !== '0') {
+            // Add '0' at the beginning if the first digit is not '0'
+            e.target.value = '0' + numericValue;
+        } else if (numericValue.length >= 2 && !numericValue.startsWith('09')) {
+            // Ensure it starts with '09'
+            e.target.value = '09' + numericValue.substring(2);
+        }
+    }
+
+    //!!!!!!!!!!!!!!!!!
+    //!Save Inputs Start
+    //!!!!!!!!!!!!!!!!!
+    //Save fname_input text
+    $(document).ready(function() {
+        var del_fname = $('#delivery_fname');
+        var del_emailAddr = $('#delivery_emailAddr');
+        var del_phoneNum = $('#delivery_phoneNum');
+        var del_state = $('#delivery_state');
+        var del_city = $('#delivery_city');
+        var del_postCode = $('#delivery_postCode');
+        var del_country = $('#delivery_country');
+        var del_fullAddr = $('#delivery_fullAddr');
+
+        //?fname
+        var savedFnameInput = sessionStorage.getItem('fullName');
+        if (savedFnameInput) {
+            del_fname.val(savedFnameInput);
+        }
+        del_fname.on('input', function() {
+            sessionStorage.setItem('fullName', del_fname.val());
+        });
+
+        //?email
+        var savedEmailInput = sessionStorage.getItem('emailAddress');
+        if (savedEmailInput) {
+            del_emailAddr.val(savedEmailInput);
+        }
+        del_emailAddr.on('input', function() {
+            sessionStorage.setItem('emailAddress', del_emailAddr.val());
+        });
+
+        //?phone
+        var savedPhoneInput = sessionStorage.getItem('phoneNumber');
+        if (savedPhoneInput) {
+            del_phoneNum.val(savedPhoneInput);
+        }
+        del_phoneNum.on('input', function() {
+            sessionStorage.setItem('phoneNumber', del_phoneNum.val());
+        });
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('state');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('state', loginInput.val());
+        });
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('city');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('city', loginInput.val());
+        });
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('postalCode');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('postalCode', loginInput.val());
+        });
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('country');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('country', loginInput.val());
+        });
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('fullAddress');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('fullAddress', loginInput.val());
+        });
+    });
+
+    //!!!!!!!!!!!!!!!!!
+    //!Save Inputs end
+    //!!!!!!!!!!!!!!!!!
+
     /* display selected country */
     var selectedCountry = "<?php echo $country; ?>";
     // Set the selected attribute based on the PHP variable
@@ -250,6 +380,9 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
 
         if (phoneNum.length === 0) {
             $(".phone").text("*This field is required");
+            isValid = false;
+        } else if (!phoneNum.match(/^09\d{9}$/)) {
+            $(".phone").text("*Invalid Philippine phone number format");
             isValid = false;
         }
 
@@ -302,17 +435,21 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                         method: "United States Postal Service",
                         address: {
                             name: {
-                                full_name: "<?= $fname ?>",
+                                full_name: $('#delivery_fname').val(),
                             },
-                            address_line_1: "<?= $fulladdr ?>",
+                            address_line_1: $('#delivery_fullAddr').val(),
                             /* Full address */
-                            admin_area_2: "<?= $city ?>",
+
+                            admin_area_2: $('#delivery_city').val(),
                             /* City */
-                            admin_area_1: "<?= $state ?>",
+
+                            admin_area_1: $('#delivery_state').val(),
                             /* State */
-                            postal_code: "<?= $pcode ?>",
+
+                            postal_code: $('#delivery_postCode').val(),
                             /* Zipcode */
-                            country_code: "<?= $country ?>" /* Country */
+
+                            country_code: $('#delivery_country').val() /* Country */
                         }
                     }
                 }]

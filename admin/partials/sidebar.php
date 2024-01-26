@@ -36,18 +36,18 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                     <span class="nav-link-text ms-1">Products</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white <?=
-                                                in_array($page, ["orders.php", "ordersPreparing.php", "ordersShipped.php", "ordersDeliver.php", "ordersCancelled.php", "viewOrderDetails.php"])
+            <!-- <li class="nav-item">
+                <a class="nav-link text-white <?php
+                                                /* in_array($page, ["orders.php", "ordersPreparing.php", "ordersShipped.php", "ordersDeliver.php", "ordersCancelled.php", "viewOrderDetails.php"])
                                                     ? 'active bg-gradient-primary'
-                                                    : '' ?>" href="orders.php">
+                                                    : '' */ ?>" href="orders.php">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">shopping_cart_checkout</i>
                     </div>
                     <span class="nav-link-text ms-1">Orders</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link text-white <?=
                                                 in_array($page, ["users.php", "editusers.php"])
@@ -67,9 +67,21 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                                                     : '' ?>" href="seller-application.php">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">insert_drive_file</i>
+                        <i class="material-icons opacity-10">description</i>
                     </div>
                     <span class="nav-link-text ms-1">Seller Appication</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white <?=
+                                                in_array($page, ["deleteAccountRequest.php"])
+                                                    ? 'active bg-gradient-primary'
+                                                    : '' ?>" href="deleteAccountRequest.php">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">delete_sweep</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Account Deletion Request</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -86,6 +98,18 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                         <i class="material-icons opacity-10">receipt</i>
                     </div>
                     <span class="nav-link-text ms-1">Reports</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white <?=
+                                                in_array($page, ["account-details.php"])
+                                                    ? 'active bg-gradient-primary'
+                                                    : '' ?>" href="account-details.php">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">settings</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Admin Account Details</span>
                 </a>
             </li>
         </ul>

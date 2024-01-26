@@ -10,7 +10,7 @@ include('../middleware/adminMW.php'); ?>
         <div class="card">
             <div class="card-header bg-primary">
                 <h2 class="text-white">All Stores
-                    <a href="addCategory.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">post_add</i> Add Store</a>
+                    <!-- <a href="addCategory.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">post_add</i> Add Store</a> -->
                 </h2>
             </div>
             <div class="card-body">
@@ -44,32 +44,7 @@ include('../middleware/adminMW.php'); ?>
                                         <td><?= $item['category_status'] == '0' ? "Visible" : "Hidden"; ?></td><!-- Visibility store -->
                                         <td>
                                             <div style="display: flex;">
-                                                <a href="editCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">Edit</a>
-                                                <form action="./models/category-auth.php" method="POST">
-                                                    <input type="hidden" name="categoryID" value="<?= $item['category_id'] ?>">
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['category_id'] ?>">Delete</button>
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="deleteModal<?= $item['category_id'] ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">Delete Category <span><?= $item['category_id']; ?></span></h5>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p class="text-wrap">
-                                                                        Are you sure you want to delete <b><?= $item['category_name']; ?></b>?
-                                                                        <br>
-                                                                        All products & image associated with <b><?= $item['category_name']; ?></b> will also be deleted.
-                                                                    </p>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                                    <input type="submit" class="btn btn-primary" name="deleteCategoryBtn" value="Delete">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                <a href="editCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">View</a>
                                             </div>
                                         </td>
                                     </tr>

@@ -1,8 +1,6 @@
 <?php include('../partials/__header.php');
-
 include('../middleware/userMW.php');/* Authenticate.php */
 ?>
-
 <div>
     <div class="mt-5" style="margin-bottom: 10%;">
         <div class="container">
@@ -133,8 +131,13 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                             }
                                         }
                                         ?>
-                                        <span class="float-end fs-4">Order Total:&nbsp;&nbsp;<span class="text-accent fw-bold">₱<?= number_format($totalPrice, 2) ?></span></span>
+                                        <hr>
+                                        <div class="float-end fs-6">Order Total:&nbsp;&nbsp;
+                                            <span class="text-accent fw-bold fs-3">₱<?= number_format($totalPrice, 2) ?></span>
+                                        </div>
+
                                     </div>
+
                                 </div>
                             <?php
                             }

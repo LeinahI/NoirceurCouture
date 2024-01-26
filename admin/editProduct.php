@@ -14,7 +14,7 @@ include('../models/myFunctions.php'); ?>
             ?>
                     <div class="card">
                         <div class="card-header">
-                            <span class="fs-2 fw-bold">Edit <?= $data['product_name'] ?> Details</span>
+                            <span class="fs-2 fw-bold">View <?= $data['product_name'] ?> Details</span>
                             <a href="product.php" class="btn btn-primary end-3 float-end">Back</a>
                         </div>
                         <div class="card-body">
@@ -108,9 +108,10 @@ include('../models/myFunctions.php'); ?>
                                             <textarea class="form-control ps-3" placeholder="d" id="metaDescription_input" name="productmetaDescriptionInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_meta_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Product Meta Description</label>
                                         </div>
-                                        <div class="text-center col-md-12 mb-3">
+
+                                        <!-- <div class="text-center col-md-12 mb-3">
                                             <button type="submit" id="editProduct_btn" name="updateProductBtn" class="col-md-12 btn btn-primary">Update Data</button>
-                                        </div>
+                                        </div> -->
                                         <!-- Add Category end -->
                                     </div>
                                 </div>

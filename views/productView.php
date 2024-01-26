@@ -2,6 +2,9 @@
     <?php
     include('../partials/__header.php');
 
+    include(__DIR__ . '/../models/isAccountDeleted.php');
+    checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
+
     if (isset($_GET['product'])) {
         $product_slug = $_GET['product'];
         $product_data = getSlugActiveProducts("products", $product_slug);
@@ -54,7 +57,7 @@
                         <div class="col-md-4">
                             <div class="shadow imgBox">
                                 <img src="../assets/uploads/products/<?= $product['product_image'] ?>" data-origin="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" height="416" class="w-100">
-                                
+
                                 <?php
                                 if ($product['product_qty'] == 0) {
                                 ?>

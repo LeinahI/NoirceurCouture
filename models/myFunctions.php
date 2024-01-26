@@ -50,6 +50,17 @@ function GetAllSellerApplication()
     return $query_run;
 }
 
+/* GetAllDeletedAccReq */
+function GetAllDeletedAccReq()
+{
+    global $con;
+    $query = "SELECT deleted_user_ID, deleted_user_username, deleted_reason, deleted_reason_details, deleted_confirmed
+    FROM users_deleted_details
+    WHERE deleted_confirmed = '0'";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
 /********************************
  ************Admin Orders Function
  ********************************/

@@ -14,6 +14,14 @@
                 <div>
                     <a href="myOrders.php" class="<?= basename($_SERVER['PHP_SELF']) === 'myOrders.php' ? 'text-accent' : 'text-dark'; ?>">My Purchase</a>
                 </div>
+                <div>
+                    <a href="requestDeleteAccount.php"  class="<?= basename($_SERVER['PHP_SELF']) === 'requestDeleteAccount.php' ? 'text-accent' : 'text-dark'; ?>">Request Account Deletion</a>
+                    <!--
+                        Reference https://help.shopee.com.my/portal/article/78582-[My-Account]-How-do-I-delete-my-Shopee-account%3F
+                     -->
+                    
+
+                </div>
             </div>
         </div>
     </div>

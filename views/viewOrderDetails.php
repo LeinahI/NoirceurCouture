@@ -86,22 +86,22 @@ $data = mysqli_fetch_array($orderData);
                                 <h2>Order Item Details</h2>
                                 <hr>
                                 <?php
-                                    $user_id = $_SESSION['auth_user']['user_ID'];
-                                    $groupedItems = [];
-                                    $totalPrice = 0;
-                                    $itemQty = getOrderedItemQty($tracking_no);
-                                    $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name, c.category_slug
+                                $user_id = $_SESSION['auth_user']['user_ID'];
+                                $groupedItems = [];
+                                $totalPrice = 0;
+                                $itemQty = getOrderedItemQty($tracking_no);
+                                $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name, c.category_slug
                                                 FROM orders o
                                                 INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
                                                 INNER JOIN products p ON p.product_id = oi.orderItems_product_id
                                                 INNER JOIN categories c ON c.category_id = p.category_id
                                                 WHERE o.orders_user_ID = '$user_id' AND o.orders_tracking_no = '$tracking_no'";
 
-                                    $order_query_run = mysqli_query($con, $order_query);
+                                $order_query_run = mysqli_query($con, $order_query);
 
-                                    ?>
+                                ?>
                                 <div id="itemsContainer" style="height: <?= count($groupedItems) > 1 ? '386px' : 'auto'; ?>; overflow-y: scroll; scrollbar-width: none;">
-                                     <?php
+                                    <?php
                                     if (mysqli_num_rows($order_query_run) > 0) {
                                         foreach ($order_query_run as $item) {
                                             $itemTotalPrice = $item['orderItems_price'] * $item['orderItems_qty'];
@@ -185,6 +185,70 @@ $data = mysqli_fetch_array($orderData);
                                                     </h5>
                                                     <h5 class="text-end"><?= $data['orders_payment_mode'] ?></h5>
                                                 </div>
+
+                                                <?php
+                                                if ($data['orders_status'] == 0) {
+                                                ?>
+                                                    <div class="mt-3">
+                                                        <!-- Button trigger modal -->
+                                                        <button type="button" class="btn btn-accent float-end col-md-10" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
+                                                            Cancel Order
+                                                        </button>
+
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <form action="../models/cancelOrder.php" method="post">
+                                                                    <div class="modal-content bg-main">
+                                                                        <div class="modal-header text-center">
+                                                                            <p class="modal-title w-100 fs-3" id="cancelOrderModalLabel">Select Cancellation Reason</p>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <!-- Tracking Number & OrdersID -->
+                                                                            <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
+                                                                            <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
+                                                                            <!-- Reason 1 -->
+                                                                            <div class="form-check fs-4">
+                                                                                <input class="form-check-input" type="radio" name="reasonCancelOrder" id="reason_1" value="1">
+                                                                                <label class="form-check-label" for="reason_1">
+                                                                                    Need to change delivery address
+                                                                                </label>
+                                                                            </div>
+                                                                            <!-- Reason 2 -->
+                                                                            <div class="form-check fs-4">
+                                                                                <input class="form-check-input" type="radio" name="reasonCancelOrder" id="reason_2" value="2">
+                                                                                <label class="form-check-label " for="reason_2">
+                                                                                    Seller is not responsive to my inquiries
+                                                                                </label>
+                                                                            </div>
+                                                                            <!-- Reason 3 -->
+                                                                            <div class="form-check fs-4">
+                                                                                <input class="form-check-input" type="radio" name="reasonCancelOrder" id="reason_3" value="3">
+                                                                                <label class="form-check-label" for="reason_3">
+                                                                                    Modify Quantity Order
+                                                                                </label>
+                                                                            </div>
+                                                                            <!-- Reason 4 -->
+                                                                            <div class="form-check fs-4">
+                                                                                <input class="form-check-input" type="radio" name="reasonCancelOrder" id="reason_4" value="4">
+                                                                                <label class="form-check-label" for="reason_4">
+                                                                                    Others / Change of mind
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="submit" name="cancelOrderBtn" class="btn btn-accent">Confirm</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
@@ -205,16 +269,16 @@ $data = mysqli_fetch_array($orderData);
 <?php include('../partials/__footer.php'); ?>
 
 <script>
-    // JavaScript code to adjust the height based on the number of items
-    document.addEventListener("DOMContentLoaded", function() {
-        var itemsContainer = document.getElementById("itemsContainer");
+    // jquery code to adjust the height based on the number of items
+    $(document).ready(function() {
+        var itemsContainer = $("#itemsContainer");
         var groupedItemsCount = <?= count($groupedItems); ?>;
 
         // Check if there's more than one group, set height accordingly
         if (groupedItemsCount > 1) {
-            itemsContainer.style.height = "386px";
+            itemsContainer.css("height", "386px");
         } else {
-            itemsContainer.style.height = "auto";
+            itemsContainer.css("height", "auto");
         }
     });
 </script>

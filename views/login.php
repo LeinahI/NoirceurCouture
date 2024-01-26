@@ -37,9 +37,12 @@ if (isset($_SESSION['auth'])) {
                                         <label for="floatingInput">Username / Email / Phone Number</label>
                                     </div>
 
-                                    <div class="form-floating mb-3 col-md-12 ps-0">
-                                        <input type="password" class="form-control" id="password_input" name="loginPasswordInput" required placeholder="Password">
-                                        <label for="floatingPassword">Password</label>
+                                    <div class="input-group ps-0 mb-3">
+                                        <div class="form-floating">
+                                            <input type="password" class="form-control" id="password_input" name="loginPasswordInput" required placeholder="Password">
+                                            <label for="code1">Password</label>
+                                        </div>
+                                        <span class="input-group-text" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                     </div>
                                     <!-- Pass and CPass end -->
 
@@ -67,3 +70,54 @@ if (isset($_SESSION['auth'])) {
 <?php
 include('../partials/__footer.php');
 ?>
+
+<script>
+    /* Toggle password */
+    $(document).ready(function() {
+        var passwordInput = $("#password_input");
+        var togglePasswordBtn = $("#togglePassword");
+
+        togglePasswordBtn.on("click", function() {
+            // Toggle the password input type
+            passwordInput.attr("type", function(index, attr) {
+                return attr === "password" ? "text" : "password";
+            });
+
+            // Toggle the eye icon class
+            var eyeIcon = togglePasswordBtn.find("i");
+            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+        });
+    });
+
+    //Save login_input text
+    $(document).ready(function() {
+        var loginInput = $('#login_input');
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('loginInput');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('loginInput', loginInput.val());
+        });
+    });
+
+    //Save password_input text
+    $(document).ready(function() {
+        var loginInput = $('#password_input');
+
+        // Retrieve and set the input text on page load
+        var savedLoginInput = sessionStorage.getItem('loginPasswordInput');
+        if (savedLoginInput) {
+            loginInput.val(savedLoginInput);
+        }
+
+        // Save input text on every change
+        loginInput.on('input', function() {
+            sessionStorage.setItem('loginPasswordInput', loginInput.val());
+        });
+    });
+</script>
