@@ -65,20 +65,20 @@ NoirceurCouture
 
 ## 🛠 TODO for Noirceur Couture 2.0
 Admin Role
-- At dashboard will track the total of buyer, sellers, users, account deleted, banned users, suspended users.
-- Cannot be a seller anymore.
-- Cannot add, edit, and delete stores, products & users.
+- At dashboard will track the total of buyer, sellers, users, account deleted, banned users, suspended users. 
+- Cannot be a seller anymore.✅
+- Cannot add, edit, and delete stores, products & users of buyer & seller.✅
 - Their task is only to moderate the stores, products, users, & seller application.
 - Admin can suspend(limited time) and ban(permanent) users & sellers.
-- Account Deletion Request form added on Admin UI.
-- Admin can accept and reject user account deletion request.
+- Account Deletion Request form added on Admin UI.✅
+- Admin can accept and reject user account deletion request.✅
 
 Buyer Role
 - Buyer can have multiple addresses and set which is default address.
-- Buyer can request account deletion.
+- Buyer can request account deletion.✅
 - Buyer have now notification tab that can see order and Noirceur Couture Updates.
 - Buyer can rate products.
-- Can cancel order when the order are preparing to ship.
+- Can cancel order when the order are preparing to ship.✅
 - Can set the order status to Delivered.
 
 Seller Role
