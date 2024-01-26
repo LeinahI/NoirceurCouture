@@ -63,7 +63,7 @@ NoirceurCouture
 - [Realtime Colors](https://www.realtimecolors.com/?colors=171412-f6ede7-E7DED8-7B7774-bb6c54&fonts=Raleway-Raleway)
 - [e-commerce inspiration](https://dribbble.com/shots/22737212-Fashion-E-commerce-Website)
 
-## TODO Updates for Noirceur Couture 2.0
+## 🛠 TODO Updates for Noirceur Couture 2.0
 Admin Role
 - At dashboard will track the total of buyer, sellers, users, account deleted, banned users, suspended users.
 - Cannot be a seller anymore.
