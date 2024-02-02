@@ -1,7 +1,7 @@
 <?php /* <!-- also calledCategories.php --> */
 include('../partials/__header.php');
 
-include(__DIR__ . '/../models/isAccountDeleted.php');
+include(__DIR__ . '/../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
 if (isset($_GET['category'])) {

@@ -1,7 +1,7 @@
 <?php
 include('partials/header.php');
 include('../middleware/sellerMW.php');
-include('../models/isAccountDeleted.php');
+include('../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
 if (isset($_GET['trck'])) {

@@ -1,5 +1,5 @@
 <?php
-include(__DIR__ . '/../models/isAccountDeleted.php');
+include(__DIR__ . '/../models/checkSession.php');
 
 if (!isset($_SESSION['auth'])) {
     redirect('login.php', 'Log in to continue');

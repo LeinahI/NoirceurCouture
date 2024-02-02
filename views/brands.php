@@ -1,16 +1,14 @@
 <!-- also calledCategories.php -->
 <?php include('../partials/__header.php');
-include(__DIR__ . '/../models/isAccountDeleted.php');
+include(__DIR__ . '/../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 
 <style>
     .img-fixed-height {
         height: 200px;
-        /* Set the height to your desired value */
         width: auto;
         object-fit: cover;
-        /* This property ensures that the image retains its aspect ratio while covering the specified height */
     }
 </style>
 
