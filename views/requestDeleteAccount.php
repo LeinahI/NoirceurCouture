@@ -33,7 +33,7 @@ include('../middleware/userMW.php');
     <div class="row">
         <?php include('../partials/sidebar.php') ?>
         <!-- Modal Initialize on load -->
-        <div class="modal fade" id="onload" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal" id="onload" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-main">
                     <div class="modal-header text-center">
@@ -81,7 +81,7 @@ include('../middleware/userMW.php');
                                         <div class="form-floating col-md-12 ps-0 mb-2">
                                             <select name="reasonDelAccList" id="selectReason" class="form-select form-select-md" aria-label="Large select example" required>
                                                 <option selected disabled></option>
-                                                <option value="I want to change my username">I want to change my username</option>
+                                                <option value="User Identity">I want to change my username</option>
                                                 <option value="I am no longer want to use Noirceur Couture">I am no longer want to use Noirceur Couture</option>
                                                 <option value="Others">Others</option>
                                             </select>

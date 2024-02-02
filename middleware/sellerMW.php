@@ -12,3 +12,5 @@ if (isset($_SESSION['auth'])) {
 } else {
     redirect("../views/login.php", "Log in to continue");
 }
+
+

@@ -21,7 +21,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white <?= in_array($page, ["category.php", "editCategory.php", "addCategory.php"]) ? 'active bg-gradient-primary' : '' ?>" href="category.php">
+                <a class="nav-link text-white <?= in_array($page, ["category.php"]) ? 'active bg-gradient-primary' : '' ?>" href="category.php">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">store</i>
                     </div>
@@ -36,21 +36,9 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                     <span class="nav-link-text ms-1">Products</span>
                 </a>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link text-white <?php
-                                                /* in_array($page, ["orders.php", "ordersPreparing.php", "ordersShipped.php", "ordersDeliver.php", "ordersCancelled.php", "viewOrderDetails.php"])
-                                                    ? 'active bg-gradient-primary'
-                                                    : '' */ ?>" href="orders.php">
-
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">shopping_cart_checkout</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Orders</span>
-                </a>
-            </li> -->
             <li class="nav-item">
                 <a class="nav-link text-white <?=
-                                                in_array($page, ["users.php", "editusers.php"])
+                                                in_array($page, ["users.php", "viewUsers.php"])
                                                     ? 'active bg-gradient-primary'
                                                     : '' ?>" href="users.php">
 
@@ -85,7 +73,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white <?= $page == "slideshow.php" ? 'active bg-gradient-primary' : '' ?>" href="slideshow.php">
+                <a class="nav-link text-white <?= in_array($page, ["slideshow.php", "editImage.php"]) ? 'active bg-gradient-primary' : '' ?>" href="slideshow.php">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">photo_library</i>
                     </div>

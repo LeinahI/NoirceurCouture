@@ -124,46 +124,52 @@ if (isset($_POST['loginBtn'])) {
     $login_Inputs_query_run = mysqli_query($con, $login_Inputs_query);
 
     if (mysqli_num_rows($login_Inputs_query_run) > 0) {
-        $_SESSION['auth'] = true;
-
         $userdata = mysqli_fetch_array($login_Inputs_query_run);
         $userid = $userdata['user_ID'];
-        $username = $userdata['user_username'];
-        $fname = $userdata['user_firstName'];
-        $useremail = $userdata['user_email'];
         $userRole = $userdata['user_role'];
-        $sellerConfirmed = $userdata['seller_confirmed'];
+        $isAccountBanned = $userdata['user_isBan'];
 
-        $_SESSION['auth_user'] = [
-            'user_ID' => $userid,
-            'user_username' => $username,
-            'user_firstName' => $fname,
-            'user_email' => $useremail,
-            'seller_confirmed' => $sellerConfirmed,
-            'user_role' => $userRole,
-        ];
+        if ($isAccountBanned == 1) {
+            redirect('../views/login.php', 'Your account has been banned permanently');
+        } else {
+            $_SESSION['auth'] = true;
 
-        $_SESSION['user_role'] = $userRole;
-        $_SESSION['seller_confirmed'] = $sellerConfirmed;
-        if ($userRole == 1) {
-            /* redirectSwal("../admin/index.php", "Welcome to admin page", "success"); */
-            header('Location: ../admin/index.php');
-        } else if ($userRole == 2) {
+            $username = $userdata['user_username'];
+            $fname = $userdata['user_firstName'];
+            $useremail = $userdata['user_email'];
+            $sellerConfirmed = $userdata['seller_confirmed'];
 
-            $check_address_query = "SELECT * FROM addresses WHERE address_user_ID = '$userid' ";
-            $check_address_query_run = mysqli_query($con, $check_address_query);
-            if (mysqli_num_rows($check_address_query_run) == 0) {
-                redirectSwal("../seller/account-details.php", "Add your pickup address first", "warning");
-            } else{
-                redirectSwal("../seller/index.php", "Welcome to seller Dashboard", "success");
+            $_SESSION['auth_user'] = [
+                'user_ID' => $userid,
+                'user_username' => $username,
+                'user_firstName' => $fname,
+                'user_email' => $useremail,
+                'seller_confirmed' => $sellerConfirmed,
+                'user_role' => $userRole,
+                'user_isBan' => $isAccountBanned
+            ];
+
+            $_SESSION['user_role'] = $userRole;
+            $_SESSION['seller_confirmed'] = $sellerConfirmed;
+            $_SESSION['user_isBan'] = $isAccountBanned;
+
+            if ($userRole == 1) {
+                header('Location: ../admin/index.php');
+            } else if ($userRole == 2) {
+                $check_address_query = "SELECT * FROM addresses WHERE address_user_ID = '$userid' ";
+                $check_address_query_run = mysqli_query($con, $check_address_query);
+
+                if (mysqli_num_rows($check_address_query_run) == 0) {
+                    redirect('../seller/account-details.php', 'Add your pickup address first', 'warning');
+                } else {
+                    header('Location: ../seller/index.php');
+                }
+            } else if ($userRole == 0) {
+                header('Location: ../views/index.php');
             }
-            
-        } else if ($userRole == 0) {
-            /* redirectSwal("../views/index.php", "Log in Successfully", "success"); */
-            header('Location: ../views/index.php');
         }
     } else {
-        redirect("../views/login.php", "Invalid Credentials Try again");
+        redirect('../views/login.php', 'Invalid Credentials. Try again');
     }
 }
 

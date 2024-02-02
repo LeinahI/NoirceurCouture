@@ -19,7 +19,7 @@ function checkUserValidityAndRedirect($userId) {
         $user = mysqli_fetch_assoc($result);
 
         // Check if user exists and meets any other validation criteria
-        if ($user === null) {
+        if ($user === null || /* checking user is banned */ $user['user_isBan'] == 1) {
             // If not valid, log the user out and redirect to login page
             session_destroy();
             /* redirectSwal('login.php', 'Your session is no longer valid. Please log in again.', 'error'); */
@@ -30,4 +30,5 @@ function checkUserValidityAndRedirect($userId) {
         // Handle error, if any
         die("Error in preparing statement: " . mysqli_error($con));
     }
+    
 }

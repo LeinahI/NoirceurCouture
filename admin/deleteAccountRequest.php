@@ -19,6 +19,7 @@ include('../middleware/adminMW.php');
                             <tr class="text-center">
                                 <th>User ID</th>
                                 <th>Username</th>
+                                <th>Role</th>
                                 <th>Reason</th>
                                 <th>Details</th>
                                 <th>Confirmation</th>
@@ -30,15 +31,22 @@ include('../middleware/adminMW.php');
 
                             if (mysqli_num_rows($delAcc) > 0) {
                                 foreach ($delAcc as $item) {
+
+                                    $role = $item['ud_role'];
                             ?>
                                     <tr>
-                                        <td class="text-start"> <?= $item['deleted_user_ID'] ?> </td>
-                                        <td class="text-start"> <?= $item['deleted_user_username'] ?></td>
-                                        <td class="text-start"> <?= $item['deleted_reason'] ?> </td>
-                                        <td class="text-start"> <?= $item['deleted_reason_details'] ?> </td>
+                                        <td class="text-start"> <?= $item['ud_user_ID'] ?> </td>
+                                        <td class="text-start"> <?= $item['ud_username'] ?></td>
+                                        <td class="text-start"> <?php if ($role == 0) {
+                                                                    echo "Buyer";
+                                                                } else if ($role == 2) {
+                                                                    echo "Seller";
+                                                                } ?></td>
+                                        <td class="text-start"> <?= $item['ud_reason'] ?> </td>
+                                        <td class="text-start"> <?= $item['ud_details'] ?> </td>
                                         <td class="text-center">
                                             <form action="models/user-account-deletion.php" method="POST" class="text-start">
-                                                <input type="hidden" name="deletedUserID" value="<?= $item['deleted_user_ID'] ?>">
+                                                <input type="hidden" name="deletedUserID" value="<?= $item['ud_user_ID'] ?>">
                                                 <!-- Button for Accept -->
                                                 <button type="submit" name="processAccDeletion" value="accept" class="btn btn-primary">Accept</button>
 

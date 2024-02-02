@@ -54,9 +54,9 @@ function GetAllSellerApplication()
 function GetAllDeletedAccReq()
 {
     global $con;
-    $query = "SELECT deleted_user_ID, deleted_user_username, deleted_reason, deleted_reason_details, deleted_confirmed
+    $query = "SELECT ud_user_ID, ud_username, ud_role, ud_reason, ud_details, ud_confirmed
     FROM users_deleted_details
-    WHERE deleted_confirmed = '0'";
+    WHERE ud_confirmed = '0'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }

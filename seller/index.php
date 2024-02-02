@@ -1,5 +1,9 @@
 <?php include('partials/header.php');
-include('../middleware/sellerMW.php'); ?>
+include('../middleware/sellerMW.php');
+include('../models/isAccountDeleted.php');
+checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
+
+?>
 <div class="container">
     <div class="col-md-12">
         <div class="card-header">

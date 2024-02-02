@@ -1,5 +1,5 @@
 <?php include('partials/header.php');
-include('../models/myFunctions.php'); ?>
+include('../middleware/adminMW.php'); ?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -36,7 +36,7 @@ include('../models/myFunctions.php'); ?>
                                             }
                                             ?>
                                         </select>
-                                        <label for="selbr" class="ps-3">Select Brand Category</label>
+                                        <label for="selbr" class="ps-3">Select Store</label>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <div>

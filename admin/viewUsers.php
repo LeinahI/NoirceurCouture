@@ -1,5 +1,5 @@
 <?php include('partials/header.php');
-include('../models/myFunctions.php'); ?>
+include('../middleware/adminMW.php'); ?>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -47,57 +47,68 @@ include('../models/myFunctions.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Password</label>
                                             <span class="input-group-text border-0 position-absolute end-4 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                         </div>
-                                        <?php
-                                        /* if (!($data['user_ID'] == 1 && $data['user_role'] == 1)) { */
-                                            // Only show the select tag if the user is not admin with ID 1
-                                        ?>
-                                            <div class="col-md-12 mb-3">
-                                                <div class="form-floating">
-                                                    <select name="userRole" class="form-select ps-2" id="orderStat" disabled>
-                                                        <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
-                                                        <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
-                                                        <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
-                                                    </select>
-                                                    <label for="slug_input">User Role</label>
-                                                </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <div class="form-floating">
+                                                <select name="userRole" class="form-select ps-2" id="orderStat" disabled>
+                                                    <option value="0" <?= $data['user_role'] == 0 ? "selected" : "" ?>>Buyer</option>
+                                                    <option value="1" <?= $data['user_role'] == 1 ? "selected" : "" ?>>Admin</option>
+                                                    <option value="2" <?= $data['user_role'] == 2 ? "selected" : "" ?>>Seller</option>
+                                                </select>
+                                                <label for="slug_input">User Role</label>
                                             </div>
-                                        <?php
-                                        /* } */
-                                        ?>
+                                        </div>
+
                                         <?php
                                         if ($data['user_role'] == 2) {
                                             // Display the HTML code for seller verification
                                         ?>
-                                            <h4>Other Seller Details</h4>
-                                            <div class="col-md-12 mb-3">
-                                                <div class="form-floating">
-                                                    <select name="userSellerType" class="form-select ps-2" id="orderStat" disabled>
-                                                        <option value="individual" <?= $data['seller_seller_type'] == 'individual' ? "selected" : "" ?>>Individual</option>
-                                                        <option value="business" <?= $data['seller_seller_type'] == 'business' ? "selected" : "" ?>>Business</option>
-                                                    </select>
-                                                    <label for="slug_input">Seller Type</label>
+                                            <div class="row mt-3">
+                                                <h3>Other Seller Details</h3>
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="form-floating">
+                                                        <select name="userSellerType" class="form-select ps-2" id="orderStat" disabled>
+                                                            <option value="individual" <?= $data['seller_seller_type'] == 'individual' ? "selected" : "" ?>>Individual</option>
+                                                            <option value="business" <?= $data['seller_seller_type'] == 'business' ? "selected" : "" ?>>Business</option>
+                                                        </select>
+                                                        <label for="slug_input">Seller Type</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <h5>Is verified?</h5>
                                                 <div class="btn-group" role="group">
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio1" value="1" <?= $data['seller_confirmed'] == 1 ? 'checked' : '' ?> disabled>
-                                                        <label class="form-check-label" for="inlineRadio1">Yes</label>
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="verifiedRadio1" value="1" <?= $data['seller_confirmed'] == 1 ? 'checked' : '' ?> disabled>
+                                                        <label class="form-check-label" for="verifiedRadio1">Yes</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="inlineRadio2" value="0" <?= $data['seller_confirmed'] == 0 ? 'checked' : '' ?> disabled>
-                                                        <label class="form-check-label" for="inlineRadio2">No</label>
+                                                        <input class="form-check-input" type="radio" name="isConfirmed" id="verifiedRadio2" value="0" <?= $data['seller_confirmed'] == 0 ? 'checked' : '' ?> disabled>
+                                                        <label class="form-check-label" for="verifiedRadio2">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                        if ($data['user_role'] != 1) {
+                                        ?>
+                                            <div class="row">
+                                                <h3>User Moderation</h3>
+                                                <h5>Ban Status</h5>
+                                                <div class="btn-group" role="group">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="isBanned" id="banRadio1" value="1" <?= $data['user_isBan'] == 1 ? 'checked' : '' ?> disabled>
+                                                        <label class="form-check-label" for="banRadio1">Yes</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="isBanned" id="banRadio2" value="0" <?= $data['user_isBan'] == 0 ? 'checked' : '' ?> disabled>
+                                                        <label class="form-check-label" for="banRadio2">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         <?php
                                         }
                                         ?>
-
-                                        <!-- <div class="text-center col-md-12 mb-3">
-                                            <button type="submit" id="addCategory_btn" name="updateUserBtn" class="col-md-12 btn btn-primary">Update User Details</button>
-                                        </div> -->
                                     </div>
                                 </div>
                             </form>

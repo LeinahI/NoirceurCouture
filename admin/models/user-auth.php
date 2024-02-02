@@ -4,71 +4,40 @@ date_default_timezone_set('Asia/Manila');
 include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
 
-if (isset($_POST['updateUserBtn'])) { //!Update User Details
+if (isset($_POST['banUserBtn'])) { //!BAN User
     $userId = $_POST['userID'];
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['email'];
-    $phoneNum = $_POST['phoneNumber'];
-    $uPass = $_POST['userPassword'];
-    $phonePatternPH = '/^09\d{9}$/';
+    $banConfirm = 1;
 
-    // Check if user already exists
-    $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email' AND user_id != '$userId'";
-    $check_email_query_run = mysqli_query($con, $check_email_query);
+    /* Check if user is already ban */
+    $check_ban_query = "SELECT ban_user_ID FROM users_banned WHERE ban_user_ID = ?";
+    $check_ban_stmt = mysqli_prepare($con, $check_ban_query);
+    mysqli_stmt_bind_param($check_ban_stmt, 'i', $userId);
+    mysqli_stmt_execute($check_ban_stmt);
+    $check_ban_result = mysqli_stmt_get_result($check_ban_stmt);
 
-    // Check if phone already exists
-    $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum' AND user_id != '$userId'";
-    $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
-
-    if (!preg_match($phonePatternPH, $phoneNum)) {
-        redirectSwal("../account-details.php", "Invalid Philippine phone number format.", "error");
-    } else if (mysqli_num_rows($check_email_query_run) > 0) {
-        redirectSwal("../account-details.php", "Email already in use, please try something different.", "error");
-    } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
-        redirectSwal("../account-details.php", "Phone number already in use, please try something different.", "error");
+    if (mysqli_num_rows($check_ban_result) > 0) {
+        redirectSwal("../users.php", "User has already been banned", "error");
     } else {
-        if ($uPass) {
-            // Update User Data
-            $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_phone=?, user_password=? WHERE user_ID=?";
-            $stmt = mysqli_prepare($con, $update_query);
-            mysqli_stmt_bind_param($stmt, "sssssi", $firstName, $lastName, $email, $phoneNum, $uPass, $userId);
-            $update_query_run = mysqli_stmt_execute($stmt);
+        //! BAN User 
+        $update_query = "UPDATE users SET user_isBan=? WHERE user_ID=?";
+        $stmt = mysqli_prepare($con, $update_query);
+        mysqli_stmt_bind_param($stmt, "ii", $banConfirm, $userId);
+        $update_query_run = mysqli_stmt_execute($stmt);
+
+        //! add banned users on users_banned tbl
+        $insert_query = "INSERT INTO users_banned (ban_user_ID) VALUES('$userId')";
+        $insert_query_run = mysqli_query($con, $insert_query);
+
+        if ($insert_query_run) {
+            // Insertion successful, proceed with the update
             if ($update_query_run) {
-                redirectSwal("../account-details.php", "Account updated successfully", "success");
+                redirectSwal("../users.php", "User has been banned", "success");
             } else {
-                redirectSwal("../account-details.php", "Something went wrong", "error");
+                redirectSwal("../users.php", "Something went wrong with the update", "error");
             }
-        }
-    }
-} /* else if (isset($_POST['deleteUserBtn'])) { //!Delete user
-    $user_id = mysqli_real_escape_string($con, $_POST['user_ID']);
-
-    // Check if the user with the specified user_ID exists
-    $check_user_query = "SELECT * FROM users WHERE user_ID=?";
-    $stmt_check_user = mysqli_prepare($con, $check_user_query);
-    mysqli_stmt_bind_param($stmt_check_user, "i", $user_id);
-    mysqli_stmt_execute($stmt_check_user);
-    $check_user_query_run = mysqli_stmt_get_result($stmt_check_user);
-
-    if (mysqli_num_rows($check_user_query_run) > 0) {
-        // User exists, proceed with deletion
-        $delete_query = "DELETE FROM users WHERE user_ID=?";
-        $stmt_delete_user = mysqli_prepare($con, $delete_query);
-        mysqli_stmt_bind_param($stmt_delete_user, "i", $user_id);
-        $delete_query_run = mysqli_stmt_execute($stmt_delete_user);
-
-        if ($delete_query_run) {
-            redirectSwal("../users.php", "User deleted successfully!", "success");
         } else {
-            redirectSwal("../users.php", "Something went wrong. Please try again later.", "error");
+            // Insertion failed, do not proceed with the update
+            redirectSwal("../users.php", "Something went wrong with the insertion", "error");
         }
-    } else {
-        // User does not exist
-        redirectSwal("../users.php", "User not found.", "error");
     }
-
-    mysqli_stmt_close($stmt_check_user);
-    mysqli_stmt_close($stmt_delete_user);
 }
- */
