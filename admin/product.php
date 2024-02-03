@@ -65,10 +65,10 @@ include('../middleware/adminMW.php'); ?>
                                         <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td><?= $item['product_qty']; ?></td>
 
-                                        <td><?= $item['product_status'] == '0' ? "Visible" : "Hidden"; ?></td>
+                                        <td><?= $item['product_visibility'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
                                             <div style="display: flex;">
-                                                <a href="editProduct.php?id=<?= $item['product_id']; ?>" class="btn btn-primary mx-2">View</a>
+                                                <a href="viewProduct.php?id=<?= $item['product_id']; ?>" class="btn btn-primary mx-2">View</a>
                                             </div>
                                         </td>
                                     </tr>

@@ -28,6 +28,22 @@ if (isset($_POST['banUserBtn'])) { //!BAN User
         $insert_query = "INSERT INTO users_banned (ban_user_ID) VALUES('$userId')";
         $insert_query_run = mysqli_query($con, $insert_query);
 
+        //* Also ban User Category if exist
+        $update_category_query = "UPDATE categories SET category_isBan=? WHERE category_user_ID=?";
+        $stmt_category = mysqli_prepare($con, $update_category_query);
+        mysqli_stmt_bind_param($stmt_category, "ii", $banConfirm, $userId);
+        $update_category_query_run = mysqli_stmt_execute($stmt_category);
+
+        //*Select category_id from database to put it from categories_banned
+        $select_category_query = "SELECT category_id FROM categories WHERE `category_user_ID` = '$userId' LIMIT 1";
+        $select_category_query_run = mysqli_query($con, $select_category_query);
+        $category_row = mysqli_fetch_assoc($select_category_query_run);
+        $categoryID = $category_row['category_id'];
+
+        //* Also banned Category on category_banned tbl
+        $insert_userCateg_query = "INSERT INTO categories_banned (categBan_category_id, categBan_userID) VALUES('$categoryID','$userId')";
+        $insert_userCateg_query_run = mysqli_query($con, $insert_userCateg_query);
+
         if ($insert_query_run) {
             // Insertion successful, proceed with the update
             if ($update_query_run) {

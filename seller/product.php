@@ -65,7 +65,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <?php
                                         }
                                         ?>
-                                        <td><?= $item['product_status'] == '0' ? "Visible" : "Hidden"; ?></td>
+                                        <td><?= $item['product_visibility'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
                                             <div style="display: flex;">
                                                 <a href="editProduct.php?id=<?= $item['product_id']; ?>" class="btn btn-primary mx-2">Edit</a>

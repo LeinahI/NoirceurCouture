@@ -68,8 +68,16 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     <label for="floatingPassword" class="ps-3">Store Meta Description</label>
                                 </div>
 
+
                                 <!-- Add & Update button -->
                                 <?php if ($existingDetails) { ?>
+                                    <!--//! Store Visibility -->
+                                    <div class="col-md-12 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                        <input type="checkbox" class="btn-check" <?= $data['category_onVacation'] ? "checked" : "" ?> id="visibility_cb" name="visibilityCheckbox" autocomplete="off" />
+                                        <label id="visibility_label" class="btn btn-outline-primary" for="visibility_cb">
+                                            <?= $data['category_onVacation'] ? "On Vacation" : "Visible" ?>
+                                        </label>
+                                    </div>
                                     <!-- If existing details exist -->
                                     <div class="text-center col-md-12 mb-3">
                                         <button type="submit" name="updateCategoryBtn" class="col-md-12 btn btn-primary">Update Your Store Details</button>
@@ -94,6 +102,16 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 <?php include('partials/footer.php'); ?>
 
 <script>
+    //Visible & hidden
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkbox = document.getElementById("visibility_cb");
+        var label = document.getElementById("visibility_label");
+
+        checkbox.addEventListener("change", function() {
+            label.textContent = checkbox.checked ? "On Vacation" : "Visible";
+        });
+    });
+
     document.addEventListener("DOMContentLoaded", function() {
         var nameInput = document.getElementById("name_input");
         var slugInput = document.getElementById("slug_input");

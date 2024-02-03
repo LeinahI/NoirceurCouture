@@ -23,8 +23,7 @@ include('../models/myFunctions.php'); ?>
                                     <div class="row col-md-12">
                                         <!-- Add Category start -->
                                         <div class="form-floating col-md-12 mb-3">
-                                            <input type="hidden" name="productID" value="<?= $data['product_id'] ?>">
-                                            <select name="selectBrandCategoryID" class="form-select ps-2" id="selbr">
+                                            <select disabled name="selectBrandCategoryID" class="form-select ps-2" id="selbr">
 
                                                 <?php
                                                 $categories = getAllbyCategory("categories", $data['category_id']);
@@ -41,24 +40,29 @@ include('../models/myFunctions.php'); ?>
                                             </select>
                                             <label for="selbr" class="ps-3">Select Brand Category</label>
                                         </div>
+                                        <div class="col-md-12 mb-3">
+                                            <span class="fs-3 fw-bold">Product Image</span>
+                                            <br>
+                                            <img src="../assets/uploads/products/<?= $data['product_image'] ?>" height="150px" alt="brand">
+                                        </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_name'] ?>" id="name_input" name="productnameInput" required placeholder="Name">
+                                            <input disabled type="text" class="form-control ps-3" value="<?= $data['product_name'] ?>" id="name_input" name="productnameInput" required placeholder="Name">
                                             <label for="floatingInput" class="ps-3">Product Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_slug'] ?>" id="slug_input" name="productslugInput" required placeholder="Slug">
+                                            <input disabled type="text" class="form-control ps-3" value="<?= $data['product_slug'] ?>" id="slug_input" name="productslugInput" required placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Product Slug</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
-                                            <textarea class="form-control ps-3" placeholder="d" id="description_input" name="productdescriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_description'] ?></textarea>
+                                            <textarea disabled class="form-control ps-3" placeholder="d" id="description_input" name="productdescriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Product Description</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" onwheel="return false;" oninput="calculateFinalPrice()" min="0">
+                                            <input disabled type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" onwheel="return false;" oninput="calculateFinalPrice()" min="0">
                                             <label for="orp_input" class="ps-3">Original Price in ₱</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <select class="form-select ps-2" id="discountPercentage" name="priceDiscount" onchange="calculateFinalPrice()">
+                                            <select disabled class="form-select ps-2" id="discountPercentage" name="priceDiscount" onchange="calculateFinalPrice()">
                                                 <option value="0" <?php echo ($discount == 0) ? 'selected' : ''; ?> selected>no discount</option>
                                                 <option value="10" <?php echo ($discount == 10) ? 'selected' : ''; ?>>10% off</option>
                                                 <option value="20" <?php echo ($discount == 20) ? 'selected' : ''; ?>>20% off</option>
@@ -75,44 +79,30 @@ include('../models/myFunctions.php'); ?>
                                             <label for="discountPercentage" class="ps-3">Discount Percentage</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['product_srp'] ?>" id="srp_input" name="suggestedRetailPriceInput" readonly required placeholder="srp">
+                                            <input disabled type="number" class="form-control ps-3" value="<?= $data['product_srp'] ?>" id="srp_input" name="suggestedRetailPriceInput" readonly required placeholder="srp">
                                             <label for="srp_input" class="ps-3">Final Price in ₱</label>
-                                        </div>
-                                        <div class="form-floating col-md-6 mb-3">
-                                            <input type="file" class="form-control ps-3" id="uploadProductImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadProductImageInput">
-                                            <label for="floatingPassword" class="ps-3">Upload Product Image</label>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="">Current image:</label>
-                                            <input type="hidden" name="oldProductImage" value="<?= $data['product_image'] ?>">
-                                            <img src="../assets/uploads/products/<?= $data['product_image'] ?>" height="50px" alt="brand">
                                         </div>
                                         <div class="col-md-12" style="display:flex;">
                                             <div class="form-floating col-md-6 mb-3">
-                                                <input type="number" class="form-control ps-3" value="<?= $data['product_qty'] ?>" id="qty_input" name="quantityInput" required placeholder="qty" onwheel="return false;" min="0">
+                                                <input disabled type="number" class="form-control ps-3" value="<?= $data['product_qty'] ?>" id="qty_input" name="quantityInput" required placeholder="qty" onwheel="return false;" min="0">
                                                 <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                             </div>
                                             <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
-                                                <input type="checkbox" class="btn-check" <?= $data['product_status'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
-                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_status'] ? "Hidden" : "Visible" ?></label>
+                                                <input disabled type="checkbox" class="btn-check" <?= $data['product_visibility'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
+                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_visibility'] ? "Hidden" : "Visible" ?></label>
 
-                                                <input type="checkbox" class="btn-check" <?= $data['product_popular'] ? "checked" : "" ?> id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
+                                                <input disabled type="checkbox" class="btn-check" <?= $data['product_popular'] ? "checked" : "" ?> id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
                                                 <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>
                                             </div>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_meta_title'] ?>" id="metaTitle_input" name="productmetaTitleInput" required placeholder="Slug">
+                                            <input disabled type="text" class="form-control ps-3" value="<?= $data['product_meta_title'] ?>" id="metaTitle_input" name="productmetaTitleInput" required placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Product Meta Title</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
-                                            <textarea class="form-control ps-3" placeholder="d" id="metaDescription_input" name="productmetaDescriptionInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_meta_description'] ?></textarea>
+                                            <textarea disabled class="form-control ps-3" placeholder="d" id="metaDescription_input" name="productmetaDescriptionInput" required style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $data['product_meta_description'] ?></textarea>
                                             <label for="floatingPassword" class="ps-3">Product Meta Description</label>
                                         </div>
-
-                                        <!-- <div class="text-center col-md-12 mb-3">
-                                            <button type="submit" id="editProduct_btn" name="updateProductBtn" class="col-md-12 btn btn-primary">Update Data</button>
-                                        </div> -->
-                                        <!-- Add Category end -->
                                     </div>
                                 </div>
                             </form>
@@ -132,46 +122,6 @@ include('../models/myFunctions.php'); ?>
     </div>
 </div>
 <script>
-    /* Auto input other fields */
-    document.addEventListener("DOMContentLoaded", function() {
-        var nameInput = document.getElementById("name_input");
-        var slugInput = document.getElementById("slug_input");
-        var metaTitle = document.getElementById("metaTitle_input");
-        var descriptionInput = document.getElementById("description_input");
-        var metaDescription = document.getElementById("metaDescription_input");
-
-        /* For slug and meta title */
-        nameInput.addEventListener("input", function() {
-            // Update the value of the slug input based on the name input
-            slugInput.value = generateSlug(nameInput.value);
-            metaTitle.value = nameInput.value;
-        });
-
-        /* for meta description */
-        descriptionInput.addEventListener("input", function() {
-            metaDescription.value = descriptionInput.value;
-        });
-
-        // Function to generate a slug from the given string
-        function generateSlug(str) {
-            // Replace spaces with dashes and convert to lowercase
-            return str.trim().toLowerCase().replace(/\s+/g, '-');
-        }
-    });
-
-    /* Calculate final Price */
-    function calculateFinalPrice() {
-        // Get original price and discount percentage
-        let originalPrice = parseFloat(document.getElementById('orp_input').value);
-        let discountPercentage = parseFloat(document.getElementById('discountPercentage').value);
-
-        // Calculate final price
-        let finalPrice = originalPrice - (originalPrice * (discountPercentage / 100));
-
-        // Update the final price input
-        document.getElementById('srp_input').value = finalPrice.toFixed(2);
-    }
-
     //Visible & hidden
     document.addEventListener("DOMContentLoaded", function() {
         var checkbox = document.getElementById("status_checkbox");

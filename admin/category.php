@@ -23,6 +23,7 @@ include('../middleware/adminMW.php'); ?>
                                 <th>Name</th>
                                 <th>Image</th>
                                 <th>Store Visibility</th>
+                                <th>Ban Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -33,6 +34,12 @@ include('../middleware/adminMW.php'); ?>
                             if (mysqli_num_rows($category) > 0) {
 
                                 foreach ($category as $item) {
+                                    $banStat = $item['category_isBan'];
+                                    if ($banStat == 0) {
+                                        $banStatus = 'No';
+                                    } elseif ($banStat == 1) {
+                                        $banStatus = 'Yes';
+                                    }
                             ?>
                                     <tr>
                                         <td><?= $item['category_id']; ?></td>
@@ -41,24 +48,57 @@ include('../middleware/adminMW.php'); ?>
                                         <td>
                                             <img src="../assets/uploads/brands/<?= $item['category_image']; ?>" height="50px" alt="<?= $item['category_name']; ?>">
                                         </td>
-                                        <td><?= $item['category_status'] == '0' ? "Visible" : "Hidden"; ?></td><!-- Visibility store -->
+                                        <td><?= $item['category_onVacation'] == '0' ? "Visible" : "On Vacation"; ?></td><!-- Visibility store -->
+                                        <td><?= $banStatus; ?></td>
                                         <td>
                                             <div style="display: flex;">
-                                                <a href="editCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">View</a>
+                                                <a href="viewCategory.php?id=<?= $item['category_id']; ?>" class="btn btn-primary mx-2">View</a>
+                                                <?php
+                                                if ($banStat != 1) {
+                                                ?>
+                                                    <form action="./models/category-auth.php" method="POST">
+                                                        <input type="hidden" name="categID" value="<?= $item['category_id'] ?>">
+                                                        <input type="hidden" name="categUserID" value="<?= $item['category_user_ID'] ?>">
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['category_id'] ?>">Ban</button>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="deleteModal<?= $item['category_id'] ?>" data-bs-keyboard="true" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Ban <span><?= $item['category_name']; ?></span></h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p class="text-wrap fs-5">
+                                                                            Are you sure you want to permanently Ban <b><?= $item['category_name']; ?></b>?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                        <input type="submit" class="btn btn-primary" name="banCategoryBtn" value="Confirm Ban">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                             </div>
                                         </td>
                                     </tr>
-                            <?php
+                                <?php
+                                                } ?>
+                </div>
+                </td>
+                </tr>
+        <?php
                                 }
                             } else {
                             }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+        ?>
+        </tbody>
+        </table>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!--jquery cdn start-->

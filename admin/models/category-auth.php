@@ -4,193 +4,51 @@ date_default_timezone_set('Asia/Manila');
 include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
 
-if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
-    $user_ID = $_POST['userID'];
-    $name = $_POST['nameInput'];
-    $slug = $_POST['slugInput'];
-    $slug = strtolower($slug);
-    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
-    $slug = str_replace(' ', '', $slug);
-    $desc = $_POST['descriptionInput'];
-    $meta_title = $_POST['metaTitleInput'];
-    $meta_desc = $_POST['metaDescriptionInput'];
+if (isset($_POST['banCategoryBtn'])) { //!BAN Category
+    $categoryID = $_POST['categID'];
+    $categoryUserID = $_POST['categUserID'];
+    $banConfirm = 1;
 
-    // Check if category name already exists
-    $check_query = "SELECT * FROM categories WHERE category_name = ?";
-    $stmt = mysqli_prepare($con, $check_query);
-    mysqli_stmt_bind_param($stmt, "s", $name);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
+    /* Check if user is already ban */
+    $check_ban_query = "SELECT categBan_category_id FROM categories_banned WHERE categBan_category_id = ?";
+    $check_ban_stmt = mysqli_prepare($con, $check_ban_query);
+    mysqli_stmt_bind_param($check_ban_stmt, 'i', $categoryID);
+    mysqli_stmt_execute($check_ban_stmt);
+    $check_ban_result = mysqli_stmt_get_result($check_ban_stmt);
 
-    if (mysqli_stmt_num_rows($stmt) > 0) {
-        redirectSwal("addCategory.php", "Category name already exists. Please choose a different name.", "error");
+    if (mysqli_num_rows($check_ban_result) > 0) {
+        redirectSwal("../category.php", "User has already been banned", "error");
     } else {
-        $image = $_FILES['uploadImageInput']['name'];
-        $image_tmp = $_FILES['uploadImageInput']['tmp_name'];
+        //! BAN Category 
+        $update_category_query = "UPDATE categories SET category_isBan=? WHERE category_id=?";
+        $stmt_category = mysqli_prepare($con, $update_category_query);
+        mysqli_stmt_bind_param($stmt_category, "ii", $banConfirm, $categoryID);
+        $update_category_query_run = mysqli_stmt_execute($stmt_category);
 
-        $path = "../../assets/uploads/brands/";
-        $image_ext = strtolower(pathinfo($image, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+        //! BAN User 
+        $update_user_query = "UPDATE users SET user_isBan=? WHERE user_ID=?";
+        $stmt_user = mysqli_prepare($con, $update_user_query);
+        mysqli_stmt_bind_param($stmt_user, "ii", $banConfirm, $categoryUserID);
+        $update_query_run = mysqli_stmt_execute($stmt_user);
 
-        if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("addCategory.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
-        }
+        //! add banned Category on category_banned tbl
+        $insert_userCateg_query = "INSERT INTO categories_banned (categBan_category_id, categBan_userID) VALUES('$categoryID','$categoryUserID')";
+        $insert_userCateg_query_run = mysqli_query($con, $insert_userCateg_query);
 
-        /* Set the file name */
-        $date = date("m-d-Y-H-i-s");
-        $fileName = $slug . '-' . $date . '.' . $image_ext;
-        $destination = $path . $fileName;
+        //! add banned users on users_banned tbl
+        $insert_user_query = "INSERT INTO users_banned (ban_user_ID) VALUES('$categoryUserID')";
+        $insert_user_query_run = mysqli_query($con, $insert_user_query);
 
-        $categ_query = "INSERT INTO categories (category_user_ID, category_name, category_slug, category_description, category_image,
-                category_meta_title, category_meta_description)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($con, $categ_query);
-        mysqli_stmt_bind_param(
-            $stmt,
-            "issssss",
-            $user_ID,
-            $name,
-            $slug,
-            $desc,
-            $fileName,
-            $meta_title,
-            $meta_desc,
-        );
-        $categ_query_run = mysqli_stmt_execute($stmt);
-
-        if ($categ_query_run) {
-            move_uploaded_file($image_tmp, $destination);
-            redirectSwal("../addCategory.php", "Category added successfully!", "success");
+        if ($insert_userCateg_query_run) {
+            // Insertion successful, proceed with the update
+            if ($update_query_run) {
+                redirectSwal("../category.php", "Store has been banned", "success");
+            } else {
+                redirectSwal("../category.php", "Something went wrong with the update", "error");
+            }
         } else {
-            redirectSwal("../addCategory.php", "Something went wrong. Please try again later.", "error");
+            // Insertion failed, do not proceed with the update
+            redirectSwal("../category.php", "Something went wrong with the insertion", "error");
         }
     }
-} else if (isset($_POST['updateCategoryBtn'])) { //!Update Brand Category details
-    $category_id = $_POST['categoryID'];
-    $name = $_POST['nameInput'];
-    $slug = $_POST['slugInput'];
-    $slug = strtolower($slug);
-    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
-    $slug = str_replace(' ', '', $slug);
-    $desc = $_POST['descriptionInput'];
-    $categ_status = isset($_POST['statusCheckbox']) ? '1' : '0';
-    $meta_title = $_POST['metaTitleInput'];
-    $meta_desc = $_POST['metaDescriptionInput'];
-
-    // Check if category name already exists
-    $check_query = "SELECT * FROM categories WHERE category_name = ? AND category_id != ?";
-    $stmt = mysqli_prepare($con, $check_query);
-    mysqli_stmt_bind_param($stmt, "si", $name, $category_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-
-    if (mysqli_stmt_num_rows($stmt) > 0) {
-        redirectSwal("../editCategory.php?id=$category_id", "Category name already exists. Please choose a different name.", "error");
-    } else {
-        $old_image = $_POST['oldImage'];
-        $new_image = $_FILES['uploadNewImageInput']['name'];
-        $image_tmp = $_FILES['uploadNewImageInput']['tmp_name'];
-
-        if ($new_image != "") {
-            // Set the file name if a new image is uploaded
-            $date = date("m-d-Y-H-i-s");
-            $fileName = $slug . '-' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
-            $destination = "../../assets/uploads/brands/" . $fileName;
-
-            if (file_exists("../../assets/uploads/brands/" . $old_image)) {
-                unlink("../../assets/uploads/brands/" . $old_image); // Delete Old Image
-            }
-            move_uploaded_file($image_tmp, $destination);
-        } else {
-            // Keep the original file name if no new image is uploaded
-            $fileName = $old_image;
-        }
-
-        $categ_query = "UPDATE categories SET category_name = ?, category_slug = ?, category_description = ?, category_status = ?,
-                        category_image = ?, category_meta_title = ?, category_meta_description = ? WHERE category_id = ?";
-        $stmt = mysqli_prepare($con, $categ_query);
-        mysqli_stmt_bind_param($stmt, "sssisssi", $name, $slug, $desc, $categ_status, $fileName, $meta_title, $meta_desc, $category_id);
-        $categ_query_run = mysqli_stmt_execute($stmt);
-
-        if ($categ_query_run) {
-            redirectSwal("../editCategory.php?id=$category_id", "Category updated successfully!", "success");
-        } else {
-            redirectSwal("../editCategory.php?id=$category_id", "Something went wrong. Please try again later.", "error");
-        }
-    }
-} else if (isset($_POST['deleteCategoryBtn'])) { //!Delete whole Brand Category
-    $category_id = mysqli_real_escape_string($con, $_POST['categoryID']);
-
-    // Fetch category data
-    $category_query = "SELECT * FROM categories WHERE category_id=?";
-    $stmt_category = mysqli_prepare($con, $category_query);
-    mysqli_stmt_bind_param($stmt_category, "i", $category_id);
-    mysqli_stmt_execute($stmt_category);
-    $category_data = mysqli_stmt_get_result($stmt_category);
-    $category_data = mysqli_fetch_array($category_data);
-    $image_delete = $category_data['category_image'];
-
-    // Fetch product data
-    $products_query = "SELECT product_image FROM products WHERE category_id=?";
-    $stmt_products = mysqli_prepare($con, $products_query);
-    mysqli_stmt_bind_param($stmt_products, "i", $category_id);
-    mysqli_stmt_execute($stmt_products);
-    $product_images_result = mysqli_stmt_get_result($stmt_products);
-
-    // Fetch slideshow data
-    $slideshow_query = "SELECT ss_image FROM slideshow WHERE category_id=?";
-    $stmt_slideshow = mysqli_prepare($con, $slideshow_query);
-    mysqli_stmt_bind_param($stmt_slideshow, "i", $category_id);
-    mysqli_stmt_execute($stmt_slideshow);
-    $slideshow_images_result = mysqli_stmt_get_result($stmt_slideshow);
-
-    // Delete products associated with the category
-    $delete_products_query = "DELETE FROM products WHERE category_id=?";
-    $stmt_delete_products = mysqli_prepare($con, $delete_products_query);
-    mysqli_stmt_bind_param($stmt_delete_products, "i", $category_id);
-    mysqli_stmt_execute($stmt_delete_products);
-
-    // Delete slideshow associated with the category
-    $delete_slideshow_query = "DELETE FROM slideshow WHERE category_id=?";
-    $stmt_delete_slideshow = mysqli_prepare($con, $delete_slideshow_query);
-    mysqli_stmt_bind_param($stmt_delete_slideshow, "i", $category_id);
-    mysqli_stmt_execute($stmt_delete_slideshow);
-
-    // Delete the category
-    $delete_category_query = "DELETE FROM categories WHERE category_id=?";
-    $stmt_delete_category = mysqli_prepare($con, $delete_category_query);
-    mysqli_stmt_bind_param($stmt_delete_category, "i", $category_id);
-    $delete_category_query_run = mysqli_stmt_execute($stmt_delete_category);
-
-    if ($delete_category_query_run) {
-        // Delete the category image
-        if (file_exists("../../assets/uploads/brands/" . $image_delete)) {
-            unlink("../../assets/uploads/brands/" . $image_delete);
-        }
-
-        // Delete associated product images
-        while ($product_image_data = mysqli_fetch_assoc($product_images_result)) {
-            $product_image = $product_image_data['product_image'];
-            if (file_exists("../../assets/uploads/products/" . $product_image)) {
-                unlink("../../assets/uploads/products/" . $product_image);
-            }
-        }
-
-        // Delete associated slideshow images
-        while ($slideshow_image_data = mysqli_fetch_assoc($slideshow_images_result)) {
-            $slideshow_image = $slideshow_image_data['ss_image'];
-            if (file_exists("../../assets/uploads/slideshow/" . $slideshow_image)) {
-                unlink("../../assets/uploads/slideshow/" . $slideshow_image);
-            }
-        }
-
-        redirectSwal("../category.php", "Category and associated product, & image deleted successfully!", "success");
-    } else {
-        redirectSwal("../category.php", "Something went wrong. Please try again later.", "error");
-    }
-
-    mysqli_stmt_close($stmt_category);
-    mysqli_stmt_close($stmt_products);
-    mysqli_stmt_close($stmt_delete_products);
-    mysqli_stmt_close($stmt_delete_category);
 }

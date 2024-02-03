@@ -160,7 +160,7 @@ if (isset($_POST['loginBtn'])) {
                 $check_address_query_run = mysqli_query($con, $check_address_query);
 
                 if (mysqli_num_rows($check_address_query_run) == 0) {
-                    redirect('../seller/account-details.php', 'Add your pickup address first', 'warning');
+                    redirectSwal('../seller/account-details.php', 'Add your pickup address first', 'warning');
                 } else {
                     header('Location: ../seller/index.php');
                 }

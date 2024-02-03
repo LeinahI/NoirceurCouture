@@ -21,7 +21,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white <?= in_array($page, ["category.php"]) ? 'active bg-gradient-primary' : '' ?>" href="category.php">
+                <a class="nav-link text-white <?= in_array($page, ["category.php", "viewCategory.php"]) ? 'active bg-gradient-primary' : '' ?>" href="category.php">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">store</i>
                     </div>
@@ -29,7 +29,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white <?= in_array($page, ["product.php", "editProduct.php", "addProduct.php"]) ? 'active bg-gradient-primary' : '' ?>" href="product.php">
+                <a class="nav-link text-white <?= in_array($page, ["product.php", "viewProduct.php"]) ? 'active bg-gradient-primary' : '' ?>" href="product.php">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">inventory_2</i>
                     </div>
@@ -73,7 +73,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white <?= in_array($page, ["slideshow.php", "editImage.php"]) ? 'active bg-gradient-primary' : '' ?>" href="slideshow.php">
+                <a class="nav-link text-white <?= in_array($page, ["slideshow.php", "editImage.php", "addSlideshow.php"]) ? 'active bg-gradient-primary' : '' ?>" href="slideshow.php">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">photo_library</i>
                     </div>

@@ -71,7 +71,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $discount = $_POST['priceDiscount'];
     $srp = $_POST['suggestedRetailPriceInput'];
     $qty = $_POST['quantityInput'];
-    $product_status = isset($_POST['productstatusCheckbox']) ? '1' : '0';
+    $product_visibility = isset($_POST['productstatusCheckbox']) ? '1' : '0';
     $product_popular = isset($_POST['productpopularCheckbox']) ? '1' : '0';
     $meta_title = $_POST['productmetaTitleInput'];
     $meta_desc = $_POST['productmetaDescriptionInput'];
@@ -106,7 +106,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
         }
 
         $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_description = ?,
-        product_original_price = ?, product_discount = ?, product_srp = ?, product_image = ?, product_qty = ?, product_status = ?, product_popular = ?, product_meta_title = ?,
+        product_original_price = ?, product_discount = ?, product_srp = ?, product_image = ?, product_qty = ?, product_visibility = ?, product_popular = ?, product_meta_title = ?,
         product_meta_description = ? WHERE product_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
         mysqli_stmt_bind_param(
@@ -121,7 +121,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $srp,
             $fileName,
             $qty,
-            $product_status,
+            $product_visibility,
             $product_popular,
             $meta_title,
             $meta_desc,

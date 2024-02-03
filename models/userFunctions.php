@@ -6,7 +6,7 @@ ob_start(); //Ouput buffering
 function getAllActive($table)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE category_status='0'";
+    $query = "SELECT * FROM $table WHERE category_onVacation='0' AND category_isBan='0'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -14,7 +14,7 @@ function getAllActive($table)
 function getAllPopular() /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE product_popular='1' AND product_status != '1'";
+    $query = "SELECT * FROM products WHERE product_popular='1' AND product_visibility != '1'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -22,7 +22,7 @@ function getAllPopular() /* Trending */
 function getAllSameShop($id) /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE category_id='$id' AND product_status != '1'";
+    $query = "SELECT * FROM products WHERE category_id='$id' AND product_visibility != '1'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -30,7 +30,9 @@ function getAllSameShop($id) /* Trending */
 function getProdByCategory($category_id)
 {
     global $con;
-    $query = "SELECT * FROM products WHERE category_id = '$category_id' AND product_status='0'";
+    $query = "SELECT p.*, c.category_onVacation, c.category_isBan FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE p.category_id = '$category_id' AND p.product_visibility='0'";
     $result = mysqli_query($con, $query);
     return $result;
 }
@@ -38,7 +40,7 @@ function getProdByCategory($category_id)
 function getCategoryByID($category_id)
 {
     global $con;
-    $query = "SELECT * FROM categories WHERE category_id = '$category_id' AND category_status='0'";
+    $query = "SELECT * FROM categories WHERE category_id = '$category_id'";
     $result = mysqli_query($con, $query);
     return $result;
 }
@@ -46,7 +48,7 @@ function getCategoryByID($category_id)
 function getSlugActiveCategories($table, $slug)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE category_slug = '$slug' AND category_status='0' LIMIT 1";
+    $query = "SELECT * FROM $table WHERE category_slug = '$slug' LIMIT 1";
     $result = mysqli_query($con, $query);
     return $result;
 }
@@ -54,7 +56,10 @@ function getSlugActiveCategories($table, $slug)
 function getSlugActiveProducts($table, $slug)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE product_slug = '$slug' AND product_status='0' LIMIT 1";
+    $query = "SELECT p.*, c.category_onVacation, c.category_isBan
+            FROM $table p
+            JOIN categories c ON p.category_id = c.category_id
+            WHERE product_slug = '$slug' LIMIT 1";
     $result = mysqli_query($con, $query);
     return $result;
 }

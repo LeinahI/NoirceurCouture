@@ -49,47 +49,78 @@ if (isset($_GET['category'])) {
                         <div class="row">
                             <?php
                             $products = getProdByCategory($cid);
-                            // Check if the query was executed successfully
-                            if ($products !== false) {
-                                // Check if there are any rows returned
-                                if (mysqli_num_rows($products) > 0) {
-                                    // Fetch the products using mysqli_fetch_array
-                                    while ($item = mysqli_fetch_array($products)) {
-                                        if (strlen($item['product_name']) > 15) {
-                                            $item['product_name'] = substr($item['product_name'], 0, 20) . '...';
-                                        }
-                            ?>
-                                        <div class="col-md-3 mb-3">
-                                            <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                                <div class="card shadow">
-                                                    <div class="card-body d-flex flex-column justify-content-between bg-primary">
-                                                        <div>
-                                                            <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
-                                                            <h4><?= $item['product_name'] ?></h4>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                            <?php
-                                    }
-                                    // Free the result set
-                                    mysqli_free_result($products);
-                                } else {
-                                    echo "<h1>No data available</h1>";
-                                }
+
+                            // Check if the category is on vacation or banned
+                            $category_onVacation = false;
+                            $category_isBan = false;
+
+                            if ($row = mysqli_fetch_array($products)) {
+                                $category_onVacation = $row['category_onVacation'];
+                                $category_isBan = $row['category_isBan'];
                             } else {
-                                echo "<h1>Error executing query</h1>";
+                                echo "<span class='fs-4 fw-bold text-accent'>This store currently have not posted a product yet.</span>";
                             }
+
+                            mysqli_data_seek($products, 0); // Reset the result set pointer
+
+                            // Fetch the products using mysqli_fetch_array
+                            while ($item = mysqli_fetch_array($products)) {
+                                if (strlen($item['product_name']) > 15) {
+                                    $item['product_name'] = substr($item['product_name'], 0, 20) . '...';
+                                }
+
+                                // Display a message if the category is on vacation
+                                if ($category_onVacation) {
                             ?>
+                                    <span class='fs-4 fw-bold text-accent'>This store is currently on vacation. No products are available for purchase.</span>
+                                <?php
+                                    break; // Exit the loop if the category is on vacation
+                                }
+
+                                if ($category_isBan) {
+                                ?>
+                                    <span class='fs-4 fw-bold text-accent'>This store has been permanently banned.</span>
+                                    <!-- Modal Initialize on load -->
+                                    <div class="modal" id="onload" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                            <div class="modal-content bg-main">
+                                                <div class="modal-header text-center">
+                                                    <span class='fs-3 fw-bold text-accent modal-title w-100'>This store has been permanently banned.</span>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="brands.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php
+                                    break; // Exit the loop if the category is banned
+                                }
+
+                                // Display the product card
+                                ?>
+                                <div class="col-md-3 mb-3">
+                                    <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
+                                        <div class="card shadow">
+                                            <div class="card-body d-flex flex-column justify-content-between bg-primary">
+                                                <div>
+                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
+                                                    <h4><?= $item['product_name'] ?></h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            <?php
+                            }
+
+                            mysqli_free_result($products); // Free the result set
+                            ?>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div>
-            <?php include('footer.php'); ?>
         </div>
 
 <?php
@@ -97,5 +128,11 @@ if (isset($_GET['category'])) {
         echo "<h1><center>Something went wrong</center></h1>";
     }
 }
-include('../partials/__footer.php');
 ?>
+<script>
+    window.onload = () => {
+        $('#onload').modal('show');
+    }
+</script>
+<?php include('footer.php');
+include('../partials/__footer.php'); ?>

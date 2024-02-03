@@ -96,8 +96,8 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                                 <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                             </div>
                                             <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
-                                                <input type="checkbox" class="btn-check" <?= $data['product_status'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
-                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_status'] ? "Hidden" : "Visible" ?></label>
+                                                <input type="checkbox" class="btn-check" <?= $data['product_visibility'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
+                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_visibility'] ? "Hidden" : "Visible" ?></label>
 
                                                 <input type="checkbox" class="btn-check" <?= $data['product_popular'] ? "checked" : "" ?> id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
                                                 <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>

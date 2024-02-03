@@ -10,7 +10,7 @@ include('../middleware/adminMW.php'); ?>
         <div class="card">
             <div class="card-header bg-primary">
                 <h2 class="text-white">Modify Slideshow
-                    <a href="addImage.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">add_to_photos</i> Add Image</a>
+                    <a href="addSlideshow.php" class="btn btn-light float-end ms-2"><i class="material-icons opacity-10">add_to_photos</i> Add Image</a>
                 </h2>
             </div>
             <div class="card-body">
@@ -37,7 +37,7 @@ include('../middleware/adminMW.php'); ?>
                                         <td><img src="../assets/uploads/slideshow/<?= $item['ss_image']; ?>" height="100px" class="w-40 border" alt="slideshow image"></td>
                                         <td>
                                             <div style="display: flex;">
-                                                <a href="editImage.php?id=<?= $item['ss_id']; ?>" class="btn btn-primary mx-2">Edit</a>
+                                                <a href="editSlideshow.php?id=<?= $item['ss_id']; ?>" class="btn btn-primary mx-2">Edit</a>
                                                 <form action="models/slide-show-auth.php" method="POST">
                                                     <input type="hidden" name="ssID" value="<?= $item['ss_id'] ?>">
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['ss_id'] ?>">Delete</button>
