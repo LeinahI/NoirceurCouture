@@ -199,7 +199,7 @@ $data = mysqli_fetch_array($orderData);
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
-                                                                <form action="../models/cancelOrder.php" method="post">
+                                                                <form action="../models/orderStatus.php" method="post">
                                                                     <div class="modal-content bg-main">
                                                                         <div class="modal-header text-center">
                                                                             <p class="modal-title w-100 fs-3" id="cancelOrderModalLabel">Select Cancellation Reason</p>
@@ -245,6 +245,18 @@ $data = mysqli_fetch_array($orderData);
                                                                 </form>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                <?php
+                                                }
+
+                                                if ($data['orders_status'] == 1) {
+                                                ?>
+                                                    <div class="mt-3">
+                                                        <form action="../models/orderStatus.php" method="post">
+                                                            <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
+                                                            <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
+                                                            <button type="submit" name="orderRcvBtn" class="btn btn-accent float-end col-md-10">Order Received</button>
+                                                        </form>
                                                     </div>
                                                 <?php
                                                 }

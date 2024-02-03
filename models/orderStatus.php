@@ -11,7 +11,7 @@ if (isset($_POST['cancelOrderBtn'])) {
     $order_stat = 3; // = 3 cancelled
 
     $updateStatus_query = "UPDATE orders SET orders_status='$order_stat', orders_cancel_reason='$cancelReason' WHERE orders_tracking_no='$track_num'";
-    $updateStatus_query_run = mysqli_query($con, $updateStatus_query);
+    mysqli_query($con, $updateStatus_query);
 
     if ($order_stat == 3) {
         // Get the order items
@@ -35,4 +35,15 @@ if (isset($_POST['cancelOrderBtn'])) {
     // Redirect or display success message
 
     redirectSwal("../views/viewOrderDetails.php?trck=$track_num", "Your order has been Cancelled!", "success");
+} else if (isset($_POST['orderRcvBtn'])) {
+    $track_num = $_POST['trackingNumber'];
+    $orderId = $_POST['ordersID'];
+    $order_stat = 2; // = 2 received
+
+    // Update the orders_status in the orders table
+    $updateOrderStatusQuery = "UPDATE orders SET orders_status = '$order_stat' WHERE orders_id = '$orderId'";
+    mysqli_query($con, $updateOrderStatusQuery);
+    // Redirect or display success message
+
+    redirectSwal("../views/viewOrderDetails.php?trck=$track_num", "Your order has been Received!", "success");
 }

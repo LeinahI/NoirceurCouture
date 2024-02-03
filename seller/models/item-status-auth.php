@@ -9,9 +9,6 @@ if (isset($_POST['updateParcelStatusBtn'])) {
     $order_stat = $_POST['orderStatus'];
     $orderId = $_POST['ordersID'];
 
-    $updateStatus_query = "UPDATE orders SET orders_status='$order_stat' WHERE orders_tracking_no='$track_num'";
-    $updateStatus_query_run = mysqli_query($con, $updateStatus_query);
-
     if ($order_stat == 3) {
         // Get the order items
         $orderItemsQuery = "SELECT orderItems_product_id, orderItems_qty FROM order_items WHERE orderItems_order_id = '$orderId'";

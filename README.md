@@ -79,7 +79,7 @@ Buyer Role
 - Buyer have now notification tab that can see order and Noirceur Couture Updates.
 - Buyer can rate products.
 - Can cancel order when the order are preparing to ship.✅
-- Can set the order status to Delivered.
+- Can set the order status to Delivered. ✅
 
 Seller Role
 - Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.

@@ -166,7 +166,13 @@ $data = mysqli_fetch_array($orderData);
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary mt-3 col-md-12" name="updateParcelStatusBtn" type="submit">Update Parcel Status</button>
+                            <?php
+                            if ($data['orders_status'] != 2 && $data['orders_status'] != 3) {
+                            ?>
+                                <button class="btn btn-primary mt-3 col-md-12" name="updateParcelStatusBtn" type="submit">Update Parcel Status</button>
+                            <?php
+                            }
+                            ?>
                             </form>
                         </div>
                     </div>
