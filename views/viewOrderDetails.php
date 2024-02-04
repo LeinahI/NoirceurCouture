@@ -74,27 +74,15 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 <br>
                                                 <span><?= $data['orders_address']; ?>,</span>
                                                 <br>
-                                                <div class="mt-3 row">
-                                                    <div class="col-md-3">
-                                                        <select hidden name="region" class="form-select form-control form-control-md" id="region" readonly></select>
-                                                        <input type="text" class="form-control form-control-md" name="region_text" id="region-text" disabled>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <select hidden name="province" class="form-control form-control-md" id="province" readonly></select>
-                                                        <input type="text" class="form-control form-control-md" name="province_text" id="province-text" disabled>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <select hidden name="city" class="form-control form-control-md" id="city" readonly></select>
-                                                        <input type="text" class="form-control form-control-md" name="city_text" id="city-text" disabled>
-                                                    </div>
-
-                                                    <div class="col-md-3">
-                                                        <select name="barangay" class="form-control form-control-md" id="barangay" disabled></select>
-                                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" disabled>
-                                                    </div>
-                                                </div>
+                                                <div class="mt-1">
+                                                    <select hidden name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                                    <select hidden name="city" class="form-control form-control-md" id="city" required></select>
+                                                    <select hidden name="province" class="form-control form-control-md" id="province" required></select>
+                                                    <select hidden name="region" class="form-control form-control-md" id="region" required></select>
+                                                    <span name="barangay-txt" id="barangay-txt"></span>,
+                                                    <span name="city-txt" id="city-txt"></span>,<br>
+                                                    <span name="province-txt" id="province-txt"></span>,
+                                                    <span name="region-txt" id="region-txt"></span>
                                             </h5>
                                         </div>
                                     </div>

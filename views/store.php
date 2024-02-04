@@ -87,9 +87,14 @@ if (isset($_GET['category'])) {
                                             $prodCount = getProductsCountByCategoryByID($cid);
                                             $count = mysqli_fetch_array($prodCount);
 
-                                            /* Get Seller State & City */
+                                            /* Get Seller Province & City */
                                             $getaddr = getSellerStateCityByCategoryByID($cid);
                                             $addr = mysqli_fetch_array($getaddr);
+
+                                            $regionCode = isset($addr['address_region']) ? $addr['address_region'] : '';
+                                            $provinceCode = isset($addr['address_province']) ? $addr['address_province'] : '';
+                                            $cityCode = isset($addr['address_city']) ? $addr['address_city'] : '';
+                                            $barangayCode = isset($addr['address_barangay']) ? $addr['address_barangay'] : '';
                                             ?>
                                             <div class="row col-md-6">
                                                 <div class="d-flex mb-4">
@@ -99,7 +104,12 @@ if (isset($_GET['category'])) {
 
                                                 <div class="d-flex mb-4">
                                                     <div class="pr-2"><i class="fa-solid fa-location-dot text-center"></i></div>
-                                                    <div>Location:&nbsp;<span class="text-accent"><?= $addr['address_city'] ?? "not" ?>,&nbsp;<?= $addr['address_province'] ?? "available" ?></span></div>
+                                                    <div>Location:&nbsp;
+                                                        <span class="text-accent">
+                                                            <select hidden name="city" class="form-control form-control-md" id="city" required></select>
+                                                            <span name="city-txt" id="city-txt"></span>,&nbsp;<select hidden name="province" class="form-control form-control-md" id="province" required></select><span name="province-txt" id="province-txt"></span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row col-md-6">
@@ -201,11 +211,15 @@ if (isset($_GET['category'])) {
         echo "<h1><center>Something went wrong</center></h1>";
     }
 }
+include('../assets/js/ph-address-selector.php');
 ?>
 <script>
     window.onload = () => {
         $('#onload').modal('show');
     }
 </script>
-<?php include('footer.php');
+<?php
+
+include('footer.php');
+
 include('../partials/__footer.php'); ?>

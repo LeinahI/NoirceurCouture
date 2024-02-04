@@ -64,7 +64,7 @@ function getProductsCountByCategoryByID($category_id)
 function getSellerStateCityByCategoryByID($category_id)
 {
     global $con;
-    $query = "SELECT adr.address_province, adr.address_city FROM addresses AS adr
+    $query = "SELECT adr.address_barangay, adr.address_region, adr.address_province, adr.address_city FROM addresses AS adr
     JOIN users AS u ON adr.address_user_ID = u.user_ID
     JOIN categories AS c ON u.user_ID = c.category_user_ID
     WHERE c.category_id = '$category_id'";
