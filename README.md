@@ -87,6 +87,7 @@ Seller Role
 - Seller cannot set the parcel is delivered anymore.
 
 Buyer UI Changes
+- ✅ Dynamic Philippine Address Selector via json
 - 🚧 on store.php?category=... It will show the profile and ratings, products, and date joined.
 - On myAddress.php will have multiple cards for multiple address.
 - On myOrders.php they will separate the orders when user ordered on two or multiple different stores.
