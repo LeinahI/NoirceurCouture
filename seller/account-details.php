@@ -51,7 +51,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <label for="floatingInput" class="ps-3">Email Address</label>
                                     </div>
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09"  onkeypress="inpNum(event)">
+                                        <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09" onkeypress="inpNum(event)">
                                         <label for="floatingPassword" class="ps-3">Phone Number</label>
                                     </div>
                                 </div>
@@ -78,10 +78,10 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                             $fname = isset($pa['address_fullName']) ? $pa['address_fullName'] : '';
                             $email = isset($pa['address_email']) ? $pa['address_email'] : '';
                             $phone = isset($pa['address_phone']) ? $pa['address_phone'] : '';
-                            $state = isset($pa['address_state']) ? $pa['address_state'] : '';
-                            $city = isset($pa['address_city']) ? $pa['address_city'] : '';
-                            $pcode = isset($pa['address_postal_code']) ? $pa['address_postal_code'] : '';
-                            $country = isset($pa['address_country']) ? $pa['address_country'] : '';
+                            $regionCode = isset($pa['address_region']) ? $pa['address_region'] : '';
+                            $provinceCode = isset($pa['address_province']) ? $pa['address_province'] : '';
+                            $cityCode = isset($pa['address_city']) ? $pa['address_city'] : '';
+                            $barangayCode = isset($pa['address_barangay']) ? $pa['address_barangay'] : '';
                             $fulladdr = isset($pa['address_fullAddress']) ? $pa['address_fullAddress'] : '';
 
                             $existingAddress = !empty($fulladdr);
@@ -103,29 +103,32 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 <!-- Phone Number -->
                                 <div class="row">
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" value="<?= $phone ?>" name="phoneNumber" required placeholder="09"  onkeypress="inpNum(event)">
+                                        <input type="number" class="form-control ps-3" value="<?= $phone ?>" name="phoneNumber" required placeholder="09" onkeypress="inpNum(event)">
                                         <label for="floatingPassword" class="ps-3">Phone Number</label>
                                     </div>
+                                    <!-- City State Country -->
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="text" class="form-control ps-3" value="<?= $state ?>" name="state" required placeholder="09">
-                                        <label for="floatingPassword" class="ps-3">State</label>
+                                        <select name="region" class="ps-2 form-select form-control form-control-md" id="region" required></select>
+                                        <input type="hidden" class="form-control ps-3 form-control-md" name="region_text" id="region-text" required>
+                                        <label for="floatingInput" class="ps-3">Region</label>
                                     </div>
                                 </div>
-                                <!-- City State Country -->
+
                                 <div class="row">
                                     <div class="form-floating col-md-4 mb-3">
-                                        <input type="text" class="form-control ps-3" value="<?= $city ?>" name="city" required placeholder="email@email.com">
-                                        <label for="floatingInput" class="ps-3">City</label>
+                                        <select name="province" class="ps-2 form-control form-control-md" id="province" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
+                                        <label for="floatingInput" class="ps-3">Province</label>
                                     </div>
                                     <div class="form-floating col-md-4 mb-3">
-                                        <input type="text" class="form-control ps-3" value="<?= $pcode ?>" name="postalCode" required placeholder="09">
-                                        <label for="floatingPassword" class="ps-3">Postal Code</label>
+                                        <select name="city" class="ps-2 form-control form-control-md" id="city" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
+                                        <label for="floatingInput" class="ps-3">City / Municipality</label>
                                     </div>
                                     <div class="form-floating col-md-4 mb-3">
-                                        <select class="form-select ps-2" id="country" name="country">
-                                            <?php include('../partials/country-options.php') ?>
-                                        </select>
-                                        <label for="country" class="ps-3">Country</label>
+                                        <select name="barangay" class="ps-2 form-control form-control-md" id="barangay" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
+                                        <label for="floatingInput" class="ps-3">Barangay</label>
                                     </div>
                                 </div>
 
@@ -158,14 +161,11 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
     </div>
 </div>
 
-<?php include('partials/footer.php'); ?>
+<?php
+include('../assets/js/ph-address-selector.php');
+include('partials/footer.php'); ?>
 
 <script>
-    /* display selected country */
-    var selectedCountry = "<?php echo $country; ?>";
-    // Set the selected attribute based on the PHP variable
-    document.getElementById("country").value = selectedCountry;
-
     document.addEventListener("DOMContentLoaded", function() {
         var passwordInput = document.getElementById("pass");
         var togglePasswordBtn = document.getElementById("togglePassword");

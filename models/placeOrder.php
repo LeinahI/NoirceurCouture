@@ -9,17 +9,17 @@ if (isset($_SESSION['auth'])) {
         $fName = mysqli_real_escape_string($con, $_POST['fullName']);
         $email = mysqli_real_escape_string($con, $_POST['emailAddress']);
         $cpNum = mysqli_real_escape_string($con, $_POST['phoneNumber']);
-        $state = mysqli_real_escape_string($con, $_POST['state']);
+        $region = mysqli_real_escape_string($con, $_POST['region']);
+        $province = mysqli_real_escape_string($con, $_POST['province']);
         $city = mysqli_real_escape_string($con, $_POST['city']);
-        $country = mysqli_real_escape_string($con, $_POST['country']);
-        $pCode = mysqli_real_escape_string($con, $_POST['postalCode']);
+        $barangay = mysqli_real_escape_string($con, $_POST['barangay']);
         $fAddr = mysqli_real_escape_string($con, $_POST['fullAddress']);
         $pay_mode = mysqli_real_escape_string($con, $_POST['paymentMode']);
         $payment_id = mysqli_real_escape_string($con, $_POST['paymentID']);
 
         $phonePatternPH = '/^09\d{9}$/';
 
-        if ($fName == "" || $email == "" || $cpNum == "" || $pCode == "" || $fAddr == "") {
+        if ($fName == "" || $email == "" || $cpNum == "" || $fAddr == "") {
             redirect("../views/checkOut.php", "All fields are mandatory");
         }
 
@@ -43,9 +43,9 @@ if (isset($_SESSION['auth'])) {
             }
 
             $tracking_no = "nrcrCtr" . substr($cpNum, 2) . rand(1111, 9999);
-            $placeOrder_query = "INSERT INTO orders(orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_state, orders_city, orders_country, orders_postal_code,
+            $placeOrder_query = "INSERT INTO orders(orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_region, orders_province, orders_city, orders_barangay,
             orders_total_price, orders_payment_mode, orders_payment_id)
-            VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$fAddr', '$state', '$city','$country','$pCode','$totalPrice', '$pay_mode', '$payment_id')";
+            VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$fAddr', '$region', '$province','$city','$barangay','$totalPrice', '$pay_mode', '$payment_id')";
             $placeOrder_query_run = mysqli_query($con, $placeOrder_query);
 
             if ($placeOrder_query_run) {

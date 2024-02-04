@@ -4,7 +4,11 @@
 <script src="../assets/js/owl.carousel.min.js"></script>
 <script src="../assets/js/bootstrap.bundle.min.js"></script>
 <script src="/NoirceurCouture/assets/js/main.js"></script>
-<?php include('scripts.php'); ?>
+<!-- <script src="../assets/js/ph-address-selector.js"></script> -->
+
+<?php
+
+include('scripts.php'); ?>
 </body>
 
 </html>

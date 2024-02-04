@@ -224,10 +224,10 @@ if (isset($_POST['userAddAddrBtn'])) {
     $fullN = $_POST['fullName'];
     $email = $_POST['email'];
     $phoneNum = $_POST['phoneNumber'];
-    $state = $_POST['state'];
+    $region = $_POST['region'];
+    $province = $_POST['province'];
     $city = $_POST['city'];
-    $pcode = $_POST['postalCode'];
-    $country = $_POST['country'];
+    $barangay = $_POST['barangay'];
     $fullAddr = $_POST['fullAddress'];
     $phonePatternPH = '/^09\d{9}$/';
 
@@ -248,9 +248,9 @@ if (isset($_POST['userAddAddrBtn'])) {
         }
 
         // Prepare and bind the parameters for inserting a new address
-        $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_state, address_city, address_postal_code, address_country, address_phone, address_fullAddress)
+        $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssssss", $userId, $fullN, $email, $state, $city, $pcode, $country, $phoneNum, $fullAddr);
+        $stmt->bind_param("issssssss", $userId, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddress.php");
@@ -271,17 +271,18 @@ if (isset($_POST['userUpdateAddrBtn'])) {
     $pcode = $_POST['postalCode'];
     $phoneNum = $_POST['phoneNumber'];
     $fullAddr = $_POST['fullAddress'];
-    $state = $_POST['state'];
+    $region = $_POST['region'];
+    $province = $_POST['province'];
     $city = $_POST['city'];
-    $country = $_POST['country'];
+    $barangay = $_POST['barangay'];
     $phonePatternPH = '/^09\d{9}$/';
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
         // Prepare and bind the parameters
-        $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_state = ?, address_city = ?, address_postal_code = ?, address_country = ?, address_phone = ?, address_fullAddress = ? WHERE address_user_ID = ?");
-        $stmt->bind_param("ssssssssi", $fullN, $email, $state, $city, $pcode, $country, $phoneNum, $fullAddr, $userId);
+        $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_region =?, address_province = ?, address_city = ?, address_barangay = ?, address_phone = ?, address_fullAddress = ? WHERE address_user_ID = ?");
+        $stmt->bind_param("ssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr, $userId);
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddress.php");

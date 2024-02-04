@@ -35,6 +35,11 @@ if (isset($_GET['trck'])) {
 }
 
 $data = mysqli_fetch_array($orderData);
+
+$regionCode = isset($data['orders_region']) ? $data['orders_region'] : '';
+$provinceCode = isset($data['orders_province']) ? $data['orders_province'] : '';
+$cityCode = isset($data['orders_city']) ? $data['orders_city'] : '';
+$barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 ?>
 
 <div class="py-5">
@@ -69,12 +74,27 @@ $data = mysqli_fetch_array($orderData);
                                                 <br>
                                                 <span><?= $data['orders_address']; ?>,</span>
                                                 <br>
-                                                <span>
-                                                    <span><?= $data['orders_city']; ?>,</span>
-                                                    <span><?= $data['orders_state']; ?>,</span>
-                                                    <span><?= $data['orders_postal_code']; ?>,</span>
-                                                    <span><?= $data['orders_country']; ?></span>
-                                                </span>
+                                                <div class="mt-3 row">
+                                                    <div class="col-md-3">
+                                                        <select hidden name="region" class="form-select form-control form-control-md" id="region" readonly></select>
+                                                        <input type="text" class="form-control form-control-md" name="region_text" id="region-text" disabled>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <select hidden name="province" class="form-control form-control-md" id="province" readonly></select>
+                                                        <input type="text" class="form-control form-control-md" name="province_text" id="province-text" disabled>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <select hidden name="city" class="form-control form-control-md" id="city" readonly></select>
+                                                        <input type="text" class="form-control form-control-md" name="city_text" id="city-text" disabled>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <select name="barangay" class="form-control form-control-md" id="barangay" disabled></select>
+                                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" disabled>
+                                                    </div>
+                                                </div>
                                             </h5>
                                         </div>
                                     </div>
@@ -275,10 +295,14 @@ $data = mysqli_fetch_array($orderData);
 </div>
 
 <div>
-    <?php include('footer.php'); ?>
+    <?php include('footer.php');
+    include('../assets/js/ph-address-selector.php');
+    ?>
 </div>
 
-<?php include('../partials/__footer.php'); ?>
+<?php include('../partials/__footer.php');
+
+?>
 
 <script>
     // jquery code to adjust the height based on the number of items

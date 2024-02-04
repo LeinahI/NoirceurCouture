@@ -47,10 +47,10 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                                 $email = isset($data['address_email']) ? $data['address_email'] : '';
-                                $state = isset($data['address_state']) ? $data['address_state'] : '';
-                                $city = isset($data['address_city']) ? $data['address_city'] : '';
-                                $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
-                                $country = isset($data['address_country']) ? $data['address_country'] : '';
+                                $regionCode = isset($data['address_region']) ? $data['address_region'] : '';
+                                $provinceCode = isset($data['address_province']) ? $data['address_province'] : '';
+                                $cityCode = isset($data['address_city']) ? $data['address_city'] : '';
+                                $barangayCode = isset($data['address_barangay']) ? $data['address_barangay'] : '';
                                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
 
@@ -79,36 +79,39 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                     </div>
                                 </div>
                                 <!-- State City Country -->
-                                <div class=" col-md-4 mb-3">
+                                <div class="form-floating col-md-12 mb-3">
                                     <div class="form-floating ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_state" value="<?= $state ?>" name="state" placeholder="asd123">
-                                        <label for="floatingInput">State</label>
-                                        <small class="text-danger state"></small>
+                                        <select name="region" class="form-select form-control form-control-md" id="region" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
+                                        <label for="floatingInput">Region</label>
+                                        <small class="text-danger region"></small>
                                     </div>
                                 </div>
                                 <div class=" col-md-4 mb-3">
                                     <div class="form-floating ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_city" value="<?= $city ?>" name="city" placeholder="asd123">
-                                        <label for="floatingInput">City</label>
+                                        <select name="province" class="form-control form-control-md" id="province" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
+                                        <label for="floatingInput">Province</label>
+                                        <small class="text-danger province"></small>
+                                    </div>
+                                </div>
+                                <div class=" col-md-4 mb-3">
+                                    <div class="form-floating ps-0 mb-3">
+                                        <select name="city" class="form-control form-control-md" id="city" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
+                                        <label for="floatingInput">City / Municipality</label>
                                         <small class="text-danger city"></small>
                                     </div>
                                 </div>
                                 <div class=" col-md-4 mb-3">
                                     <div class="form-floating ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_postCode" value="<?= $pcode ?>" name="postalCode" placeholder="asd123">
-                                        <label for="floatingInput">Postal Code</label>
-                                        <small class="text-danger postal"></small>
+                                        <select name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
+                                        <label for="floatingInput">Barangay</label>
+                                        <small class="text-danger barangay"></small>
                                     </div>
                                 </div>
-                                <div class="form-floating col-md-12 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select class="form-select" id="delivery_country" name="country">
-                                            <?php include('../partials/country-options.php') ?>
-                                        </select>
-                                        <label for="floatingInput">Country</label>
-                                        <small class="text-danger country"></small>
-                                    </div>
-                                </div>
+
                                 <!-- Address -->
                                 <div class="form-floating col-md-12 mb-3">
                                     <div class="form-floating ps-0 mb-3">
@@ -199,16 +202,19 @@ if (mysqli_num_rows($cartCheck) < 1) {
         </div>
     </div>
 </div>
-<?php include('footer.php'); ?>
-<?php include('../partials/__footer.php'); ?>
+<?php
+include('footer.php');
+include('../assets/js/ph-address-selector.php');
+include('../partials/__footer.php');
+?>
 
 <!--------------------------
-PAYPAL Integration
-This Code helps with integration: https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem
+//+PAYPAL Integration
+//+This Code helps with integration: https://stackoverflow.com/questions/56414640/paypal-checkout-javascript-with-smart-payment-buttons-create-order-problem
 --------------------------->
 <script src="https://www.paypal.com/sdk/js?client-id=AVe3Db1QSdssjRZm8rLrGrd6eWNPiBPsU-ax8oQU2BfXO1UANt6WPddNUjHAsMwQpS375AHeSRrrCMEq&currency=PHP&disable-funding=card"></script>
 <script>
-    /* Prevent user to write letter or symbols in phone number */
+    /*//! Prevent user to write letter or symbols in phone number */
     function inpNum(e) {
         e = e || window.event;
         var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
@@ -237,123 +243,17 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
         }
     }
 
-    //!!!!!!!!!!!!!!!!!
-    //!Save Inputs Start
-    //!!!!!!!!!!!!!!!!!
-    //Save fname_input text
-    $(document).ready(function() {
-        var del_fname = $('#delivery_fname');
-        var del_emailAddr = $('#delivery_emailAddr');
-        var del_phoneNum = $('#delivery_phoneNum');
-        var del_state = $('#delivery_state');
-        var del_city = $('#delivery_city');
-        var del_postCode = $('#delivery_postCode');
-        var del_country = $('#delivery_country');
-        var del_fullAddr = $('#delivery_fullAddr');
-
-        //?fname
-        var savedFnameInput = sessionStorage.getItem('fullName');
-        if (savedFnameInput) {
-            del_fname.val(savedFnameInput);
-        }
-        del_fname.on('input', function() {
-            sessionStorage.setItem('fullName', del_fname.val());
-        });
-
-        //?email
-        var savedEmailInput = sessionStorage.getItem('emailAddress');
-        if (savedEmailInput) {
-            del_emailAddr.val(savedEmailInput);
-        }
-        del_emailAddr.on('input', function() {
-            sessionStorage.setItem('emailAddress', del_emailAddr.val());
-        });
-
-        //?phone
-        var savedPhoneInput = sessionStorage.getItem('phoneNumber');
-        if (savedPhoneInput) {
-            del_phoneNum.val(savedPhoneInput);
-        }
-        del_phoneNum.on('input', function() {
-            sessionStorage.setItem('phoneNumber', del_phoneNum.val());
-        });
-
-        // Retrieve and set the input text on page load
-        var savedLoginInput = sessionStorage.getItem('state');
-        if (savedLoginInput) {
-            loginInput.val(savedLoginInput);
-        }
-
-        // Save input text on every change
-        loginInput.on('input', function() {
-            sessionStorage.setItem('state', loginInput.val());
-        });
-
-        // Retrieve and set the input text on page load
-        var savedLoginInput = sessionStorage.getItem('city');
-        if (savedLoginInput) {
-            loginInput.val(savedLoginInput);
-        }
-
-        // Save input text on every change
-        loginInput.on('input', function() {
-            sessionStorage.setItem('city', loginInput.val());
-        });
-
-        // Retrieve and set the input text on page load
-        var savedLoginInput = sessionStorage.getItem('postalCode');
-        if (savedLoginInput) {
-            loginInput.val(savedLoginInput);
-        }
-
-        // Save input text on every change
-        loginInput.on('input', function() {
-            sessionStorage.setItem('postalCode', loginInput.val());
-        });
-
-        // Retrieve and set the input text on page load
-        var savedLoginInput = sessionStorage.getItem('country');
-        if (savedLoginInput) {
-            loginInput.val(savedLoginInput);
-        }
-
-        // Save input text on every change
-        loginInput.on('input', function() {
-            sessionStorage.setItem('country', loginInput.val());
-        });
-
-        // Retrieve and set the input text on page load
-        var savedLoginInput = sessionStorage.getItem('fullAddress');
-        if (savedLoginInput) {
-            loginInput.val(savedLoginInput);
-        }
-
-        // Save input text on every change
-        loginInput.on('input', function() {
-            sessionStorage.setItem('fullAddress', loginInput.val());
-        });
-    });
-
-    //!!!!!!!!!!!!!!!!!
-    //!Save Inputs end
-    //!!!!!!!!!!!!!!!!!
-
-    /* display selected country */
-    var selectedCountry = "<?php echo $country; ?>";
-    // Set the selected attribute based on the PHP variable
-    document.getElementById("delivery_country").value = selectedCountry;
-
-    /* Cash on Delivery */
+    /*//! Cash on Delivery */
     var rn = Math.floor(Math.random() * (9999999 - 10000 + 1)) + 1000;
     // Extract the last 4 digits of the phone number
     var phoneNum = $('#delivery_phoneNum').val();
-    var postalCode = $('#delivery_postCode').val();
     var last4Digits = phoneNum.slice(-4);
-    var last4text = postalCode.slice(-4);
-    var paymentID = "COD" + rn + last4Digits + last4text;
+    var paymentID = "COD" + rn + last4Digits;
     document.getElementById("paymentIDInput").value = paymentID;
 
-    /* Delivery Addr validate function */
+    
+
+    /*//! Delivery Address validate function */
     function validateForm() {
         var isValid = true;
 
@@ -361,11 +261,12 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
         var fname = $('#delivery_fname').val();
         var email = $('#delivery_emailAddr').val();
         var phoneNum = $('#delivery_phoneNum').val();
-        var postalCode = $('#delivery_postCode').val();
-        var state = $('#delivery_state').val();
-        var city = $('#delivery_city').val();
-        var country = $('#delivery_country').val();
+        var region = $('#region').val();
+        var province = $('#province').val();
+        var city = $('#city').val();
+        var barangay = $('#barangay').val();
         var fullAddr = $('#delivery_fullAddr').val();
+        
 
         // Check each variable
         if (fname.length === 0) {
@@ -386,8 +287,13 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
             isValid = false;
         }
 
-        if (state.length === 0) {
-            $(".state").text("*This field is required");
+        if (region.length === 0) {
+            $(".region").text("*This field is required");
+            isValid = false;
+        }
+
+        if (province.length === 0) {
+            $(".province").text("*This field is required");
             isValid = false;
         }
 
@@ -396,13 +302,8 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
             isValid = false;
         }
 
-        if (country.length === 0) {
-            $(".country").text("*This field is required");
-            isValid = false;
-        }
-
-        if (postalCode.length === 0) {
-            $(".postal").text("*This field is required");
+        if (barangay.length === 0) {
+            $(".barangay").text("*This field is required");
             isValid = false;
         }
 
@@ -440,16 +341,16 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                             address_line_1: $('#delivery_fullAddr').val(),
                             /* Full address */
 
-                            admin_area_2: $('#delivery_city').val(),
+                            admin_area_2: $('#city-text').val(), 
                             /* City */
 
-                            admin_area_1: $('#delivery_state').val(),
+                            admin_area_1: $('#region-text').val(),
                             /* State */
 
-                            postal_code: $('#delivery_postCode').val(),
+                            postal_code: $('#province-text').val(),
                             /* Zipcode */
 
-                            country_code: $('#delivery_country').val() /* Country */
+                            country_code: 'PH' /* Country */
                         }
                     }
                 }]
@@ -466,20 +367,21 @@ This Code helps with integration: https://stackoverflow.com/questions/56414640/p
                 var fname = $('#delivery_fname').val();
                 var email = $('#delivery_emailAddr').val();
                 var phoneNum = $('#delivery_phoneNum').val();
-                var postalCode = $('#delivery_postCode').val();
-                var state = $('#delivery_state').val();
-                var city = $('#delivery_city').val();
-                var country = $('#delivery_country').val();
+                var region = $('#region').val();
+                var province = $('#province').val();
+                var city = $('#city').val();
+                var barangay = $('#barangay').val();
                 var fullAddr = $('#delivery_fullAddr').val();
 
                 var data = {
                     'fullName': fname,
                     'emailAddress': email,
                     'phoneNumber': phoneNum,
-                    'postalCode': postalCode,
-                    'state': state,
+                    'region': region,
+                    'province': province,
                     'city': city,
-                    'country': country,
+                    'barangay': barangay,
+                    /* 'country': "PH", */
                     'fullAddress': fullAddr,
                     'paymentMode': "Paypal",
                     'paymentID': transaction.id,

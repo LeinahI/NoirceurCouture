@@ -31,10 +31,10 @@ include('../middleware/userMW.php');
                 $id = isset($dataid['user_ID']) ? $dataid['user_ID'] : '';
                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
                 $email = isset($data['address_email']) ? $data['address_email'] : '';
-                $state = isset($data['address_state']) ? $data['address_state'] : '';
-                $city = isset($data['address_city']) ? $data['address_city'] : '';
-                $pcode = isset($data['address_postal_code']) ? $data['address_postal_code'] : '';
-                $country = isset($data['address_country']) ? $data['address_country'] : '';
+                $regionCode = isset($data['address_region']) ? $data['address_region'] : '';
+                $provinceCode = isset($data['address_province']) ? $data['address_province'] : '';
+                $cityCode = isset($data['address_city']) ? $data['address_city'] : '';
+                $barangayCode = isset($data['address_barangay']) ? $data['address_barangay'] : '';
                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
 
@@ -70,24 +70,27 @@ include('../middleware/userMW.php');
                                     </div>
                                     <!-- Email and Number end -->
 
-                                    <!-- City State Country -->
+                                    <!--//! Region Province City Barangay -->
+                                    <div class="form-floating ps-0 mb-3"> <!-- Region -->
+                                        <select name="region" class="form-select form-control form-control-md" id="region" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
+                                        <label for="floatingInput">Region</label>
+                                    </div>
+
                                     <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_postCode" value="<?= $state ?>" name="state" placeholder="st">
-                                        <label for="floatingInput">State</label>
+                                        <select name="province" class="form-control form-control-md" id="province" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
+                                        <label for="floatingInput">Province</label>
                                     </div>
                                     <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_postCode" value="<?= $city ?>" name="city" placeholder="ct">
-                                        <label for="floatingInput">City</label>
+                                        <select name="city" class="form-control form-control-md" id="city" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
+                                        <label for="floatingInput">City / Municipality</label>
                                     </div>
                                     <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_fname" value="<?= $pcode ?>" name="postalCode" required placeholder="nam">
-                                        <label for="floatingInput">Postal Code</label>
-                                    </div>
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select class="form-select" id="country" name="country">
-                                            <?php include('../partials/country-options.php') ?>
-                                        </select>
-                                        <label for="floatingInput">Country</label>
+                                        <select name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
+                                        <label for="floatingInput">Barangay</label>
                                     </div>
 
                                     <!--Addr start -->
@@ -119,12 +122,8 @@ include('../middleware/userMW.php');
         </div>
     </div>
 </div>
-<script>
-    /* display selected country */
-    var selectedCountry = "<?php echo $country; ?>";
-    // Set the selected attribute based on the PHP variable
-    document.getElementById("country").value = selectedCountry;
 
+<script>
     /* Prevent user to write letter or symbols in phone number */
     function inpNum(e) {
         e = e || window.event;
@@ -159,4 +158,6 @@ include('../middleware/userMW.php');
     <?php include('footer.php'); ?>
 </div>
 
-<?php include('../partials/__footer.php'); ?>
+<?php
+include('../assets/js/ph-address-selector.php');
+include('../partials/__footer.php'); ?>

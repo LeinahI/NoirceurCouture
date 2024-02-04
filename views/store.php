@@ -99,7 +99,7 @@ if (isset($_GET['category'])) {
 
                                                 <div class="d-flex mb-4">
                                                     <div class="pr-2"><i class="fa-solid fa-location-dot text-center"></i></div>
-                                                    <div>Location:&nbsp;<span class="text-accent"><?= $addr['address_city'] ?? "not" ?>,&nbsp;<?= $addr['address_state'] ?? "available" ?></span></div>
+                                                    <div>Location:&nbsp;<span class="text-accent"><?= $addr['address_city'] ?? "not" ?>,&nbsp;<?= $addr['address_province'] ?? "available" ?></span></div>
                                                 </div>
                                             </div>
                                             <div class="row col-md-6">
