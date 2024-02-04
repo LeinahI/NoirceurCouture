@@ -40,12 +40,12 @@
             <div class="py-3 bg-primary">
                 <div class="container">
                     <h6 class="text-dark">
-                        <a href="brands.php" class="text-dark">Home /</a>
-                        <a href="brands.php" class="text-dark">Collections /</a>
+                        <a href="storelist.php" class="text-dark">Home /</a>
+                        <a href="storelist.php" class="text-dark">Collections /</a>
                         <?php
                         if ($category) {
                         ?>
-                            <a href="products.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?> /</a>
+                            <a href="store.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?> /</a>
                         <?php } ?>
                         <?= $product['product_name'] ?>
                     </h6>
@@ -75,7 +75,7 @@
                                     <span class='fs-3 fw-bold text-accent modal-title w-100'><?= $category['category_name'] ?> has been permanently banned.</span>
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="brands.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
+                                    <a href="storelist.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
                                 </div>
                             </div>
                         </div>

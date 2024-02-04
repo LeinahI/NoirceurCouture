@@ -1,12 +1,11 @@
 <?php /* <!-- also calledCategories.php --> */
 include('../partials/__header.php');
-
 include(__DIR__ . '/../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
 if (isset($_GET['category'])) {
     $category_slug = $_GET['category'];
-    $category_data = getSlugActiveCategories("categories", $category_slug);
+    $category_data = getSlugActiveCategories($category_slug);
     $category = mysqli_fetch_array($category_data);
     if ($category) {
         $cid = $category['category_id'];
@@ -22,18 +21,37 @@ if (isset($_GET['category'])) {
 
             .card {
                 height: 100%;
+
             }
 
             .card-body {
                 height: 100%;
+            }
+
+            .icon {
+                width: 90px;
+                height: 90px;
+                padding: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .bg-darker {
+                background-color: #d8cbc3 !important;
+            }
+
+            .fa-solid {
+                height: 20px;
+                width: 20px;
             }
         </style>
 
         <div class="py-3 bg-primary">
             <div class="container">
                 <h6 class="text-dark">
-                    <a href="brands.php" class="text-dark">Home /</a>
-                    <a href="brands.php" class="text-dark">Collections /</a>
+                    <a href="storelist.php" class="text-dark">Home /</a>
+                    <a href="storelist.php" class="text-dark">Collections /</a>
                     <?= $category['category_name'] ?>
                 </h6>
             </div>
@@ -43,8 +61,63 @@ if (isset($_GET['category'])) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1><?= $category['category_name'] ?></h1>
-                        <h5><?= $category['category_description'] ?></h5>
+                        <div class="row">
+                            <!-- Profile -->
+                            <div class="col-md-4">
+                                <div class="card border border-0 bg-primary p-3 mb-2">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="d-flex flex-row align-items-center">
+                                            <div class="icon bg-darker rounded-circle">
+                                                <img src="../assets/uploads/brands/<?= $category['category_image'] ?>" alt="Store Image" class="object-fit-cover rounded-circle" width="90" height="90">
+                                            </div>
+                                            <div class="ms-2 c-details">
+                                                <p class="fs-5 mb-0 fw-bold"><?= $category['category_name'] ?><span class="fw-normal desc fs-6"><br><?= $category['category_description'] ?></span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Details -->
+                            <div class="col-md-8">
+                                <div class="px-3 pt-3 h-100">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-md-12 d-flex flex-row align-items-center">
+                                            <?php
+                                            /* Get Product Count */
+                                            $prodCount = getProductsCountByCategoryByID($cid);
+                                            $count = mysqli_fetch_array($prodCount);
+
+                                            /* Get Seller State & City */
+                                            $getaddr = getSellerStateCityByCategoryByID($cid);
+                                            $addr = mysqli_fetch_array($getaddr);
+                                            ?>
+                                            <div class="row col-md-6">
+                                                <div class="d-flex mb-4">
+                                                    <div class="pr-2"><i class="fa-solid fa-store text-center"></i></div>
+                                                    <div>Products:&nbsp;<span class="text-accent"><?= $count['allproduct'] ?></span></div>
+                                                </div>
+
+                                                <div class="d-flex mb-4">
+                                                    <div class="pr-2"><i class="fa-solid fa-location-dot text-center"></i></div>
+                                                    <div>Location:&nbsp;<span class="text-accent"><?= $addr['address_city'] ?? "not" ?>,&nbsp;<?= $addr['address_state'] ?? "available" ?></span></div>
+                                                </div>
+                                            </div>
+                                            <div class="row col-md-6">
+                                                <div class="d-flex mb-4">
+                                                    <div class="pr-2"><i class="fa-solid fa-star text-center"></i></div>
+                                                    <div>Ratings:</div>
+                                                </div>
+
+                                                <div class="d-flex mb-4">
+                                                    <div class="pr-2"><i class="fa-solid fa-person-circle-check text-center"></i></div>
+                                                    <div>Joined:&nbsp;<span class="text-accent"><?= (new DateTime($category['category_createdAt']))->format('M d Y') ?></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <hr>
                         <div class="row">
                             <?php
@@ -88,7 +161,7 @@ if (isset($_GET['category'])) {
                                                     <span class='fs-3 fw-bold text-accent modal-title w-100'>This store has been permanently banned.</span>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a href="brands.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
+                                                    <a href="storelist.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
                                                 </div>
                                             </div>
                                         </div>

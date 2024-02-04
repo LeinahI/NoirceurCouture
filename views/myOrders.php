@@ -98,7 +98,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                 $orig_price = $cItem['product_original_price'];
                                                 $discount = $cItem['product_discount'];
                                         ?>
-                                                <a href="products.php?category=<?= $cItem['category_slug'] ?>" class="fs-5 text-accent fw-bold"><?= $cItem['category_name'] ?></a>
+                                                <a href="store.php?category=<?= $cItem['category_slug'] ?>" class="fs-5 text-accent fw-bold"><?= $cItem['category_name'] ?></a>
                                                 <a href="viewOrderDetails.php?trck=<?= $cItem['orders_tracking_no'] ?>" class="text-dark text-decoration-none">
                                                     <div class="productData row align-items-center py-2">
                                                         <div class="col-md-2">

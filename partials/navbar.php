@@ -8,8 +8,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'brands.php') echo 'hidden'; ?>>
-                    <a class="nav-link text-brown" href="../views/brands.php">Collections</a>
+                <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'storelist.php') echo 'hidden'; ?>>
+                    <a class="nav-link text-brown" href="../views/storelist.php">Collections</a>
                 </li>
                 <!-- myCart start -->
                 <li class="nav-item" <?php if (basename($_SERVER['PHP_SELF']) === 'myCart.php') echo 'hidden'; ?>>

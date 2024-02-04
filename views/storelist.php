@@ -33,7 +33,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                         foreach ($categories as $item) {
                     ?>
                             <div class="col-md-4 mb-3">
-                                <a href="products.php?category=<?= $item['category_slug'] ?>">
+                                <a href="store.php?category=<?= $item['category_slug'] ?>">
                                     <div class="card shadow">
                                         <div class="card-body bg-primary">
                                             <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image" class="w-100 img-fixed-height">
@@ -42,10 +42,16 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     </div>
                                 </a>
                             </div>
-                    <?php
+                        <?php
                         }
                     } else {
-                        echo "No data available";
+                        ?>
+
+                        <p class="text-center fs-1 fw-bold text-accent">
+                            No Stores available yet
+                        </p>
+
+                    <?php
                     }
                     ?>
                 </div>

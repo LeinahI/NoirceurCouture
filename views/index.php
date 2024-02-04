@@ -43,7 +43,7 @@ include('../partials/trending.php');
                         As a trusted distributor, we bring you an extensive collection of curated pieces from top fashion brands around the world. <br>
                         From chic clothing to accessories, Noirceur Couture caters to diverse tastes, providing a seamless shopping experience for those looking for quality and exclusivity.</p>
                     <center>
-                        <a href="brands.php" class="btn btn-primary">Shop Now</a>
+                        <a href="storelist.php" class="btn btn-primary">Shop Now</a>
                     </center>
                 </div>
             </div>

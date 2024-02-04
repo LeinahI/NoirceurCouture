@@ -45,10 +45,29 @@ function getCategoryByID($category_id)
     return $result;
 }
 
-function getSlugActiveCategories($table, $slug)
+function getSlugActiveCategories($slug)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE category_slug = '$slug' LIMIT 1";
+    $query = "SELECT * FROM categories WHERE category_slug = '$slug' LIMIT 1";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getProductsCountByCategoryByID($category_id)
+{
+    global $con;
+    $query = "SELECT COUNT(*) AS allproduct FROM products WHERE category_id = '$category_id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getSellerStateCityByCategoryByID($category_id)
+{
+    global $con;
+    $query = "SELECT adr.address_state, adr.address_city FROM addresses AS adr
+    JOIN users AS u ON adr.address_user_ID = u.user_ID
+    JOIN categories AS c ON u.user_ID = c.category_user_ID
+    WHERE c.category_id = '$category_id'";
     $result = mysqli_query($con, $query);
     return $result;
 }

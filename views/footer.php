@@ -19,7 +19,7 @@
                         foreach ($categories as $item) {
                     ?>
                             <div class="col-md-12 mb-3">
-                                <a class="text-dark" href="products.php?category=<?= $item['category_slug'] ?>">
+                                <a class="text-dark" href="store.php?category=<?= $item['category_slug'] ?>">
                                     <h6></h6><?= $item['category_name'] ?></h6>
                                 </a>
                             </div>
