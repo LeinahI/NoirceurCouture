@@ -65,21 +65,21 @@ NoirceurCouture
 
 ## 🛠 TODO for Noirceur Couture 2.0
 Admin Role
--✅ At dashboard will track the total of buyer, sellers, users, account deleted, & banned users. 
--✅ Cannot be a seller anymore.
--✅ Cannot add, edit, and delete stores, products & users of buyer & seller.
--✅ Admin task is only to moderate the stores, products, users, & seller application. 
--✅ Admin can ban(permanent) users & sellers.
--✅ Account Deletion Request form added on Admin UI.
--✅ Admin can accept and reject user account deletion request.
+- ✅ At dashboard will track the total of buyer, sellers, users, account deleted, & banned users. 
+- ✅ Cannot be a seller anymore.
+- ✅ Cannot add, edit, and delete stores, products & users of buyer & seller.
+- ✅ Admin task is only to moderate the stores, products, users, & seller application. 
+- ✅ Admin can ban(permanent) users & sellers.
+- ✅ Account Deletion Request form added on Admin UI.
+- ✅ Admin can accept and reject user account deletion request.
 
 Buyer Role
 - Buyer can have multiple addresses and set which is default address.
--✅ Buyer can request account deletion.
+- ✅ Buyer can request account deletion.
 - Buyer have now notification tab that can see order and Noirceur Couture Updates.
 - Buyer can rate products.
--✅ Can cancel order when the order are preparing to ship.
--✅ Can set the order status to Delivered. 
+- ✅ Can cancel order when the order are preparing to ship.
+- ✅ Can set the order status to Delivered. 
 
 Seller Role
 - Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.
@@ -87,7 +87,7 @@ Seller Role
 - Seller cannot set the parcel is delivered anymore.
 
 Buyer UI Changes
--🚧 on store.php?category=... It will show the profile and ratings, products, and date joined.
+- 🚧 on store.php?category=... It will show the profile and ratings, products, and date joined.
 - On myAddress.php will have multiple cards for multiple address.
 - On myOrders.php they will separate the orders when user ordered on two or multiple different stores.
 - on checkOut.php user can choose which adress they use to deliver the parcel and add new address.
