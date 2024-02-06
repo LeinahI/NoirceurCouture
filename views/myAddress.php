@@ -3,6 +3,12 @@
 include('../middleware/userMW.php');
 ?>
 
+<style>
+    .border-accent {
+        border-color: #bb6c54 !important;
+    }
+</style>
+
 <div class="container mt-5">
     <?php
     if (isset($_SESSION['Errormsg'])) {
@@ -43,79 +49,148 @@ include('../middleware/userMW.php');
 
                 <div class="card border rounded-3 shadow bg-main">
                     <div class="card-header">
-                        <h5 class="card-title">My Address</h5>
-                    </div>
-                    <div class="card-body">
-                        <form action="../models/authcode.php" method="POST">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <input type="hidden" name="userID" value="<?= $id ?>">
+                        <h5 class="card-title ">
+                            <span>My Addresses</span>
+                            <span class="float-end">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Add New Address
+                                </button>
+                            </span>
+                        </h5>
 
-                                    <!-- Fname and Lname start -->
-                                    <div class="form-floating col-md-12 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_fname" name="fullName" value="<?= $fname ?>" required placeholder="nam">
-                                        <label for="floatingInput">Full Name</label>
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content bg-main">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">New Addresss</h1>
                                     </div>
-                                    <!-- Fname and Lname end -->
+                                    <form action="../models/authcode.php" method="POST">
+                                        <div class="modal-body">
+                                            <!-- //*ADD NEW ADDRESS -->
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <input type="hidden" name="userID" value="<?= $id ?>">
 
-                                    <!-- Email and Number start -->
-                                    <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="email" class="form-control" id="user_email" name="email" value="<?= $email ?>" required placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
-                                    </div>
+                                                    <!-- Fname and Lname start -->
+                                                    <div class="form-floating col-md-12 ps-0 mb-3">
+                                                        <input type="text" class="form-control" id="user_fname" name="fullName" value="<?= $fname ?>" required placeholder="nam">
+                                                        <label for="floatingInput">Full Name</label>
+                                                    </div>
+                                                    <!-- Fname and Lname end -->
 
-                                    <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="number" class="form-control" id="user_email" name="phoneNumber" value="<?= $phone ?>" required placeholder="09" onkeypress="inpNum(event)">
-                                        <label for="floatingInput">Phone Number</label>
-                                    </div>
-                                    <!-- Email and Number end -->
+                                                    <!-- Email and Number start -->
+                                                    <div class="form-floating col-md-6 ps-0 mb-3">
+                                                        <input type="email" class="form-control" id="user_email" name="email" value="<?= $email ?>" required placeholder="name@example.com">
+                                                        <label for="floatingInput">Email address</label>
+                                                    </div>
 
-                                    <!--//! Region Province City Barangay -->
-                                    <div class="form-floating ps-0 mb-3"> <!-- Region -->
-                                        <select name="region" class="form-select form-control form-control-md" id="region" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
-                                        <label for="floatingInput">Region</label>
-                                    </div>
+                                                    <div class="form-floating col-md-6 ps-0 mb-3">
+                                                        <input type="number" class="form-control" id="user_email" name="phoneNumber" value="<?= $phone ?>" required placeholder="09" onkeypress="inpNum(event)">
+                                                        <label for="floatingInput">Phone Number</label>
+                                                    </div>
+                                                    <!-- Email and Number end -->
 
-                                    <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <select name="province" class="form-control form-control-md" id="province" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
-                                        <label for="floatingInput">Province</label>
-                                    </div>
-                                    <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <select name="city" class="form-control form-control-md" id="city" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
-                                        <label for="floatingInput">City / Municipality</label>
-                                    </div>
-                                    <div class="form-floating col-md-4 ps-0 mb-3">
-                                        <select name="barangay" class="form-control form-control-md" id="barangay" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
-                                        <label for="floatingInput">Barangay</label>
-                                    </div>
+                                                    <!--//! Region Province City Barangay -->
+                                                    <div class="form-floating ps-0 mb-3"> <!-- Region -->
+                                                        <select name="region" class="form-select form-control form-control-md" id="region" required></select>
+                                                        <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
+                                                        <label for="floatingInput">Region</label>
+                                                    </div>
 
-                                    <!--Addr start -->
-                                    <div class="form-floating col-md-12 ps-0 mb-3">
-                                        <div class="form-floating ps-0 mb-3">
-                                            <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
-                                            <label for="floatingInput">Address</label>
+                                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                                        <select name="province" class="form-control form-control-md" id="province" required></select>
+                                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
+                                                        <label for="floatingInput">Province</label>
+                                                    </div>
+                                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                                        <select name="city" class="form-control form-control-md" id="city" required></select>
+                                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
+                                                        <label for="floatingInput">City / Municipality</label>
+                                                    </div>
+                                                    <div class="form-floating col-md-4 ps-0 mb-3">
+                                                        <select name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
+                                                        <label for="floatingInput">Barangay</label>
+                                                    </div>
+
+                                                    <!--Addr start -->
+                                                    <div class="form-floating col-md-12 ps-0 mb-3">
+                                                        <div class="form-floating ps-0 mb-3">
+                                                            <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
+                                                            <label for="floatingInput">Address</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Add & Update button -->
+                                                    <?php if ($existingAddress) { ?>
+                                                        <!-- If an existing address exists -->
+                                                        <div class="form-floating col-md-12 ps-0">
+                                                            <button type="submit" name="userUpdateAddrBtn" class="btn btn-accent col-md-12">Update My Address</button>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <!-- If no existing address exists -->
+                                                        <div class="form-floating col-md-12 ps-0">
+                                                            <button type="submit" name="userAddAddrBtn" class="btn btn-accent col-md-12">Add Address</button>
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                    </div>
-
-                                    <!-- Add & Update button -->
-                                    <?php if ($existingAddress) { ?>
-                                        <!-- If an existing address exists -->
-                                        <div class="form-floating col-md-12 ps-0">
-                                            <button type="submit" name="userUpdateAddrBtn" class="btn btn-accent col-md-12">Update My Address</button>
+                                        <div class="modal-footer">
+                                            <div class="d-flex col-md-12">
+                                                <button type="button" class="btn btn-primary col-md-6 mr-2" data-bs-dismiss="modal">Close</button>
+                                                <!-- <button type="submit" class="btn btn-accent col-md-6 ml-2">Add New Address</button> -->
+                                            </div>
                                         </div>
-                                    <?php } else { ?>
-                                        <!-- If no existing address exists -->
-                                        <div class="form-floating col-md-12 ps-0">
-                                            <button type="submit" name="userAddAddrBtn" class="btn btn-accent col-md-12">Add Address</button>
-                                        </div>
-                                    <?php } ?>
+                                    </form>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- //!SHOW user addresses in cards -->
+                        <div class="card bg-main">
+                            <div class="row card-body col-md-12 ">
+                                <div class="col-md-10">
+                                    <div id="namePhoneEmail">
+                                        <span class="fw-bold">
+                                            <?= $fname ?>
+                                        </span>
+                                        |
+                                        <span class="fw-normal">
+                                            <?= $phone ?>
+                                        </span>
+                                        |
+                                        <span class="fw-normal">
+                                            <?= $email ?>
+                                        </span>
+                                    </div>
+                                    <div id="fullAddress">
+                                        <span><?= $fulladdr ?></span>
+                                    </div>
+                                    <div id="location">
+                                        <select hidden name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                        <select hidden name="city" class="form-control form-control-md" id="city" required></select>
+                                        <select hidden name="province" class="form-control form-control-md" id="province" required></select>
+                                        <select hidden name="region" class="form-control form-control-md" id="region" required></select>
+                                        <span name="barangay-txt" id="barangay-txt"></span>,
+                                        <span name="city-txt" id="city-txt"></span>,<br>
+                                        <span name="province-txt" id="province-txt"></span>,
+                                        <span name="region-txt" id="region-txt"></span>
+                                    </div>
+                                    <div id="isDefault" class="mt-2">
+                                        <span class="text-accent border border-accent p-1">Default</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="#" class="float-end mb-2">Edit</a>
+                                    <button class="btn btn-accent float-end">Set as Default</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
