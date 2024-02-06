@@ -82,9 +82,9 @@ Buyer Role
 - ✅ Can set the order status to Delivered. 
 
 Seller Role
-- Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.
-- Seller can request to delete account.
-- Seller cannot set the parcel is delivered anymore.
+- ✅ Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.
+- ✅ Seller can request to delete account.
+- ✅ Seller cannot set the parcel is delivered anymore.
 
 Buyer UI Changes
 - ✅ Dynamic Philippine Address Selector via json
