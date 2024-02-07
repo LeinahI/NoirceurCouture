@@ -210,11 +210,18 @@ function getUserAddress()
 {
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
-    $query = "SELECT a.*, u.user_ID
-    FROM addresses AS a
-    INNER JOIN users AS u ON a.address_user_ID = u.user_ID
-    WHERE a.address_user_ID = '$user_id'
-    ORDER BY address_isDefault DESC
+    $query = "SELECT 
+    (SELECT COUNT(*) FROM addresses WHERE address_user_ID = $user_id) AS addrUserQTY,
+    a.*, 
+    u.user_ID
+    FROM 
+    addresses AS a
+    INNER JOIN 
+    users AS u ON a.address_user_ID = u.user_ID
+    WHERE 
+    a.address_user_ID = $user_id
+    ORDER BY 
+    address_isDefault DESC
     ";
 
     $result = mysqli_query($con, $query);

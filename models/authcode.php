@@ -351,32 +351,18 @@ if (isset($_POST['deleteAddrBtn'])) {
     $addrId = $_POST['deleteAddrID'];
     $userId = $_POST['deleteAddruserID'];
 
-    // Check if the address being deleted is the default address
-    $stmt_check_default = $con->prepare("SELECT address_isDefault FROM addresses WHERE address_id = ? AND address_isDefault = 1 AND address_user_ID = ?");
-    $stmt_check_default->bind_param("ii", $addrId, $userId);
-    $stmt_check_default->execute();
-    $result_check_default = $stmt_check_default->get_result();
-
-    // If the address being deleted is the default address, display an error message
-    if ($result_check_default->num_rows > 0) {
-        $_SESSION['Errormsg'] = "Default Address cannot be deleted";
+    // Proceed with deletion
+    $stmt_delete_address = $con->prepare("DELETE FROM addresses WHERE address_id = ?");
+    $stmt_delete_address->bind_param("i", $addrId);
+    if ($stmt_delete_address->execute()) {
+        $_SESSION['Errormsg'] = "Address has been deleted";
     } else {
-        // Proceed with deletion
-        $stmt_delete_address = $con->prepare("DELETE FROM addresses WHERE address_id = ?");
-        $stmt_delete_address->bind_param("i", $addrId);
-        if ($stmt_delete_address->execute()) {
-            $_SESSION['Errormsg'] = "Address has been deleted";
-        } else {
-            $_SESSION['Errormsg'] = "Failed to delete address";
-        }
-        // Close $stmt_delete_address only if it's initialized
-        if (isset($stmt_delete_address)) {
-            $stmt_delete_address->close();
-        }
+        $_SESSION['Errormsg'] = "Failed to delete address";
     }
-
-    // Close statements
-    $stmt_check_default->close();
+    // Close $stmt_delete_address only if it's initialized
+    if (isset($stmt_delete_address)) {
+        $stmt_delete_address->close();
+    }
 
     // Redirect to myAddress.php
     header("Location: ../views/myAddress.php");

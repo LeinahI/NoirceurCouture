@@ -57,6 +57,7 @@ include('../middleware/userMW.php');
                             $addressesExist = true;
 
                             while ($data = mysqli_fetch_array($userAddressResult)) {
+                                $addrQTY = $data['addrUserQTY'];
                                 $addrid = $data['address_id'];
                                 $isDefault = $data['address_isDefault'];
                                 $fname = $data['address_fullName'];
@@ -155,7 +156,7 @@ include('../middleware/userMW.php');
                                                 <span class="float-end mb-2">
                                                     <a href="#" class="text-accent">Edit</a>
                                                     <?php
-                                                    if ($isDefault != 1) {
+                                                    if ($isDefault != 1 || $isDefault == 1 && $addrQTY == 1) {
                                                     ?>
                                                         <a href="#" class="text-accent" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
                                                         <!-- Modal -->
