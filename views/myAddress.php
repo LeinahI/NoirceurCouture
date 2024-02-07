@@ -182,11 +182,13 @@ include('../middleware/userMW.php');
                                                     ?>
 
                                                 </span>
+
                                                 <form action="../models/authcode.php" method="POST">
                                                     <input type="hidden" name="addrID" value="<?= $addrid ?>">
                                                     <input type="hidden" name="userID" value="<?= $userid ?>">
-                                                    <button name="setDefaultAddrBtn" class="btn btn-accent float-end">Set as Default</button>
+                                                    <button name="setDefaultAddrBtn" class="btn btn-accent float-end" <?= ($isDefault == 1) ? 'disabled' : '' ?>>Set as Default</button>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>
