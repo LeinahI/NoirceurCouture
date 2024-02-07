@@ -235,18 +235,6 @@ if (isset($_POST['userAddAddrBtn'])) {
         header("Location: ../views/myAddress.php");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
-        // Check if userID already exists
-        $stmt = $con->prepare("SELECT address_user_ID FROM addresses WHERE address_user_ID = ?");
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            $_SESSION['Errormsg'] = "Add address button can't be use anymore";
-            header("Location: ../views/myAddress.php");
-            exit;
-        }
-
         // Prepare and bind the parameters for inserting a new address
         $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");

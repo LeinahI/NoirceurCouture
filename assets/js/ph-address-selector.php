@@ -156,7 +156,7 @@
             $("#barangay-txt").show();
         },
     };
-
+//! Populate Dropdown | Populate Dropdown | Populate Dropdown | Populate Dropdown | Populate Dropdown | Populate Dropdown | Populate Dropdown | Populate Dropdown |
     $(function() {
         // events
         $("#region").on("change", my_handlers.fill_provinces);
@@ -164,12 +164,13 @@
         $("#city").on("change", my_handlers.fill_barangays);
         $("#barangay").on("change", my_handlers.onchange_barangay);
 
+
         var selectedRegionCode = "<?= $regionCode ?>";
         var selectedProvinceCode = "<?= $provinceCode ?>";
         var selectedCityCode = "<?= $cityCode ?>";
         var selectedBarangayCode = "<?= $barangayCode ?>";
 
-        //! Load REGION
+        //! Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION | Load REGION |
         let regionDropdown = $("#region");
         regionDropdown.empty();
         regionDropdown.append(
@@ -195,7 +196,7 @@
             regionDropdown.change();
         });
 
-        //+ Load provinces based on the selected region
+        //+ Load provinces based on the selected region | Load provinces based on the selected region | Load provinces based on the selected region |
         var provinceDropdown = $("#province");
         provinceDropdown.empty();
         provinceDropdown.append('<option selected="true" disabled>Choose State/Province</option>');
@@ -227,7 +228,7 @@
             provinceDropdown.change();
         });
 
-        //? Load cities based on the selected province
+        //? Load cities based on the selected province | Load cities based on the selected province | Load cities based on the selected province |
         var cityDropdown = $("#city");
         cityDropdown.empty();
         cityDropdown.append('<option selected="true" disabled>Choose City/Municipality</option>');
@@ -259,7 +260,7 @@
             cityDropdown.change();
         });
 
-        //* Load barangays based on the selected city
+        //* Load barangays based on the selected city | Load barangays based on the selected city | Load barangays based on the selected city |
         var barangayDropdown = $("#barangay");
         barangayDropdown.empty();
         barangayDropdown.append('<option selected="true" disabled>Choose Barangay</option>');
