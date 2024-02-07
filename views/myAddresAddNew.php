@@ -62,14 +62,14 @@ include('../middleware/userMW.php');
 
                                     <!-- Fname and Lname start -->
                                     <div class="form-floating col-md-12 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_fname" name="fullName" required placeholder="name">
+                                        <input type="text" class="form-control" id="user_fname" name="fullName" required placeholder="name" autocomplete="off">
                                         <label for="floatingInput">Full Name</label>
                                     </div>
                                     <!-- Fname and Lname end -->
 
                                     <!-- Email and Number start -->
                                     <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="email" class="form-control" id="user_email" name="email" required placeholder="name@example.com">
+                                        <input type="email" class="form-control" id="user_email" name="email" required placeholder="name@example.com" autocomplete="off">
                                         <label for="floatingInput">Email address</label>
                                     </div>
 
@@ -100,14 +100,22 @@ include('../middleware/userMW.php');
 
                                     <!--Addr start -->
                                     <div class="form-floating col-md-12 ps-0 mb-3">
-                                        <div class="form-floating ps-0 mb-3">
+                                        <div class="form-floating ps-0 ">
                                             <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"></textarea>
                                             <label for="floatingInput">Address</label>
                                         </div>
                                     </div>
 
+                                    <!-- Set Default Address -->
+                                    <div class="ps-4 mb-3 user-select-none">
+                                        <input class="form-check-input" type="checkbox" name="defaultAddr" id="reverseCheck1">
+                                        <label class="form-check-label" for="reverseCheck1">
+                                            Set as Default Address
+                                        </label>
+                                    </div>
+
                                     <div class="form-floating col-md-12 ps-0">
-                                        <button type="submit" name="userAddAddrBtn" class="btn btn-accent col-md-12">Add Address</button>
+                                        <button type="submit" name="userAddAddrBtn" class="btn btn-accent col-md-12">Add New Address</button>
                                     </div>
                                 </div>
                             </div>

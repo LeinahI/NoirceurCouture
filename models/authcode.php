@@ -229,16 +229,37 @@ if (isset($_POST['userAddAddrBtn'])) {
     $city = $_POST['city'];
     $barangay = $_POST['barangay'];
     $fullAddr = $_POST['fullAddress'];
+    $addrDefault = isset($_POST['defaultAddr']) ? '1' : '0';
+
+    //Check phone pattern
     $phonePatternPH = '/^09\d{9}$/';
+
+    // Check if there is already a default address for the user
+    $stmt_check_default = $con->prepare("SELECT address_id FROM addresses WHERE address_user_ID = ? AND address_isDefault = 1");
+    $stmt_check_default->bind_param("i", $userId);
+    $stmt_check_default->execute();
+    $result_check_default = $stmt_check_default->get_result();
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         header("Location: ../views/myAddress.php");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
+        // If there is a default address and $addrDefault is 1, update its address_isDefault value to 0
+        if ($result_check_default->num_rows > 0 && $addrDefault == '1') {
+            $row = $result_check_default->fetch_assoc();
+            $defaultAddrId = $row['address_id'];
+
+            // Update the existing default address
+            $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_id = ?");
+            $stmt_update_default->bind_param("i", $defaultAddrId);
+            $stmt_update_default->execute();
+            $stmt_update_default->close();
+        }
+
         // Prepare and bind the parameters for inserting a new address
-        $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssssss", $userId, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
+        $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_isDefault, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("iissssssss", $userId, $addrDefault, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddress.php");
@@ -250,6 +271,7 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->close();
     }
 }
+
 
 /* User Address Update statement */
 if (isset($_POST['userUpdateAddrBtn'])) {
@@ -282,4 +304,82 @@ if (isset($_POST['userUpdateAddrBtn'])) {
 
         $stmt->close();
     }
+}
+
+/* User set Default Address */
+if (isset($_POST['setDefaultAddrBtn'])) {
+    $addrId = $_POST['addrID'];
+    $userId = $_POST['userID'];
+
+    // Check if there is already a default address for the user
+    $stmt_check_default = $con->prepare("SELECT address_id FROM addresses WHERE address_user_ID = ? AND address_isDefault = 1");
+    $stmt_check_default->bind_param("i", $userId);
+    $stmt_check_default->execute();
+    $result_check_default = $stmt_check_default->get_result();
+
+    // If there is a default address, update its address_isDefault value to 0
+    if ($result_check_default->num_rows > 0) {
+        $row = $result_check_default->fetch_assoc();
+        $defaultAddrId = $row['address_id'];
+
+        // Update the existing default address
+        $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_id = ?");
+        $stmt_update_default->bind_param("i", $defaultAddrId);
+        $stmt_update_default->execute();
+        $stmt_update_default->close();
+    }
+
+    // Set the new address as default
+    $stmt_set_default = $con->prepare("UPDATE addresses SET address_isDefault = 1 WHERE address_id = ?");
+    $stmt_set_default->bind_param("i", $addrId);
+    if ($stmt_set_default->execute()) {
+        $_SESSION['Errormsg'] = "Address set as Default shipping address";
+    } else {
+        $_SESSION['Errormsg'] = "Something went wrong";
+    }
+
+    // Close statements
+    $stmt_check_default->close();
+    $stmt_set_default->close();
+
+    // Redirect to myAddress.php
+    header("Location: ../views/myAddress.php");
+    exit(); // Terminate script execution
+}
+
+/* User Delete Address */
+if (isset($_POST['deleteAddrBtn'])) {
+    $addrId = $_POST['deleteAddrID'];
+    $userId = $_POST['deleteAddruserID'];
+
+    // Check if the address being deleted is the default address
+    $stmt_check_default = $con->prepare("SELECT address_isDefault FROM addresses WHERE address_id = ? AND address_isDefault = 1 AND address_user_ID = ?");
+    $stmt_check_default->bind_param("ii", $addrId, $userId);
+    $stmt_check_default->execute();
+    $result_check_default = $stmt_check_default->get_result();
+
+    // If the address being deleted is the default address, display an error message
+    if ($result_check_default->num_rows > 0) {
+        $_SESSION['Errormsg'] = "Default Address cannot be deleted";
+    } else {
+        // Proceed with deletion
+        $stmt_delete_address = $con->prepare("DELETE FROM addresses WHERE address_id = ?");
+        $stmt_delete_address->bind_param("i", $addrId);
+        if ($stmt_delete_address->execute()) {
+            $_SESSION['Errormsg'] = "Address has been deleted";
+        } else {
+            $_SESSION['Errormsg'] = "Failed to delete address";
+        }
+        // Close $stmt_delete_address only if it's initialized
+        if (isset($stmt_delete_address)) {
+            $stmt_delete_address->close();
+        }
+    }
+
+    // Close statements
+    $stmt_check_default->close();
+
+    // Redirect to myAddress.php
+    header("Location: ../views/myAddress.php");
+    exit(); // Terminate script execution
 }

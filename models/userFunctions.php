@@ -213,7 +213,9 @@ function getUserAddress()
     $query = "SELECT a.*, u.user_ID
     FROM addresses AS a
     INNER JOIN users AS u ON a.address_user_ID = u.user_ID
-    WHERE a.address_user_ID = '$user_id'";
+    WHERE a.address_user_ID = '$user_id'
+    ORDER BY address_isDefault DESC
+    ";
 
     $result = mysqli_query($con, $query);
 

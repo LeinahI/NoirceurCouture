@@ -309,11 +309,6 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 200) {
-          /* swal({
-                        title: "Product unliked successfully",
-                        icon: "success",
-                        button: 'OK',
-                    }); */
           $("#mylikes").load(location.href + " #mylikes");
         } else {
           swal({
@@ -325,4 +320,6 @@ $(document).ready(function () {
       },
     });
   });
+
+  
 });

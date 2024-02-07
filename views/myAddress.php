@@ -48,6 +48,7 @@ include('../middleware/userMW.php');
                         $userAddressResult = getUserAddress(); // Pass userid to fetch addresses for specific user
                         while ($data = mysqli_fetch_array($userAddressResult)) {
                             $addrid = $data['address_id'];
+                            $isDefault = $data['address_isDefault'];
                             $fname = $data['address_fullName'];
                             $email = $data['address_email'];
                             $regionCode = $data['address_region'];
@@ -116,7 +117,6 @@ include('../middleware/userMW.php');
                                 <div class="card bg-main">
                                     <div class="row card-body col-md-12 ">
                                         <div class="col-md-10">
-                                            <input type="hidden" name="addrID" value="<?= $addrid ?>">
                                             <div id="namePhoneEmail">
                                                 <span class="fw-bold"><?= $fname ?></span> |
                                                 <span class="fw-normal"><?= $phone ?></span> |
@@ -131,16 +131,51 @@ include('../middleware/userMW.php');
                                                 <span><?= $provinceName ?></span>,
                                                 <span><?= $regionName ?></span>
                                             </div>
-                                            <div id="isDefault" class="mt-2">
-                                                <span class="text-accent border border-accent p-1">Default</span>
-                                            </div>
+                                            <?php
+                                            if ($isDefault == 1) {
+                                            ?>
+                                                <div id="isDefault" class="mt-2">
+                                                    <span class="text-accent border border-accent p-1">Default</span>
+                                                </div>
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                         <div class="col-md-2">
                                             <span class="float-end mb-2">
-                                                <a href="#">Edit</a>
-                                                <a href="#">Delete</a>
+                                                <a href="#" class="text-accent">Edit</a>
+                                                <?php
+                                                if ($isDefault != 1) {
+                                                ?>
+                                                    <a href="#" class="text-accent" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="deleteAddrModal<?= $addrid ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content bg-main">
+                                                                <form action="../models/authcode.php" method="POST">
+                                                                    <div class="modal-body fs-5">
+                                                                        <input type="hidden" name="deleteAddrID" value="<?= $addrid ?>">
+                                                                        <input type="hidden" name="deleteAddruserID" value="<?= $userid ?>">
+                                                                        Are you sure you want to delete this Address?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                        <button name="deleteAddrBtn" class="btn btn-accent">Delete Address</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
+
                                             </span>
-                                            <button class="btn btn-accent float-end">Set as Default</button>
+                                            <form action="../models/authcode.php" method="POST">
+                                                <input type="hidden" name="addrID" value="<?= $addrid ?>">
+                                                <input type="hidden" name="userID" value="<?= $userid ?>">
+                                                <button name="setDefaultAddrBtn" class="btn btn-accent float-end">Set as Default</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
