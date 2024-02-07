@@ -229,29 +229,27 @@ if (isset($_POST['userAddAddrBtn'])) {
     $city = $_POST['city'];
     $barangay = $_POST['barangay'];
     $fullAddr = $_POST['fullAddress'];
-    $addrDefault = isset($_POST['defaultAddr']) ? '1' : '0';
 
-    //Check phone pattern
+    // Check if there is already an address for the user
+    $stmt_check_address = $con->prepare("SELECT address_id FROM addresses WHERE address_user_ID = ?");
+    $stmt_check_address->bind_param("i", $userId);
+    $stmt_check_address->execute();
+    $result_check_address = $stmt_check_address->get_result();
+
+    // Determine whether to set the address as default
+    $addrDefault = ($result_check_address->num_rows == 0 || isset($_POST['defaultAddr'])) ? '1' : '0';
+
+    // Check phone pattern
     $phonePatternPH = '/^09\d{9}$/';
-
-    // Check if there is already a default address for the user
-    $stmt_check_default = $con->prepare("SELECT address_id FROM addresses WHERE address_user_ID = ? AND address_isDefault = 1");
-    $stmt_check_default->bind_param("i", $userId);
-    $stmt_check_default->execute();
-    $result_check_default = $stmt_check_default->get_result();
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         header("Location: ../views/myAddress.php");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
         // If there is a default address and $addrDefault is 1, update its address_isDefault value to 0
-        if ($result_check_default->num_rows > 0 && $addrDefault == '1') {
-            $row = $result_check_default->fetch_assoc();
-            $defaultAddrId = $row['address_id'];
-
-            // Update the existing default address
-            $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_id = ?");
-            $stmt_update_default->bind_param("i", $defaultAddrId);
+        if ($addrDefault == '1') {
+            $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_user_ID = ? AND address_isDefault = 1");
+            $stmt_update_default->bind_param("i", $userId);
             $stmt_update_default->execute();
             $stmt_update_default->close();
         }
@@ -271,6 +269,7 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->close();
     }
 }
+
 
 
 /* User Address Update statement */
