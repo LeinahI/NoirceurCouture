@@ -142,10 +142,8 @@ include('../middleware/userMW.php');
                                     </div>
 
                                     <!-- Set Default Address -->
-
-
                                     <div class="ps-4 mb-3">
-                                        <input class="form-check-input" type="checkbox" <?= $isDefault ? 'checked' : '' ?> <?= $isDefault ? 'disabled' : '' ?> name="defaultAddr" id="reverseCheck1">
+                                        <input class="form-check-input" type="checkbox" name="defaultAddr" id="reverseCheck1">
                                         <label class="form-check-label" for="reverseCheck1">
                                             Set as Default Address
                                         </label>
@@ -170,7 +168,23 @@ include('../middleware/userMW.php');
     </div>
 </div>
 
+
 <script>
+    //
+    document.addEventListener("DOMContentLoaded", function() {
+        // Assuming $isDefault is either true or false
+        var isDefault = <?= $isDefault ? 'true' : 'false' ?>;
+
+        // Get the checkbox element
+        var checkbox = document.getElementById("reverseCheck1");
+
+        // If $isDefault is true, add "disabled" and "checked" attributes to the checkbox
+        if (isDefault) {
+            checkbox.disabled = true;
+            checkbox.checked = true;
+        }
+    });
+
     /* Prevent user to write letter or symbols in phone number */
     function inpNum(e) {
         e = e || window.event;

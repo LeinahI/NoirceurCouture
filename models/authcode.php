@@ -270,8 +270,6 @@ if (isset($_POST['userAddAddrBtn'])) {
     }
 }
 
-
-
 /* User Address Update statement */
 if (isset($_POST['userUpdateAddrBtn'])) {
     $addrId = $_POST['updateAddrID'];
@@ -285,18 +283,25 @@ if (isset($_POST['userUpdateAddrBtn'])) {
     $city = $_POST['city'];
     $barangay = $_POST['barangay'];
 
-    // Check if the checkbox is disabled
-    $defaultAddrDisabled = isset($_POST['defaultAddr']) && $_POST['defaultAddr'] == 'on' && $_POST['defaultAddr'] != '' ? false : true;
+    //Check if address_isDefault existing
+    $stmt_check_isDefault = $con->prepare("SELECT address_id, address_isDefault FROM addresses WHERE address_id = ?");
+    $stmt_check_isDefault->bind_param("i", $addrId);
+    $stmt_check_isDefault->execute();
+    $result_check_isDefault = $stmt_check_isDefault->get_result();
+    $row = $result_check_isDefault->fetch_assoc();
 
-    // Check if there is already an address for the user
-    $stmt_check_address = $con->prepare("SELECT address_id FROM addresses WHERE address_id = ?");
-    $stmt_check_address->bind_param("i", $addrId);
-    $stmt_check_address->execute();
-    $result_check_address = $stmt_check_address->get_result();
+    //Look whether to set the address as default
+    if ($row['address_isDefault'] == 0 && isset($_POST['defaultAddr'])) {
+        $addrDefault = 1; //*set current address as the default address
 
-    // Determine whether to set the address as default
-    $addrDefault = ($result_check_address->num_rows == 0 || !$defaultAddrDisabled) ? '1' : '0';
-
+        //*update prev default addres sto be non-default
+        $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_user_ID = ? AND address_isDefault = 1");
+        $stmt_update_default->bind_param("i", $userId);
+        $stmt_update_default->execute();
+        $stmt_update_default->close();
+    } else {
+        $addrDefault = $row['address_isDefault']; //!keep address_isDefault on default state
+    }
 
     $phonePatternPH = '/^09\d{9}$/';
 
@@ -304,17 +309,9 @@ if (isset($_POST['userUpdateAddrBtn'])) {
         header("Location: ../views/myAddressEdit.php?addrID=$addrId");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
-        // If there is a default address and $addrDefault is 1, update its address_isDefault value to 0
-        if ($addrDefault == '1') {
-            $stmt_update_default = $con->prepare("UPDATE addresses SET address_isDefault = 0 WHERE address_user_ID = ? AND address_isDefault = 1");
-            $stmt_update_default->bind_param("i", $userId);
-            $stmt_update_default->execute();
-            $stmt_update_default->close();
-        }
-
         // Prepare and bind the parameters
-        $stmt = $con->prepare("UPDATE addresses SET address_isDefault = ?, address_fullName = ?, address_email = ?, address_region =?, address_province = ?, address_city = ?, address_barangay = ?, address_phone = ?, address_fullAddress = ? WHERE address_id = ?");
-        $stmt->bind_param("issssssssi", $addrDefault, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr, $addrId);
+        $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_region =?, address_province = ?, address_city = ?, address_barangay = ?, address_phone = ?, address_fullAddress = ?, address_isDefault = ? WHERE address_id = ?");
+        $stmt->bind_param("sssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr, $addrDefault, $addrId);
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddressEdit.php?addrID=$addrId");
