@@ -20,20 +20,20 @@
             let dropdown = $("#province");
             dropdown.empty();
             dropdown.append(
-                '<option selected="true" disabled>Choose State/Province</option>'
+                '<option selected disabled>Choose State/Province</option>'
             );
             dropdown.prop("selectedIndex", 0);
 
             //city
             let city = $("#city");
             city.empty();
-            city.append('<option selected="true" disabled></option>');
+            city.append('<option selected disabled></option>');
             city.prop("selectedIndex", 0);
 
             //barangay
             let barangay = $("#barangay");
             barangay.empty();
-            barangay.append('<option selected="true" disabled></option>');
+            barangay.append('<option selected disabled></option>');
             barangay.prop("selectedIndex", 0);
 
             // filter & fill
@@ -74,14 +74,14 @@
             let dropdown = $("#city");
             dropdown.empty();
             dropdown.append(
-                '<option selected="true" disabled>Choose city/municipality</option>'
+                '<option selected disabled>Choose city/municipality</option>'
             );
             dropdown.prop("selectedIndex", 0);
 
             //barangay
             let barangay = $("#barangay");
             barangay.empty();
-            barangay.append('<option selected="true" disabled></option>');
+            barangay.append('<option selected disabled></option>');
             barangay.prop("selectedIndex", 0);
 
             // filter & fill
@@ -121,7 +121,7 @@
             let dropdown = $("#barangay");
             dropdown.empty();
             dropdown.append(
-                '<option selected="true" disabled>Choose barangay</option>'
+                '<option selected disabled>Choose barangay</option>'
             );
             dropdown.prop("selectedIndex", 0);
 
@@ -174,7 +174,7 @@
         let regionDropdown = $("#region");
         regionDropdown.empty();
         regionDropdown.append(
-            '<option selected="true" disabled>Choose Region</option>'
+            '<option selected disabled>Choose Region</option>'
         );
         regionDropdown.prop("selectedIndex", 0);
         const regionUrl = "../assets/js/ph-json/region.json";
@@ -199,7 +199,7 @@
         //+ Load provinces based on the selected region | Load provinces based on the selected region | Load provinces based on the selected region |
         var provinceDropdown = $("#province");
         provinceDropdown.empty();
-        provinceDropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+        provinceDropdown.append('<option selected disabled>Choose State/Province</option>');
         provinceDropdown.prop("selectedIndex", 0);
         const provinceUrl = "../assets/js/ph-json/province.json";
 
@@ -231,7 +231,7 @@
         //? Load cities based on the selected province | Load cities based on the selected province | Load cities based on the selected province |
         var cityDropdown = $("#city");
         cityDropdown.empty();
-        cityDropdown.append('<option selected="true" disabled>Choose City/Municipality</option>');
+        cityDropdown.append('<option selected disabled>Choose City/Municipality</option>');
         cityDropdown.prop("selectedIndex", 0);
         const cityUrl = "../assets/js/ph-json/city.json";
 
@@ -263,7 +263,7 @@
         //* Load barangays based on the selected city | Load barangays based on the selected city | Load barangays based on the selected city |
         var barangayDropdown = $("#barangay");
         barangayDropdown.empty();
-        barangayDropdown.append('<option selected="true" disabled>Choose Barangay</option>');
+        barangayDropdown.append('<option selected disabled>Choose Barangay</option>');
         barangayDropdown.prop("selectedIndex", 0);
         const barangayUrl = "../assets/js/ph-json/barangay.json";
 

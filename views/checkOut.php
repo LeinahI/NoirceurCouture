@@ -41,7 +41,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                             <hr>
                             <div class="row">
                                 <?php
-                                $user = getUserAddress();
+                                $user = getUserAddress($_SESSION['auth_user']['user_ID']);
                                 $data = mysqli_fetch_array($user);
 
                                 $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';

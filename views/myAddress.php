@@ -32,7 +32,7 @@ include('../middleware/userMW.php');
                         <h5 class="card-title ">
                             <span>My Addresses</span>
                             <span class="float-end">
-                                <a href="myAddresAddNew.php" class="btn btn-primary">
+                                <a href="myAddressAddNew.php" class="btn btn-primary">
                                     Add New Address
                                 </a>
                             </span>
@@ -47,7 +47,7 @@ include('../middleware/userMW.php');
                         $userid = $dataid['user_ID'];
 
                         // Fetch user addresses based on user ID
-                        $userAddressResult = getUserAddress(); // Pass userid to fetch addresses for specific user
+                        $userAddressResult = getUserAddress($_SESSION['auth_user']['user_ID']); // Pass userid to fetch addresses for specific user
 
                         // Check if there are any addresses for the user
                         if (mysqli_num_rows($userAddressResult) == 0) {
@@ -55,6 +55,18 @@ include('../middleware/userMW.php');
                             echo "<p class='mt-3 fs-4 text-center'>No Address Existing Yet</p>";
                         } else {
                             $addressesExist = true;
+
+                            // Load region data
+                            $regionData = json_decode(file_get_contents("../assets/js/ph-json/region.json"), true);
+
+                            // Load province data
+                            $provinceData = json_decode(file_get_contents("../assets/js/ph-json/province.json"), true);
+
+                            // Load city data
+                            $cityData = json_decode(file_get_contents("../assets/js/ph-json/city.json"), true);
+
+                            // Load barangay data
+                            $barangayData = json_decode(file_get_contents("../assets/js/ph-json/barangay.json"), true);
 
                             while ($data = mysqli_fetch_array($userAddressResult)) {
                                 $addrQTY = $data['addrUserQTY'];
@@ -72,7 +84,7 @@ include('../middleware/userMW.php');
                                 //!Fetch region name based on region code
                                 $regionName = "";
                                 $regionUrl = "../assets/js/ph-json/region.json";
-                                $regionData = json_decode(file_get_contents($regionUrl), true); //!Fetch the RegionData
+                                /* $regionData = json_decode(file_get_contents($regionUrl), true); //!Fetch the RegionData */
 
                                 //!loop through regionData & find regionName corresponding to region code
                                 foreach ($regionData as $RegD) {
@@ -85,7 +97,7 @@ include('../middleware/userMW.php');
                                 //+Fetch Province name based on Province code
                                 $provinceName = "";
                                 $provinceUrl = "../assets/js/ph-json/province.json";
-                                $provinceData = json_decode(file_get_contents($provinceUrl), true); //+Fetch the provinceData
+                                /* $provinceData = json_decode(file_get_contents($provinceUrl), true); //+Fetch the provinceData */
 
                                 //+loop through provinceData & find provinceName corresponding to region code
                                 foreach ($provinceData as $ProvD) {
@@ -98,7 +110,7 @@ include('../middleware/userMW.php');
                                 //?Fetch Province name based on Province code
                                 $cityName = "";
                                 $cityUrl = "../assets/js/ph-json/city.json";
-                                $cityData = json_decode(file_get_contents($cityUrl), true); //+Fetch the ProvinceData
+                                /* $cityData = json_decode(file_get_contents($cityUrl), true); //+Fetch the ProvinceData */
 
                                 //?loop through ProvinceData & find provinceName corresponding to region code
                                 foreach ($cityData as $CtyD) {
@@ -111,7 +123,7 @@ include('../middleware/userMW.php');
                                 //*Fetch Barangay name based on Barangay code
                                 $barangayName = "";
                                 $barangayUrl = "../assets/js/ph-json/barangay.json";
-                                $barangayData = json_decode(file_get_contents($barangayUrl), true); //+Fetch the barangayData
+                                /* $barangayData = json_decode(file_get_contents($barangayUrl), true); //+Fetch the barangayData */
 
                                 //*loop through barangayData & find barangayName corresponding to region code
                                 foreach ($barangayData as $BrgyD) {
@@ -154,7 +166,8 @@ include('../middleware/userMW.php');
                                             </div>
                                             <div class="col-md-2">
                                                 <span class="float-end mb-2">
-                                                    <a href="#" class="text-accent">Edit</a>
+                                                    <a href="myAddressEdit.php?addrID=<?= $addrid ?>" class="text-accent">Edit</a>
+
                                                     <?php
                                                     if ($isDefault != 1 || $isDefault == 1 && $addrQTY == 1) {
                                                     ?>

@@ -9,7 +9,7 @@
                     <a href="myAccount.php" class="<?= basename($_SERVER['PHP_SELF']) === 'myAccount.php' ? 'text-accent' : 'text-dark'; ?>">My Profile</a>
                 </div>
                 <div>
-                    <a href="myAddress.php" class="<?= in_array(basename($_SERVER['PHP_SELF']), ["myAddress.php","myAddresAddNew.php"]) ? 'text-accent' : 'text-dark'; ?>">My Address</a>
+                    <a href="myAddress.php" class="<?= in_array(basename($_SERVER['PHP_SELF']), ["myAddress.php","myAddresAddNew.php","myAddresEdit.php"]) ? 'text-accent' : 'text-dark'; ?>">My Address</a>
                 </div>
                 <div>
                     <a href="myOrders.php" class="<?= basename($_SERVER['PHP_SELF']) === 'myOrders.php' ? 'text-accent' : 'text-dark'; ?>">My Purchase</a>

@@ -31,7 +31,7 @@ include('../middleware/userMW.php');
                 $userid = getUserDetails();
                 $dataid = mysqli_fetch_array($userid);
 
-                $user = getUserAddress();
+                $user = getUserAddress($_SESSION['auth_user']['user_ID']);
                 $data = mysqli_fetch_array($user);
 
                 $id = isset($dataid['user_ID']) ? $dataid['user_ID'] : '';

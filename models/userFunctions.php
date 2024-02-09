@@ -206,12 +206,39 @@ function getUserDetails()
     return $result;
 }
 
-function getUserAddress()
+function getUserAddress($user_id)
 {
     global $con;
-    $user_id = $_SESSION['auth_user']['user_ID'];
     $query = "SELECT 
-    (SELECT COUNT(*) FROM addresses WHERE address_user_ID = $user_id) AS addrUserQTY,
+        (SELECT COUNT(*) FROM addresses WHERE address_user_ID = ?) AS addrUserQTY,
+        a.*, 
+        u.user_ID
+        FROM 
+        addresses AS a
+        INNER JOIN 
+        users AS u ON a.address_user_ID = u.user_ID
+        WHERE 
+        a.address_user_ID = ?
+        ORDER BY 
+        address_isDefault DESC";
+
+    $stmt = mysqli_prepare($con, $query);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "ii", $user_id, $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        return $result;
+    } else {
+        // Handle query preparation error
+        return false;
+    }
+}
+
+function getUserAddressByaddrID($addrID)
+{
+    global $con;
+    $query = "SELECT 
     a.*, 
     u.user_ID
     FROM 
@@ -219,14 +246,19 @@ function getUserAddress()
     INNER JOIN 
     users AS u ON a.address_user_ID = u.user_ID
     WHERE 
-    a.address_user_ID = $user_id
-    ORDER BY 
-    address_isDefault DESC
-    ";
+    a.address_id = ?";
 
-    $result = mysqli_query($con, $query);
-
-    return $result;
+    $stmt = mysqli_prepare($con, $query);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $addrID);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        return $result;
+    } else {
+        // Handle query preparation error
+        return false;
+    }
 }
 
 function checkItemExists()
