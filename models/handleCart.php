@@ -12,6 +12,7 @@ if (isset($_SESSION['auth'])) {
                 $prod_qty = $_POST['product_qty'];
                 $prod_rmn = $_POST['product_rmn'];
                 $prod_slug = $_POST['product_slug'];
+                $categ_id = $_POST['category_id'];
 
                 $chk_existing_cart = "SELECT * FROM carts WHERE product_id='$prod_id' AND user_ID='$user_id' ";
                 $chk_existing_cart_run = mysqli_query($con, $chk_existing_cart);
@@ -31,7 +32,7 @@ if (isset($_SESSION['auth'])) {
                                 echo "qtyerr"; // Quantity exceeds remaining quantity
                             } else {
                                 // Insert into the cart
-                                $insert_query = "INSERT INTO carts(user_ID, product_id, product_qty, product_slug) VALUES ('$user_id','$prod_id','$prod_qty','$prod_slug')";
+                                $insert_query = "INSERT INTO carts(category_id, user_ID, product_id, product_qty, product_slug) VALUES ('$categ_id','$user_id','$prod_id','$prod_qty','$prod_slug')";
                                 $insert_query_run = mysqli_query($con, $insert_query);
 
                                 if ($insert_query_run) {

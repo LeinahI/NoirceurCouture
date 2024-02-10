@@ -98,6 +98,7 @@ $(document).ready(function () {
       10
     );
     var prod_slug = $(this).closest(".productData").find(".product_link").val();
+    var categ_id = $(this).closest(".productData").find(".categID").val();
     var prod_id = $(this).val();
 
     $.ajax({
@@ -108,6 +109,7 @@ $(document).ready(function () {
         product_qty: prod_qty,
         product_rmn: prod_rmn,
         product_slug: prod_slug,
+        category_id: categ_id,
         scope: "add",
       },
       success: function (response) {

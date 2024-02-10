@@ -142,6 +142,7 @@
                                         }
                                         ?>
                                         <input type="hidden" class="product_link" value="<?= $product['product_slug'] ?>">
+                                        <input type="hidden" class="categID" value="<?= $category['category_id'] ?>">
                                     </div>
                                     <!-- Product QTY slider -->
                                     <div class="product-quantity-container">
