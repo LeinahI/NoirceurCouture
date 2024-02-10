@@ -160,12 +160,11 @@ include('../middleware/userMW.php');/* Authenticate.php */
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<?php include('../partials/__footer.php'); ?>
+
 <script>
     const tooltips = document.querySelectorAll('.tt')
     tooltips.forEach(t => {
         new bootstrap.Tooltip(t)
     })
 </script>
-
-<?php include('../partials/__footer.php'); ?>
