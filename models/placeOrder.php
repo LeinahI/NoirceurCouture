@@ -6,14 +6,16 @@ include('myFunctions.php');
 
 if (isset($_SESSION['auth'])) {
     if (isset($_POST['placeOrderBtn'])) {
-        $fName = mysqli_real_escape_string($con, $_POST['fullName']);
-        $email = mysqli_real_escape_string($con, $_POST['emailAddress']);
-        $cpNum = mysqli_real_escape_string($con, $_POST['phoneNumber']);
-        $region = mysqli_real_escape_string($con, $_POST['region']);
-        $province = mysqli_real_escape_string($con, $_POST['province']);
-        $city = mysqli_real_escape_string($con, $_POST['city']);
-        $barangay = mysqli_real_escape_string($con, $_POST['barangay']);
-        $fAddr = mysqli_real_escape_string($con, $_POST['fullAddress']);
+        $fName = isset($_POST['fullName']) ? mysqli_real_escape_string($con, $_POST['fullName']) : "";
+        $cpNum = isset($_POST['phoneNumber']) ? mysqli_real_escape_string($con, $_POST['phoneNumber']) : "";
+        $email = isset($_POST['emailAddress']) ? mysqli_real_escape_string($con, $_POST['emailAddress']) : "";
+        $region = isset($_POST['region']) ? mysqli_real_escape_string($con, $_POST['region']) : "";
+        $province = isset($_POST['province']) ? mysqli_real_escape_string($con, $_POST['province']) : "";
+        $city = isset($_POST['city']) ? mysqli_real_escape_string($con, $_POST['city']) : "";
+        $barangay = isset($_POST['barangay']) ? mysqli_real_escape_string($con, $_POST['barangay']) : "";
+        $fAddr = isset($_POST['fullAddress']) ? mysqli_real_escape_string($con, $_POST['fullAddress']) : "";
+
+
         $pay_mode = mysqli_real_escape_string($con, $_POST['paymentMode']);
         $payment_id = mysqli_real_escape_string($con, $_POST['paymentID']);
 

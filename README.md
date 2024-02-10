@@ -80,6 +80,7 @@ Buyer Role
 - Buyer can rate products.
 - ✅ Can cancel order when the order are preparing to ship.
 - ✅ Can set the order status to Delivered. 
+- ✅ Can change addreess on checkout page.
 
 Seller Role
 - ✅ Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.

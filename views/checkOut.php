@@ -7,6 +7,13 @@ if (mysqli_num_rows($cartCheck) < 1) {
     redirectSwal("myCart.php", "Your cart is empty", "error");
 }
 ?>
+
+<style>
+    .border-accent {
+        border-color: #bb6c54 !important;
+    }
+</style>
+
 <div class="py-3 bg-primary">
     <div class="container">
         <h6>
@@ -36,96 +43,243 @@ if (mysqli_num_rows($cartCheck) < 1) {
             <div class="card-body bg-main rounded-3">
                 <form action="../models/placeOrder.php" method="POST">
                     <div class="row">
-                        <div class="col-md-6">
-                            <h5>Delivery Address</h5>
-                            <hr>
-                            <div class="row">
-                                <?php
-                                $user = getUserAddress($_SESSION['auth_user']['user_ID']);
-                                $data = mysqli_fetch_array($user);
+                        <?php
+                        $user = getDefaultUserAddress($_SESSION['auth_user']['user_ID']);
+                        $data = mysqli_fetch_array($user);
+                        $isDefault = $data['address_isDefault'];
+                        $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
+                        $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
+                        $email = isset($data['address_email']) ? $data['address_email'] : '';
+                        $regionCode = isset($data['address_region']) ? $data['address_region'] : '';
+                        $provinceCode = isset($data['address_province']) ? $data['address_province'] : '';
+                        $cityCode = isset($data['address_city']) ? $data['address_city'] : '';
+                        $barangayCode = isset($data['address_barangay']) ? $data['address_barangay'] : '';
+                        $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
+                        $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
 
-                                $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
-                                $fname = isset($data['address_fullName']) ? $data['address_fullName'] : '';
-                                $email = isset($data['address_email']) ? $data['address_email'] : '';
-                                $regionCode = isset($data['address_region']) ? $data['address_region'] : '';
-                                $provinceCode = isset($data['address_province']) ? $data['address_province'] : '';
-                                $cityCode = isset($data['address_city']) ? $data['address_city'] : '';
-                                $barangayCode = isset($data['address_barangay']) ? $data['address_barangay'] : '';
-                                $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
-                                $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
+                        // Load region data
+                        $regionData = json_decode(file_get_contents("../assets/js/ph-json/region.json"), true);
+                        // Load province data
+                        $provinceData = json_decode(file_get_contents("../assets/js/ph-json/province.json"), true);
+                        // Load city data
+                        $cityData = json_decode(file_get_contents("../assets/js/ph-json/city.json"), true);
+                        // Load barangay data
+                        $barangayData = json_decode(file_get_contents("../assets/js/ph-json/barangay.json"), true);
+                        //!Fetch region name based on region code
+                        $regionName = "";
+                        $regionUrl = "../assets/js/ph-json/region.json";
+                        /* $regionData = json_decode(file_get_contents($regionUrl), true); //!Fetch the RegionData */
 
-                                ?>
-                                <!-- Fname -->
-                                <div class=" col-md-12 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <input type="text" class="form-control" id="delivery_fname" value="<?= $fname ?>" name="fullName" placeholder="nasd">
-                                        <label for="floatingInput">Full Name</label>
-                                        <small class="text-danger fname"></small>
-                                    </div>
-                                </div>
-                                <!-- Email & number -->
-                                <div class=" col-md-6 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <input type="email" class="form-control" id="delivery_emailAddr" value="<?= $email ?>" name="emailAddress" placeholder="asd@g.co">
-                                        <label for="floatingInput">Email Address</label>
-                                        <small class="text-danger email"></small>
-                                    </div>
-                                </div>
-                                <div class=" col-md-6 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <input type="number" class="form-control" id="delivery_phoneNum" value="<?= $phone ?>" name="phoneNumber" placeholder="09" onkeypress="inpNum(event)">
-                                        <label for="floatingInput">Phone Number</label>
-                                        <small class="text-danger phone"></small>
-                                    </div>
-                                </div>
-                                <!-- State City Country -->
-                                <div class="form-floating col-md-12 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select name="region" class="form-select form-control form-control-md" id="region" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="region_text" id="region-text" required>
-                                        <label for="floatingInput">Region</label>
-                                        <small class="text-danger region"></small>
-                                    </div>
-                                </div>
-                                <div class=" col-md-4 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select name="province" class="form-control form-control-md" id="province" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="province_text" id="province-text" required> <!-- Province -->
-                                        <label for="floatingInput">Province</label>
-                                        <small class="text-danger province"></small>
-                                    </div>
-                                </div>
-                                <div class=" col-md-4 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select name="city" class="form-control form-control-md" id="city" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="city_text" id="city-text" required> <!-- City -->
-                                        <label for="floatingInput">City / Municipality</label>
-                                        <small class="text-danger city"></small>
-                                    </div>
-                                </div>
-                                <div class=" col-md-4 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <select name="barangay" class="form-control form-control-md" id="barangay" required></select>
-                                        <input type="hidden" class="form-control form-control-md" name="barangay_text" id="barangay-text" required> <!-- Barangay -->
-                                        <label for="floatingInput">Barangay</label>
-                                        <small class="text-danger barangay"></small>
-                                    </div>
-                                </div>
+                        //!loop through regionData & find regionName corresponding to region code
+                        foreach ($regionData as $RegD) {
+                            if ($RegD['region_code'] == $regionCode) {
+                                $regionName = $RegD['region_name'];
+                                break;
+                            }
+                        }
 
-                                <!-- Address -->
-                                <div class="form-floating col-md-12 mb-3">
-                                    <div class="form-floating ps-0 mb-3">
-                                        <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
-                                        <label for="floatingInput">Address</label>
-                                        <small class="text-danger address"></small>
+                        //+Fetch Province name based on Province code
+                        $provinceName = "";
+                        $provinceUrl = "../assets/js/ph-json/province.json";
+                        /* $provinceData = json_decode(file_get_contents($provinceUrl), true); //+Fetch the provinceData */
+
+                        //+loop through provinceData & find provinceName corresponding to region code
+                        foreach ($provinceData as $ProvD) {
+                            if ($ProvD['province_code'] == $provinceCode) {
+                                $provinceName = $ProvD['province_name'];
+                                break;
+                            }
+                        }
+
+                        //?Fetch Province name based on Province code
+                        $cityName = "";
+                        $cityUrl = "../assets/js/ph-json/city.json";
+                        /* $cityData = json_decode(file_get_contents($cityUrl), true); //+Fetch the ProvinceData */
+
+                        //?loop through ProvinceData & find provinceName corresponding to region code
+                        foreach ($cityData as $CtyD) {
+                            if ($CtyD['city_code'] == $cityCode) {
+                                $cityName = $CtyD['city_name'];
+                                break;
+                            }
+                        }
+
+                        //*Fetch Barangay name based on Barangay code
+                        $barangayName = "";
+                        $barangayUrl = "../assets/js/ph-json/barangay.json";
+                        /* $barangayData = json_decode(file_get_contents($barangayUrl), true); //+Fetch the barangayData */
+
+                        //*loop through barangayData & find barangayName corresponding to region code
+                        foreach ($barangayData as $BrgyD) {
+                            if ($BrgyD['brgy_code'] == $barangayCode) {
+                                $barangayName = $BrgyD['brgy_name'];
+                                break;
+                            }
+                        }
+
+                        ?>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="changeAddressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changeAddressLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-main">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="changeAddressLabel">My Address</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?php
+                                        $userAddressResult = getUserAddress($_SESSION['auth_user']['user_ID']); // Pass userid to fetch addresses for specific user
+                                        while ($datas = mysqli_fetch_array($userAddressResult)) {
+                                            $addressid = $datas['address_id'];
+                                            $Default = $datas['address_isDefault'];
+                                            $firstname = $datas['address_fullName'];
+                                            $addremail = $datas['address_email'];
+                                            $phoneNumber = $datas['address_phone'];
+                                            $fullAddress = $datas['address_fullAddress'];
+                                            $regCode = isset($datas['address_region']) ? $datas['address_region'] : '';
+                                            $provCode = isset($datas['address_province']) ? $datas['address_province'] : '';
+                                            $ctyCode = isset($datas['address_city']) ? $datas['address_city'] : '';
+                                            $brgyCode = isset($datas['address_barangay']) ? $datas['address_barangay'] : '';
+
+                                            //!Fetch region name based on region code
+                                            $regName = "";
+                                            /* $regionData = json_decode(file_get_contents($regionUrl), true); //!Fetch the RegionData */
+                                            //!loop through regionData & find regionName corresponding to region code
+                                            foreach ($regionData as $RegD) {
+                                                if ($RegD['region_code'] == $regCode) {
+                                                    $regName = $RegD['region_name'];
+                                                    break;
+                                                }
+                                            }
+                                            //+Fetch Province name based on Province code
+                                            $provName = "";
+                                            /* $provinceData = json_decode(file_get_contents($provinceUrl), true); //+Fetch the provinceData */
+                                            //+loop through provinceData & find provinceName corresponding to region code
+                                            foreach ($provinceData as $ProvD) {
+                                                if ($ProvD['province_code'] == $provCode) {
+                                                    $provName = $ProvD['province_name'];
+                                                    break;
+                                                }
+                                            }
+                                            //?Fetch Province name based on Province code
+                                            $ctyName = "";
+                                            /* $cityData = json_decode(file_get_contents($cityUrl), true); //+Fetch the ProvinceData */
+                                            //?loop through ProvinceData & find provinceName corresponding to region code
+                                            foreach ($cityData as $CtyD) {
+                                                if ($CtyD['city_code'] == $ctyCode) {
+                                                    $ctyName = $CtyD['city_name'];
+                                                    break;
+                                                }
+                                            }
+                                            //*Fetch Barangay name based on Barangay code
+                                            $brgyName = "";
+                                            /* $barangayData = json_decode(file_get_contents($barangayUrl), true); //+Fetch the barangayData */
+                                            //*loop through barangayData & find barangayName corresponding to region code
+                                            foreach ($barangayData as $BrgyD) {
+                                                if ($BrgyD['brgy_code'] == $brgyCode) {
+                                                    $brgyName = $BrgyD['brgy_name'];
+                                                    break;
+                                                }
+                                            }
+                                        ?>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="<?php echo $addressid; ?>" <?= ($Default == 1) ? 'checked' : '' ?>>
+                                                <label class="form-check-label" for="<?= $addressid ?>">
+                                                    <span class="fw-bold change_fn"><?php echo $firstname; ?></span> |
+                                                    <span class="change_phone"><?php echo $phoneNumber; ?></span> |
+                                                    <span class="change_email"><?php echo $addremail; ?></span><br>
+                                                    <span class="change_address"><?= $fullAddress ?></span>,
+                                                    <span class="change_brgyn"><?php echo $brgyName; ?></span>,
+                                                    <span class="change_cityn"><?php echo $ctyName; ?></span>,
+                                                    <span class="change_provn"><?php echo $provName; ?></span>,
+                                                    <span class="change_regn"><?php echo $regName; ?></span>
+
+                                                    <input readonly type="hidden" class="code_brgy" value="<?= $brgyCode ?>">
+                                                    <input readonly type="hidden" class="code_city" value="<?= $ctyCode ?>">
+                                                    <input readonly type="hidden" class="code_prov" value="<?= $provCode ?>">
+                                                    <input readonly type="hidden" class="code_reg" value="<?= $regCode ?>">
+                                                    <input readonly type="hidden" class="change_defaultAddr" value="<?= $Default ?>">
+                                                    <?php
+                                                    if ($Default == 1) {
+                                                    ?>
+                                                        <div style="margin-top: 5px;">
+                                                            <span class="text-accent border border-accent p-1">Default</span>
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </label>
+                                            </div>
+                                            <hr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-accent btn-confirm" data-bs-dismiss="modal">Confirm</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!-- Modal end -->
+
+                        <!-- Order Address Details -->
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <span class="fs-5">Delivery Address
+                                    <span class="float-end">
+                                        <a href="myCart.php" class="btn btn-primary">
+                                            Go back
+                                        </a>
+                                    </span>
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <!-- Fname -->
+                                <div class="col-md-3 mb-3" style="padding-left: 30px;">
+                                    <span class="fw-bold" id="delivery_fname"><?php echo $fname; ?></span> <br>
+                                    <span class="fw-bold" id="delivery_phoneNum"><?php echo $phone; ?></span> |
+                                    <span id="delivery_emailAddr"><?php echo $email; ?></span>
+
+                                    <!--//! input hidden that going to give to server side -->
+                                    <input type="hidden" id="hidden_fname" name="fullName" value="<?php echo $fname; ?>">
+                                    <input type="hidden" id="hidden_phone" name="phoneNumber" value="<?php echo $phone; ?>">
+                                    <input type="hidden" id="hidden_email" name="emailAddress" value="<?php echo $email; ?>">
+                                </div>
+                                <!-- State City Country -->
+                                <div class="col-md-7 mb-3">
+                                    <span id="delivery_fullAddr"><?php echo $fulladdr; ?></span>,
+                                    <span id="barangay_text"><?php echo $barangayName; ?></span>,
+                                    <span id="city_text"><?php echo $cityName; ?></span>,
+                                    <span id="province_text"><?php echo $provinceName; ?></span>,
+                                    <span id="region_text"><?php echo $regionName; ?></span>
+
+                                    <!--//! input hidden that going to give to server side -->
+                                    <input readonly type="hidden" id="hidden_fulladdr" name="fullAddress" value="<?php echo $fulladdr; ?>">
+                                    <input readonly type="hidden" class="hidden_barangay_code" id="barangay_code" name="barangay" value="<?php echo $barangayCode; ?>">
+                                    <input readonly type="hidden" class="hidden_city_code" id="city_code" name="city" value="<?php echo $cityCode; ?>">
+                                    <input readonly type="hidden" class="hidden_province_code" id="province_code" name="province" value="<?php echo $provinceCode; ?>">
+                                    <input readonly type="hidden" class="hidden_region_code" id="region_code" name="region" value="<?php echo $regionCode; ?>">
+                                </div>
+
+                                <div class="col-md-1 text-center">
+                                    <input readonly type="hidden" id="hidden_default" value="<?php echo $isDefault ?>">
+                                    <span id="addr_isdefault" class="text-accent border border-accent p-1">Default</span>
+                                </div>
+
+                                <div class="col-md-1 mb-3 text-center">
+                                    <!-- Modal Trigger -->
+                                    <a href="#" class="text-accent" data-bs-toggle="modal" data-bs-target="#changeAddressModal">Change</a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Products -->
+                        <div class="col-md-12">
                             <div>
                                 <span class="fs-5">Products Ordered
-                                    <a href="myCart.php" class="btn btn-primary float-end">Back</a>
                                 </span>
 
                             </div>
@@ -144,7 +298,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 }
                                 $groupedItems[$categoryName][] = $cItem;
                             } ?>
-                            <div class="scrollBarCO overflow-y-auto" style="height: 450px;">
+                            <div class="scrollBarCO" style="height: <?= count($groupedItems) > 1 ? '450px' : 'auto'; ?>; overflow-y: scroll; scrollbar-width: none;">
                                 <?php
                                 // Display grouped items
                                 foreach ($groupedItems as $categoryName => $categoryItems) {
@@ -158,7 +312,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                 $itemTotalPrice = $cItem['product_srp'] * $cItem['product_qty'];
                                                 $totalPrice += $itemTotalPrice;
                                             ?>
-                                                <div class="productData row align-items-center <?= ($index < count($categoryItems) - 1) ? 'mb-0' : '' ?>">
+                                                <div class="productData row align-items-center <?= ($index < count($categoryItems) - 1) ? 'mb-2' : '' ?>">
                                                     <div class="col-md-2">
                                                         <center>
                                                             <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="80px">
@@ -184,7 +338,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 ?>
                             </div>
                             <div class="card">
-                                <div class="card-body bg-primary">
+                                <div class="card-body bg-primary text-end">
                                     <h5>Order Total&nbsp;(<span class="text-accent"><?= $itemQty ?>&nbsp;item</span>): <span class="text-accent">₱<?= number_format($totalPrice, 2) ?></span></h5>
                                 </div>
                                 <div class="card-body bg-primary">
@@ -251,74 +405,80 @@ include('../partials/__footer.php');
     var paymentID = "COD" + rn + last4Digits;
     document.getElementById("paymentIDInput").value = paymentID;
 
-    
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add event listener to the Confirm button
+        document.querySelector(".btn-confirm").addEventListener("click", function() {
+            // Find the checked radio button inside the modal
+            var checkedRadio = document.querySelector('input[name="flexRadioDefault"]:checked');
+            if (checkedRadio) {
+                // Extract data associated with the checked radio button
+                var fullName = checkedRadio.parentElement.querySelector('.change_fn').textContent.trim();
+                var phoneNumber = checkedRadio.parentElement.querySelector('.change_phone').textContent.trim();
+                var emailAddress = checkedRadio.parentElement.querySelector('.change_email').textContent.trim();
+                var fullAddress = checkedRadio.parentElement.querySelector('.change_address').textContent.trim();
+                var barangayName = checkedRadio.parentElement.querySelector('.change_brgyn').textContent.trim(); // This line should correctly fetch the barangay name
+                var cityName = checkedRadio.parentElement.querySelector('.change_cityn').textContent.trim();
+                var provinceName = checkedRadio.parentElement.querySelector('.change_provn').textContent.trim();
+                var regionName = checkedRadio.parentElement.querySelector('.change_regn').textContent.trim();
 
-    /*//! Delivery Address validate function */
-    function validateForm() {
-        var isValid = true;
+                var brgyCode = checkedRadio.parentElement.querySelector('.code_brgy').value.trim();
+                var ctyCode = checkedRadio.parentElement.querySelector('.code_city').value.trim();
+                var provCode = checkedRadio.parentElement.querySelector('.code_prov').value.trim();
+                var regCode = checkedRadio.parentElement.querySelector('.code_reg').value.trim();
 
-        // Get the values
-        var fname = $('#delivery_fname').val();
-        var email = $('#delivery_emailAddr').val();
-        var phoneNum = $('#delivery_phoneNum').val();
-        var region = $('#region').val();
-        var province = $('#province').val();
-        var city = $('#city').val();
-        var barangay = $('#barangay').val();
-        var fullAddr = $('#delivery_fullAddr').val();
-        
+                var defaultAddr = checkedRadio.parentElement.querySelector('.change_defaultAddr').value.trim();
 
-        // Check each variable
-        if (fname.length === 0) {
-            $(".fname").text("This field is required");
-            isValid = false;
-        }
+                // Populate the delivery address fields with the selected address details
+                document.getElementById("delivery_fname").textContent = fullName;
+                document.getElementById("delivery_phoneNum").textContent = phoneNumber;
+                document.getElementById("delivery_emailAddr").textContent = emailAddress;
+                document.getElementById("delivery_fullAddr").textContent = fullAddress;
+                document.getElementById("barangay_text").textContent = barangayName;
+                document.getElementById("city_text").textContent = cityName;
+                document.getElementById("province_text").textContent = provinceName;
+                document.getElementById("region_text").textContent = regionName;
 
-        if (email.length === 0) {
-            $(".email").text("*This field is required");
-            isValid = false;
-        }
+                //Popilate the hidden delivery address input fields with the selected address
+                document.getElementById("hidden_fname").value = fullName;
+                document.getElementById("hidden_phone").value = phoneNumber;
+                document.getElementById("hidden_email").value = emailAddress;
+                document.getElementById("hidden_fulladdr").value = fullAddress;
 
-        if (phoneNum.length === 0) {
-            $(".phone").text("*This field is required");
-            isValid = false;
-        } else if (!phoneNum.match(/^09\d{9}$/)) {
-            $(".phone").text("*Invalid Philippine phone number format");
-            isValid = false;
-        }
+                document.getElementById("hidden_default").value = defaultAddr;
 
-        if (region.length === 0) {
-            $(".region").text("*This field is required");
-            isValid = false;
-        }
+                // Hide addr_isdefault span if hidden_default value is 0
+                var addrIsDefault = document.getElementById("addr_isdefault");
+                if (addrIsDefault && defaultAddr === "0") {
+                    addrIsDefault.setAttribute("hidden", "");
+                } else {
+                    addrIsDefault.removeAttribute("hidden");
+                }
 
-        if (province.length === 0) {
-            $(".province").text("*This field is required");
-            isValid = false;
-        }
-
-        if (city.length === 0) {
-            $(".city").text("*This field is required");
-            isValid = false;
-        }
-
-        if (barangay.length === 0) {
-            $(".barangay").text("*This field is required");
-            isValid = false;
-        }
-
-        if (fullAddr.length === 0) {
-            $(".address").text("*This field is required");
-            isValid = false;
-        }
-        return isValid;
-    }
+                var hiddenBarangayCodes = document.getElementsByClassName("hidden_barangay_code");
+                for (var i = 0; i < hiddenBarangayCodes.length; i++) {
+                    hiddenBarangayCodes[i].value = brgyCode;
+                }
+                var hiddenCityCodes = document.getElementsByClassName("hidden_city_code");
+                for (var i = 0; i < hiddenCityCodes.length; i++) {
+                    hiddenCityCodes[i].value = ctyCode;
+                }
+                var hiddenProvinceCodes = document.getElementsByClassName("hidden_province_code");
+                for (var i = 0; i < hiddenProvinceCodes.length; i++) {
+                    hiddenProvinceCodes[i].value = provCode;
+                }
+                var hiddenRegionCodes = document.getElementsByClassName("hidden_region_code");
+                for (var i = 0; i < hiddenRegionCodes.length; i++) {
+                    hiddenRegionCodes[i].value = regCode;
+                }
+            }
+        });
+    });
 
     paypal.Buttons({
+        style: {
+            disableMaxWidth: true
+        },
         createOrder: function(data, actions) {
-            if (!validateForm()) {
-                return false;
-            }
             return actions.order.create({
                 purchase_units: [{
                     amount: {
@@ -336,18 +496,18 @@ include('../partials/__footer.php');
                         method: "United States Postal Service",
                         address: {
                             name: {
-                                full_name: $('#delivery_fname').val(),
+                                full_name: $('#delivery_fname').text(),
                             },
-                            address_line_1: $('#delivery_fullAddr').val(),
+                            address_line_1: $('#delivery_fullAddr').text(),
                             /* Full address */
 
-                            admin_area_2: $('#city-text').val(), 
+                            admin_area_2: $('#city_text').text(),
                             /* City */
 
-                            admin_area_1: $('#region-text').val(),
+                            admin_area_1: $('#region_text').text(),
                             /* State */
 
-                            postal_code: $('#province-text').val(),
+                            postal_code: $('#province_text').text(),
                             /* Zipcode */
 
                             country_code: 'PH' /* Country */
@@ -358,20 +518,20 @@ include('../partials/__footer.php');
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(orderData) {
-                /* console.log('Capture Result', orderData, JSON.stringify(orderData, null, 2)); */
+                console.log('Capture Result', orderData, JSON.stringify(orderData, null, 2));
 
                 console.log(orderData)
                 const transaction = orderData.purchase_units[0].payments.captures[0];
                 /* alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for available details`); */
 
-                var fname = $('#delivery_fname').val();
-                var email = $('#delivery_emailAddr').val();
-                var phoneNum = $('#delivery_phoneNum').val();
-                var region = $('#region').val();
-                var province = $('#province').val();
-                var city = $('#city').val();
-                var barangay = $('#barangay').val();
-                var fullAddr = $('#delivery_fullAddr').val();
+                var fname = $('#delivery_fname').text();
+                var email = $('#delivery_emailAddr').text();
+                var phoneNum = $('#delivery_phoneNum').text();
+                var region = $('#region_code').val();
+                var province = $('#province_code').val();
+                var city = $('#city_code').val();
+                var barangay = $('#barangay_code').val();
+                var fullAddr = $('#delivery_fullAddr').text();
 
                 var data = {
                     'fullName': fname,

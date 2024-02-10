@@ -235,6 +235,32 @@ function getUserAddress($user_id)
     }
 }
 
+function getDefaultUserAddress($user_id)
+{
+    global $con;
+    $query = "SELECT
+        a.*, 
+        u.user_ID
+        FROM 
+        addresses AS a
+        INNER JOIN 
+        users AS u ON a.address_user_ID = u.user_ID
+        WHERE 
+        a.address_user_ID = ? AND a.address_isDefault = 1"; 
+
+    $stmt = mysqli_prepare($con, $query);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        return $result;
+    } else {
+        // Handle query preparation error
+        return false;
+    }
+}
+
 function getUserAddressByaddrID($addrID)
 {
     global $con;
