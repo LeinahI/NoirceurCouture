@@ -10,19 +10,7 @@ include('../middleware/userMW.php');
 </style>
 
 <div class="container mt-5">
-    <?php
-    if (isset($_SESSION['Errormsg'])) {
-    ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
-            <?= $_SESSION['Errormsg']; ?>.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php
-        /* Alert popup will show here */
-        unset($_SESSION['Errormsg']);
-    }
-    ?>
+    <?php include('../partials/sessionMessage.php') ?>
     <div class="row">
         <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">

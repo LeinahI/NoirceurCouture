@@ -260,10 +260,22 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->bind_param("iissssssss", $userId, $addrDefault, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
 
         if ($stmt->execute()) {
-            header("Location: ../views/myAddress.php");
-            $_SESSION['Errormsg'] = "Address added successfully";
+            // Redirect to the checkout page
+            if (isset($_POST['checkoutPage'])) {
+                header("Location: " . $_POST['checkoutPage']);
+            } else {
+                // Default redirection if checkoutPage is not set
+                header("Location: ../views/myAddress.php");
+            }
+            $_SESSION['Successmsg'] = "Address added successfully";
         } else {
-            header("Location: ../views/myAddress.php");
+            // Redirect to the checkout page
+            if (isset($_POST['checkoutPage'])) {
+                header("Location: " . $_POST['checkoutPage']);
+            } else {
+                // Default redirection if checkoutPage is not set
+                header("Location: ../views/myAddressv.php");
+            }
             $_SESSION['Errormsg'] = "Something went wrong";
         }
         $stmt->close();
@@ -315,7 +327,7 @@ if (isset($_POST['userUpdateAddrBtn'])) {
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddressEdit.php?addrID=$addrId");
-            $_SESSION['Errormsg'] = "Address updated successfully";
+            $_SESSION['Successmsg'] = "Address updated successfully";
         } else {
             header("Location: ../views/myAddressEdit.php?addrID=$addrId");
             $_SESSION['Errormsg'] = "Something went wrong";
@@ -351,7 +363,7 @@ if (isset($_POST['setDefaultAddrBtn'])) {
     $stmt_set_default = $con->prepare("UPDATE addresses SET address_isDefault = 1 WHERE address_id = ?");
     $stmt_set_default->bind_param("i", $addrId);
     if ($stmt_set_default->execute()) {
-        $_SESSION['Errormsg'] = "Address set as Default shipping address";
+        $_SESSION['Successmsg'] = "Address set as Default shipping address";
     } else {
         $_SESSION['Errormsg'] = "Something went wrong";
     }
@@ -374,7 +386,7 @@ if (isset($_POST['deleteAddrBtn'])) {
     $stmt_delete_address = $con->prepare("DELETE FROM addresses WHERE address_id = ?");
     $stmt_delete_address->bind_param("i", $addrId);
     if ($stmt_delete_address->execute()) {
-        $_SESSION['Errormsg'] = "Address has been deleted";
+        $_SESSION['Successmsg'] = "Address has been deleted";
     } else {
         $_SESSION['Errormsg'] = "Failed to delete address";
     }
