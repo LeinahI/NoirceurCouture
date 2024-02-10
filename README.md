@@ -92,3 +92,6 @@ Buyer UI Changes
 - ✅ myAddress.php will have multiple cards for multiple address.
 - On myOrders.php they will separate the orders when user ordered on two or multiple different stores.
 - ✅ on checkOut.php user can choose which adress they use to deliver the parcel and add new address.
+
+Serverside Change (above list must be done first)
+- change MySQL connection to PHP Data Objects (PDO)
