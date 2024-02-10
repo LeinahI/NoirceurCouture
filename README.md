@@ -74,13 +74,12 @@ Admin Role
 - ✅ Admin can accept and reject user account deletion request.
 
 Buyer Role
-- Buyer can have multiple addresses and set which is default address.
+- ✅ Buyer can have multiple addresses and set which is default address.
 - ✅ Buyer can request account deletion.
 - Buyer have now notification tab that can see order and Noirceur Couture Updates.
 - Buyer can rate products.
 - ✅ Can cancel order when the order are preparing to ship.
 - ✅ Can set the order status to Delivered. 
-- ✅ Can change addreess on checkout page.
 
 Seller Role
 - ✅ Seller can set their status on vacation that the buyer cannot add to card and confirm checkout.
@@ -88,8 +87,8 @@ Seller Role
 - ✅ Seller cannot set the parcel is delivered anymore.
 
 Buyer UI Changes
-- ✅ Dynamic Philippine Address Selector via json
+- ✅ Dynamic Philippine Address Selector via json.
 - 🚧 on store.php?category=... It will show the profile and ratings, products, and date joined.
 - ✅ myAddress.php will have multiple cards for multiple address.
 - On myOrders.php they will separate the orders when user ordered on two or multiple different stores.
-- on checkOut.php user can choose which adress they use to deliver the parcel and add new address.
+- ✅ on checkOut.php user can choose which adress they use to deliver the parcel and add new address.
