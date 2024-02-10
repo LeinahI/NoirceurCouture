@@ -26,6 +26,11 @@ if (isset($_GET['trck'])) {
 }
 
 $data = mysqli_fetch_array($orderData);
+
+$regionCode = isset($data['orders_region']) ? $data['orders_region'] : '';
+$provinceCode = isset($data['orders_province']) ? $data['orders_province'] : '';
+$cityCode = isset($data['orders_city']) ? $data['orders_city'] : '';
+$barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 ?>
 
 <style>
@@ -63,15 +68,19 @@ $data = mysqli_fetch_array($orderData);
                                             <h5><?= $data['orders_phone']; ?></h5>
                                         </div>
                                         <div class="col-md-12">
-                                            <h5>
-                                                <?= $data['orders_city']; ?>,
-                                                <?= $data['orders_state']; ?>,
-                                                <?= $data['orders_postal_code']; ?>,
-                                                <?= $data['orders_country']; ?>
-                                            </h5>
+                                            <h5><?= $data['orders_address']; ?></h5>
                                         </div>
                                         <div class="col-md-12">
-                                            <h5><?= $data['orders_address']; ?></h5>
+                                            <h5>
+                                                <select hidden name="barangay" class="form-control form-control-md" id="barangay" required></select>
+                                                <select hidden name="city" class="form-control form-control-md" id="city" required></select>
+                                                <select hidden name="province" class="form-control form-control-md" id="province" required></select>
+                                                <select hidden name="region" class="form-control form-control-md" id="region" required></select>
+                                                <span name="barangay-txt" id="barangay-txt"></span>,
+                                                <span name="city-txt" id="city-txt"></span>,<br>
+                                                <span name="province-txt" id="province-txt"></span>,
+                                                <span name="region-txt" id="region-txt"></span>
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -156,8 +165,7 @@ $data = mysqli_fetch_array($orderData);
                                                 <div class="form-floating">
                                                     <select name="orderStatus" class="form-select ps-2" id="orderStat">
                                                         <option value="0" <?= $data['orders_status'] == 0 ? "selected" : "" ?>>Preparing to ship</option>
-                                                        <option value="1" <?= $data['orders_status'] == 1 ? "selected" : "" ?>>Parcel is out for delivery</option>
-                                                        <option value="2" <?= $data['orders_status'] == 2 ? "selected" : "" ?>>Parcel has been delivered</option>
+                                                        <option value="1" <?= $data['orders_status'] == 1 ? "selected" : "" ?>>Parcel is out for delivery</option> <!-- 2 for delivered -->
                                                         <option value="3" <?= $data['orders_status'] == 3 ? "selected" : "" ?>>Parcel has been cancelled</option>
                                                     </select>
                                                     <label for="slug_input">Parcel Status</label>
@@ -182,7 +190,9 @@ $data = mysqli_fetch_array($orderData);
     </div>
 </div>
 
-<?php include('partials/footer.php'); ?>
+<?php include('partials/footer.php');
+include('../assets/js/ph-address-selector.php');
+?>
 
 <script>
     function disableSelect() {

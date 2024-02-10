@@ -5,10 +5,17 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 
 <style>
-    .img-fixed-height {
-        height: 200px;
-        width: auto;
-        object-fit: cover;
+    .icon {
+        width: 90px;
+        height: 90px;
+        padding: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-darker {
+        background-color: #d8cbc3 !important;
     }
 </style>
 
@@ -31,13 +38,34 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
                     if (mysqli_num_rows($categories) > 0) {
                         foreach ($categories as $item) {
+                            $cid = $item['category_id'];
+                            $prodCount = getProductsCountByCategoryByID($cid);
+                            $count = mysqli_fetch_array($prodCount);
                     ?>
-                            <div class="col-md-4 mb-3">
-                                <a href="store.php?category=<?= $item['category_slug'] ?>">
+                            <div class="col-md-6 mb-3">
+                                <a href="store.php?category=<?= $item['category_slug'] ?>" class="text-decoration-none">
                                     <div class="card shadow">
-                                        <div class="card-body bg-primary">
-                                            <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image" class="w-100 img-fixed-height">
-                                            <h4><?= $item['category_name'] ?></h4>
+                                        <div class="card-body bg-primary col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="icon bg-darker rounded-circle">
+                                                            <img src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Store Image" class="object-fit-cover rounded-circle" width="90" height="90">
+                                                        </div>
+                                                        <div class="ms-3 c-details">
+                                                            <h4 class="store_name"><?= $item['category_name'] ?></h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 d-flex justify-content-center">
+                                                    <div class="text-center align-items-center d-flex">
+                                                        <div class="pr-2 ">
+                                                            <span class="text-accent fw-bold"><i class="fa-solid fa-store"></i>&nbsp;<?= $count['allproduct'] ?></span>
+                                                            <p>Products</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>

@@ -113,7 +113,7 @@ function getAllCancelledOrders()
 function getAllOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT *
+    $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt
     FROM orders o
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id
@@ -126,7 +126,7 @@ function getAllOrdersbyStore($id)
 function getAllPreparingOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT *
+    $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt, o.orders_tracking_no, o.orders_status
     FROM orders o
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id
@@ -139,7 +139,7 @@ function getAllPreparingOrdersbyStore($id)
 function getAllShippedOutOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT *
+    $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt, o.orders_tracking_no, o.orders_status
     FROM orders o
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id

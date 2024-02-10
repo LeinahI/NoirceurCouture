@@ -120,6 +120,9 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 $groupedItems[$categoryName] = [];
                                             }
                                             $groupedItems[$categoryName][] = $item;
+                                        }
+
+                                        foreach ($groupedItems as $categoryName => $items) {
                                     ?>
                                             <div class="card mb-3 rounded-3 bg-primary">
                                                 <div class="card-header">
@@ -129,35 +132,42 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
-                                                    <a href="productView.php?product=<?= $item['product_slug'] ?>" class="text-decoration-none">
-                                                        <div class="row align-items-center">
-                                                            <div class="col-md-1">
-                                                                <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
+                                                    <?php
+                                                    foreach ($items as $item) {
+                                                    ?>
+                                                        <a href="productView.php?product=<?= $item['product_slug'] ?>" class="text-decoration-none">
+                                                            <div class="row align-items-center mb-2">
+                                                                <div class="col-md-1">
+                                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
+                                                                </div>
+                                                                <div class="col-md-6 text-dark">
+                                                                    <h5><?= $item['product_name'] ?></h5>
+                                                                    <h5>x<?= $item['orderItems_qty'] ?></h5>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <h5 class="text-end">
+                                                                        <?php
+                                                                        if ($item['product_srp'] == $item['product_original_price']) {
+                                                                        ?>
+                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                        <?php
+                                                                        } else {
+                                                                        ?>
+                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                    </h5>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-6 text-dark">
-                                                                <h5><?= $item['product_name'] ?></h5>
-                                                                <h5>x<?= $item['orderItems_qty'] ?></h5>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <h5 class="text-end">
-                                                                    <?php
-                                                                    if ($item['product_srp'] == $item['product_original_price']) {
-                                                                    ?>
-                                                                        <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
-                                                                    <?php
-                                                                    } else {
-                                                                    ?>
-                                                                        <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
-                                                                    <?php
-                                                                    }
-                                                                    ?>
-                                                                </h5>
-                                                            </div>
-                                                        </div>
-                                                    </a>
+                                                        </a>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                     <?php
+
                                         }
                                     } else {
                                         echo "<tr><td>No results found.</td></tr>";
@@ -264,6 +274,20 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                             <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
                                                             <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
                                                             <button type="submit" name="orderRcvBtn" class="btn btn-accent float-end col-md-10">Order Received</button>
+                                                        </form>
+                                                    </div>
+                                                <?php
+                                                }
+                                                ?>
+
+                                                <?php
+                                                if ($data['orders_status'] == 2) {
+                                                ?>
+                                                    <div class="mt-3">
+                                                        <form action="#" method="post">
+                                                            <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
+                                                            <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
+                                                            <button type="submit" name="productRateBtn" class="btn btn-accent float-end col-md-10">Rate</button>
                                                         </form>
                                                     </div>
                                                 <?php
