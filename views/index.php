@@ -3,33 +3,22 @@
 include(__DIR__ . '/../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
-<?php
-if (isset($_SESSION['Errormsg'])) {
-?>
-    <div class="container mt-3 position-absolute start-50 translate-middle-x z-2">
-        <div class="row">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
-                <?= $_SESSION['Errormsg']; ?>.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-<?php
-    unset($_SESSION['Errormsg']);
-}
-?>
+
+<div class="container mt-3 position-absolute start-50 translate-middle-x z-2">
+    <?php include('../partials/sessionMessage.php') ?>
+</div>
+
 <?php
 include('../partials/slider.php');
 include('../partials/trending.php');
 ?>
 
 <style>
-  @media (max-width: 1399px) {
-    .text-display {
-      display: none;
+    @media (max-width: 1399px) {
+        .text-display {
+            display: none;
+        }
     }
-  }
 </style>
 
 
