@@ -1,6 +1,13 @@
 <?php include('../partials/__header.php');
 include('../middleware/userMW.php');/* Authenticate.php */
 ?>
+<style>
+    .custom-tooltip {
+        --bs-tooltip-bg: #bb6c54;
+        --bs-tooltip-color: #fff;
+        --bs-tooltip-max-width: 300px;
+    }
+</style>
 <div>
     <div class="mt-5" style="margin-bottom: 10%;">
         <div class="container">
@@ -22,12 +29,6 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                 $categoryName = $cItem['category_name'];
                                 $categorySlug = $cItem['category_slug'];
 
-                                // Initialize status variables
-                                $toShip = 0;
-                                $toReceive = 0;
-                                $delivered = 0;
-                                $cancelled = 0;
-
                                 if (!isset($groupedItems[$ordersCreatedAt][$categoryName])) {
                                     $groupedItems[$ordersCreatedAt][$categoryName] = [
                                         'items' => [],
@@ -43,83 +44,86 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                 $groupedItems[$ordersCreatedAt][$categoryName]['items'][] = $cItem;
 
                                 // Update status variables based on the current item
-                                if ($cItem['orders_status'] == 0) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toShip'] = 1;
-                                } else if ($cItem['orders_status'] == 1) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toReceive'] = 1;
-                                } else if ($cItem['orders_status'] == 2) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['delivered'] = 1;
-                                } else if ($cItem['orders_status'] == 3) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['cancelled'] = 1;
+                                switch ($cItem['orders_status']) {
+                                    case 0:
+                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toShip'] = 1;
+                                        break;
+                                    case 1:
+                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toReceive'] = 1;
+                                        break;
+                                    case 2:
+                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['delivered'] = 1;
+                                        break;
+                                    case 3:
+                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['cancelled'] = 1;
+                                        break;
                                 }
                             }
 
                             // Display grouped items
                             foreach ($groupedItems as $ordersCreatedAt => $createdAtData) {
-                                $totalPrice = 0; // Reset $totalPrice for each ordersCreatedAt
-                            ?>
-                                <div class="card mb-3 border rounded-3 shadow bg-main">
-                                    <div class="card-header">
-                                        <h5 class="card-title">
-                                            <span class="fw-bold"><?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?></span>
-                                            <span class="float-end">
-                                                <?php
-                                                $displayedStatus = false;
-                                                foreach ($createdAtData as $categoryName => $categoryData) {
-                                                    if (!$displayedStatus) {
-                                                        // Display the corresponding status
-                                                        if ($categoryData['statuses']['toShip'] == 1) {
-                                                            echo "Preparing to ship";
-                                                            $displayedStatus = true;
-                                                        } else if ($categoryData['statuses']['toReceive'] == 1) {
-                                                            echo "Parcel is out for delivery";
-                                                            $displayedStatus = true;
-                                                        } else if ($categoryData['statuses']['delivered'] == 1) {
-                                                            echo "Parcel has been delivered";
-                                                            $displayedStatus = true;
-                                                        } else if ($categoryData['statuses']['cancelled'] == 1) {
-                                                            echo "Parcel has been cancelled";
-                                                            $displayedStatus = true;
-                                                        }
-                                                    }
-                                                }
-                                                ?>
-                                            </span>
-                                        </h5>
-                                    </div>
-                                    <div class="card-body overflow-x-auto">
-                                        <?php
-                                        foreach ($createdAtData as $categoryName => $categoryData) {
-                                            foreach ($categoryData['items'] as $cItem) {
-                                                $itemTotalPrice = $cItem['orderItems_price'] * $cItem['orderItems_qty'];
-                                                $totalPrice += $itemTotalPrice;
+                                foreach ($createdAtData as $categoryName => $categoryData) {
+                                    $totalPrice = 0; // Reset $totalPrice for each category
+                                    $displayedStatus = false;
+                                    $firstItem = true; // Flag to track the first item in the category
 
-                                                $orderItemPrice = $cItem['orderItems_price'];
-                                                $orig_price = $cItem['product_original_price'];
-                                                $discount = $cItem['product_discount'];
-                                        ?>
-                                                <a href="store.php?category=<?= $cItem['category_slug'] ?>" class="fs-5 text-accent fw-bold"><?= $cItem['category_name'] ?></a>
-                                                <a href="viewOrderDetails.php?trck=<?= $cItem['orders_tracking_no'] ?>" class="text-dark text-decoration-none">
-                                                    <div class="productData row align-items-center py-2">
-                                                        <div class="col-md-2">
-                                                            <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="100px">
+                                    // Display status
+                                    foreach ($categoryData['items'] as $cItem) {
+                                        if (!$displayedStatus) {
+                                            // Display the corresponding status only once per category
+                                            if ($categoryData['statuses']['toShip'] == 1) {
+                                                $statusResult = "Preparing to ship";
+                                            } else if ($categoryData['statuses']['toReceive'] == 1) {
+                                                $statusResult =  "Parcel is out for delivery";
+                                            } else if ($categoryData['statuses']['delivered'] == 1) {
+                                                $statusResult =  "Parcel has been delivered";
+                                            } else if ($categoryData['statuses']['cancelled'] == 1) {
+                                                $statusResult =  "Parcel has been cancelled";
+                                            }
+                                            $displayedStatus = true; //Display parcel status
+                                        }
+
+                                        if ($firstItem) {
+                            ?>
+                                            <!-- If it's the first item, open a new card -->
+                                            <div class='card mb-3 border rounded-3 shadow bg-main'>
+                                                <div class='card-header'>
+                                                    <h5 class='card-title'>
+                                                        <a href='store.php?category=<?= $cItem['category_slug'] ?>' class='fs-5 text-dark'><?= $cItem['category_name'] ?></a> <!-- Category Name -->
+                                                        <span class='float-end text-accent fw-bold'><?= $statusResult ?>
+                                                            <span class="tt" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Created at: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
+                                                                <i class="fa-regular fa-clock"></i>
+                                                            </span>
+                                                        </span> <!-- Parcel Status -->
+                                                    </h5>
+                                                </div>
+                                                <div class='card-body overflow-x-auto'>
+                                                <?php
+                                                $firstItem = false;
+                                            }
+                                                ?>
+                                                <!-- Display item details -->
+                                                <a href='viewOrderDetails.php?trck=<?= $cItem['orders_tracking_no'] ?>' class='text-dark text-decoration-none'>
+                                                    <div class='productData row align-items-center py-2'>
+                                                        <div class='col-md-2 text-center'>
+                                                            <img src='../assets/uploads/products/<?= $cItem['product_image'] ?>' alt='Product Image' width='100px'>
                                                         </div>
-                                                        <div class="col-md-5">
+                                                        <div class='col-md-5 text-start'>
                                                             <h5><?= $cItem['product_name'] ?></h5>
                                                             <h5>x<?= $cItem['orderItems_qty'] ?></h5>
                                                         </div>
-                                                        <div class="col-md-5">
+                                                        <div class='col-md-5'>
                                                             <?php
-                                                            if ($orderItemPrice == $orig_price) {
+                                                            if ($cItem['orderItems_price'] == $cItem['product_original_price']) {
                                                             ?>
-                                                                <h6 class="float-end d-flex justify-content-center">₱<?= number_format($orderItemPrice, 2) ?></h6>
+                                                                <h6 class='float-end d-flex justify-content-center'>₱<?= $cItem['orderItems_price'] ?></h6>
                                                             <?php
-                                                            } else if ($orderItemPrice != $orig_price) {
+                                                            } else {
                                                             ?>
-                                                                <span class="float-end d-flex justify-content-center">
-                                                                    <h6 class="text-secondary text-decoration-line-through mr-2">₱<?= number_format($orig_price, 2) ?></h6>
+                                                                <span class='float-end d-flex justify-content-center'>
+                                                                    <h6 class='text-secondary text-decoration-line-through mr-2'>₱<?= $cItem['product_original_price'] ?></h6>
                                                                     &nbsp;
-                                                                    <h6 class="text-accent">₱<?= number_format($orderItemPrice, 2) ?></h6>
+                                                                    <h6 class='text-accent'>₱<?= $cItem['orderItems_price'] ?></h6>
                                                                 </span>
                                                             <?php
                                                             }
@@ -127,32 +131,41 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                         </div>
                                                     </div>
                                                 </a>
-                                        <?php
-                                            }
+                                            <?php
+                                            // Update total price
+                                            $totalPrice += $cItem['orderItems_price'] * $cItem['orderItems_qty'];
                                         }
-                                        ?>
-                                        <hr>
-                                        <div class="float-end fs-6">Order Total:&nbsp;&nbsp;
-                                            <span class="text-accent fw-bold fs-3">₱<?= number_format($totalPrice, 2) ?></span>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            <?php
-                            }
-                            ?>
-
+                                        // Close the card and display total price after all items in the category
+                                        if (!$firstItem) {
+                                            ?>
+                                                <hr>
+                                                <div class='float-end fs-6'>Order Total:&nbsp;&nbsp;
+                                                    <span class='text-accent fw-bold fs-3'>₱<?= number_format($totalPrice, 2) ?></span>
+                                                </div>
+                                                </div>
+                                            </div>
+                                <?php
+                                        }
+                                    }
+                                }
+                                ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div>
         <?php include('footer.php'); ?>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const tooltips = document.querySelectorAll('.tt')
+    tooltips.forEach(t => {
+        new bootstrap.Tooltip(t)
+    })
+</script>
 
 <?php include('../partials/__footer.php'); ?>
