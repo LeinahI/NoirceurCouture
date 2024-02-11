@@ -20,50 +20,51 @@ include('../middleware/userMW.php');/* Authenticate.php */
                             <?php
                             $items = getOrderedItems();
                             $groupedItems = [];
-                            $foundItems = false; //+ Flag to track if any items are found
+                            $foundItems = false; // Flag to track if any items are found
 
                             // Fetch data from the result set and store it in an array
                             while ($cItem = mysqli_fetch_assoc($items)) {
-                                $ordersCreatedAt = $cItem['orders_createdAt'];
-                                $categoryName = $cItem['category_name'];
-                                $categorySlug = $cItem['category_slug'];
-                                $foundItems = true; //+ Set foundItems to true if at least one item is found
+                                if ($cItem['orders_status'] == 2) { //+ Check if the status is "Parcel is delivered"
+                                    $ordersCreatedAt = $cItem['orders_createdAt'];
+                                    $categoryName = $cItem['category_name'];
+                                    $categorySlug = $cItem['category_slug'];
+                                    $foundItems = true; // Set foundItems to true if at least one item is found
 
-                                if (!isset($groupedItems[$ordersCreatedAt][$categoryName])) {
-                                    $groupedItems[$ordersCreatedAt][$categoryName] = [
-                                        'items' => [],
-                                        'statuses' => [
-                                            'toShip' => 0,
-                                            'toReceive' => 0,
-                                            'delivered' => 0,
-                                            'cancelled' => 0,
-                                        ],
-                                    ];
-                                }
+                                    if (!isset($groupedItems[$ordersCreatedAt][$categoryName])) {
+                                        $groupedItems[$ordersCreatedAt][$categoryName] = [
+                                            'items' => [],
+                                            'statuses' => [
+                                                'toShip' => 0,
+                                                'toReceive' => 0,
+                                                'delivered' => 0,
+                                                'cancelled' => 0,
+                                            ],
+                                        ];
+                                    }
 
-                                $groupedItems[$ordersCreatedAt][$categoryName]['items'][] = $cItem;
+                                    $groupedItems[$ordersCreatedAt][$categoryName]['items'][] = $cItem;
 
-                                // Update status variables based on the current item
-                                switch ($cItem['orders_status']) {
-                                    case 0:
-                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toShip'] = 1;
-                                        break;
-                                    case 1:
-                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toReceive'] = 1;
-                                        break;
-                                    case 2:
-                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['delivered'] = 1;
-                                        break;
-                                    case 3:
-                                        $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['cancelled'] = 1;
-                                        break;
+                                    // Update status variables based on the current item
+                                    switch ($cItem['orders_status']) {
+                                        case 0:
+                                            $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toShip'] = 1;
+                                            break;
+                                        case 1:
+                                            $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['toReceive'] = 1;
+                                            break;
+                                        case 2:
+                                            $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['delivered'] = 1;
+                                            break;
+                                        case 3:
+                                            $groupedItems[$ordersCreatedAt][$categoryName]['statuses']['cancelled'] = 1;
+                                            break;
+                                    }
                                 }
                             }
+
                             if (!$foundItems) {
                             ?>
-                                <p class="fs-1 text-center">
-                                    No orders yet
-                                </p>
+                                <p class="fs-1 text-center">No orders yet</p>
                                 <?php
                             } else {
                                 // Display grouped items
@@ -158,6 +159,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                         }
                                     }
                                 }
+
                                 ?>
                         </div>
                     </div>

@@ -48,7 +48,10 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-main">
-                        <a href="myOrders.php" class="btn btn-primary float-start">Back</a>
+                        <?php
+                        $returnURL = isset($_GET['return']) ? $_GET['return'] : 'myOrders.php';
+                        ?>
+                        <a href="<?= $returnURL ?>" class="btn btn-primary float-start">Back</a>
                         <span class="fs-6 float-end">
                             <span class="float-end">NRCRXpress</span>
                             <br>
