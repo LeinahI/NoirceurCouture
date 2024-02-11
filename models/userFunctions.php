@@ -56,7 +56,7 @@ function getSlugActiveCategories($slug)
 function getProductsCountByCategoryByID($category_id)
 {
     global $con;
-    $query = "SELECT COUNT(*) AS allproduct FROM products WHERE category_id = '$category_id'";
+    $query = "SELECT COUNT(*) AS allproduct FROM products WHERE category_id = '$category_id' AND product_visibility = 0";
     $result = mysqli_query($con, $query);
     return $result;
 }
