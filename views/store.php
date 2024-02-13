@@ -95,6 +95,10 @@ if (isset($_GET['category'])) {
                                             $provinceCode = isset($addr['address_province']) ? $addr['address_province'] : '';
                                             $cityCode = isset($addr['address_city']) ? $addr['address_city'] : '';
                                             $barangayCode = isset($addr['address_barangay']) ? $addr['address_barangay'] : '';
+
+                                            /* Get Ratings */
+                                            $storeRatings = getSellerProductRatingsByCategoryByID($cid);
+                                            $rating = mysqli_fetch_array($storeRatings);
                                             ?>
                                             <div class="row col-md-6">
                                                 <div class="d-flex mb-4">
@@ -115,7 +119,20 @@ if (isset($_GET['category'])) {
                                             <div class="row col-md-6">
                                                 <div class="d-flex mb-4">
                                                     <div class="pr-2"><i class="fa-solid fa-star text-center"></i></div>
-                                                    <div>Ratings:</div>
+                                                    <div>Ratings:
+                                                        <?php
+                                                        if ($rating && $rating['overall_rating'] !== null) {
+                                                        ?>
+                                                            <span class="text-accent"><?= $rating['overall_rating'] ?></span>
+                                                            <span class="text-accent">(<?= $rating['ratings_count'] ?> Rating)</span>
+
+                                                        <?php
+                                                        } else{
+                                                            echo "<span class='text-accent'>No ratings yet</span>";
+                                                        }
+
+                                                        ?>
+                                                    </div>
                                                 </div>
 
                                                 <div class="d-flex mb-4">

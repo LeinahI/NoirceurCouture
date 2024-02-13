@@ -88,7 +88,7 @@ Seller Role
 
 Buyer UI Changes
 - ✅ Dynamic Philippine Address Selector via json.
-- 🚧 on store.php?category=... It will show the profile and ratings, products, and date joined.
+- ✅ on store.php?category=... It will show the profile and ratings, products, and date joined.
 - ✅ myAddress.php will have multiple cards for multiple address.
 - ✅ On myOrders.php they will have separate the orders when user ordered on two or multiple different stores.
 - ✅ on checkOut.php user can choose which adress they use to deliver the parcel and add new address.

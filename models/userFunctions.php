@@ -87,6 +87,20 @@ function getSellerStateCityByCategoryByID($category_id)
     $result = mysqli_query($con, $query);
     return $result;
 }
+function getSellerProductRatingsByCategoryByID($category_id)
+{
+    global $con;
+    $query = "SELECT 
+	COUNT(pr.product_rating) AS ratings_count,
+    ROUND(SUM(pr.product_rating) / COUNT(*), 1) AS overall_rating
+    FROM products_reviews pr
+    INNER JOIN orders o ON pr.orders_tracking_no = o.orders_tracking_no
+    INNER JOIN products p ON pr.product_id = p.product_id
+    INNER JOIN categories c ON p.category_id = c.category_id
+    WHERE c.category_id = '$category_id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
 
 function getSlugActiveProducts($table, $slug)
 {
