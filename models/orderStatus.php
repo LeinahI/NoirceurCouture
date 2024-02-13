@@ -8,9 +8,10 @@ if (isset($_POST['cancelOrderBtn'])) {
     $track_num = $_POST['trackingNumber'];
     $orderId = $_POST['ordersID'];
     $cancelReason = $_POST['reasonCancelOrder'];
+    $currentTime = date("Y-m-d H:i:s");
     $order_stat = 3; // = 3 cancelled
 
-    $updateStatus_query = "UPDATE orders SET orders_status='$order_stat', orders_cancel_reason='$cancelReason' WHERE orders_tracking_no='$track_num'";
+    $updateStatus_query = "UPDATE orders SET orders_status='$order_stat', orders_cancel_reason='$cancelReason', orders_last_update_time='$currentTime' WHERE orders_tracking_no='$track_num'";
     mysqli_query($con, $updateStatus_query);
 
     if ($order_stat == 3) {
@@ -39,9 +40,10 @@ if (isset($_POST['cancelOrderBtn'])) {
     $track_num = $_POST['trackingNumber'];
     $orderId = $_POST['ordersID'];
     $order_stat = 2; // = 2 received
+    $currentTime = date("Y-m-d H:i:s");
 
     // Update the orders_status in the orders table
-    $updateOrderStatusQuery = "UPDATE orders SET orders_status = '$order_stat' WHERE orders_id = '$orderId'";
+    $updateOrderStatusQuery = "UPDATE orders SET orders_status = '$order_stat', orders_last_update_time='$currentTime' WHERE orders_id = '$orderId'";
     mysqli_query($con, $updateOrderStatusQuery);
     // Redirect or display success message
 

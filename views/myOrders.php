@@ -5,7 +5,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
     .custom-tooltip {
         --bs-tooltip-bg: #bb6c54;
         --bs-tooltip-color: #fff;
-        --bs-tooltip-max-width: 300px;
+        --bs-tooltip-max-width: 350px;
     }
 </style>
 <div>
@@ -24,7 +24,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
 
                             // Fetch data from the result set and store it in an array
                             while ($cItem = mysqli_fetch_assoc($items)) {
-                                $ordersCreatedAt = $cItem['orders_createdAt'];
+                                $ordersCreatedAt = $cItem['orders_last_update_time'];
                                 $categoryName = $cItem['category_name'];
                                 $categorySlug = $cItem['category_slug'];
                                 $foundItems = true; //+ Set foundItems to true if at least one item is found
@@ -97,7 +97,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                         <h5 class='card-title'>
                                                             <a href='store.php?category=<?= $cItem['category_slug'] ?>' class='fs-5 text-dark'><?= $cItem['category_name'] ?></a> <!-- Category Name -->
                                                             <span class='float-end text-accent fw-bold'><?= $statusResult ?>
-                                                                <span class="tt" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Created at: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
+                                                                <span class="tt" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Last update time: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
                                                                     <i class="fa-regular fa-clock"></i>
                                                                 </span>
                                                             </span> <!-- Parcel Status -->

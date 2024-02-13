@@ -2,6 +2,7 @@
 /* session_start(); */
 include('dbcon.php');
 ob_start(); //Ouput buffering
+date_default_timezone_set('Asia/Manila');
 
 function getAllActive($table)
 {
@@ -123,7 +124,7 @@ function getOrderedItems()
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
 
-    $query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, o.orders_createdAt, o.orders_status, oi.*, p.*, c.category_name, c.category_slug
+    $query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, o.orders_last_update_time, o.orders_status, oi.*, p.*, c.category_name, c.category_slug
         FROM orders o
         INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
         INNER JOIN products p ON p.product_id = oi.orderItems_product_id
