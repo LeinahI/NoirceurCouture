@@ -76,7 +76,7 @@ Admin Role
 Buyer Role
 - ✅ Buyer can have multiple addresses and set which is default address.
 - ✅ Buyer can request account deletion.
-- Buyer have now notification tab that can see order and Noirceur Couture Updates.
+- ✅ Buyer have now notification tab that can see order and Noirceur Couture Updates.
 - ✅ Buyer can rate products.
 - ✅ Can cancel order when the order are preparing to ship.
 - ✅ Can set the order status to Delivered. 
