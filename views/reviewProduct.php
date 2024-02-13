@@ -24,13 +24,6 @@ if (isset($_GET['trck'])) {
 <?php
     die();
 }
-
-$data = mysqli_fetch_array($orderData);
-
-$regionCode = isset($data['orders_region']) ? $data['orders_region'] : '';
-$provinceCode = isset($data['orders_province']) ? $data['orders_province'] : '';
-$cityCode = isset($data['orders_city']) ? $data['orders_city'] : '';
-$barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 ?>
 
 <style>
@@ -99,8 +92,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 INNER JOIN categories c ON c.category_id = p.category_id
                                                 WHERE o.orders_user_ID = '$user_id' AND o.orders_tracking_no = '$tracking_no'";
                                 $order_query_run = mysqli_query($con, $order_query);
-                                $data = mysqli_fetch_assoc($order_query_run);
-
                                 ?>
                                 <div id="itemsContainer" style="height: <?= count($groupedItems) > 1 ? '386px' : 'auto'; ?>; overflow-y: scroll; scrollbar-width: none;">
                                     <?php
@@ -172,12 +163,23 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                         <div class="row">
                                             <h2>Product Quality</h2>
                                             <div class="stars">
+                                                <?php
+                                                $reviews_query = "SELECT * FROM `products_reviews` WHERE `orders_tracking_no` = '$tracking_no'";
+                                                $reviews_query_run = mysqli_query($con, $reviews_query);
+
+                                                //+ Fetch all reviews and store them in an associative array with product_id as the key
+                                                $product_reviews = [];
+                                                while ($row = mysqli_fetch_assoc($reviews_query_run)) {
+                                                    $product_reviews[$row['product_id']] = $row;
+                                                }
+                                                ?>
+
                                                 <form action="../models/rateProduct.php" method="POST">
                                                     <input type="hidden" name="trackingNumber" value="<?= $tracking_no; ?>">
                                                     <input type="hidden" name="userID" value="<?= $user_id; ?>">
 
                                                     <div class="mb-3">
-                                                        <select name="prodID" class="form-select">
+                                                        <select name="prodID" class="form-select" onchange="updateReviewAndStars()">
                                                             <?php foreach ($items as $item) : ?>
                                                                 <option value="<?= $item['product_id'] ?>"><?= $item['product_name'] ?></option>
                                                             <?php endforeach; ?>
@@ -185,24 +187,14 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                     </div>
 
                                                     <div class="float-left">
-                                                        <input class="star star-5" id="star-5" type="radio" name="star" value="5" checked />
-                                                        <label class="star star-5" for="star-5"></label>
-
-                                                        <input class="star star-4" id="star-4" type="radio" name="star" value="4" />
-                                                        <label class="star star-4" for="star-4"></label>
-
-                                                        <input class="star star-3" id="star-3" type="radio" name="star" value="3" />
-                                                        <label class="star star-3" for="star-3"></label>
-
-                                                        <input class="star star-2" id="star-2" type="radio" name="star" value="2" />
-                                                        <label class="star star-2" for="star-2"></label>
-
-                                                        <input class="star star-1" id="star-1" type="radio" name="star" value="1" />
-                                                        <label class="star star-1" for="star-1"></label>
+                                                        <?php for ($i = 5; $i >= 1; $i--) : ?>
+                                                            <input class="star" id="star<?= $i ?>" type="radio" name="star" value="<?= $i ?>" />
+                                                            <label class="star" for="star<?= $i ?>"></label>
+                                                        <?php endfor; ?>
                                                     </div>
 
                                                     <div class="mb-5">
-                                                        <textarea name="reviewText" class="col-md-12 rounded rounded-3 border border-accent" id="the-textarea" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
+                                                        <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border border-accent" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
                                                         <div id="the-count">
                                                             <span id="current">0</span>
                                                             <span id="maximum">/ 600</span>
@@ -211,7 +203,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
                                                     <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
                                                 </form>
-
                                             </div>
                                         </div>
                                     </div>
@@ -227,7 +218,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
 <div>
     <?php include('footer.php');
-    include('../assets/js/ph-address-selector.php');
     ?>
 </div>
 
@@ -236,12 +226,12 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 ?>
 
 <script>
-    // jquery code to adjust the height based on the number of items
+    //+ jquery code to adjust the height based on the number of items
     $(document).ready(function() {
         var itemsContainer = $("#itemsContainer");
         var groupedItemsCount = <?= count($groupedItems); ?>;
 
-        // Check if there's more than one group, set height accordingly
+        //+ Check if there's more than one group, set height accordingly
         if (groupedItemsCount > 1) {
             itemsContainer.css("height", "386px");
         } else {
@@ -258,7 +248,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
             theCount = $('#the-count');
 
         current.text(characterCount);
-
 
         /*This isn't entirely necessary, just playin around*/
         if (characterCount < 70) {
@@ -286,4 +275,33 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
             theCount.css('font-weight', 'normal');
         }
     });
+
+    function updateReviewAndStars() {
+        var select = document.querySelector('select[name="prodID"]');
+        var selectedProductId = select.value;
+        var reviewTextarea = document.getElementById('reviewText');
+        var starsRadios = document.querySelectorAll('input[name="star"]');
+
+        //+ Check if there's a review available for the selected product
+        if (selectedProductId in <?= json_encode($product_reviews); ?>) {
+            var reviewData = <?= json_encode($product_reviews); ?>[selectedProductId];
+            reviewTextarea.value = reviewData.product_review;
+            //+ Set the corresponding star rating
+            for (var i = 0; i < starsRadios.length; i++) {
+                //+ Compare ratings as integers
+                if (parseInt(starsRadios[i].value) === parseInt(reviewData.product_rating)) {
+                    starsRadios[i].checked = true;
+                } else {
+                    starsRadios[i].checked = false;
+                }
+            }
+        } else {
+            reviewTextarea.value = '';
+            //+ Reset star ratings
+            for (var i = 0; i < starsRadios.length; i++) {
+                starsRadios[i].checked = false;
+            }
+        }
+    }
+    updateReviewAndStars();
 </script>
