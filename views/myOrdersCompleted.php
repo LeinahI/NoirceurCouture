@@ -104,12 +104,13 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                                     <i class="fa-regular fa-clock"></i>
                                                                 </span>
                                                                 <?php
-                                                                if ($rated['israted'] == 1) {
+                                                                if ($rated && isset($rated['israted'])) {
                                                                 ?>
                                                                     <span class="text-dark fw-normal">
                                                                         | <span class="fs-6 text-accent">RATED</span>
                                                                     </span>
                                                                 <?php
+                                                                } else {
                                                                 }
                                                                 ?>
                                                             </span> <!-- Parcel Status -->

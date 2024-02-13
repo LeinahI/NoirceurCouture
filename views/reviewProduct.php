@@ -82,18 +82,11 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                 <div class="card">
                     <div class="card-header bg-main">
                         <a href="viewOrderDetails.php?trck=<?= $tracking_no; ?>" class="btn btn-primary float-start">Back</a>
-                        <span class="fs-6 float-end">
-                            <span class="float-end">NRCRXpress</span>
-                            <br>
-                            <?= $tracking_no; ?>
-                        </span>
                     </div>
                     <div class="card-body bg-main">
                         <div class="row">
                             <!-- Order Item Details -->
                             <div class="col-md-12">
-                                <!-- <h2>Order Item Details</h2>
-                                <hr> -->
                                 <?php
                                 $user_id = $_SESSION['auth_user']['user_ID'];
                                 $groupedItems = [];
@@ -135,7 +128,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                     <?php
                                                     foreach ($items as $item) {
                                                     ?>
-                                                        <!-- <a href="productView.php?product=<?= $item['product_slug'] ?>" class="text-decoration-none"> -->
                                                         <div class="row align-items-center mb-2">
                                                             <div class="col-md-1">
                                                                 <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
@@ -160,7 +152,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                                 </h5>
                                                             </div>
                                                         </div>
-                                                        <!-- </a> -->
                                                     <?php
                                                     }
                                                     ?>
@@ -183,8 +174,15 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                             <div class="stars">
                                                 <form action="../models/rateProduct.php" method="POST">
                                                     <input type="hidden" name="trackingNumber" value="<?= $tracking_no; ?>">
-                                                    <input type="hidden" name="prodID" value="<?= $data['product_id'] ?>">
                                                     <input type="hidden" name="userID" value="<?= $user_id; ?>">
+
+                                                    <div class="mb-3">
+                                                        <select name="prodID" class="form-select">
+                                                            <?php foreach ($items as $item) : ?>
+                                                                <option value="<?= $item['product_id'] ?>"><?= $item['product_name'] ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
 
                                                     <div class="float-left">
                                                         <input class="star star-5" id="star-5" type="radio" name="star" value="5" checked />
@@ -213,6 +211,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
                                                     <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>

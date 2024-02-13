@@ -14,9 +14,9 @@ if (isset($_POST['rateProductBtn'])) {
     $isReviewed = 1;
 
     // Check if the product is already rated by the user
-    $query_check = "SELECT * FROM products_reviews WHERE orders_tracking_no = ? AND review_isReviewed = 1";
+    $query_check = "SELECT * FROM products_reviews WHERE orders_tracking_no = ? AND product_id= ? AND review_isReviewed = 1";
     $stmt_check = mysqli_prepare($con, $query_check);
-    mysqli_stmt_bind_param($stmt_check, "s", $track_num);
+    mysqli_stmt_bind_param($stmt_check, "si", $track_num,$prod_id);
     mysqli_stmt_execute($stmt_check);
     $result_check = mysqli_stmt_get_result($stmt_check);
 
