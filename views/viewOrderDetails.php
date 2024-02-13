@@ -287,11 +287,8 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 if ($data['orders_status'] == 2) {
                                                 ?>
                                                     <div class="mt-3">
-                                                        <form action="#" method="post">
-                                                            <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
-                                                            <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
-                                                            <button type="submit" name="productRateBtn" class="btn btn-accent float-end col-md-10">Rate</button>
-                                                        </form>
+                                                        <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
+                                                        <a href="reviewProduct.php?trck=<?= $data['orders_tracking_no'] ?>" class="btn btn-accent float-end col-md-10">Rate</a>
                                                     </div>
                                                 <?php
                                                 }

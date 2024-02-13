@@ -16,6 +16,10 @@
             justify-content: center;
             text-transform: capitalize;
         }
+        
+        .fa-star{
+            color: #FED420;
+        }
     </style>
 
     <?php
@@ -176,9 +180,62 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="mt-3">
+                    <div class="container card bg-main">
+                        <div class="row">
+                            <div class="col-md-12 p-3">
+                                <div class="card-title">
+                                    <h4 class="text=start">Product Ratings</h4>
+                                </div>
+                                <div class="card-body">
+                                    <?php
+                                    $product_ratings = getProductRatingsByProductID($product['product_id']);
+
+                                    if (mysqli_num_rows($product_ratings) > 0) {
+                                        while ($rating = mysqli_fetch_array($product_ratings)) {
+                                    ?>
+                                            <div class="card p-2 bg-main mb-3">
+                                                <div class="d-flex flex-row">
+                                                    <img src="../assets/uploads/userProfile/<?= $rating['user_profile_image'] ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
+                                                    <div class="d-flex flex-column pl-2">
+                                                        <div><?= $rating['user_username'] ?></div>
+                                                        <div class="rating">
+                                                            <?php
+                                                            // Display stars based on product_rating
+                                                            $ratingValue = $rating['product_rating'];
+                                                            for ($i = 1; $i <= 5; $i++) {
+                                                                if ($i <= $ratingValue) {
+                                                                    echo '<i class="fa-solid fa-star"></i>';
+                                                                } else {
+                                                                    echo '<i class="fa-regular fa-star"></i>';
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                        <div class="mb-3"><?= date('m-d-Y h:i A', strtotime($rating['review_createdAt'])) ?></div>
+                                                        <div><?= $rating['product_review'] ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    <?php
+                                        }
+                                    } else {
+                                        echo "No ratings yet";
+                                    }
+                                    ?>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php
             }
             ?>
+
+
 
             <?php
             include('../partials/sameshop.php');

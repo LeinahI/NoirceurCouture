@@ -46,6 +46,21 @@ function getCategoryByID($category_id)
     return $result;
 }
 
+function getProductRatingsByProductID($id)
+{
+    global $con;
+    $query = "SELECT pr.*, u.user_username, u.user_profile_image
+    FROM products_reviews pr
+    INNER JOIN orders o ON pr.orders_tracking_no = o.orders_tracking_no
+    INNER JOIN products p ON pr.product_id =p.product_id
+    INNER JOIN users u ON pr.user_ID = u.user_ID
+    WHERE pr.product_id = '$id'
+    ORDER BY PR.review_createdAt DESC
+    ";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
 function getSlugActiveCategories($slug)
 {
     global $con;
@@ -247,7 +262,7 @@ function getDefaultUserAddress($user_id)
         INNER JOIN 
         users AS u ON a.address_user_ID = u.user_ID
         WHERE 
-        a.address_user_ID = ? AND a.address_isDefault = 1"; 
+        a.address_user_ID = ? AND a.address_isDefault = 1";
 
     $stmt = mysqli_prepare($con, $query);
     if ($stmt) {
