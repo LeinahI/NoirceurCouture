@@ -163,6 +163,16 @@ function getOrderedItems()
     $result = mysqli_query($con, $query);
     return $result;
 }
+function getOrderIsRated($trackingNo)
+{
+    global $con;
+    $query = "SELECT orders_tracking_no, review_isReviewed AS israted
+    FROM products_reviews pr
+    WHERE pr.review_isReviewed = 1 AND pr.orders_tracking_no ='$trackingNo'";
+
+    $result = mysqli_query($con, $query);
+    return $result;
+}
 
 function getCartQty()
 {

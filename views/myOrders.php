@@ -90,6 +90,8 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                             }
 
                                             if ($firstItem) {
+                                                $isRated = getOrderIsRated($cItem['orders_tracking_no']);
+                                                $rated = mysqli_fetch_array($isRated);
                                 ?>
                                                 <!-- If it's the first item, open a new card -->
                                                 <div class='card mb-3 border rounded-3 shadow bg-main'>
@@ -97,9 +99,19 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                         <h5 class='card-title'>
                                                             <a href='store.php?category=<?= $cItem['category_slug'] ?>' class='fs-5 text-dark'><?= $cItem['category_name'] ?></a> <!-- Category Name -->
                                                             <span class='float-end text-accent fw-bold'><?= $statusResult ?>
-                                                                <span class="tt" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Last update time: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
+                                                                <span class="tt fs-6" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Last update time: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
                                                                     <i class="fa-regular fa-clock"></i>
                                                                 </span>
+                                                                <?php
+                                                                if ($rated && isset($rated['israted'])) {
+                                                                ?>
+                                                                    <span class="text-dark fw-normal">
+                                                                        | <span class="fs-6 text-accent">RATED</span>
+                                                                    </span>
+                                                                <?php
+                                                                } else {
+                                                                }
+                                                                ?>
                                                             </span> <!-- Parcel Status -->
                                                         </h5>
                                                     </div>
