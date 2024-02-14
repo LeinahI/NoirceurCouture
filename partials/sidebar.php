@@ -19,8 +19,9 @@
                     <!--
                         Reference https://help.shopee.com.my/portal/article/78582-[My-Account]-How-do-I-delete-my-Shopee-account%3F
                      -->
-
-
+                </div>
+                <div>
+                    <a href="#" class="<?= basename($_SERVER['PHP_SELF']) === '#' ? 'text-accent' : 'text-dark'; ?>">Notifications</a>
                 </div>
             </div>
         </div>

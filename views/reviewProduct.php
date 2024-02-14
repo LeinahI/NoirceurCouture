@@ -66,7 +66,16 @@ if (isset($_GET['trck'])) {
         font-size: 0.875rem;
     }
 </style>
-
+<div class="py-3 bg-primary">
+    <div class="container">
+        <h6>
+            <a href="#" class="text-dark">Home</a> /
+            <a href="myOrders.php" class="text-dark">My Purchase</a> /
+            <a href="viewOrderDetails.php?trck=<?= $tracking_no; ?>" class="text-dark">Your Order Details</a> /
+            <a href="#" class="text-dark">Review Product</a>
+        </h6>
+    </div>
+</div>
 <div class="py-5">
     <div class="container">
         <div class="row">
@@ -113,36 +122,39 @@ if (isset($_GET['trck'])) {
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
                                                     <?php
                                                     foreach ($items as $item) {
                                                     ?>
-                                                        <div class="row align-items-center mb-2">
-                                                            <div class="col-md-1">
-                                                                <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
+                                                        <a href="productView.php?product=<?= $item['product_slug'] ?>" class="text-decoration-none">
+                                                            <div class="row align-items-center mb-2">
+                                                                <div class="col-md-1">
+                                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
+                                                                </div>
+                                                                <div class="col-md-6 text-dark">
+                                                                    <h5><?= $item['product_name'] ?></h5>
+                                                                    <h5>x<?= $item['orderItems_qty'] ?></h5>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <h5 class="text-end">
+                                                                        <?php
+                                                                        if ($item['product_srp'] == $item['product_original_price']) {
+                                                                        ?>
+                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                        <?php
+                                                                        } else {
+                                                                        ?>
+                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                    </h5>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-6 text-dark">
-                                                                <h5><?= $item['product_name'] ?></h5>
-                                                                <h5>x<?= $item['orderItems_qty'] ?></h5>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <h5 class="text-end">
-                                                                    <?php
-                                                                    if ($item['product_srp'] == $item['product_original_price']) {
-                                                                    ?>
-                                                                        <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
-                                                                    <?php
-                                                                    } else {
-                                                                    ?>
-                                                                        <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
-                                                                    <?php
-                                                                    }
-                                                                    ?>
-                                                                </h5>
-                                                            </div>
-                                                        </div>
+                                                        </a>
                                                     <?php
                                                     }
                                                     ?>
@@ -258,7 +270,7 @@ if (isset($_GET['trck'])) {
         var reviewIdInput = document.querySelector('input[name="reviewID"]'); //+ Fetch reviewID input name
 
         //+ Check the textarea is focused
-        if(document.activeElement === reviewTextarea) {
+        if (document.activeElement === reviewTextarea) {
             return; //+ Don't update the updateReviewAndStars() if textArea is focused
         }
 
@@ -327,6 +339,4 @@ if (isset($_GET['trck'])) {
     $('select[name="prodID"]').change(function() {
         updateReviewAndStars();
     });
-
-    
 </script>

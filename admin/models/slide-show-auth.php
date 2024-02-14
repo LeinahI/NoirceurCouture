@@ -15,7 +15,7 @@ if (isset($_POST['addSlideshowBtn'])) {
     mysqli_stmt_store_result($stmt_check);
 
     if (mysqli_stmt_num_rows($stmt_check) > 0) {
-        redirectSwal("../addImage.php", "Image for this Category is already existing!", "error");
+        redirectSwal("../addSlideshow.php", "Image for this Category is already existing!", "error");
     } else {
         // File upload
         $image = $_FILES['uploadSlideshowImage']['name'];
@@ -26,7 +26,7 @@ if (isset($_POST['addSlideshowBtn'])) {
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
 
         if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("../addImage.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
+            redirectSwal("../addSlideshow.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
         }
 
         // Set the file name
@@ -45,19 +45,19 @@ if (isset($_POST['addSlideshowBtn'])) {
             if ($execute_result) {
                 if (mysqli_stmt_affected_rows($stmt_insert) > 0) {
                     move_uploaded_file($image_tmp, $destination);
-                    redirectSwal("../addImage.php", "Image added successfully!", "success");
+                    redirectSwal("../addSlideshow.php", "Image added successfully!", "success");
                 } else {
-                    redirectSwal("../addImage.php", "Failed to add image. Please try again.", "error");
+                    redirectSwal("../addSlideshow.php", "Failed to add image. Please try again.", "error");
                 }
             } else {
                 // Print the error message for debugging
-                redirectSwal("../addImage.php", "Error executing statement. Please try again.", "error");
+                redirectSwal("../addSlideshow.php", "Error executing statement. Please try again.", "error");
             }
 
             mysqli_stmt_close($stmt_insert);
         } else {
             // Print the error message for debugging
-            redirectSwal("../addImage.php", "Error preparing statement. Please try again.", "error");
+            redirectSwal("../addSlideshow.php", "Error preparing statement. Please try again.", "error");
         }
     }
 } else if (isset($_POST['deleteSlideshowBtn'])) {
@@ -75,9 +75,9 @@ if (isset($_POST['addSlideshowBtn'])) {
         if (file_exists("../../assets/uploads/slideshow/") . $image_delete) {
             unlink("../../assets/uploads/slideshow/" . $image_delete); //Delete Image
         }
-        redirectSwal("slideshow.php", "Image deleted successfully!", "success");
+        redirectSwal("../slideshow.php", "Image deleted successfully!", "success");
     } else {
-        redirectSwal("slideshow.php", "Something went wrong. Please try again later.", "error");
+        redirectSwal("../slideshow.php", "Something went wrong. Please try again later.", "error");
     }
 } else if (isset($_POST['updateSlideshowBtn'])) { //!Update product details
     $ss_id = $_POST['ssID'];
@@ -92,7 +92,7 @@ if (isset($_POST['addSlideshowBtn'])) {
 
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
-        redirectSwal("../editImage.php?id=$ss_id", "Slideshow Image on this brand already exists. Please choose a different brand.", "error");
+        redirectSwal("../editSlideshow.php?id=$ss_id", "Slideshow Image on this brand already exists. Please choose a different brand.", "error");
     } else {
         $old_image = $_POST['oldSlideShowImage'];
         $new_image = $_FILES['uploadSlideshowImage']['name'];
@@ -131,9 +131,9 @@ if (isset($_POST['addSlideshowBtn'])) {
                     unlink("../../assets/uploads/slideshow/" . $old_image); // Delete Old Image
                 }
             }
-            redirectSwal("../editImage.php?id=$ss_id", "Image updated successfully!", "success");
+            redirectSwal("../editSlideshow.php?id=$ss_id", "Image updated successfully!", "success");
         } else {
-            redirectSwal("../editImage.php?id=$ss_id", "Something went wrong. Please try again later.", "error");
+            redirectSwal("../editSlideshow.php?id=$ss_id", "Something went wrong. Please try again later.", "error");
         }
     }
 }

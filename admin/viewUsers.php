@@ -31,23 +31,13 @@ include('../middleware/adminMW.php'); ?>
                                             <label for="floatingPassword" class="ps-3">Last Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="email" class="form-control ps-3" value="<?= $data['user_email'] ?>" id="email" name="email" readonly placeholder="Name">
-                                            <label for="floatingInput" class="ps-3">Email</label>
-                                        </div>
-                                        <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['user_phone'] ?>" id="pnum" name="phoneNumber" readonly placeholder="Slug">
-                                            <label for="floatingPassword" class="ps-3">Phone Number</label>
-                                        </div>
-                                        <div class="form-floating col-md-6 mb-3">
                                             <input type="text" class="form-control ps-3" value="<?= $data['user_username'] ?>" id="uname" name="username" readonly placeholder="Name">
                                             <label for="floatingInput" class="ps-3">Username</label>
                                         </div>
-                                        <div class="form-floating col-md-6 mb-3 position-relative">
-                                            <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="pass" name="userPassword" readonly placeholder="Slug">
-                                            <label for="floatingPassword" class="ps-3">Password</label>
-                                            <span class="input-group-text border-0 position-absolute end-4 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
+                                        <div class="form-floating col-md-6 mb-3">
+                                            <input type="email" class="form-control ps-3" value="<?= $data['user_email'] ?>" id="email" name="email" readonly placeholder="Name">
+                                            <label for="floatingInput" class="ps-3">Email</label>
                                         </div>
-
                                         <div class="col-md-12 mb-3">
                                             <div class="form-floating">
                                                 <select name="userRole" class="form-select ps-2" id="orderStat" disabled>

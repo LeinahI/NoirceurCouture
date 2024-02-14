@@ -72,7 +72,6 @@ function getAllbyCategory($table, $id)
     return $query_run; // Return the query result, not the query itself
 }
 
-
 function getAllUsers()
 {
     global $con;
@@ -106,7 +105,7 @@ function GetAllDeletedAccReq()
 }
 
 /********************************
- ************Admin Orders Function
+//+ Admin Orders Function
  ********************************/
 /* 
 0 - Preparing to ship
@@ -114,39 +113,35 @@ function GetAllDeletedAccReq()
 2 - Parcel has been delivered
 3 - Parcel has been cancelled
  */
-function getAllOrders()
+function getAllBuyersList()
 {
     global $con;
-    $query = "SELECT * FROM orders";
+    $query = "SELECT COUNT(*) as total_buyers FROM users WHERE user_role = 0";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-
-function getAllPreparingOrders()
+function getAllSellerList()
 {
     global $con;
-    $query = "SELECT * FROM orders WHERE orders_status='0'";
+    $query = "SELECT COUNT(*) as total_sellers FROM users u
+    JOIN users_seller_details usd ON u.user_ID = usd.seller_user_ID
+    WHERE user_role = 2 AND usd.seller_confirmed = 1";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-function getAllShippedOutOrders()
+function getAllBannedBuyer()
 {
     global $con;
-    $query = "SELECT * FROM orders WHERE orders_status='1'";
+    $query = "SELECT COUNT(*) as total_ban_buyer FROM users WHERE user_role = 0 AND user_isBan = 1";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
-function getAllDeliveredOrders()
+function getAllBannedSeller()
 {
     global $con;
-    $query = "SELECT * FROM orders WHERE orders_status='2'";
-    $query_run = mysqli_query($con, $query);
-    return $query_run;
-}
-function getAllCancelledOrders()
-{
-    global $con;
-    $query = "SELECT * FROM orders WHERE orders_status='3'";
+    $query = "SELECT COUNT(*) as total_stores FROM categories c
+    JOIN users u ON c.category_user_ID = u.user_ID
+    WHERE u.user_role = 2 AND c.category_isBan = 1";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }
@@ -221,13 +216,6 @@ function getAllCancelledOrdersbyStore($id)
 /********************************
  ************Seller and Admin Reports Dashboard start
  ********************************/
-function getAdminCategories($userid)
-{
-    global $con;
-    $query = "SELECT * FROM categories WHERE category_user_ID = '$userid'";
-    $query_run = mysqli_query($con, $query);
-    return $query_run; // Return the query result, not the query itself
-}
 
 function getCancelledOrdersCount($userid)
 {
@@ -436,23 +424,6 @@ function checkUserTrackingNumValid($trackingNo)
     global $con;
     $query = "SELECT * FROM orders WHERE orders_tracking_no='$trackingNo' ";
     return mysqli_query($con, $query);
-}
-
-function adminGetOrderedItemQty($tracking_number)
-{
-    global $con;
-    $query = "SELECT oi.orderItems_order_id, SUM(oi.orderItems_qty) AS total_qty
-    FROM order_items oi
-    INNER JOIN orders o ON oi.orderItems_order_id = o.orders_id
-    INNER JOIN products p ON p.product_id = oi.orderItems_product_id
-    INNER JOIN categories c ON c.category_id = p.category_id
-    WHERE o.orders_tracking_no = '$tracking_number'
-    GROUP BY oi.orderItems_order_id";
-
-    $result = mysqli_query($con, $query);
-    $row = mysqli_fetch_assoc($result);
-    $cart_qty = $row['total_qty'];
-    return $cart_qty;
 }
 
 function sellerGetOrderedItemQty($tracking_number)
