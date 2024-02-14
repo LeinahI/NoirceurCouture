@@ -234,9 +234,9 @@
                                     ?>
                                             <div class="card p-2 bg-main mb-3">
                                                 <div class="d-flex flex-row">
-                                                    <img src="../assets/uploads/userProfile/<?= $rating['user_profile_image'] ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
+                                                    <img src="../assets/uploads/userProfile/<?= ($rating['user_profile_image']) ? $rating['user_profile_image'] : 'defaultProfile.jpg' ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
                                                     <div class="d-flex flex-column pl-2">
-                                                        <div><?= $rating['user_username'] ?></div>
+                                                        <div><?= ($rating['user_username']) ? $rating['user_username'] : 'deleted user'?></div>
                                                         <div class="rating">
                                                             <?php
                                                             // Display stars based on product_rating
