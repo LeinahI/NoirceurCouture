@@ -201,7 +201,17 @@ if (isset($_GET['trck'])) {
                                                         </div>
                                                     </div>
 
-                                                    <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
+                                                    <?php if (isset($product_reviews[$item['product_id']]) && $product_reviews[$item['product_id']]['review_isReviewed'] == 1) { ?>
+                                                        <?php
+                                                        $review_id = $product_reviews[$item['product_id']]['review_id'];
+                                                        ?>
+                                                        <input type="hidden" name="reviewID" value="<?= $review_id ?>">
+                                                        <button type="submit" name="editRateProductBtn" class="btn btn-accent col-md-12">
+                                                            Edit Rating
+                                                        </button>
+                                                    <?php } else { ?>
+                                                        <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
+                                                    <?php } ?>
                                                 </form>
                                             </div>
                                         </div>
@@ -239,48 +249,18 @@ if (isset($_GET['trck'])) {
         }
     });
 
-    /* text area character count */
-    $('textarea').keyup(function() {
-
-        var characterCount = $(this).val().length,
-            current = $('#current'),
-            maximum = $('#maximum'),
-            theCount = $('#the-count');
-
-        current.text(characterCount);
-
-        /*This isn't entirely necessary, just playin around*/
-        if (characterCount < 70) {
-            current.css('color', '#666');
-        }
-        if (characterCount > 70 && characterCount < 90) {
-            current.css('color', '#6d5555');
-        }
-        if (characterCount > 90 && characterCount < 100) {
-            current.css('color', '#793535');
-        }
-        if (characterCount > 100 && characterCount < 120) {
-            current.css('color', '#841c1c');
-        }
-        if (characterCount > 120 && characterCount < 139) {
-            current.css('color', '#8f0001');
-        }
-
-        if (characterCount >= 140) {
-            maximum.css('color', '#8f0001');
-            current.css('color', '#8f0001');
-            theCount.css('font-weight', 'bold');
-        } else {
-            maximum.css('color', '#666');
-            theCount.css('font-weight', 'normal');
-        }
-    });
-
+    //+ Function to update review and stars
     function updateReviewAndStars() {
         var select = document.querySelector('select[name="prodID"]');
         var selectedProductId = select.value;
         var reviewTextarea = document.getElementById('reviewText');
         var starsRadios = document.querySelectorAll('input[name="star"]');
+        var reviewIdInput = document.querySelector('input[name="reviewID"]'); //+ Fetch reviewID input name
+
+        //+ Check the textarea is focused
+        if(document.activeElement === reviewTextarea) {
+            return; //+ Don't update the updateReviewAndStars() if textArea is focused
+        }
 
         //+ Check if there's a review available for the selected product
         if (selectedProductId in <?= json_encode($product_reviews); ?>) {
@@ -295,13 +275,58 @@ if (isset($_GET['trck'])) {
                     starsRadios[i].checked = false;
                 }
             }
+            //+ Update reviewID value
+            reviewIdInput.value = reviewData.review_id;
         } else {
             reviewTextarea.value = '';
             //+ Reset star ratings
             for (var i = 0; i < starsRadios.length; i++) {
                 starsRadios[i].checked = false;
             }
+            //+ Reset reviewID value
+            reviewIdInput.value = '';
+        }
+
+        //+ Update character count
+        var characterCount = reviewTextarea.value.length;
+        $('#current').text(characterCount);
+
+        // Change color based on character count
+        if (characterCount < 70) {
+            $('#current').css('color', '#666');
+        } else if (characterCount >= 70 && characterCount < 90) {
+            $('#current').css('color', '#6d5555');
+        } else if (characterCount >= 90 && characterCount < 100) {
+            $('#current').css('color', '#793535');
+        } else if (characterCount >= 100 && characterCount < 120) {
+            $('#current').css('color', '#841c1c');
+        } else if (characterCount >= 120 && characterCount < 139) {
+            $('#current').css('color', '#8f0001');
+        }
+
+        //+ Change colors and font weight for maximum count
+        if (characterCount >= 140) {
+            $('#maximum').css('color', '#8f0001');
+            $('#current').css('color', '#8f0001');
+            $('#the-count').css('font-weight', 'bold');
+        } else {
+            $('#maximum').css('color', '#666');
+            $('#the-count').css('font-weight', 'normal');
         }
     }
+
+    //+ Call updateReviewAndStars() initially
     updateReviewAndStars();
+
+    //+ Bind keyup event to textarea for character count update
+    $('textarea').keyup(function() {
+        updateReviewAndStars();
+    });
+
+    //+ Bind change event to select dropdown for updating review and stars
+    $('select[name="prodID"]').change(function() {
+        updateReviewAndStars();
+    });
+
+    
 </script>

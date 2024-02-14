@@ -16,8 +16,8 @@
             justify-content: center;
             text-transform: capitalize;
         }
-        
-        .fa-star{
+
+        .fa-star {
             color: #FED420;
         }
     </style>
@@ -180,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- //+Product Ratings -->
                 <div class="mt-3">
                     <div class="container card bg-main">
                         <div class="row">
@@ -215,6 +215,13 @@
                                                         </div>
                                                         <div class="mb-3"><?= date('m-d-Y h:i A', strtotime($rating['review_createdAt'])) ?></div>
                                                         <div><?= $rating['product_review'] ?></div>
+                                                        <?php
+                                                        if ($rating['review_editCount'] >= 1) {
+                                                        ?>
+                                                            <div class="text-secondary">edited</div>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </div>
                                             </div>
