@@ -34,6 +34,23 @@ if (isset($_POST['processAccDeletion'])) {
         $deleteSellerInfo = "DELETE FROM users_seller_details WHERE seller_user_ID = '$userId'";
         mysqli_query($con, $deleteSellerInfo);
 
+        //+ Fetch the profile image path
+        $selectProfileQuery = "SELECT user_profile_Image FROM `users` WHERE user_ID = ?";
+        $selectProfile_stmt = mysqli_prepare($con, $selectProfileQuery);
+        mysqli_stmt_bind_param($selectProfile_stmt, 'i', $userId);
+        mysqli_stmt_execute($selectProfile_stmt);
+        $selectProfile_result = mysqli_stmt_get_result($selectProfile_stmt);
+
+        if ($selectProfile_result && $profileData = mysqli_fetch_assoc($selectProfile_result)) {
+            $profileImageName = $profileData['user_profile_Image'];
+            $profileImagePath = "../../assets/uploads/userProfile/" . $profileImageName;
+
+            //+ Delete the profile image file if it exists
+            if (file_exists($profileImagePath)) {
+                unlink($profileImagePath); //+ Deletes the file
+            }
+        }
+
         //+ Finally Delete the User
         $deleteQuery = "DELETE FROM users WHERE user_ID = '$userId'";
         mysqli_query($con, $deleteQuery);
