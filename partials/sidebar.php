@@ -21,7 +21,7 @@
                      -->
                 </div>
                 <div>
-                    <a href="#" class="<?= basename($_SERVER['PHP_SELF']) === '#' ? 'text-accent' : 'text-dark'; ?>">Notifications</a>
+                    <a href="myNotifications.php" class="<?= basename($_SERVER['PHP_SELF']) === 'myNotifications.php' ? 'text-accent' : 'text-dark'; ?>">Notifications</a>
                 </div>
             </div>
         </div>
