@@ -27,7 +27,7 @@ function getProductRatingsByProductIDOnAdmin($id) //+For Seller/Admin
     FROM products_reviews pr
     INNER JOIN orders o ON pr.orders_tracking_no = o.orders_tracking_no
     INNER JOIN products p ON pr.product_id =p.product_id
-    INNER JOIN users u ON pr.user_ID = u.user_ID
+    LEFT JOIN users u ON pr.user_ID = u.user_ID
     WHERE pr.product_id = '$id'
     ORDER BY PR.review_createdAt DESC";
     $result = mysqli_query($con, $query);
