@@ -1,15 +1,10 @@
-<?php include('../partials/__header.php');
-if (isset($_SESSION['auth'])) {
-    $_SESSION['Errormsg'] = "You're already Logged in";
-    header("Location:index.php");
-    exit();
-    /* Alert popup will show at index.php */
-} ?>
+<?php include('../partials/__header.php'); ?>
 
 <div class="py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+            <?php include('../partials/sessionMessage.php') ?>
                 <?php
                 if (isset($_SESSION['Errormsg'])) {
                 ?>

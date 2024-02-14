@@ -13,6 +13,7 @@ if (isset($_POST['userRegisterBtn'])) {
     $uPass = mysqli_real_escape_string($con, $_POST['userPassword']);
     $uCPass = mysqli_real_escape_string($con, $_POST['userConfirmPassword']);
     $phonePatternPH = '/^09\d{9}$/';
+    $emailPattern = '/^[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z_+])*@(([0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$/';
 
     $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
     $check_email_query_run = mysqli_query($con, $check_email_query);
@@ -25,6 +26,8 @@ if (isset($_POST['userRegisterBtn'])) {
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         redirect("../views/register.php", "Invalid Philippine phone number format");
+    } else if (!preg_match($emailPattern, $email)) {
+        redirect("../views/register.php", "Invalid email format");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
         redirect("../views/register.php", "Email already in use try something different");
     } else if (mysqli_num_rows($check_uname_query_run) > 0) {
@@ -61,6 +64,7 @@ if (isset($_POST['sellerRegisterBtn'])) {
     $role = 2;/* 0 = buyer, 1 = admin, 2 seller */
     $phonePatternPH = '/^09\d{9}$/';
     $sellerType = isset($_POST['sellerType']) ? mysqli_real_escape_string($con, $_POST['sellerType']) : 'individual';
+    $emailPattern = '/^[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z_+])*@(([0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$/';
 
     $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
     $check_email_query_run = mysqli_query($con, $check_email_query);
@@ -73,6 +77,8 @@ if (isset($_POST['sellerRegisterBtn'])) {
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         redirect("../seller/seller-registration.php", "Invalid Philippine phone number format");
+    } else if (!preg_match($emailPattern, $email)) {
+        redirect("../seller/seller-registration.php", "Invalid email format");
     } else if (mysqli_num_rows($check_email_query_run) > 0) {
         redirect("../seller/seller-registration.php", "Email already in use try something different");
     } else if (mysqli_num_rows($check_uname_query_run) > 0) {
