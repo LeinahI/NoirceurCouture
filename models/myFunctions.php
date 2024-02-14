@@ -19,6 +19,50 @@ function getByCategAndProduct($id)
     $result = mysqli_query($con, $query);
     return $result;
 }
+
+function getProductRatingsByProductIDOnAdmin($id) //+For Seller/Admin
+{
+    global $con;
+    $query = "SELECT pr.*, u.user_username, u.user_profile_image
+    FROM products_reviews pr
+    INNER JOIN orders o ON pr.orders_tracking_no = o.orders_tracking_no
+    INNER JOIN products p ON pr.product_id =p.product_id
+    INNER JOIN users u ON pr.user_ID = u.user_ID
+    WHERE pr.product_id = '$id'
+    ORDER BY PR.review_createdAt DESC";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function calculateAverageRatingOnAdmin($reviews) //+For Seller/Admin
+{
+    $totalRating = 0;
+    $numberOfReviews = mysqli_num_rows($reviews);
+
+    while ($row = mysqli_fetch_assoc($reviews)) {
+        $totalRating += $row['product_rating'];
+    }
+
+    if ($numberOfReviews > 0) {
+        $averageRating = $totalRating / $numberOfReviews;
+        return $averageRating;
+    } else {
+        return 0; // Return 0 if there are no reviews
+    }
+}
+
+function getRatingCountByProductIDOnAdmin($id) //+For Seller/Admin
+{
+    global $con;
+    $query = "SELECT COUNT(pr.product_id) as ratingCount 
+    FROM products_reviews pr 
+    JOIN products p ON pr.product_id= p.product_id
+    WHERE pr.product_id = '$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+
 /* getAllbyCategory */
 function getAllbyCategory($table, $id)
 {
@@ -152,7 +196,7 @@ function getAllShippedOutOrdersbyStore($id)
 function getAllDeliveredOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT *
+    $query = "SELECT DISTINCT o.*
     FROM orders o
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id
@@ -165,7 +209,7 @@ function getAllDeliveredOrdersbyStore($id)
 function getAllCancelledOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT *
+    $query = "SELECT DISTINCT o.*
     FROM orders o
     JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
     JOIN products p ON oi.orderItems_product_id = p.product_id

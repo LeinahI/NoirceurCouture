@@ -166,6 +166,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                     <select name="orderStatus" class="form-select ps-2" id="orderStat">
                                                         <option value="0" <?= $data['orders_status'] == 0 ? "selected" : "" ?>>Preparing to ship</option>
                                                         <option value="1" <?= $data['orders_status'] == 1 ? "selected" : "" ?>>Parcel is out for delivery</option> <!-- 2 for delivered -->
+                                                        <option value="1" <?= $data['orders_status'] == 2 ? "selected" : "" ?> disabled>Parcel has been delivered</option> <!-- 2 for delivered -->
                                                         <option value="3" <?= $data['orders_status'] == 3 ? "selected" : "" ?>>Parcel has been cancelled</option>
                                                     </select>
                                                     <label for="slug_input">Parcel Status</label>

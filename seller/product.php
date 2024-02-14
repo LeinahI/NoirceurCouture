@@ -6,6 +6,15 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<style>
+    .fa-star {
+        color: #e91e63;
+    }
+
+    .fa-star-half-stroke {
+        color: #e91e63;
+    }
+</style>
 
 <div class="container">
     <div class="row"></div>
@@ -22,10 +31,12 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                         <thead class="table-active">
                             <tr>
                                 <th>Product ID</th>
+                                <th>Image</th>
                                 <th>Product Name</th>
                                 <th>Price ₱</th>
-                                <th>Image</th>
                                 <th>Quantity</th>
+                                <th>Rating</th>
+                                <th>Rating Count</th>
                                 <th>Visibility</th>
                                 <th>Action</th>
                             </tr>
@@ -37,9 +48,18 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                             if (mysqli_num_rows($product) > 0) {
 
                                 foreach ($product as $item) {
+
+                                    $getTotalRating = getProductRatingsByProductIDOnAdmin($item['product_id']); //+ Catch product ratings
+                                    //+ Calculate average rating for the product
+                                    $average_rating = calculateAverageRatingOnAdmin($getTotalRating);
+
+                                    $ratingCount = getRatingCountByProductIDOnAdmin($item['product_id']); //+ Catch product sold
+                                    $ratingCt = mysqli_fetch_array($ratingCount);
+                                    $rtCt = $ratingCt['ratingCount'];
                             ?>
                                     <tr>
                                         <td><?= $item['product_id']; ?></td>
+                                        <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td style="word-wrap: break-word;">
                                             <?php
                                             $productName = $item['product_name'];
@@ -55,7 +75,6 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                             ?>
                                         </td>
                                         <td class="text-end">₱<?= $item['product_srp'] ?></td>
-                                        <td><img src="../assets/uploads/products/<?= $item['product_image']; ?>" height="100px" alt="<?= $item['product_name']; ?>"></td>
                                         <td><?= $item['product_qty']; ?></td>
                                         <?php
                                         $categories = getAll("categories");
@@ -65,6 +84,26 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <?php
                                         }
                                         ?>
+                                        <td><?php //+ Display stars based on average rating
+                                            if ($average_rating > 0) {
+                                                $wholeStars = floor($average_rating); // Whole star count
+                                                $halfStar = $average_rating - $wholeStars; // Fractional part for half star
+
+                                                for ($i = 1; $i <= 5; $i++) {
+                                                    if ($i <= $wholeStars) {
+                                                        echo '<i class="fa-solid fa-star"></i>'; // Full star
+                                                    } elseif ($halfStar >= 0.5) {
+                                                        echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
+                                                        $halfStar = 0; // Reset for next iteration
+                                                    } else {
+                                                        echo '<i class="fa-regular fa-star"></i>'; // Empty star
+                                                    }
+                                                }
+                                            } else {
+                                                echo 'No rating';
+                                            } ?>
+                                        </td>
+                                        <td><?php echo $rtCt . " " . ($rtCt <= 1 ? "rating" : "ratings"); ?></td>
                                         <td><?= $item['product_visibility'] == '0' ? "Visible" : "Hidden"; ?></td>
                                         <td>
                                             <div style="display: flex;">

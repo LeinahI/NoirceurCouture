@@ -45,6 +45,14 @@ if (isset($_GET['category'])) {
                 height: 20px;
                 width: 20px;
             }
+
+            .rating .fa-star {
+                color: #bb6c54;
+            }
+
+            .rating .fa-star-half-stroke {
+                color: #bb6c54;
+            }
         </style>
 
         <div class="py-3 bg-primary">
@@ -127,7 +135,7 @@ if (isset($_GET['category'])) {
                                                             <span class="text-accent">(<?= $rating['ratings_count'] ?> Rating)</span>
 
                                                         <?php
-                                                        } else{
+                                                        } else {
                                                             echo "<span class='text-accent'>No ratings yet</span>";
                                                         }
 
@@ -165,9 +173,16 @@ if (isset($_GET['category'])) {
 
                             // Fetch the products using mysqli_fetch_array
                             while ($item = mysqli_fetch_array($products)) {
-                                if (strlen($item['product_name']) > 15) {
-                                    $item['product_name'] = substr($item['product_name'], 0, 20) . '...';
+                                if (strlen($item['product_name']) > 33) { //! Check if the length of the product name is greater than 33 characters
+                                    $item['product_name'] = substr($item['product_name'], 0, 30) . '...'; //! If it is, truncate it to 30 characters and append '...'
                                 }
+                                $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
+                                
+                                // Calculate average rating for the product
+                                $average_rating = calculateAverageRating($product_ratings);
+                                
+                                $soldCount = getSoldCountByProductID($item['product_id']); //+ Catch product sold
+                                $sold = mysqli_fetch_array($soldCount);
 
                                 // Display a message if the category is on vacation
                                 if ($category_onVacation) {
@@ -205,7 +220,27 @@ if (isset($_GET['category'])) {
                                             <div class="card-body d-flex flex-column justify-content-between bg-primary">
                                                 <div>
                                                     <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
-                                                    <h4><?= $item['product_name'] ?></h4>
+                                                    <h6><?= $item['product_name'] ?></h6>
+                                                    <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
+                                                    <div class="rating">
+                                                        <?php
+                                                        // Display stars based on average rating
+                                                        $wholeStars = floor($average_rating); // Whole star count
+                                                        $halfStar = $average_rating - $wholeStars; // Fractional part for half star
+
+                                                        for ($i = 1; $i <= 5; $i++) {
+                                                            if ($i <= $wholeStars) {
+                                                                echo '<i class="fa-solid fa-star"></i>'; // Full star
+                                                            } elseif ($halfStar >= 0.5) {
+                                                                echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
+                                                                $halfStar = 0; // Reset for next iteration
+                                                            } else {
+                                                                echo '<i class="fa-regular fa-star"></i>'; // Empty star
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <span><?= $sold['itemSold'] ?> sold</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,7 +251,6 @@ if (isset($_GET['category'])) {
 
                             mysqli_free_result($products); // Free the result set
                             ?>
-
                         </div>
                     </div>
                 </div>

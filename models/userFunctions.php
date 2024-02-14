@@ -55,10 +55,49 @@ function getProductRatingsByProductID($id)
     INNER JOIN products p ON pr.product_id =p.product_id
     INNER JOIN users u ON pr.user_ID = u.user_ID
     WHERE pr.product_id = '$id'
-    ORDER BY PR.review_createdAt DESC
-    ";
+    ORDER BY PR.review_createdAt DESC";
     $result = mysqli_query($con, $query);
     return $result;
+}
+
+function getSoldCountByProductID($id)
+{
+    global $con;
+    $query = "SELECT COUNT(oi.orderItems_product_id) as itemSold 
+    FROM order_items oi 
+    JOIN orders o ON oi.orderItems_order_id = o.orders_id 
+    WHERE oi.orderItems_product_id = '$id' AND o.orders_status = 2";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function getRatingCountByProductID($id)
+{
+    global $con;
+    $query = "SELECT COUNT(pr.product_id) as ratingCount 
+    FROM products_reviews pr 
+    JOIN products p ON pr.product_id= p.product_id
+    WHERE pr.product_id = '$id'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+// Function to calculate average rating
+function calculateAverageRating($reviews)
+{
+    $totalRating = 0;
+    $numberOfReviews = mysqli_num_rows($reviews);
+
+    while ($row = mysqli_fetch_assoc($reviews)) {
+        $totalRating += $row['product_rating'];
+    }
+
+    if ($numberOfReviews > 0) {
+        $averageRating = $totalRating / $numberOfReviews;
+        return $averageRating;
+    } else {
+        return 0; // Return 0 if there are no reviews
+    }
 }
 
 function getSlugActiveCategories($slug)

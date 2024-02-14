@@ -18,7 +18,11 @@
         }
 
         .fa-star {
-            color: #FED420;
+            color: #bb6c54;
+        }
+
+        .fa-star-half-stroke {
+            color: #bb6c54;
         }
     </style>
 
@@ -108,6 +112,17 @@
                             <div class="col-md-8">
                                 <h4 class="fw-bold">
                                     <?php
+                                    $getTotalRating = getProductRatingsByProductID($product['product_id']); //+ Catch product ratings
+                                    // Calculate average rating for the product
+                                    $average_rating = calculateAverageRating($getTotalRating);
+
+                                    $soldCount = getSoldCountByProductID($product['product_id']); //+ Catch product sold
+                                    $sold = mysqli_fetch_array($soldCount);
+
+                                    $ratingCount = getRatingCountByProductID($product['product_id']); //+ Catch product sold
+                                    $ratingCt = mysqli_fetch_array($ratingCount);
+                                    $rtCt = $ratingCt['ratingCount'];
+
                                     $product_name = $product['product_name'];
                                     $words = explode(' ', $product_name);
                                     $display_name = implode(' ', array_slice($words, 0, 5)); // Display only the first 5 words
@@ -129,8 +144,30 @@
                                     </span>
                                 </h4>
 
-                                <hr>
                                 <div class="row">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="mr-2"><?php
+                                                            // Display stars based on average rating
+                                                            if ($average_rating > 0) {
+                                                                $wholeStars = floor($average_rating); // Whole star count
+                                                                $halfStar = $average_rating - $wholeStars; // Fractional part for half star
+
+                                                                for ($i = 1; $i <= 5; $i++) {
+                                                                    if ($i <= $wholeStars) {
+                                                                        echo '<i class="fa-solid fa-star"></i>'; // Full star
+                                                                    } elseif ($halfStar >= 0.5) {
+                                                                        echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
+                                                                        $halfStar = 0; // Reset for next iteration
+                                                                    } else {
+                                                                        echo '<i class="fa-regular fa-star"></i>'; // Empty star
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                echo 'No rating';
+                                                            }
+                                                            ?>
+                                        </span>|<span class="mx-2"><?php echo $rtCt . " " . ($rtCt <= 1 ? "rating" : "ratings"); ?></span>|<span class="ml-2"><span class="fw-bold text-accent"><?= $sold['itemSold'] ?></span> sold</span>
+                                    </div>
                                     <div class="d-flex align-items-center">
                                         <?php
                                         if ($srp == $orig_price) {

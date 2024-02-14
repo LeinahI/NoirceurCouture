@@ -34,6 +34,14 @@
     .owl-one .owl-theme .custom-nav .owl-next {
         right: 0;
     }
+
+    .rating .fa-star {
+        color: #bb6c54;
+    }
+
+    .rating .fa-star-half-stroke {
+        color: #bb6c54;
+    }
 </style>
 <div class="mt-3">
     <div class="container">
@@ -50,9 +58,16 @@
                             if (mysqli_num_rows($popularProducts) > 0) {
                                 foreach ($popularProducts as $item) {
                                     $product_name = $item['product_name'];
-                                    if (strlen($product_name) > 15) {
-                                        $product_name = substr($product_name, 0, 20) . '...';
+                                    if (strlen($product_name) > 33) {
+                                        $product_name = substr($product_name, 0, 30) . '...';
                                     }
+                                    $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
+
+                                    // Calculate average rating for the product
+                                    $average_rating = calculateAverageRating($product_ratings);
+
+                                    $soldCount = getSoldCountByProductID($item['product_id']); //+ Catch product sold
+                                    $sold = mysqli_fetch_array($soldCount);
                             ?>
                                     <div class="item">
                                         <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
@@ -62,6 +77,25 @@
                                                         <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" height="217.2px" class="w-100">
                                                         <h6 class="text-dark"><?= $product_name; ?></h6>
                                                         <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
+                                                        <div class="rating">
+                                                            <?php
+                                                            // Display stars based on average rating
+                                                            $wholeStars = floor($average_rating); // Whole star count
+                                                            $halfStar = $average_rating - $wholeStars; // Fractional part for half star
+
+                                                            for ($i = 1; $i <= 5; $i++) {
+                                                                if ($i <= $wholeStars) {
+                                                                    echo '<i class="fa-solid fa-star"></i>'; // Full star
+                                                                } elseif ($halfStar >= 0.5) {
+                                                                    echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
+                                                                    $halfStar = 0; // Reset for next iteration
+                                                                } else {
+                                                                    echo '<i class="fa-regular fa-star"></i>'; // Empty star
+                                                                }
+                                                            }
+                                                            ?>
+                                                            <span><?= $sold['itemSold'] ?> sold</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
