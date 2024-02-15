@@ -63,10 +63,27 @@ if (isset($_POST['processAccDeletion'])) {
         // Additional logic or redirect if needed
     } elseif ($action === 'reject') {
         //* Perform the update for rejection
+        $rejectReason = $_POST['rejectReason'];
+        $senderID = $_POST['senderID'];
+
+        //+ Retrieve the corresponding Header and Body based on the selected reason
+        $reasonHeader = '';
+        $reasonBody = '';
+        if ($rejectReason === 'reason1') {
+            $reasonHeader = $_POST['reasonHeader1'];  // Accessing the value from hidden input field
+            $reasonBody = $_POST['reasonBody1'];  // Accessing the value from hidden input field
+        } elseif ($rejectReason === 'reason2') {
+            $reasonHeader = $_POST['reasonHeader2'];  // Accessing the value from hidden input field
+            $reasonBody = $_POST['reasonBody2'];  // Accessing the value from hidden input field
+        }
+
         $deleteQuery = "DELETE FROM users_deleted_details WHERE ud_user_ID = '$userId'";
         mysqli_query($con, $deleteQuery);
 
+        // Insert notification into the notification table
+        $insertNotificationQuery = "INSERT INTO notification (sender_id, receiver_id, notif_Header, notif_Body) VALUES ('$senderID', '$userId', '$reasonHeader', '$reasonBody')";
+        mysqli_query($con, $insertNotificationQuery);
+
         redirectSwal("../deleteAccountRequest.php", "The user account deletion request has been rejected!", "success");
     }
-    // Redirect or display a success message as needed
 }

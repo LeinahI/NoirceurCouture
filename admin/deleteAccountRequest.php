@@ -51,12 +51,49 @@ include('../middleware/adminMW.php');
                                                 <button type="submit" name="processAccDeletion" value="accept" class="btn btn-primary">Accept</button>
 
                                                 <!-- Button for Reject -->
-                                                <button type="submit" name="processAccDeletion" value="reject" class="btn btn-primary">Reject</button>
+                                                <!-- Button trigger modal -->
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rejectModal<?= $item['ud_user_ID'] ?>">
+                                                    Reject
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="rejectModal<?= $item['ud_user_ID'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Select Rejection Reason for <?= $item['ud_username'] ?></h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <input type="hidden" name="deletedUserID" value="<?= $item['ud_user_ID'] ?>">
+                                                                <input type="hidden" name="senderID" value="<?= $_SESSION['auth_user']['user_ID']; ?>">
+
+                                                                <!--//+ Reason1 -->
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="rejectReason" id="reason1" value="reason1" required>
+                                                                    <label class="form-check-label fs-6" for="reason1">Unfulfilled Orders or Pending Transactions</label>
+                                                                </div>
+                                                                <input type="hidden" name="reasonHeader1" value="Unfulfilled Orders or Pending Transactions">
+                                                                <input type="hidden" name="reasonBody1" value="You have pending orders or transactions that have not been completed. The Seller and Noirceur Couture need to resolve these before deleting your account.">
+
+                                                                <!--//+ Reason2 -->
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="radio" name="rejectReason" id="reason2" value="reason2" required>
+                                                                    <label class="form-check-label fs-6" for="reason2">You have exceeded the account deletion limit</label>
+                                                                </div>
+                                                                <input type="hidden" name="reasonHeader2" value="You have exceeded the account deletion limit">
+                                                                <input type="hidden" name="reasonBody2" value="You can only delete an account created with the same phone number twice. If you sign up for a third time with the same phone number, you will not be able to delete this account.">
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="processAccDeletion" value="reject" class="btn btn-primary">Confirm reject</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </td>
                                     </tr>
-
-
                             <?php
                                 }
                             }

@@ -20,48 +20,52 @@ include('../middleware/userMW.php');
                     <h5 class="card-title">My Notifications</h5>
                 </div>
                 <div class="card-body">
-                    <div class="container-fluid">
-                        <a href="#" class="btn border border-primary col-md-12" data-bs-toggle="modal" data-bs-target="#exampleModal"> <!-- Modal Trigger -->
-                            <div class="card bg-main">
-                                <div class="card-body d-flex align-items-center justify-content-between gap-3">
-                                    <div>
-                                        <img src="../assets/uploads/userProfile/defaultProfile.jpg" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
+                    <?php
+                    $userNotification = getUserNotifications();
+                    while ($dataid = mysqli_fetch_array($userNotification)) {
+                        $sender = $dataid['sender_id'];
+                        $profileImage = ($sender == 1) ? 'systemProfile.jpg' : 'defaultProfile.jpg';
+                        $notifid = $dataid['notif_id'];
+                        $header = $dataid['notif_Header'];
+                        $body = $dataid['notif_Body'];
+                        $notifTime = $dataid['notif_CreatedAt'];
+                    ?>
+                        <div class="container-fluid">
+                            <a href="#" class="btn border border-primary col-md-12 mb-2" data-bs-toggle="modal" data-bs-target="#notifModal<?= $notifid ?>"> <!-- Modal Trigger -->
+                                <div class="card p-1 bg-main">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="col-md-9 text-start">
+                                            <img src="../assets/uploads/userProfile/<?php echo $profileImage ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
+                                            <span class="ml-3"><?= $header ?></span>
+                                        </div>
+                                        <div class="ms-auto col-md-3 text-end">
+                                            <span><?= date('m/d/Y h:i:s A', strtotime($notifTime)) ?></span>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span>Your request for Account Deletion has been rejected.</span>
-                                    </div>
-                                    <div class="ms-auto">
-                                        <span>Feb 14 2024 8:24 PM</span>
-                                    </div>
-                                </div>
 
-                            </div>
-                        </a>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-6" id="exampleModalLabel">Your request for account deletion has been rejected</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <ul>
-                                            <span>1. Unfulfilled Orders or Pending Transactions.</span>
-                                            <ul>• You have pending orders or transactions that have not been completed. The Seller and Noirceur Couture need to resolve these before deleting your account.</ul>
-                                        </ul>
-                                        <ul>
-                                            <span>2. You have exceeded the account deletion limit.</span>
-                                            <ul>• You can only delete an account created with the same phone number twice. If you sign up for a third time with the same phone number, you will not be able to delete this account.</ul>
-                                        </ul>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </a>
+                            <!-- Modal -->
+                            <div class="modal fade" id="notifModal<?= $notifid ?>" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-main">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-6" id="notifModalLabel"><?= $header ?></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span><?= $body ?></span>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
