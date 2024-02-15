@@ -20,6 +20,15 @@ function getByCategAndProduct($id)
     return $result;
 }
 
+function getSellerNotifications() //+For Seller
+{
+    global $con;
+    $user_id = $_SESSION['auth_user']['user_ID'];
+    $query = "SELECT * FROM notification where receiver_id ='$user_id' ORDER BY notif_CreatedAt DESC";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
 function getProductRatingsByProductIDOnAdmin($id) //+For Seller/Admin
 {
     global $con;

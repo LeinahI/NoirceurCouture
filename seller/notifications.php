@@ -1,27 +1,24 @@
-<?php include('../partials/__header.php');
-include('../middleware/userMW.php');
+<?php include('partials/header.php');
+include('../middleware/sellerMW.php');
+include('../models/checkSession.php');
+checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 <style>
     .card .bg-main {
         border: none;
     }
-
-    .border-primary {
-        border-color: #C5BEB9 !important;
-    }
 </style>
-<div class="container mt-5">
-    <?php include('../partials/sessionMessage.php') ?>
+<div class="container">
     <div class="row">
-        <?php include('../partials/sidebar.php') ?>
-        <div class="col-md-9">
-            <div class="card border rounded-3 shadow bg-main">
-                <div class="card-header">
-                    <h5 class="card-title">My Notifications</h5>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h2 class="text-white">My Notifications
+                    </h2>
                 </div>
                 <div class="card-body">
                     <?php
-                    $buyerNotification = getBuyerNotifications();
+                    $buyerNotification = getSellerNotifications();
                     if (mysqli_num_rows($buyerNotification) == 0) {
                         // If there are no notifications
                     ?>
@@ -38,9 +35,9 @@ include('../middleware/userMW.php');
                             $notifTime = $dataid['notif_CreatedAt'];
                         ?>
                             <div class="container-fluid">
-                                <a href="#" class="btn border border-primary col-md-12 mb-2" data-bs-toggle="modal" data-bs-target="#notifModal<?= $notifid ?>"> <!-- Modal Trigger -->
-                                    <div class="card p-1 bg-main">
-                                        <div class="d-flex align-items-center justify-content-between">
+                                <a href="#" class="card shadow-dark shadow p-2 col-md-12 mb-2" data-bs-toggle="modal" data-bs-target="#notifModal<?= $notifid ?>"> <!-- Modal Trigger -->
+                                    <div class=" p-1 bg-main">
+                                        <div class="text-dark d-flex align-items-center justify-content-between">
                                             <div class="col-md-9 text-start">
                                                 <img src="../assets/uploads/userProfile/<?php echo $profileImage ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
                                                 <span class="ml-3"><?= $header ?></span>
@@ -49,7 +46,6 @@ include('../middleware/userMW.php');
                                                 <span><?= date('m/d/Y h:i:s A', strtotime($notifTime)) ?></span>
                                             </div>
                                         </div>
-
                                     </div>
                                 </a>
                                 <!-- Modal -->
@@ -78,8 +74,44 @@ include('../middleware/userMW.php');
             </div>
         </div>
     </div>
-    <div style="margin-top:5%;">
-        <?php include('footer.php'); ?>
-    </div>
+</div>
 
-    <?php include('../partials/__footer.php'); ?>
+<?php include('partials/footer.php'); ?>
+
+<script>
+    //Visible & hidden
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkbox = document.getElementById("visibility_cb");
+        var label = document.getElementById("visibility_label");
+
+        checkbox.addEventListener("change", function() {
+            label.textContent = checkbox.checked ? "On Vacation" : "Visible";
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var nameInput = document.getElementById("name_input");
+        var slugInput = document.getElementById("slug_input");
+        var metaTitle = document.getElementById("metaTitle_input");
+        var descriptionInput = document.getElementById("description_input");
+        var metaDescription = document.getElementById("metaDescription_input");
+
+        /* For slug and meta title */
+        nameInput.addEventListener("input", function() {
+            // Update the value of the slug input based on the name input
+            slugInput.value = generateSlug(nameInput.value);
+            metaTitle.value = nameInput.value;
+        });
+
+        /* for meta description */
+        descriptionInput.addEventListener("input", function() {
+            metaDescription.value = descriptionInput.value;
+        });
+
+        // Function to generate a slug from the given string
+        function generateSlug(str) {
+            // Replace spaces with dashes and convert to lowercase
+            return str.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+    });
+</script>

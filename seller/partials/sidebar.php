@@ -59,9 +59,9 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white <?=
-                                                in_array($page, ["#.php"])
+                                                in_array($page, ["notifications.php"])
                                                     ? 'active bg-gradient-primary'
-                                                    : '' ?>" href="#.php">
+                                                    : '' ?>" href="notifications.php">
 
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10">notifications</i>
