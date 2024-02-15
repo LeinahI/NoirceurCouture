@@ -285,7 +285,7 @@ function getUserDetails()
     return $result;
 }
 
-function getUserNotifications()
+function getBuyerNotifications()
 {
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];

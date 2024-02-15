@@ -21,8 +21,8 @@ include('../middleware/userMW.php');
                 </div>
                 <div class="card-body">
                     <?php
-                    $userNotification = getUserNotifications();
-                    while ($dataid = mysqli_fetch_array($userNotification)) {
+                    $buyerNotification = getBuyerNotifications();
+                    while ($dataid = mysqli_fetch_array($buyerNotification)) {
                         $sender = $dataid['sender_id'];
                         $profileImage = ($sender == 1) ? 'systemProfile.jpg' : 'defaultProfile.jpg';
                         $notifid = $dataid['notif_id'];
