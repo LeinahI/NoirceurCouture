@@ -50,6 +50,18 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white <?=
+                                                in_array($page, ["deletedUsers.php",])
+                                                    ? 'active bg-gradient-primary'
+                                                    : '' ?>" href="deletedUsers.php">
+
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">delete_forever</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Deleted Users</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white <?=
                                                 in_array($page, ["seller-application.php"])
                                                     ? 'active bg-gradient-primary'
                                                     : '' ?>" href="seller-application.php">

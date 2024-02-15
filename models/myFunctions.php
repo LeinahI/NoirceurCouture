@@ -89,6 +89,14 @@ function getAllUsers()
     return $query_run;
 }
 
+function getAllDeletedUsers()
+{
+    global $con;
+    $query = "SELECT * FROM users_deleted_details";
+    $query_run = mysqli_query($con, $query);
+    return $query_run;
+}
+
 
 /* GetAllSellerApplication */
 function GetAllSellerApplication()
