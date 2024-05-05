@@ -9,6 +9,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Your Account Details
+                        <a href="changePassword.php" class="btn btn-light float-end ms-2">Change Password</a>
                     </h2>
                 </div>
 
@@ -29,7 +30,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 <input type="hidden" name="userID" value="<?= $id; ?>">
                                 <div class="row">
                                     <div class="form-floating col-md-12 mb-3">
-                                        <input type="text" class="form-control ps-3" value="<?= $data['user_username']; ?>" readonly placeholder="uname">
+                                        <input type="text" class="form-control ps-3" value="<?= $data['user_username']; ?>" disabled placeholder="uname">
                                         <label for="floatingInput" class="ps-3">Username</label>
                                     </div>
                                 </div>
@@ -45,22 +46,24 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     </div>
                                 </div>
                                 <!-- Email and Phone Number -->
-                                <div class="row">
-                                    <div class="form-floating col-md-6 mb-3">
-                                        <input type="email" class="form-control ps-3" value="<?= $data['user_email']; ?>" name="email" required placeholder="email@email.com">
-                                        <label for="floatingInput" class="ps-3">Email Address</label>
-                                    </div>
-                                    <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09" onkeypress="inpNum(event)">
-                                        <label for="floatingPassword" class="ps-3">Phone Number</label>
-                                    </div>
+
+                                <div class="form-floating col-md-12 mb-3">
+                                    <input type="email" class="form-control ps-3" value="<?= $data['user_email']; ?>" name="email" required placeholder="email@email.com">
+                                    <label for="floatingInput" class="ps-3">Email Address</label>
+                                </div>
+
+                                <div class="form-floating col-md-12 mb-3">
+                                    <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09" onkeypress="inpNum(event)">
+                                    <label for="floatingPassword" class="ps-3">Phone Number</label>
                                 </div>
                                 <!-- Pass and CPass start -->
-                                <div class="form-floating col-md-12 mb-3 position-relative">
+                                <!-- 
+                                    <div class="form-floating col-md-12 mb-3 position-relative">
                                     <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="pass" name="userPassword" required placeholder="Slug">
                                     <label for="floatingPassword" class="ps-3">Password</label>
                                     <span class="input-group-text border-0 position-absolute end-3 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
                                 </div>
+                                -->
                                 <!-- Pass and CPass end -->
 
                                 <!-- Update Details -->

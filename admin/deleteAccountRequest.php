@@ -47,11 +47,14 @@ include('../middleware/adminMW.php');
                                         <td class="text-center">
                                             <form action="models/user-account-deletion.php" method="POST" class="text-start">
                                                 <input type="hidden" name="deletedUserID" value="<?= $item['ud_user_ID'] ?>">
+                                                <input type="hidden" name="deletedUserRole" value="<?= $role ?>">
                                                 <!-- Button for Accept -->
                                                 <button type="submit" name="processAccDeletion" value="accept" class="btn btn-primary">Accept</button>
-
-                                                <!-- Button for Reject -->
-                                                <!-- Button trigger modal -->
+                                            </form>
+                                            <!-- Button for Reject -->
+                                            <!-- Button trigger modal -->
+                                            <form action="models/user-account-deletion.php" method="POST" class="text-start">
+                                                <input type="hidden" name="rejectedUserID" value="<?= $item['ud_user_ID'] ?>">
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rejectModal<?= $item['ud_user_ID'] ?>">
                                                     Reject
                                                 </button>
@@ -64,7 +67,7 @@ include('../middleware/adminMW.php');
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <input type="hidden" name="deletedUserID" value="<?= $item['ud_user_ID'] ?>">
+                                                                <input type="hidden" name="rejectedUserID" value="<?= $item['ud_user_ID'] ?>">
                                                                 <input type="hidden" name="senderID" value="<?= $_SESSION['auth_user']['user_ID']; ?>">
 
                                                                 <!--//+ Reason1 -->
@@ -86,7 +89,7 @@ include('../middleware/adminMW.php');
 
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" name="processAccDeletion" value="reject" class="btn btn-primary">Confirm reject</button>
+                                                                <button type="submit" name="processAccRejection" value="reject" class="btn btn-primary">Confirm reject</button>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -10,7 +10,6 @@ if (isset($_POST['userUpdateAccBtn'])) {
     $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $phoneNum = mysqli_real_escape_string($con, $_POST['phoneNumber']);
-    $uPass = mysqli_real_escape_string($con, $_POST['userPassword']);
     $phonePatternPH = '/^09\d{9}$/';
 
     $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email' AND user_id != '$userId'";
@@ -50,9 +49,9 @@ if (isset($_POST['userUpdateAccBtn'])) {
         }
 
         // If no new image uploaded, update user profile without changing the image
-        $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_phone=?, user_password=?, user_profile_image=? WHERE user_ID=?";
+        $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_email=?, user_phone=?, user_profile_image=? WHERE user_ID=?";
         $stmt = mysqli_prepare($con, $update_query);
-        mysqli_stmt_bind_param($stmt, "ssssssi", $firstName, $lastName, $email, $phoneNum, $uPass, $fileName,  $userId);
+        mysqli_stmt_bind_param($stmt, "sssssi", $firstName, $lastName, $email, $phoneNum, $fileName,  $userId);
         $update_query_run = mysqli_stmt_execute($stmt);
 
         if ($update_query_run) {
@@ -61,6 +60,46 @@ if (isset($_POST['userUpdateAccBtn'])) {
         } else {
             header("Location: ../views/myAccount.php");
             $_SESSION['Errormsg'] = "Something went wrong";
+        }
+    }
+}
+
+if (isset($_POST['changePasswordBtn'])) {
+    $userId =  mysqli_real_escape_string($con, $_POST['userID']);
+    $oldPassword =  mysqli_real_escape_string($con, $_POST['oldpass']);
+    $newPassword =  mysqli_real_escape_string($con, $_POST['newpass']);
+    $confirmPassword =  mysqli_real_escape_string($con, $_POST['cnewpass']);
+
+    $pass_select_query = "SELECT user_password FROM users u WHERE (u.user_ID = '$userId')";
+    $pass_select_query_run = mysqli_query($con, $pass_select_query);
+    $userdata = mysqli_fetch_array($pass_select_query_run);
+
+    $bcryptuPass = $userdata['user_password'];
+
+    if (!password_verify($oldPassword, $bcryptuPass)) {
+        header("Location: ../views/changePassword.php");
+        $_SESSION['Errormsg'] = "Incorrect old password";
+    } elseif ($oldPassword == $newPassword) {
+        header("Location: ../views/changePassword.php");
+        $_SESSION['Errormsg'] = "Old password and new password cannot be the same";
+    } elseif ($newPassword != $confirmPassword) {
+        header("Location: ../views/changePassword.php");
+        $_SESSION['Errormsg'] = "new and confirm Passwords do not match";
+    } else {
+        //Hash Password
+        $bcryptNewuPass = password_hash($newPassword, PASSWORD_BCRYPT);
+
+        // Update User Password
+        $update_query = "UPDATE users SET user_password=? WHERE user_ID=?";
+        $stmt = mysqli_prepare($con, $update_query);
+        mysqli_stmt_bind_param($stmt, "si", $bcryptNewuPass, $userId);
+        $update_query_run = mysqli_stmt_execute($stmt);
+        if ($update_query_run) {
+            header("Location: ../views/changePassword.php");
+            $_SESSION['Successmsg'] = "Password updated successfully";
+        } else {
+            header("Location: ../views/changePassword.php");
+        $_SESSION['Errormsg'] = "Something went wrong";
         }
     }
 }

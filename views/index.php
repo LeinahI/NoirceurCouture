@@ -9,8 +9,15 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 </div>
 
 <?php
-include('../partials/slider.php');
-include('../partials/trending.php');
+$img = getAllViews("slideshow");
+if (mysqli_num_rows($img) > 0) {
+    include('../partials/slider.php');
+}
+
+$popular = getAllPopular();
+if (mysqli_num_rows($popular) > 0) {
+    include('../partials/trending.php');
+}
 ?>
 
 <style>

@@ -89,10 +89,10 @@ function getAllUsers()
     return $query_run;
 }
 
-function getAllDeletedUsers()
+function getAllConfirmedDeletedUsers()
 {
     global $con;
-    $query = "SELECT * FROM users_deleted_details";
+    $query = "SELECT * FROM users_deleted_details WHERE ud_confirmed = 1";
     $query_run = mysqli_query($con, $query);
     return $query_run;
 }

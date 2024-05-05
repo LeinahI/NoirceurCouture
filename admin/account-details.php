@@ -7,6 +7,7 @@ include('../middleware/adminMW.php');
             <div class="card">
                 <div class="card-header bg-primary">
                     <h2 class="text-white">Admin Account Details
+                        <a href="changePassword.php" class="btn btn-light float-end ms-2">Change Password</a>
                     </h2>
                 </div>
 
@@ -53,13 +54,6 @@ include('../middleware/adminMW.php');
                                         <label for="floatingPassword" class="ps-3">Phone Number</label>
                                     </div>
                                 </div>
-                                <!-- Pass and CPass start -->
-                                <div class="form-floating col-md-12 mb-3 position-relative">
-                                    <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="passw" name="userPassword" required placeholder="Slug">
-                                    <label for="floatingPassword" class="ps-3">Password</label>
-                                    <span class="input-group-text border-0 position-absolute end-2 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
-                                </div>
-                                <!-- Pass and CPass end -->
 
                                 <!-- Update Details -->
                                 <div class="text-center col-md-12 mb-3">
@@ -78,7 +72,6 @@ include('../middleware/adminMW.php');
 <?php include('partials/footer.php'); ?>
 
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
         var passwordInput = document.getElementById("passw");
         var togglePasswordBtn = document.getElementById("togglePassword");

@@ -110,7 +110,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                 if (empty($data)) {
                 ?>
                     <!-- Modal Initialize on load -->
-                    <div class="modal" id="modalNoAddressYet" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal" id="modalNoAddressYet" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content bg-main">
                                 <div class="modal-body">

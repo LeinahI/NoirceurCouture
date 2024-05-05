@@ -96,18 +96,6 @@ include('../middleware/userMW.php');
                                         </div>
                                         <!-- Email and Number end -->
 
-                                        <!-- Pass and CPass start -->
-                                        <div class="row">
-                                            <div class="input-group ps-0 mb-3">
-                                                <div class="form-floating">
-                                                    <input type="password" class="form-control" id="old_password" name="userPassword" value="<?= $data['user_password'] ?>" required placeholder="Password">
-                                                    <label for="code1">Password</label>
-                                                </div>
-                                                <span class="input-group-text" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
-                                            </div>
-                                        </div>
-                                        <!-- Pass and CPass end -->
-
                                         <div class="row">
                                             <div class="text-center ps-0">
                                                 <button type="submit" name="userUpdateAccBtn" class="btn btn-accent col-md-12">Update Credentials</button>

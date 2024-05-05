@@ -71,7 +71,7 @@ $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], "/") + 
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white <?=
-                                                in_array($page, ["account-details.php"])
+                                                in_array($page, ["account-details.php", "changePassword.php"])
                                                     ? 'active bg-gradient-primary'
                                                     : '' ?>" href="account-details.php">
 

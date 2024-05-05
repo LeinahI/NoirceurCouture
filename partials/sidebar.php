@@ -12,6 +12,9 @@
                     <a href="myAddress.php" class="<?= in_array(basename($_SERVER['PHP_SELF']), ["myAddress.php", "myAddressAddNew.php", "myAddressEdit.php"]) ? 'text-accent' : 'text-dark'; ?>">My Address</a>
                 </div>
                 <div>
+                    <a href="changePassword.php" class="<?= basename($_SERVER['PHP_SELF']) === 'changePassword.php' ? 'text-accent' : 'text-dark'; ?>">Change Password</a>
+                </div>
+                <div>
                     <a href="myOrders.php" class="<?= in_array(basename($_SERVER['PHP_SELF']), ["myOrders.php", "myOrdersToShip.php", "myOrdersToReceive.php", "myOrdersCompleted.php", "myOrdersCancelled.php"]) ? 'text-accent' : 'text-dark'; ?>">My Purchase</a>
                 </div>
                 <div>

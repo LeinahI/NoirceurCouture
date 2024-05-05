@@ -29,8 +29,7 @@ include('../middleware/adminMW.php');
                         </thead>
                         <tbody>
                             <?php
-                            $users = getAllDeletedUsers();
-                            /* echo $roleName; */
+                            $users = getAllConfirmedDeletedUsers();
                             if (mysqli_num_rows($users) > 0) {
                                 foreach ($users as $item) {
                                     /* Define Role */

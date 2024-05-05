@@ -36,9 +36,13 @@ if (isset($_POST['userRegisterBtn'])) {
         redirect("../views/register.php", "phone number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
+            
+            //Hash Password
+            $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
+            
             //Insert User Data
             $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password)
-                VALUES('$fname','$lname','$email','$phoneNum','$uname','$uPass')";
+                VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass')";
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
                 /* Swal */
@@ -87,9 +91,12 @@ if (isset($_POST['sellerRegisterBtn'])) {
         redirect("../seller/seller-registration.php", "phone number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
+            //Hash Password
+            $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
+
             //Insert User Data
             $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_role)
-                VALUES('$fname','$lname','$email','$phoneNum','$uname','$uPass','$role')";
+                VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass','$role')";
 
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
@@ -124,18 +131,23 @@ if (isset($_POST['loginBtn'])) {
     $login_Inputs_query = "SELECT u.*, s.seller_confirmed FROM users u
         LEFT JOIN users_seller_details s ON u.user_ID = s.seller_user_ID
         WHERE 
-        (u.user_email = '$loginInput' AND u.user_password = '$loginPass')
-        OR (u.user_username = '$loginInput' AND u.user_password = '$loginPass')
-        OR (u.user_phone = '$loginInput' AND u.user_password = '$loginPass')";
+        (u.user_email = '$loginInput')
+        OR (u.user_username = '$loginInput')
+        OR (u.user_phone = '$loginInput')";
     $login_Inputs_query_run = mysqli_query($con, $login_Inputs_query);
 
     if (mysqli_num_rows($login_Inputs_query_run) > 0) {
         $userdata = mysqli_fetch_array($login_Inputs_query_run);
+
+        $bcryptuPass = $userdata['user_password'];
         $userid = $userdata['user_ID'];
         $userRole = $userdata['user_role'];
         $isAccountBanned = $userdata['user_isBan'];
 
-        if ($isAccountBanned == 1) {
+        if (!password_verify($loginPass, $bcryptuPass)) {
+            redirect('../views/login.php', 'Invalid Credentials. Try again');
+        }
+        else if ($isAccountBanned == 1) {
             redirect('../views/login.php', 'Your account has been banned permanently');
         } else {
             $_SESSION['auth'] = true;
@@ -174,8 +186,6 @@ if (isset($_POST['loginBtn'])) {
                 header('Location: ../views/index.php');
             }
         }
-    } else {
-        redirect('../views/login.php', 'Invalid Credentials. Try again');
     }
 }
 

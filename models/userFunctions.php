@@ -4,6 +4,14 @@ include('dbcon.php');
 ob_start(); //Ouput buffering
 date_default_timezone_set('Asia/Manila');
 
+function getAllViews($table)
+{
+    global $con;
+    $query = "SELECT * FROM $table";
+    $query_run = mysqli_query($con, $query);
+    return $query_run; // Return the query result, not the query itself
+}
+
 function getAllActive($table)
 {
     global $con;
