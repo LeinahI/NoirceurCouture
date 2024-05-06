@@ -47,6 +47,8 @@ include('../middleware/userMW.php');
                         $phone = $data['address_phone'];
                         $fulladdr = $data['address_fullAddress'];
 
+                        $decryptedfullAddr = decryptData($fulladdr);
+
                         ?>
                         <!-- //!Display user addresses in cards -->
                         <!-- //*ADD NEW ADDRESS -->
@@ -124,7 +126,7 @@ include('../middleware/userMW.php');
                                     <!--Addr start -->
                                     <div class="form-floating col-md-12 ps-0 mb-3">
                                         <div class="form-floating ps-0 ">
-                                            <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
+                                            <textarea rows="3" class="form-control" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:100px; min-height: 57px; max-height: 100px;"><?= $decryptedfullAddr ?></textarea>
                                             <label for="floatingInput">Address</label>
                                         </div>
                                     </div>

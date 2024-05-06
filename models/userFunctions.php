@@ -184,11 +184,11 @@ function getCartItems()
     deleteExcessCartItems($user_id);
 
     $query = "SELECT c.cart_id as cid, c.product_id, c.product_qty, c.product_slug, p.product_id as pid, p.product_name, p.product_image,
-    p.product_srp, p.product_original_price, p.product_discount, p.product_qty as product_remain, cat.category_name, cat.category_slug
+    p.product_srp, p.product_original_price, p.product_discount, p.product_qty as product_remain, p.product_visibility, cat.category_name, cat.category_slug, cat.category_onVacation
     FROM carts c
     INNER JOIN products p ON c.product_id = p.product_id
     INNER JOIN categories cat ON p.category_id = cat.category_id
-    WHERE c.user_ID='$user_id'AND p.product_qty >= c.product_qty  
+    WHERE c.user_ID='$user_id'AND p.product_qty >= c.product_qty AND p.product_visibility = 0
     ORDER BY c.cart_id DESC;";
 
     $result = mysqli_query($con, $query);
@@ -273,9 +273,10 @@ function getAllItemQty()
 {
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
-    $query = "SELECT SUM(product_qty) AS total_qty
-    FROM carts
-    WHERE user_ID='$user_id'";
+    $query = "SELECT SUM(c.product_qty) AS total_qty
+    FROM carts c
+    JOIN products p ON c.product_id = p.product_id 
+    WHERE user_ID='$user_id' AND p.product_visibility = 0";
 
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_assoc($result);
@@ -439,4 +440,38 @@ function redirectSwal($url, $status, $status_code)
     $_SESSION['status_code'] = $status_code;
     header('Location: ' . $url);
     exit();
+}
+
+
+// Function to encrypt data
+function encryptData($data)
+{
+    $cipher_algo = 'aes-256-cbc'; //+ Set the cipher algorithm to AES-256-CBC
+    $key = 'NZhJtqrGwocU9CHdBP6tHYB0CUaiX8UJ'; //+ Set the encryption key 
+    $options = 0; //+ Choose the cipher method and options
+    $iv_length = openssl_cipher_iv_length($cipher_algo); //+ Get the length of the initialization vector (IV) for the chosen cipher algorithm
+    $iv = openssl_random_pseudo_bytes($iv_length); //+ // Generate a random IV (Initialization Vector)
+
+    $encryptedData = openssl_encrypt($data, $cipher_algo, $key, $options, $iv); //+ Encrypt the data using OpenSSL encrypt function
+
+    $encryptedDataWithIV = base64_encode($iv . $encryptedData); //+ Combine IV and encrypted data and encode it using base64
+
+    return $encryptedDataWithIV; //+ Return the encrypted data with IV
+}
+
+// Function to decrypt data
+function decryptData($encryptedData)
+{
+    $cipher_algo = 'aes-256-cbc'; //+ Set the cipher algorithm to AES-256-CBC
+    $key = 'NZhJtqrGwocU9CHdBP6tHYB0CUaiX8UJ'; //+ Set the encryption key
+    $options = 0; //+ Choose the cipher method and options
+    $encryptedDataWithIV = base64_decode($encryptedData);  //+ Decode the base64-encoded string to extract IV and encrypted data
+    $iv_length = openssl_cipher_iv_length($cipher_algo); //+ Get the length of the initialization vector (IV) for the chosen cipher algorithm
+    $iv = substr($encryptedDataWithIV, 0, $iv_length); //+ Extract IV from the combined IV and encrypted data string
+
+    $encrptedDataWithoutIV = substr($encryptedDataWithIV, $iv_length); //+ Extract encrypted data after IV
+
+    $decryptedData = openssl_decrypt($encrptedDataWithoutIV, $cipher_algo, $key, $options, $iv); //+ Decrypt the data using OpenSSL decrypt function
+
+    return $decryptedData; //+ Return the decrypted data
 }

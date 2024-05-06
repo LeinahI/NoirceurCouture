@@ -88,6 +88,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                             $fulladdr = isset($pa['address_fullAddress']) ? $pa['address_fullAddress'] : '';
 
                             $existingAddress = !empty($fulladdr);
+                            $decryptedfullAddr = decryptData($fulladdr);
                             ?>
                             <form action="./models/user-auth.php" method="POST" enctype="multipart/form-data">
                                 <!--Fname and Email -->
@@ -138,7 +139,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 <!--Addr start -->
                                 <div class="form-floating col-md-12 ps-0 mb-3">
                                     <div class="form-floating ps-0 mb-3">
-                                        <textarea rows="3" class="form-control ps-3" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:58px; min-height: 57px; max-height: 100px;"><?= $fulladdr ?></textarea>
+                                        <textarea rows="3" class="form-control ps-3" id="delivery_fullAddr" name="fullAddress" required placeholder="d" style="height:58px; min-height: 57px; max-height: 100px;"><?= $decryptedfullAddr ?></textarea>
                                         <label for="floatingInput" class="ps-1">Address</label>
                                     </div>
                                 </div>

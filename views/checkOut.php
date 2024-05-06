@@ -6,6 +6,7 @@ $cartCheck = checkItemExists();
 if (mysqli_num_rows($cartCheck) < 1) {
     redirectSwal("myCart.php", "Your cart is empty", "error");
 }
+
 ?>
 
 <style>
@@ -43,6 +44,8 @@ if (mysqli_num_rows($cartCheck) < 1) {
                 $barangayCode = isset($data['address_barangay']) ? $data['address_barangay'] : '';
                 $phone = isset($data['address_phone']) ? $data['address_phone'] : '';
                 $fulladdr = isset($data['address_fullAddress']) ? $data['address_fullAddress'] : '';
+
+                $decryptedfullAddr = decryptData($fulladdr);
 
                 // Load region data
                 $regionData = json_decode(file_get_contents("../assets/js/ph-json/region.json"), true);
@@ -273,7 +276,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                     <span class="fw-bold change_fn"><?php echo $firstname; ?></span> |
                                                     <span class="change_phone"><?php echo $phoneNumber; ?></span> |
                                                     <span class="change_email"><?php echo $addremail; ?></span><br>
-                                                    <span class="change_address"><?= $fullAddress ?></span>,
+                                                    <span class="change_address"><?= $decryptedfullAddr ?></span>,
                                                     <span class="change_brgyn"><?php echo $brgyName; ?></span>,
                                                     <span class="change_cityn"><?php echo $ctyName; ?></span>,
                                                     <span class="change_provn"><?php echo $provName; ?></span>,
@@ -339,14 +342,14 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                     </div>
                                     <!-- State City Country -->
                                     <div class="col-md-7 mb-3">
-                                        <span id="delivery_fullAddr"><?php echo $fulladdr; ?></span>,
+                                        <span id="delivery_fullAddr"><?php echo $decryptedfullAddr; ?></span>,
                                         <span id="barangay_text"><?php echo $barangayName; ?></span>,
                                         <span id="city_text"><?php echo $cityName; ?></span>,
                                         <span id="province_text"><?php echo $provinceName; ?></span>,
                                         <span id="region_text"><?php echo $regionName; ?></span>
 
                                         <!--//! input hidden that going to give to server side -->
-                                        <input readonly type="hidden" id="hidden_fulladdr" name="fullAddress" value="<?php echo $fulladdr; ?>">
+                                        <input readonly type="hidden" id="hidden_fulladdr" name="fullAddress" value="<?php echo $decryptedfullAddr; ?>">
                                         <input readonly type="hidden" class="hidden_barangay_code" id="barangay_code" name="barangay" value="<?php echo $barangayCode; ?>">
                                         <input readonly type="hidden" class="hidden_city_code" id="city_code" name="city" value="<?php echo $cityCode; ?>">
                                         <input readonly type="hidden" class="hidden_province_code" id="province_code" name="province" value="<?php echo $provinceCode; ?>">
@@ -382,6 +385,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                             // Group items by category_name
                             foreach ($items as $cItem) {
                                 $categoryName = $cItem['category_name'];
+                                $onVacation = $cItem['category_onVacation'];
                                 if (!isset($groupedItems[$categoryName])) {
                                     $groupedItems[$categoryName] = [];
                                 }
@@ -394,7 +398,16 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 ?>
                                     <div class="card mb-3 border rounded-3">
                                         <div class="card-header bg-primary">
-                                            <h5 class="card-title"><?= $categoryName ?></h5>
+                                            <h5 class="card-title">
+                                                <?= $categoryName ?>
+                                                <span class="fs-6 fw-bold">
+                                                    <?php
+                                                    if ($onVacation) {
+                                                        echo "(Currently on vacation)";
+                                                    }
+                                                    ?>
+                                                </span>
+                                            </h5>
                                         </div>
                                         <div class="card-body bg-primary">
                                             <?php foreach ($categoryItems as $index => $cItem) {
@@ -438,10 +451,14 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                     if (!empty($data)) {
                                     ?>
                                         <button type="submit" name="placeOrderBtn" class="btn btn-accent w-100 mb-3">COD | Place Order</button>
+                                        <div id="paypal-button-container"></div>
                                     <?php
                                     }
+                                    if ($onVacation == 1) {
+                                        redirectSwal("myCart.php", "Seller is on vacation", "error");
+                                    }
                                     ?>
-                                    <div id="paypal-button-container"></div>
+
                                 </div>
                             </div>
                         </div>

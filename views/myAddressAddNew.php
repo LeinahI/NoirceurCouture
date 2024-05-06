@@ -1,5 +1,4 @@
 <?php include('../partials/__header.php');
-
 include('../middleware/userMW.php');
 ?>
 

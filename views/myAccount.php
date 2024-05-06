@@ -114,8 +114,21 @@ include('../middleware/userMW.php');
                                             <input type="hidden" name="oldImage" value="<?= $profilePic; ?>">
                                             <input class="profileUp" type="file" name="profileUpload" accept=".jpg, .jpeg, .png" id="profileUpload" onchange="displayImage(this)">
                                         </div>
-                                        <p>File size: maximum 5 MB <br>
-                                            File extension: .JPEG, .PNG</p>
+                                        <div>
+                                            <p>File size: maximum 5 MB <br>
+                                                File extension: .JPEG, .PNG</p>
+                                        </div>
+                                        <?php
+                                        if ($profilePic > 0) {
+                                        ?>
+                                            <div class="row">
+                                                <div class="text-center ps-0">
+                                                    <button type="submit" name="profileDeleteBtn" class="btn btn-accent col-md-12">Delete Profile Image</button>
+                                                </div>
+                                            </div>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </form>
@@ -141,21 +154,6 @@ include('../middleware/userMW.php');
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        var passwordInput = document.getElementById("old_password");
-        var togglePasswordBtn = document.getElementById("togglePassword");
-
-        togglePasswordBtn.addEventListener("click", function() {
-            // Toggle the password input type
-            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-
-            // Toggle the eye icon class
-            var eyeIcon = togglePasswordBtn.querySelector("i");
-            eyeIcon.classList.toggle("fa-eye");
-            eyeIcon.classList.toggle("fa-eye-slash");
-        });
-    });
 </script>
 
 <div style="margin-top:5%;">

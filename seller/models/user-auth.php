@@ -88,6 +88,8 @@ if (isset($_POST['sellerAddAddrBtn'])) {
     $fullAddr = mysqli_real_escape_string($con, $_POST['fullAddress']);
     $phonePatternPH = '/^09\d{9}$/';
 
+    $encryptedfullAddr = encryptData($fullAddr);
+
     if (!preg_match($phonePatternPH, $phoneNum)) {
         header("Location: ../account-details.php");
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
@@ -107,7 +109,7 @@ if (isset($_POST['sellerAddAddrBtn'])) {
         // Prepare and bind the parameters for inserting a new address
         $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssssss", $userId, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
+        $stmt->bind_param("issssssss", $userId, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $encryptedfullAddr);
 
         if ($stmt->execute()) {
             redirectSwal("../account-details.php", "Address updated successfully", "success");
@@ -131,12 +133,14 @@ if (isset($_POST['sellerUpdateAddrBtn'])) {
     $fullAddr = mysqli_real_escape_string($con, $_POST['fullAddress']);
     $phonePatternPH = '/^09\d{9}$/';
 
+    $encryptedfullAddr = encryptData($fullAddr);
+
     if (!preg_match($phonePatternPH, $phoneNum)) {
         $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
     } else {
         // Prepare and bind the parameters
         $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_region = ?, address_province = ?, address_city = ?, address_barangay = ?, address_phone = ?, address_fullAddress = ? WHERE address_user_ID = ?");
-        $stmt->bind_param("ssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr, $userId);
+        $stmt->bind_param("ssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $encryptedfullAddr, $userId);
 
         if ($stmt->execute()) {
             redirectSwal("../account-details.php", "Address updated successfully", "success");

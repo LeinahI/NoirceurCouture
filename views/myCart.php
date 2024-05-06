@@ -175,9 +175,10 @@
                     <div class="p-4">
                         <section class="pb-5">
                             <div class="float-end text-dark">
-                                <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
-                                                        echo getCartQty();
-                                                    } ?>
+                                <h5>Total (<span>
+                                        <?php if (isset($_SESSION['auth'])) {
+                                            echo getCartQty();
+                                        } ?>
                                     </span>
                                     items):
                                     <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>

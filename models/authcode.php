@@ -201,6 +201,8 @@ if (isset($_POST['userAddAddrBtn'])) {
     $barangay = $_POST['barangay'];
     $fullAddr = $_POST['fullAddress'];
 
+    $encryptedfullAddr = encryptData($fullAddr);
+
     // Check if there is already an address for the user
     $stmt_check_address = $con->prepare("SELECT address_id FROM addresses WHERE address_user_ID = ?");
     $stmt_check_address->bind_param("i", $userId);
@@ -228,7 +230,7 @@ if (isset($_POST['userAddAddrBtn'])) {
         // Prepare and bind the parameters for inserting a new address
         $stmt = $con->prepare("INSERT INTO addresses (address_user_ID, address_isDefault, address_fullName, address_email, address_region, address_province, address_city, address_barangay, address_phone, address_fullAddress)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("iissssssss", $userId, $addrDefault, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr);
+        $stmt->bind_param("iissssssss", $userId, $addrDefault, $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $encryptedfullAddr);
 
         if ($stmt->execute()) {
             // Redirect to the checkout page
@@ -266,6 +268,8 @@ if (isset($_POST['userUpdateAddrBtn'])) {
     $city = $_POST['city'];
     $barangay = $_POST['barangay'];
 
+    $encryptedfullAddr = encryptData($fullAddr);
+
     //Check if address_isDefault existing
     $stmt_check_isDefault = $con->prepare("SELECT address_id, address_isDefault FROM addresses WHERE address_id = ?");
     $stmt_check_isDefault->bind_param("i", $addrId);
@@ -294,7 +298,7 @@ if (isset($_POST['userUpdateAddrBtn'])) {
     } else {
         // Prepare and bind the parameters
         $stmt = $con->prepare("UPDATE addresses SET address_fullName = ?, address_email = ?, address_region =?, address_province = ?, address_city = ?, address_barangay = ?, address_phone = ?, address_fullAddress = ?, address_isDefault = ? WHERE address_id = ?");
-        $stmt->bind_param("sssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $fullAddr, $addrDefault, $addrId);
+        $stmt->bind_param("sssssssssi", $fullN, $email, $region, $province, $city, $barangay, $phoneNum, $encryptedfullAddr, $addrDefault, $addrId);
 
         if ($stmt->execute()) {
             header("Location: ../views/myAddressEdit.php?addrID=$addrId");

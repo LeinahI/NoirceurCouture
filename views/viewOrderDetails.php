@@ -75,7 +75,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                             <h5>
                                                 <span><?= $data['orders_phone']; ?>&nbsp;|&nbsp;<?= $data['orders_email']; ?></span>
                                                 <br>
-                                                <span><?= $data['orders_address']; ?>,</span>
+                                                <span><?= decryptData($data['orders_address']) ?>,</span>
                                                 <br>
                                                 <div class="mt-1">
                                                     <select hidden name="barangay" class="form-control form-control-md" id="barangay" required></select>

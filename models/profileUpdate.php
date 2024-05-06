@@ -99,7 +99,34 @@ if (isset($_POST['changePasswordBtn'])) {
             $_SESSION['Successmsg'] = "Password updated successfully";
         } else {
             header("Location: ../views/changePassword.php");
-        $_SESSION['Errormsg'] = "Something went wrong";
+            $_SESSION['Errormsg'] = "Something went wrong";
         }
     }
+}
+
+if (isset($_POST['profileDeleteBtn'])) {
+    $userId = mysqli_real_escape_string($con, $_POST['userID']);
+
+    //+ Fetch the profile image path
+    $selectProfileQuery = "SELECT user_profile_Image FROM users WHERE user_ID = ?";
+    $selectProfile_stmt = mysqli_prepare($con, $selectProfileQuery);
+    mysqli_stmt_bind_param($selectProfile_stmt, 'i', $userId);
+    mysqli_stmt_execute($selectProfile_stmt);
+    $selectProfile_result = mysqli_stmt_get_result($selectProfile_stmt);
+
+    if ($selectProfile_result && $profileData = mysqli_fetch_assoc($selectProfile_result)) {
+        $profileImageName = $profileData['user_profile_Image'];
+        $profileImagePath = "../assets/uploads/userProfile/" . $profileImageName;
+
+        //+ Delete the profile image file if it exists
+        if (file_exists($profileImagePath)) {
+            unlink($profileImagePath); //+ Deletes the file
+
+            $deleteQuery = "UPDATE users SET user_profile_image = '' WHERE user_ID = '$userId'";
+            mysqli_query($con, $deleteQuery);
+        }
+    }
+
+    header("Location: ../views/myAccount.php");
+    $_SESSION['Successmsg'] = "Profile Image Deleted successfully";
 }

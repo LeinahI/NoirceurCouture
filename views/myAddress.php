@@ -69,6 +69,8 @@ include('../middleware/userMW.php');
                                 $phone = $data['address_phone'];
                                 $fulladdr = $data['address_fullAddress'];
 
+                                $decryptedfullAddr = decryptData($fulladdr);
+
                                 //!Fetch region name based on region code
                                 $regionName = "";
                                 $regionUrl = "../assets/js/ph-json/region.json";
@@ -134,7 +136,7 @@ include('../middleware/userMW.php');
                                                     <span class="fw-normal"><?= $email ?></span>
                                                 </div>
                                                 <div id="fullAddress">
-                                                    <span><?= $fulladdr ?></span>
+                                                    <span><?= $decryptedfullAddr ?></span>
                                                 </div>
                                                 <div id="location">
                                                     <span><?= $barangayName ?></span>,

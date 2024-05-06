@@ -78,8 +78,9 @@ include('../middleware/userMW.php');
             </div>
         </div>
     </div>
-    <div style="margin-top:5%;">
-        <?php include('footer.php'); ?>
-    </div>
+</div>
+<div style="margin-top:5%;">
+    <?php include('footer.php'); ?>
+</div>
 
-    <?php include('../partials/__footer.php'); ?>
+<?php include('../partials/__footer.php'); ?>

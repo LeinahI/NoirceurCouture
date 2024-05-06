@@ -68,7 +68,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                             <h5><?= $data['orders_phone']; ?></h5>
                                         </div>
                                         <div class="col-md-12">
-                                            <h5><?= $data['orders_address']; ?></h5>
+                                            <h5><?= decryptData($data['orders_address']); ?></h5>
                                         </div>
                                         <div class="col-md-12">
                                             <h5>

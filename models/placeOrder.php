@@ -14,7 +14,8 @@ if (isset($_SESSION['auth'])) {
         $city = isset($_POST['city']) ? mysqli_real_escape_string($con, $_POST['city']) : "";
         $barangay = isset($_POST['barangay']) ? mysqli_real_escape_string($con, $_POST['barangay']) : "";
         $fAddr = isset($_POST['fullAddress']) ? mysqli_real_escape_string($con, $_POST['fullAddress']) : "";
-
+        
+        $encryptedfAddr = encryptData($fAddr);
 
         $pay_mode = mysqli_real_escape_string($con, $_POST['paymentMode']);
         $payment_id = mysqli_real_escape_string($con, $_POST['paymentID']);
@@ -30,10 +31,10 @@ if (isset($_SESSION['auth'])) {
         } else {
 
             $user_ID = $_SESSION['auth_user']['user_ID'];
-            $query = "SELECT c.cart_id, c.category_id, c.product_id, c.product_qty, p.product_id as pid, p.product_name, p.product_image, p.product_srp, cat.category_name FROM carts c
+            $query = "SELECT c.cart_id, c.category_id, c.product_id, c.product_qty, p.product_id as pid, p.product_name, p.product_image, p.product_srp, p.product_visibility, cat.category_name FROM carts c
             INNER JOIN products p ON c.product_id = p.product_id
             INNER JOIN categories cat ON p.category_id = cat.category_id
-            WHERE c.user_ID='$user_ID'
+            WHERE c.user_ID='$user_ID' AND p.product_visibility = 0
             ORDER BY c.cart_id DESC";
             $query_run = mysqli_query($con, $query);
 
@@ -70,7 +71,7 @@ if (isset($_SESSION['auth'])) {
                     //* Insert order for the current category
                     $placeOrder_query = "INSERT INTO orders(orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_region, orders_province, orders_city, orders_barangay,
                     orders_total_price, orders_payment_mode, orders_payment_id)
-                    VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$fAddr', '$region', '$province','$city','$barangay','$totalPrice', '$pay_mode', '$payment_id')";
+                    VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$encryptedfAddr', '$region', '$province','$city','$barangay','$totalPrice', '$pay_mode', '$payment_id')";
                     $placeOrder_query_run = mysqli_query($con, $placeOrder_query);
 
                     if ($placeOrder_query_run) {
