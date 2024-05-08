@@ -62,7 +62,7 @@ $(document).ready(function () {
     var total = 0;
 
     $(".productPrice").each(function () {
-      var price = parseFloat($(this).text().replace("₱", "").replace(",", ""));
+      var price = parseFloat($(this).text().replace("₱", "").replace(",", "").replace(",", ""));
       total += price;
     });
 

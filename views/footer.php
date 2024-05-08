@@ -11,27 +11,29 @@
                 $categories = getAllActive("categories");
 
                 if (mysqli_num_rows($categories) > 0) {
-                    foreach ($categories as $item) {
                 ?>
-                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-light">
-                            <!-- Links -->
-                            <h6 class="text-uppercase fw-bold mb-4 text-dark">
-                                Collections
-                            </h6>
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-light">
 
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold mb-4 text-dark">
+                            Collections
+                        </h6>
+                        <?php
+                        foreach ($categories as $item) {
+                        ?>
                             <div class="col-md-12 mb-3">
                                 <a class="text-dark" href="store.php?category=<?= $item['category_slug'] ?>">
                                     <h6></h6><?= $item['category_name'] ?></h6>
                                 </a>
                             </div>
-
-                        </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 <?php
-                    }
-                } else {
-                    /* echo "No data available"; */
                 }
                 ?>
+
                 <!-- Grid column -->
 
                 <!-- Grid column -->

@@ -95,3 +95,4 @@ Buyer UI Changes
 
 Serverside Changes (above list must be done first)
 - change MySQL connection to PHP Data Objects (PDO)
+- Implement email SMTP for forgot password and email OTP for checkout & log in

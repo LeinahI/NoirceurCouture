@@ -3,6 +3,17 @@ include('../middleware/sellerMW.php');
 include('../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
+<style>
+    .btn-check:checked + .btn{
+        color: #fff !important;
+    }
+    .btn-check + .btn{
+        color: #E91E63 !important;
+    }
+    .btn-check:hover + .btn{
+        color: #E91E63 !important;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -74,8 +85,8 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     <!--//! Store Visibility -->
                                     <div class="col-md-12 btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                         <input type="checkbox" class="btn-check" <?= $data['category_onVacation'] ? "checked" : "" ?> id="visibility_cb" name="visibilityCheckbox" autocomplete="off" />
-                                        <label id="visibility_label" class="btn btn-outline-primary" for="visibility_cb">
-                                            <?= $data['category_onVacation'] ? "On Vacation" : "Visible" ?>
+                                        <label id="visibility_label" class="btn btn-outline-primary " for="visibility_cb">
+                                            <?= $data['category_onVacation'] ? "Set Visible" : "Set On Vacation" ?>
                                         </label>
                                     </div>
                                     <!-- If existing details exist -->
@@ -108,7 +119,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
         var label = document.getElementById("visibility_label");
 
         checkbox.addEventListener("change", function() {
-            label.textContent = checkbox.checked ? "On Vacation" : "Visible";
+            label.textContent = checkbox.checked ? "Set On Vacation" : "Set Visible";
         });
     });
 

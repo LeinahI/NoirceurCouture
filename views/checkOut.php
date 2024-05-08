@@ -382,6 +382,10 @@ if (mysqli_num_rows($cartCheck) < 1) {
                             $groupedItems = [];
                             $itemQty = getAllItemQty();
 
+                            if (mysqli_fetch_array($items) == 0) {
+                                redirectSwal("myCart.php", "Your cart is empty", "error");
+                            }
+
                             // Group items by category_name
                             foreach ($items as $cItem) {
                                 $categoryName = $cItem['category_name'];

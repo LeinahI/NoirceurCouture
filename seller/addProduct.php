@@ -83,7 +83,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
                                 <div class="col-md-12" style="display:flex;">
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" id="qty_input" name="quantityInput" required placeholder="qty">
+                                        <input type="number" class="form-control ps-3" id="qty_input" name="quantityInput" required placeholder="qty" onwheel="return false;">
                                         <label for="floatingPassword" class="ps-1">Item Quantity</label>
                                     </div>
                                     <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">

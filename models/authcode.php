@@ -36,10 +36,10 @@ if (isset($_POST['userRegisterBtn'])) {
         redirect("../views/register.php", "phone number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
-            
+
             //Hash Password
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
-            
+
             //Insert User Data
             $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password)
                 VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass')";
@@ -146,8 +146,7 @@ if (isset($_POST['loginBtn'])) {
 
         if (!password_verify($loginPass, $bcryptuPass)) {
             redirect('../views/login.php', 'Invalid Credentials. Try again');
-        }
-        else if ($isAccountBanned == 1) {
+        } else if ($isAccountBanned == 1) {
             redirect('../views/login.php', 'Your account has been banned permanently');
         } else {
             $_SESSION['auth'] = true;
@@ -216,8 +215,16 @@ if (isset($_POST['userAddAddrBtn'])) {
     $phonePatternPH = '/^09\d{9}$/';
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
-        header("Location: ../views/myAddress.php");
-        $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
+        if (isset($_POST['checkoutPage'])) {
+            header("Location: " . $_POST['checkoutPage']);
+            $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
+            exit;
+        } else {
+            header("Location: ../views/myAddress.php");
+            $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
+            exit;
+        }
+        
     } else {
         // If there is a default address and $addrDefault is 1, update its address_isDefault value to 0
         if ($addrDefault == '1') {
@@ -247,13 +254,15 @@ if (isset($_POST['userAddAddrBtn'])) {
                 header("Location: " . $_POST['checkoutPage']);
             } else {
                 // Default redirection if checkoutPage is not set
-                header("Location: ../views/myAddressv.php");
+                header("Location: ../views/myAddress.php");
             }
             $_SESSION['Errormsg'] = "Something went wrong";
         }
         $stmt->close();
     }
 }
+
+
 
 /* User Address Update statement */
 if (isset($_POST['userUpdateAddrBtn'])) {

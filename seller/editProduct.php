@@ -3,6 +3,19 @@ include('../middleware/sellerMW.php');
 include('../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
+<style>
+    .btn-check:checked+.btn {
+        color: #fff !important;
+    }
+
+    .btn-check+.btn {
+        color: #E91E63 !important;
+    }
+
+    .btn-check:hover+.btn {
+        color: #E91E63 !important;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -57,7 +70,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                             <label for="floatingPassword" class="ps-3">Product Description</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" oninput="calculateFinalPrice()" min="0">
+                                            <input type="number" class="form-control ps-3" value="<?= $data['product_original_price'] ?>" id="orp_input" name="originalPriceInput" required placeholder="orp" oninput="calculateFinalPrice()" min="0" onwheel="return false;">
                                             <label for="orp_input" class="ps-3">Original Price in ₱</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
@@ -97,10 +110,10 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                             </div>
                                             <div class="btn-group col-md-6" role="group" aria-label="Basic checkbox toggle button group">
                                                 <input type="checkbox" class="btn-check" <?= $data['product_visibility'] ? "checked" : "" ?> id="status_checkbox" name="productstatusCheckbox" autocomplete="off">
-                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_visibility'] ? "Hidden" : "Visible" ?></label>
+                                                <label id="status_label" class="btn btn-outline-primary" for="status_checkbox"><?= $data['product_visibility'] ? "Set Visible" : "Set Hidden" ?></label>
 
                                                 <input type="checkbox" class="btn-check" <?= $data['product_popular'] ? "checked" : "" ?> id="popular_checkbox" name="productpopularCheckbox" autocomplete="off">
-                                                <label class="btn btn-outline-primary" for="popular_checkbox">Popular</label>
+                                                <label id="popular_label" class="btn btn-outline-primary" for="popular_checkbox"><?= $data['product_popular'] ? "Unset Popular" : "Set Popular" ?></label>
                                             </div>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
@@ -182,7 +195,19 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
         checkbox.addEventListener("change", function() {
             // Send an AJAX request to update the status in the database
             // For simplicity, we'll just toggle the label text on the client side
-            label.textContent = checkbox.checked ? "Hidden" : "Visible";
+            label.textContent = checkbox.checked ? "Set Hidden" : "Set Visible";
+        });
+    });
+
+    //Set & Unset Popular
+    document.addEventListener("DOMContentLoaded", function() {
+        var checkbox = document.getElementById("popular_checkbox");
+        var label = document.getElementById("popular_label");
+
+        checkbox.addEventListener("change", function() {
+            // Send an AJAX request to update the status in the database
+            // For simplicity, we'll just toggle the label text on the client side
+            label.textContent = checkbox.checked ? "Unset Popular" : "Set Popular";
         });
     });
 </script>

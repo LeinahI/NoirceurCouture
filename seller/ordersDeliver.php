@@ -43,7 +43,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <td class="text-center"> <?= $item['orders_tracking_no'] ?> </td>
                                         <td class="text-center"> <?= date('F d, Y h:i:s A', strtotime($item['orders_createdAt'])) ?> </td>
                                         <td class="text-center">
-                                            <a href="viewOrderDetails.php?trck=<?= $item['orders_tracking_no'] ?>" class="btn btn-primary">View Details</a>
+                                            <a href="viewOrderDetails.php?trck=<?= $item['orders_tracking_no'] ?>&amp;prv=<?= urlencode($_SERVER['REQUEST_URI']) ?>" class="btn btn-primary">View Details</a>
                                         </td>
                                     </tr>
                             <?php

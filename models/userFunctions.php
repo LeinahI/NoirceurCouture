@@ -228,7 +228,7 @@ function getCartQty()
     $query = "SELECT COUNT(*) AS total_entries
     FROM carts c
     INNER JOIN products p ON c.product_id = p.product_id
-    WHERE user_ID = '$user_id' AND p.product_qty >= c.product_qty ";
+    WHERE user_ID = '$user_id' AND p.product_qty >= c.product_qty AND p.product_visibility = 0";
 
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_assoc($result);

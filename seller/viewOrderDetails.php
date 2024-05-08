@@ -31,6 +31,12 @@ $regionCode = isset($data['orders_region']) ? $data['orders_region'] : '';
 $provinceCode = isset($data['orders_province']) ? $data['orders_province'] : '';
 $cityCode = isset($data['orders_city']) ? $data['orders_city'] : '';
 $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
+
+// Get the URL of the page to go back to
+$backUrl = isset($_GET['prv']) ? $_GET['prv'] : 'orders.php'; // Default to orders.php if 'back' parameter is not set
+
+// Escape the URL to prevent XSS attacks
+$backUrl = htmlspecialchars(urldecode($backUrl));
 ?>
 
 <style>
@@ -45,7 +51,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
             <div class="card">
                 <div class="card-header">
                     <span class="fs-2 fw-bold">Order Details</span>
-                    <a href="orders.php" class="btn btn-primary float-end">Back</a>
+                    <a href="<?php echo $backUrl; ?>" class="btn btn-primary float-end">Back</a>
                 </div>
                 <div class="card-body mb-n3">
                     <div class="row">
@@ -166,7 +172,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                     <select name="orderStatus" class="form-select ps-2" id="orderStat">
                                                         <option value="0" <?= $data['orders_status'] == 0 ? "selected" : "" ?>>Preparing to ship</option>
                                                         <option value="1" <?= $data['orders_status'] == 1 ? "selected" : "" ?>>Parcel is out for delivery</option> <!-- 1 out of delivery -->
-                                                        <option value="1" <?= $data['orders_status'] == 2 ? "selected" : "" ?> disabled>Parcel has been delivered</option> <!-- 2 for delivered -->
+                                                        <option value="2" <?= $data['orders_status'] == 2 ? "selected" : "" ?> disabled>Parcel has been delivered</option> <!-- 2 for delivered -->
                                                         <option value="3" <?= $data['orders_status'] == 3 ? "selected" : "" ?>>Parcel has been cancelled</option>
                                                     </select>
                                                     <label for="slug_input">Parcel Status</label>
