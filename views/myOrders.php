@@ -133,16 +133,16 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                                 <h5><?= $cItem['product_name'] ?></h5>
                                                                 <h5>x<?= $cItem['orderItems_qty'] ?></h5>
                                                             </div>
-                                                            <div class='col-md-5'>
+                                                            <div class='col-md-5'>  
                                                                 <?php
-                                                                if ($cItem['orderItems_price'] == $cItem['product_original_price']) {
+                                                                if ($cItem['orderItems_price'] == $cItem['orderItems_Initprice']) {
                                                                 ?>
                                                                     <h6 class='float-end d-flex justify-content-center'>₱<?= $cItem['orderItems_price'] ?></h6>
                                                                 <?php
                                                                 } else {
                                                                 ?>
                                                                     <span class='float-end d-flex justify-content-center'>
-                                                                        <h6 class='text-secondary text-decoration-line-through mr-2'>₱<?= $cItem['product_original_price'] ?></h6>
+                                                                        <h6 class='text-secondary text-decoration-line-through mr-2'>₱<?= $cItem['orderItems_Initprice'] ?></h6>
                                                                         &nbsp;
                                                                         <h6 class='text-accent'>₱<?= $cItem['orderItems_price'] ?></h6>
                                                                     </span>

@@ -370,10 +370,21 @@ if (mysqli_num_rows($cartCheck) < 1) {
                         </div>
                         <!-- Products -->
                         <div class="col-md-12">
-                            <div>
-                                <span class="fs-5">Products Ordered
-                                </span>
-
+                            <div class="px-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Products Ordered</h5>
+                                    </div>
+                                    <div class="col-md-2 pl-2 d-flex">
+                                        <h6>Unit Price</h6>
+                                    </div>
+                                    <div class="col-md-2 pl-0 d-flex justify-content-center">
+                                        <h6>Quantity</h6>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <h6>Total Price</h6>
+                                    </div>
+                                </div>
                             </div>
                             <hr>
                             <?php
@@ -424,16 +435,29 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                             <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="80px">
                                                         </center>
                                                     </div>
-                                                    <div class="col-md-5">
+                                                    <div class="col-md-2">
                                                         <h5><?= $cItem['product_name'] ?></h5>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <h5 class="text-end">
+                                                            <span class="fs-6 text-secondary text-decoration-line-through">₱<?= number_format($cItem['product_original_price'], 2) ?></span>
+                                                            &nbsp;
+                                                            ₱<?= number_format($cItem['product_srp'], 2) ?>
+                                                            <br>
+                                                            <span class="text-accent fs-6">
+                                                                Discount <?= $cItem['product_discount'] ?>%
+                                                            </span>
+                                                        </h5>
+                                                    </div>
+                                                    <!-- Product Qty -->
+                                                    <div class="col-md-2 text-center">
+                                                        <h5 class="text-end"><?= $cItem['product_qty'] ?></h5>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <h5 class="text-end">₱<?= number_format($itemTotalPrice, 2) ?></h5>
                                                     </div>
-                                                    <!--  -->
-                                                    <div class="col-md-2 text-center">
-                                                        <h5><?= $cItem['product_qty'] ?></h5>
-                                                    </div>
+
                                                 </div>
                                             <?php } ?>
                                         </div>

@@ -156,7 +156,9 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                                         <?php
                                                                         } else {
                                                                         ?>
-                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['orderItems_Initprice'], 2) ?></span>
+                                                                            &nbsp;
+                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         }
                                                                         ?>
