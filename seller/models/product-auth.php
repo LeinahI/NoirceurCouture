@@ -147,15 +147,36 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $category_query = "SELECT * FROM products WHERE product_id='$category_id'";
     $category_query_run = mysqli_query($con, $category_query);
     $category_data = mysqli_fetch_array($category_query_run);
-    $image_delete = $category_data['product_image'];
+
+    $prodid = $category_data['product_id'];
+    $categid = $category_data['category_id'];
+    $prodName = $category_data['product_name'];
+    $prodSlug = $category_data['productSlug'];
+    $prodOP = $category_data['product_original_price'];
+    $prodDisc = $category_data['product_discount'];
+    $prodSRP = $category_data['product_srp'];
+    $prodImage = $category_data['product_image'];
+
+    // Add "deleted" to the filename
+    $deletedImage = 'deleted_' . $prodImage;
+
+    $product_categ_query = "INSERT INTO products_deleted_details (pd_product_id, pd_category_id, pd_product_name, pd_product_slug,  pd_original_price, pd_product_discount,
+                        pd_srp, pd_image, pd_confirmed)
+                        VALUES('$prodid','$categid','$prodName','$prodSlug','$prodOP','$prodDisc','$prodSRP','$deletedImage','1')";
+    $product_categ_query_run = mysqli_query($con, $product_categ_query);
+
+    if ($product_categ_query_run) {
+        if (file_exists("../../assets/uploads/products/" . $prodImage)) {
+
+            // Move old image to "deleted" folder
+            rename("../../assets/uploads/products/" . $prodImage, "../../assets/uploads/products/" . $deletedImage);
+        }
+    }
 
     $delete_query = "DELETE FROM products WHERE product_id='$category_id'";
     $delete_query_run = mysqli_query($con, $delete_query);
 
     if ($delete_query_run) {
-        if (file_exists("../../assets/uploads/products/") . $image_delete) {
-            unlink("../../assets/uploads/products/" . $image_delete); //Delete Image
-        }
         redirectSwal("../product.php", "Product deleted successfully!", "success");
     } else {
         redirectSwal("../product.php", "Something went wrong. Please try again later.", "error");

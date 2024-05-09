@@ -74,6 +74,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                                 echo $productName;
                                             }
                                             ?>
+                                            <input type="hidden" name="productSlug" value="<?= $item['product_slug'] ?>">
                                         </td>
                                         <td class="text-end">₱<?= $item['product_srp'] ?></td>
                                         <td><?= $item['product_qty']; ?></td>
@@ -124,7 +125,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                                    <input type="submit" class="btn btn-primary" name="deleteProductBtn" value="Delete">
+                                                                    <input type="submit" class="btn btn-primary" name="deleteProductBtn" value="Confirm Delete">
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -268,8 +268,6 @@
                                         echo "No ratings yet";
                                     }
                                     ?>
-
-
                                 </div>
                             </div>
                         </div>
@@ -293,6 +291,12 @@
 
             <div class="mt-5">
                 <?php include('footer.php'); ?>
+            </div>
+        <?php
+        } else {
+        ?>
+            <div class="d-flex align-items-center justify-content-center fs-1" style="height: 80vh;">
+                The product doesn't exist
             </div>
     <?php
         }

@@ -200,12 +200,28 @@ function getOrderedItems()
     global $con;
     $user_id = $_SESSION['auth_user']['user_ID'];
 
-    $query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, o.orders_last_update_time, o.orders_status, oi.*, p.*, c.category_name, c.category_slug
-        FROM orders o
-        INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
-        INNER JOIN products p ON p.product_id = oi.orderItems_product_id
-        INNER JOIN categories c ON c.category_id = p.category_id
-        WHERE o.orders_user_ID = '$user_id' ORDER BY orders_id DESC";
+    $query = "SELECT
+    o.orders_id as oid, 
+    o.orders_tracking_no, 
+    o.orders_user_ID, 
+    o.orders_last_update_time, 
+    o.orders_status, 
+    COALESCE(p.product_name, pd.pd_product_name) AS product_name, 
+    COALESCE(p.product_image, pd.pd_image) AS product_image,
+    COALESCE(c.category_name, c_deleted.category_name) AS category_name, 
+    COALESCE(c.category_slug, c_deleted.category_slug) AS category_slug, 
+    oi.orderItems_qty, 
+    oi.orderItems_price, 
+    pd.pd_confirmed,
+    oi.orderItems_Initprice
+    FROM 
+    orders o
+    INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
+    LEFT JOIN products p ON p.product_id = oi.orderItems_product_id
+    LEFT JOIN categories c ON c.category_id = p.category_id
+    LEFT JOIN products_deleted_details pd ON pd.pd_product_id = oi.orderItems_product_id
+    LEFT JOIN categories c_deleted ON c_deleted.category_id = pd.pd_category_id
+    WHERE o.orders_user_ID = '$user_id' ORDER BY orders_id DESC";
 
     $result = mysqli_query($con, $query);
     return $result;

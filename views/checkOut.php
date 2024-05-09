@@ -441,13 +441,25 @@ if (mysqli_num_rows($cartCheck) < 1) {
 
                                                     <div class="col-md-3">
                                                         <h5 class="text-end">
-                                                            <span class="fs-6 text-secondary text-decoration-line-through">₱<?= number_format($cItem['product_original_price'], 2) ?></span>
-                                                            &nbsp;
-                                                            ₱<?= number_format($cItem['product_srp'], 2) ?>
-                                                            <br>
-                                                            <span class="text-accent fs-6">
-                                                                Discount <?= $cItem['product_discount'] ?>%
-                                                            </span>
+                                                            <?php
+                                                            if ($cItem['product_original_price'] > $cItem['product_srp']) {
+                                                            ?>
+                                                                <span class="fs-6 text-secondary text-decoration-line-through">₱<?= number_format($cItem['product_original_price'], 2) ?></span>
+                                                                &nbsp;
+                                                                ₱<?= number_format($cItem['product_srp'], 2) ?>
+                                                                <br>
+                                                                <span class="text-accent fs-6">
+                                                                    Discount <?= $cItem['product_discount'] ?>%
+                                                                </span>
+                                                            <?php
+                                                            } else {
+                                                            ?>
+
+                                                                ₱<?= number_format($cItem['product_srp'], 2) ?>
+
+                                                            <?php
+                                                            }
+                                                            ?>
                                                         </h5>
                                                     </div>
                                                     <!-- Product Qty -->

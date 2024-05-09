@@ -101,12 +101,33 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                 $groupedItems = [];
                                 $totalPrice = 0;
                                 $itemQty = getOrderedItemQty($tracking_no);
-                                $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name, c.category_slug
-                                                FROM orders o
-                                                INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
-                                                INNER JOIN products p ON p.product_id = oi.orderItems_product_id
-                                                INNER JOIN categories c ON c.category_id = p.category_id
-                                                WHERE o.orders_user_ID = '$user_id' AND o.orders_tracking_no = '$tracking_no'";
+
+                                
+                                $order_query = "SELECT
+                                o.orders_id as oid, 
+                                o.orders_tracking_no, 
+                                o.orders_user_ID, 
+                                o.orders_last_update_time, 
+                                o.orders_status, 
+                                pd.pd_confirmed,
+                                COALESCE(p.product_name, pd.pd_product_name) AS product_name, 
+                                COALESCE(p.product_slug, pd.pd_product_slug) AS product_slug, 
+                                COALESCE(p.product_image, pd.pd_image) AS product_image,
+                                COALESCE(c.category_name, c_deleted.category_name) AS category_name, 
+                                COALESCE(c.category_slug, c_deleted.category_slug) AS category_slug, 
+                                oi.orderItems_qty, 
+                                oi.orderItems_price, 
+                                oi.orderItems_Initprice,
+                                p.product_srp,
+                                p.product_original_price
+                                FROM 
+                                orders o
+                                INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
+                                LEFT JOIN products p ON p.product_id = oi.orderItems_product_id
+                                LEFT JOIN categories c ON c.category_id = p.category_id
+                                LEFT JOIN products_deleted_details pd ON pd.pd_product_id = oi.orderItems_product_id
+                                LEFT JOIN categories c_deleted ON c_deleted.category_id = pd.pd_category_id
+                                WHERE o.orders_user_ID = '$user_id' AND o.orders_tracking_no = '$tracking_no'";
 
                                 $order_query_run = mysqli_query($con, $order_query);
 
@@ -144,7 +165,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                                     <img src="../assets/uploads/products/<?= $item['product_image'] ?>" class="border" alt="Product Image" width="80px">
                                                                 </div>
                                                                 <div class="col-md-6 text-dark">
-                                                                    <h5><?= $item['product_name'] ?></h5>
+                                                                    <h5><?= $item['product_name'] ?> <?= ($item['pd_confirmed'] == 1) ? "<span class='badge bg-danger'>Deleted</span>" : "" ?></h5>
                                                                     <h5>x<?= $item['orderItems_qty'] ?></h5>
                                                                 </div>
                                                                 <div class="col-md-5">
@@ -272,7 +293,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 <?php
                                                 }
 
-                                                if ($data['orders_status'] == 1) {
+                                                if ($data['orders_status'] == 1 && $item['pd_confirmed'] == 0) {
                                                 ?>
                                                     <div class="mt-3">
                                                         <form action="../models/orderStatus.php" method="post">
@@ -286,7 +307,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 ?>
 
                                                 <?php
-                                                if ($data['orders_status'] == 2) {
+                                                if ($data['orders_status'] == 2 && $item['pd_confirmed'] == 0) {
                                                 ?>
                                                     <div class="mt-3">
                                                         <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>

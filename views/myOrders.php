@@ -130,7 +130,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                                 <img src='../assets/uploads/products/<?= $cItem['product_image'] ?>' alt='Product Image' width='100px'>
                                                             </div>
                                                             <div class='col-md-5 text-start'>
-                                                                <h5><?= $cItem['product_name'] ?></h5>
+                                                                <h5><?= $cItem['product_name'] ?> <?= ($cItem['pd_confirmed'] == 1) ? "<span class='badge bg-danger'>Deleted</span>" : "" ?></h5>
                                                                 <h5>x<?= $cItem['orderItems_qty'] ?></h5>
                                                             </div>
                                                             <div class='col-md-5'>  
