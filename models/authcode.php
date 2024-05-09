@@ -185,6 +185,8 @@ if (isset($_POST['loginBtn'])) {
                 header('Location: ../views/index.php');
             }
         }
+    } else {
+        redirect('../views/login.php', 'Invalid Credentials. Try again');
     }
 }
 
@@ -224,7 +226,6 @@ if (isset($_POST['userAddAddrBtn'])) {
             $_SESSION['Errormsg'] = "Invalid Philippine phone number format";
             exit;
         }
-        
     } else {
         // If there is a default address and $addrDefault is 1, update its address_isDefault value to 0
         if ($addrDefault == '1') {

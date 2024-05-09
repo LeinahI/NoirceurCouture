@@ -1,6 +1,8 @@
 <?php include('partials/header.php');
 include('../middleware/sellerMW.php');
 include('../models/checkSession.php');
+include('models/check-seller-addr.php');
+include('models/check-seller-categ.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 <div class="container">

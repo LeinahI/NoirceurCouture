@@ -2,6 +2,7 @@
 include('partials/header.php');
 include('../middleware/sellerMW.php');
 include('../models/checkSession.php');
+include('models/check-seller-addr.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
 if (isset($_GET['trck'])) {

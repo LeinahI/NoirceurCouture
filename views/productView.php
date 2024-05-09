@@ -236,7 +236,7 @@
                                                 <div class="d-flex flex-row">
                                                     <img src="../assets/uploads/userProfile/<?= ($rating['user_profile_image']) ? $rating['user_profile_image'] : 'defaultProfile.jpg' ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
                                                     <div class="d-flex flex-column pl-2">
-                                                        <div><?= ($rating['user_username']) ? $rating['user_username'] : 'deleted user'?></div>
+                                                        <div><?= ($rating['user_username']) ? $rating['user_username'] : 'deleted user' ?></div>
                                                         <div class="rating">
                                                             <?php
                                                             // Display stars based on product_rating
@@ -279,12 +279,18 @@
             }
             ?>
 
-
-
             <?php
-            include('../partials/sameshop.php');
-            include('../partials/trending.php');
+            $img = getAllSameShop($product['category_id']);
+            if (mysqli_num_rows($img) > 0) {
+                include('../partials/sameshop.php');
+            }
+
+            $popular = getAllPopular();
+            if (mysqli_num_rows($popular) > 0) {
+                include('../partials/trending.php');
+            }
             ?>
+
             <div class="mt-5">
                 <?php include('footer.php'); ?>
             </div>

@@ -28,7 +28,7 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
-    } else if (mysqli_num_rows($check_address_query_run) == 0) {
+    } else if (mysqli_num_rows($check_address_query_run) <= 0) {
         redirectSwal("../account-details.php", "Add your pickup address first before creating a store", "warning");
     } else {
         $image = $_FILES['uploadImageInput']['name'];

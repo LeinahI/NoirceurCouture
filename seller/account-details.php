@@ -56,15 +56,6 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09" onkeypress="inpNum(event)">
                                     <label for="floatingPassword" class="ps-3">Phone Number</label>
                                 </div>
-                                <!-- Pass and CPass start -->
-                                <!-- 
-                                    <div class="form-floating col-md-12 mb-3 position-relative">
-                                    <input type="password" class="form-control ps-3" value="<?= $data['user_password'] ?>" id="pass" name="userPassword" required placeholder="Slug">
-                                    <label for="floatingPassword" class="ps-3">Password</label>
-                                    <span class="input-group-text border-0 position-absolute end-3 top-50 translate-middle-y cursor-pointer" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
-                                </div>
-                                -->
-                                <!-- Pass and CPass end -->
 
                                 <!-- Update Details -->
                                 <div class="text-center col-md-12 mb-3">

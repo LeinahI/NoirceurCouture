@@ -17,7 +17,7 @@ if (isset($_GET['trck'])) {
     $tracking_no = $_GET['trck'];
 
     $orderData = checkTrackingNumValid($tracking_no);
-    if (mysqli_num_rows($orderData) < 0) {
+    if (mysqli_num_rows($orderData) <= 0) {
 ?>
         <div class="text-center">
             <h1>Something went wrong.</h1>
