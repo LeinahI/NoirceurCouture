@@ -80,11 +80,41 @@ include('../middleware/adminMW.php'); ?>
                                                             </div>
                                                         </div>
                                                     </form>
+
+                                                <?php
+                                                } elseif ($banStat == 1) {
+                                                ?>
+                                                    <form action="./models/category-auth.php" method="POST">
+                                                        <input type="hidden" name="categID" value="<?= $item['category_id'] ?>">
+                                                        <input type="hidden" name="categUserID" value="<?= $item['category_user_ID'] ?>">
+                                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $item['category_id'] ?>">Unban</button>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="deleteModal<?= $item['category_id'] ?>" data-bs-keyboard="true" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Unban <span><?= $item['category_name']; ?></span></h5>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p class="text-wrap fs-5">
+                                                                            Are you sure you want to revert ban <b><?= $item['category_name']; ?></b>?
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                                                        <input type="submit" class="btn btn-primary" name="revertBanCategoryBtn" value="Revert Ban">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                <?php
+                                                } ?>
                                             </div>
                                         </td>
+
                                     </tr>
-                                <?php
-                                                } ?>
+
                 </div>
                 </td>
                 </tr>
