@@ -169,11 +169,13 @@ function getAllBannedSeller()
 function getAllOrdersbyStore($id)
 {
     global $con;
-    $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt
+    $query = "SELECT 
+    o.orders_id, 
+    o.orders_full_name, 
+    o.orders_tracking_no, 
+    o.orders_createdAt
     FROM orders o
-    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
-    JOIN products p ON oi.orderItems_product_id = p.product_id
-    JOIN categories c ON p.category_id = c.category_id
+    JOIN categories c ON o.orders_category_id = c.category_id
     WHERE c.category_user_ID = '$id'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
@@ -184,9 +186,7 @@ function getAllPreparingOrdersbyStore($id)
     global $con;
     $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt, o.orders_tracking_no, o.orders_status
     FROM orders o
-    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
-    JOIN products p ON oi.orderItems_product_id = p.product_id
-    JOIN categories c ON p.category_id = c.category_id
+    JOIN categories c ON o.orders_category_id = c.category_id
     WHERE c.category_user_ID = '$id' AND o.orders_status='0'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
@@ -197,9 +197,7 @@ function getAllShippedOutOrdersbyStore($id)
     global $con;
     $query = "SELECT DISTINCT o.orders_id, o.orders_full_name, o.orders_tracking_no, o.orders_createdAt, o.orders_tracking_no, o.orders_status
     FROM orders o
-    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
-    JOIN products p ON oi.orderItems_product_id = p.product_id
-    JOIN categories c ON p.category_id = c.category_id
+    JOIN categories c ON orders_category_id = c.category_id
     WHERE c.category_user_ID = '$id' AND o.orders_status='1'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
@@ -210,9 +208,7 @@ function getAllDeliveredOrdersbyStore($id)
     global $con;
     $query = "SELECT DISTINCT o.*
     FROM orders o
-    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
-    JOIN products p ON oi.orderItems_product_id = p.product_id
-    JOIN categories c ON p.category_id = c.category_id
+    JOIN categories c ON o.orders_category_id = c.category_id
     WHERE c.category_user_ID = '$id' AND o.orders_status='2'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
@@ -223,9 +219,7 @@ function getAllCancelledOrdersbyStore($id)
     global $con;
     $query = "SELECT DISTINCT o.*
     FROM orders o
-    JOIN order_items oi ON o.orders_id = oi.orderItems_order_id
-    JOIN products p ON oi.orderItems_product_id = p.product_id
-    JOIN categories c ON p.category_id = c.category_id
+    JOIN categories c ON o.orders_category_id = c.category_id
     WHERE c.category_user_ID = '$id' AND o.orders_status='3'";
     $query_run = mysqli_query($con, $query);
     return $query_run;
@@ -446,13 +440,10 @@ function checkUserTrackingNumValid($trackingNo)
 function sellerGetOrderedItemQty($tracking_number)
 {
     global $con;
-    $user_id = $_SESSION['auth_user']['user_ID'];
     $query = "SELECT oi.orderItems_order_id, SUM(oi.orderItems_qty) AS total_qty
     FROM order_items oi
     INNER JOIN orders o ON oi.orderItems_order_id = o.orders_id
-    INNER JOIN products p ON p.product_id = oi.orderItems_product_id
-    INNER JOIN categories c ON c.category_id = p.category_id
-    WHERE o.orders_tracking_no = '$tracking_number' AND c.category_user_ID = '$user_id'
+    WHERE o.orders_tracking_no = '$tracking_number'
     GROUP BY oi.orderItems_order_id";
 
     $result = mysqli_query($con, $query);
@@ -483,6 +474,31 @@ function encryptData($data)
     $encryptedDataWithIV = base64_encode($iv . $encryptedData); //+ Combine IV and encrypted data and encode it using base64
 
     return $encryptedDataWithIV; //+ Return the encrypted data with IV
+}
+
+function generateSlug($string, $uniqueIdentifier = null)
+{
+    // Convert accented characters to ASCII
+    $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+
+    // Replace non-alphanumeric characters with dashes
+    $string = preg_replace('/[^a-z0-9]+/', '-', strtolower($string));
+
+    // Remove leading/trailing dashes
+    $string = trim($string, '-');
+
+    // Check if the string already contains a Unix timestamp
+    if (preg_match('/-\d{10}$/', $string)) {
+        // If it does, remove the existing timestamp
+        $string = preg_replace('/-\d{10}$/', '', $string);
+    }
+
+    // Append unique identifier if provided
+    if ($uniqueIdentifier !== null) {
+        $string .= '-' . $uniqueIdentifier;
+    }
+
+    return $string;
 }
 
 // Function to decrypt data

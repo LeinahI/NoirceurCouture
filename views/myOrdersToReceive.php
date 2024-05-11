@@ -97,6 +97,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                     <div class='card-header'>
                                                         <h5 class='card-title'>
                                                             <a href='store.php?category=<?= $cItem['category_slug'] ?>' class='fs-5 text-dark'><?= $cItem['category_name'] ?></a> <!-- Category Name -->
+                                                            <?= ($cItem['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?>
                                                             <span class='float-end text-accent fw-bold'><?= $statusResult ?>
                                                                 <span class="tt fs-6" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Last update time: <?= date('F d, Y h:i:s A', strtotime($ordersCreatedAt)) ?>">
                                                                     <i class="fa-regular fa-clock"></i>
@@ -119,7 +120,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                                 <img src='../assets/uploads/products/<?= $cItem['product_image'] ?>' alt='Product Image' width='100px'>
                                                             </div>
                                                             <div class='col-md-5 text-start'>
-                                                                <h5><?= $cItem['product_name'] ?></h5>
+                                                                <h5><?= $cItem['product_name'] ?> <?= ($cItem['pd_confirmed'] == 1) ? "<span class='badge bg-danger'>Deleted</span>" : "" ?></h5>
                                                                 <h5>x<?= $cItem['orderItems_qty'] ?></h5>
                                                             </div>
                                                             <div class='col-md-5'>

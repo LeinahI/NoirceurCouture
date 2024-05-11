@@ -19,24 +19,13 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                         <div class="container-fluid">
                             <div class=" col-md-12">
                                 <!-- Add Category start -->
-                                <div class="form-floating col-md-12 mb-3">
-                                    <select name="selectBrandCategoryID" class="form-select ps-2" id="selbr">
 
-                                        <?php
-                                        $categories = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
-                                        if (mysqli_num_rows($categories) > 0) {
-                                            foreach ($categories as $item) {
-                                        ?>
-                                                <option value="<?= $item['category_id'] ?>"><?= $item['category_name'] ?></option>
-                                        <?php
-                                            }
-                                        } else {
-                                            echo "No Category Available";
-                                        }
-                                        ?>
-                                    </select>
-                                    <label for="selbr" class="ps-3">Brand Category</label>
-                                </div>
+                                <?php
+                                $categories = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
+                                $row = mysqli_fetch_assoc($categories)
+                                ?>
+                                <input type="hidden" name="selectBrandCategoryID" value="<?= $row['category_id'] ?>" placeholder="<?= $row['category_name'] ?>">
+
                                 <div class="row">
                                     <div class="form-floating col-md-6 mb-3">
                                         <input type="text" class="form-control ps-3" id="name_input" name="productnameInput" required placeholder="Name">

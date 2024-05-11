@@ -23,7 +23,9 @@ function getAllActive($table)
 function getAllPopular() /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE product_popular='1' AND product_visibility != '1'";
+    $query = "SELECT * FROM products p
+    INNER JOIN categories c ON p.category_id = c.category_id
+    WHERE p.product_popular='1' AND p.product_visibility != '1' AND c.category_isBan = '0'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -213,7 +215,8 @@ function getOrderedItems()
     oi.orderItems_qty, 
     oi.orderItems_price, 
     pd.pd_confirmed,
-    oi.orderItems_Initprice
+    oi.orderItems_Initprice,
+    c.category_isBan
     FROM 
     orders o
     INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id

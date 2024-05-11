@@ -5,13 +5,15 @@ include('models/check-seller-addr.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 <style>
-    .btn-check:checked + .btn{
+    .btn-check:checked+.btn {
         color: #fff !important;
     }
-    .btn-check + .btn{
+
+    .btn-check+.btn {
         color: #E91E63 !important;
     }
-    .btn-check:hover + .btn{
+
+    .btn-check:hover+.btn {
         color: #E91E63 !important;
     }
 </style>
@@ -54,7 +56,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <label for="floatingInput" class="ps-3">Store Name</label>
                                     </div>
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="text" class="form-control ps-3" id="slug_input" value="<?= $categSlug; ?>" name="slugInput" required placeholder="Slug">
+                                        <input type="text" class="form-control ps-3" id="<?= ($categSlug) ? '' : 'slug_input' ?>" value="<?= $categSlug; ?>" name="slugInput" <?= ($categSlug) ? 'readonly' : '' ?> required placeholder="Slug">
                                         <label for="floatingPassword" class="ps-3">Store Slug</label>
                                     </div>
                                 </div>

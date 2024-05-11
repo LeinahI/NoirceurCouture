@@ -147,7 +147,7 @@ if (isset($_POST['loginBtn'])) {
         if (!password_verify($loginPass, $bcryptuPass)) {
             redirect('../views/login.php', 'Invalid Credentials. Try again');
         } else if ($isAccountBanned == 1) {
-            redirect('../views/login.php', 'Your account has been banned permanently');
+            redirect('../views/login.php', 'This account has been banned permanently');
         } else {
             $_SESSION['auth'] = true;
 

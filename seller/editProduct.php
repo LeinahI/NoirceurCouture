@@ -40,31 +40,19 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 <div class="container-fluid">
                                     <div class="row col-md-12">
                                         <!-- Add Category start -->
-                                        <div class="form-floating col-md-12 mb-3">
-                                            <input type="hidden" name="productID" value="<?= $data['product_id'] ?>">
-                                            <select name="selectBrandCategoryID" class="form-select ps-2" id="selbr">
-
-                                                <?php
-                                                $categories = getAllbyCategory("categories", $data['category_id']);
-                                                if (mysqli_num_rows($categories) > 0) {
-                                                    foreach ($categories as $item) {
-                                                ?>
-                                                        <option value="<?= $item['category_id'] ?>" <?= $data['category_id'] == $item['category_id'] ? 'selected' : '' ?>><?= $item['category_name'] ?></option>
-                                                <?php
-                                                    }
-                                                } else {
-                                                    echo "No Category Available";
-                                                }
-                                                ?>
-                                            </select>
-                                            <label for="selbr" class="ps-3">Brand Category</label>
-                                        </div>
+                                        <input type="hidden" name="productID" value="<?= $data['product_id'] ?>">
+                                        <?php
+                                        $categories = getByCategAndUserId($_SESSION['auth_user']['user_ID']);
+                                        $row = mysqli_fetch_assoc($categories)
+                                        ?>
+                                        <input type="hidden" name="selectBrandCategoryID" value="<?= $row['category_id'] ?>" placeholder="<?= $row['category_name'] ?>">
                                         <div class="form-floating col-md-6 mb-3">
                                             <input type="text" class="form-control ps-3" value="<?= $data['product_name'] ?>" id="name_input" name="productnameInput" required placeholder="Name">
                                             <label for="floatingInput" class="ps-3">Product Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_slug'] ?>" id="slug_input" name="productslugInput" required placeholder="Slug">
+                                            <input type="text" class="form-control ps-3" value="<?= $data['product_slug'] ?>" disabled placeholder="Slug">
+                                            <input type="hidden" class="form-control ps-3" value="<?= $data['product_slug'] ?>" name="productslugInput" readonly placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Product Slug</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
@@ -152,15 +140,12 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
     /* Automatic Input */
     document.addEventListener("DOMContentLoaded", function() {
         var nameInput = document.getElementById("name_input");
-        var slugInput = document.getElementById("slug_input");
         var metaTitle = document.getElementById("metaTitle_input");
         var descriptionInput = document.getElementById("description_input");
         var metaDescription = document.getElementById("metaDescription_input");
 
         /* For slug and meta title */
         nameInput.addEventListener("input", function() {
-            // Update the value of the slug input based on the name input
-            slugInput.value = generateSlug(nameInput.value);
             metaTitle.value = nameInput.value;
         });
 
@@ -169,11 +154,6 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
             metaDescription.value = descriptionInput.value;
         });
 
-        // Function to generate a slug from the given string
-        function generateSlug(str) {
-            // Replace spaces with dashes and convert to lowercase
-            return str.trim().toLowerCase().replace(/\s+/g, '-');
-        }
     });
 
     /* Calculate Price */

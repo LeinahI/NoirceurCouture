@@ -5,20 +5,17 @@ include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
 
 if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
-    $category_id = $_POST['selectBrandCategoryID'];
-    $name = $_POST['productnameInput'];
-    $slug = $_POST['productslugInput'];
-    $slug = strtolower($slug);
-    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
-    $slug = str_replace(' ', '', $slug);
-    $desc = $_POST['productdescriptionInput'];
-    $orig_price = $_POST['originalPriceInput'];
-    $discount = $_POST['priceDiscount'];
-    $srp = $_POST['suggestedRetailPriceInput'];
-    $qty = $_POST['quantityInput'];
-    $product_popular = isset($_POST['productpopularCheckbox']) ? '1' : '0';
-    $meta_title = $_POST['productmetaTitleInput'];
-    $meta_desc = $_POST['productmetaDescriptionInput'];
+    $category_id = mysqli_real_escape_string($con, $_POST['selectBrandCategoryID']);
+    $name = mysqli_real_escape_string($con, $_POST['productnameInput']);
+    $slug = mysqli_real_escape_string($con, $_POST['productslugInput']);
+    $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
+    $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
+    $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
+    $srp = mysqli_real_escape_string($con, $_POST['suggestedRetailPriceInput']);
+    $qty = mysqli_real_escape_string($con, $_POST['quantityInput']);
+    $product_popular = mysqli_real_escape_string($con, isset($_POST['productpopularCheckbox']) ? '1' : '0');
+    $meta_title = mysqli_real_escape_string($con, $_POST['productmetaTitleInput']);
+    $meta_desc = mysqli_real_escape_string($con, $_POST['productmetaDescriptionInput']);
 
     // Check if product name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ?";
@@ -46,9 +43,13 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
         $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
 
+        //Generate unique slug using id
+        $uniqueIdentifier = time();
+        $slug_new = generateSlug($slug, $uniqueIdentifier);
+
         $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_description, product_original_price,
                         product_discount, product_srp, product_image, product_qty, product_popular, product_meta_title, product_meta_description)
-                        VALUES('$category_id','$name','$slug','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
+                        VALUES('$category_id','$name','$slug_new','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
                         '$meta_title','$meta_desc')";
         $product_categ_query_run = mysqli_query($con, $product_categ_query);
         if ($product_categ_query_run) {
@@ -59,22 +60,19 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
         }
     }
 } else if (isset($_POST['updateProductBtn'])) { //!Update product details
-    $product_id = $_POST['productID'];
-    $category_id = $_POST['selectBrandCategoryID'];
-    $name = $_POST['productnameInput'];
-    $slug = $_POST['productslugInput'];
-    $slug = strtolower($slug);
-    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
-    $slug = str_replace(' ', '', $slug);
-    $desc = $_POST['productdescriptionInput'];
-    $orig_price = $_POST['originalPriceInput'];
-    $discount = $_POST['priceDiscount'];
-    $srp = $_POST['suggestedRetailPriceInput'];
-    $qty = $_POST['quantityInput'];
-    $product_visibility = isset($_POST['productstatusCheckbox']) ? '1' : '0';
-    $product_popular = isset($_POST['productpopularCheckbox']) ? '1' : '0';
-    $meta_title = $_POST['productmetaTitleInput'];
-    $meta_desc = $_POST['productmetaDescriptionInput'];
+    $product_id = mysqli_real_escape_string($con, $_POST['productID']);
+    $category_id = mysqli_real_escape_string($con, $_POST['selectBrandCategoryID']);
+    $name = mysqli_real_escape_string($con, $_POST['productnameInput']);
+    $slug = mysqli_real_escape_string($con, $_POST['productslugInput']);
+    $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
+    $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
+    $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
+    $srp = mysqli_real_escape_string($con, $_POST['suggestedRetailPriceInput']);
+    $qty = mysqli_real_escape_string($con, $_POST['quantityInput']);
+    $product_visibility = mysqli_real_escape_string($con, isset($_POST['productstatusCheckbox']) ? '1' : '0');
+    $product_popular = mysqli_real_escape_string($con, isset($_POST['productpopularCheckbox']) ? '1' : '0');
+    $meta_title = mysqli_real_escape_string($con, $_POST['productmetaTitleInput']);
+    $meta_desc = mysqli_real_escape_string($con, $_POST['productmetaDescriptionInput']);
 
     // Check if category name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ? AND product_id != ?";
@@ -105,16 +103,15 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_description = ?,
+        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_description = ?,
         product_original_price = ?, product_discount = ?, product_srp = ?, product_image = ?, product_qty = ?, product_visibility = ?, product_popular = ?, product_meta_title = ?,
         product_meta_description = ? WHERE product_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
         mysqli_stmt_bind_param(
             $stmt,
-            "isssdidsiiissi",
+            "issdidsiiissi",
             $category_id,
             $name,
-            $slug,
             $desc,
             $orig_price,
             $discount,
@@ -151,7 +148,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $prodid = $category_data['product_id'];
     $categid = $category_data['category_id'];
     $prodName = $category_data['product_name'];
-    $prodSlug = $category_data['productSlug'];
+    $prodSlug = $category_data['product_slug'];
     $prodOP = $category_data['product_original_price'];
     $prodDisc = $category_data['product_discount'];
     $prodSRP = $category_data['product_srp'];
@@ -160,25 +157,35 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     // Add "deleted" to the filename
     $deletedImage = 'deleted_' . $prodImage;
 
-    $product_categ_query = "INSERT INTO products_deleted_details (pd_product_id, pd_category_id, pd_product_name, pd_product_slug,  pd_original_price, pd_product_discount,
+    // Check if orders are preparing
+    $check_query = "SELECT * FROM orders WHERE orders_category_id = ? AND orders_status = 0";
+    $stmt = mysqli_prepare($con, $check_query);
+    mysqli_stmt_bind_param($stmt, "i", $categid);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+
+    if (mysqli_stmt_num_rows($stmt) >= 1) {
+        redirectSwal("../product.php", "Product cannot be deleted, if orders are preparing.", "error");
+    } else {
+
+        $product_categ_query = "INSERT INTO products_deleted_details (pd_product_id, pd_category_id, pd_product_name, pd_product_slug,  pd_original_price, pd_product_discount,
                         pd_srp, pd_image, pd_confirmed)
                         VALUES('$prodid','$categid','$prodName','$prodSlug','$prodOP','$prodDisc','$prodSRP','$deletedImage','1')";
-    $product_categ_query_run = mysqli_query($con, $product_categ_query);
+        $product_categ_query_run = mysqli_query($con, $product_categ_query);
 
-    if ($product_categ_query_run) {
-        if (file_exists("../../assets/uploads/products/" . $prodImage)) {
-
-            // Move old image to "deleted" folder
-            rename("../../assets/uploads/products/" . $prodImage, "../../assets/uploads/products/" . $deletedImage);
+        if ($product_categ_query_run) {
+            if (file_exists("../../assets/uploads/products/" . $prodImage)) {
+                // Move old image to "deleted" folder
+                rename("../../assets/uploads/products/" . $prodImage, "../../assets/uploads/products/" . $deletedImage);
+            }
         }
-    }
+        $delete_query = "DELETE FROM products WHERE product_id='$category_id'";
+        $delete_query_run = mysqli_query($con, $delete_query);
 
-    $delete_query = "DELETE FROM products WHERE product_id='$category_id'";
-    $delete_query_run = mysqli_query($con, $delete_query);
-
-    if ($delete_query_run) {
-        redirectSwal("../product.php", "Product deleted successfully!", "success");
-    } else {
-        redirectSwal("../product.php", "Something went wrong. Please try again later.", "error");
+        if ($delete_query_run) {
+            redirectSwal("../product.php", "Product deleted successfully!", "success");
+        } else {
+            redirectSwal("../product.php", "Something went wrong. Please try again later.", "error");
+        }
     }
 }

@@ -119,7 +119,8 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                 oi.orderItems_price, 
                                 oi.orderItems_Initprice,
                                 p.product_srp,
-                                p.product_original_price
+                                p.product_original_price,
+                                c.category_isBan
                                 FROM 
                                 orders o
                                 INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
@@ -152,7 +153,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -293,7 +294,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 <?php
                                                 }
 
-                                                if ($data['orders_status'] == 1 && $item['pd_confirmed'] == 0) {
+                                                if ($data['orders_status'] == 1) {
                                                 ?>
                                                     <div class="mt-3">
                                                         <form action="../models/orderStatus.php" method="post">
@@ -307,7 +308,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 ?>
 
                                                 <?php
-                                                if ($data['orders_status'] == 2 && $item['pd_confirmed'] == 0) {
+                                                if ($data['orders_status'] == 2 && $item['pd_confirmed'] == 0 && $item['category_isBan'] != 1) {
                                                 ?>
                                                     <div class="mt-3">
                                                         <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>

@@ -17,8 +17,8 @@ include('../middleware/userMW.php');
                         <h3 class="modal-title w-100" id="exampleModalLabel">Important</h3>
                     </div>
                     <div class="modal-body">
-                        <p><span class="fs-3">•</span> Your account should have no ongoing purchases.</p>
-                        <p><span class="fs-3">•</span> After successful deletion of your account, you will not be able to log in to a deleted account and view previous account history.</p>
+                        <p><span class="fs-3">•</span> This account should have no ongoing purchases.</p>
+                        <p><span class="fs-3">•</span> After successful deletion of this account, you will not be able to log in to a deleted account and view previous account history.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-accent col-md-12" data-bs-dismiss="modal">Proceed</button>

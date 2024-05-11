@@ -1,5 +1,18 @@
 <?php include('partials/header.php');
 include('../models/myFunctions.php'); ?>
+<style>
+    .btn-check:checked+.btn {
+        color: #fff !important;
+    }
+
+    .btn-check+.btn {
+        color: #E91E63 !important;
+    }
+
+    .btn-check:hover+.btn {
+        color: #E91E63 !important;
+    }
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -23,22 +36,21 @@ include('../models/myFunctions.php'); ?>
                                     <div class="row col-md-12">
                                         <!-- Add Category start -->
                                         <div class="form-floating col-md-12 mb-3">
-                                            <select disabled name="selectBrandCategoryID" class="form-select ps-2" id="selbr">
 
-                                                <?php
-                                                $categories = getAllbyCategory("categories", $data['category_id']);
-                                                if (mysqli_num_rows($categories) > 0) {
-                                                    foreach ($categories as $item) {
-                                                ?>
-                                                        <option value="<?= $item['category_id'] ?>" <?= $data['category_id'] == $item['category_id'] ? 'selected' : '' ?>><?= $item['category_name'] ?></option>
-                                                <?php
-                                                    }
-                                                } else {
-                                                    echo "No Category Available";
+
+                                            <?php
+                                            $categories = getAllbyCategory("categories", $data['category_id']);
+                                            if (mysqli_num_rows($categories) > 0) {
+                                                foreach ($categories as $item) {
+                                            ?>
+                                                    <input disabled type="text" class="form-control ps-3" value="<?= $item['category_name'] ?>" id="name_input" name="productnameInput" required placeholder="Name">
+                                                    <label for="floatingInput" class="ps-3">Brand Name</label>
+                                            <?php
                                                 }
-                                                ?>
-                                            </select>
-                                            <label for="selbr" class="ps-3">Select Brand Category</label>
+                                            } else {
+                                                echo "No Category Available";
+                                            }
+                                            ?>
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <span class="fs-3 fw-bold">Product Image</span>

@@ -103,13 +103,33 @@ $backUrl = htmlspecialchars(urldecode($backUrl));
                                 $groupedItems = [];
                                 $totalPrice = 0;
                                 $user_id = $_SESSION['auth_user']['user_ID'];
+                                $categ_id = $data['orders_category_id'];
                                 $itemQty = sellerGetOrderedItemQty($tracking_no);
-                                $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name
-                                                FROM orders o
-                                                INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
-                                                INNER JOIN products p ON p.product_id = oi.orderItems_product_id
-                                                INNER JOIN categories c ON c.category_id = p.category_id
-                                                WHERE o.orders_tracking_no = '$tracking_no' AND c.category_user_ID = '$user_id'";
+                                $order_query = "SELECT
+                                o.orders_id as oid, 
+                                o.orders_tracking_no, 
+                                o.orders_user_ID, 
+                                o.orders_last_update_time, 
+                                o.orders_status, 
+                                pd.pd_confirmed,
+                                COALESCE(p.product_name, pd.pd_product_name) AS product_name, 
+                                COALESCE(p.product_slug, pd.pd_product_slug) AS product_slug, 
+                                COALESCE(p.product_image, pd.pd_image) AS product_image,
+                                COALESCE(c.category_name, c_deleted.category_name) AS category_name, 
+                                COALESCE(c.category_slug, c_deleted.category_slug) AS category_slug, 
+                                oi.orderItems_qty, 
+                                oi.orderItems_price, 
+                                oi.orderItems_Initprice,
+                                COALESCE(p.product_srp, pd.pd_srp) AS srp, 
+                                COALESCE(p.product_original_price, pd.pd_original_price) AS orp
+                                FROM 
+                                orders o
+                                INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
+                                LEFT JOIN products p ON p.product_id = oi.orderItems_product_id
+                                LEFT JOIN categories c ON c.category_id = p.category_id
+                                LEFT JOIN products_deleted_details pd ON pd.pd_product_id = oi.orderItems_product_id
+                                LEFT JOIN categories c_deleted ON c_deleted.category_id = pd.pd_category_id
+                                WHERE o.orders_category_id = '$categ_id' AND o.orders_tracking_no = '$tracking_no'";
 
                                 $order_query_run = mysqli_query($con, $order_query);
 
@@ -174,7 +194,7 @@ $backUrl = htmlspecialchars(urldecode($backUrl));
                                                         <option value="0" <?= $data['orders_status'] == 0 ? "selected" : "" ?>>Preparing to ship</option>
                                                         <option value="1" <?= $data['orders_status'] == 1 ? "selected" : "" ?>>Parcel is out for delivery</option> <!-- 1 out of delivery -->
                                                         <option value="2" <?= $data['orders_status'] == 2 ? "selected" : "" ?> disabled>Parcel has been delivered</option> <!-- 2 for delivered -->
-                                                        <option value="3" <?= $data['orders_status'] == 3 ? "selected" : "" ?>>Parcel has been cancelled</option>
+                                                        <option value="3" <?= $data['orders_status'] == 3 ? "selected" : "" ?> <?= $data['orders_status'] == 1 ? "disabled" : "" ?>>Parcel has been cancelled</option>
                                                     </select>
                                                     <label for="slug_input">Parcel Status</label>
                                                 </div>

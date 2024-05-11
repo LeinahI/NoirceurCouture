@@ -69,9 +69,9 @@ if (isset($_SESSION['auth'])) {
                     $tracking_no = "nrcrCtr" . substr($cpNum, 2) . rand(1111, 9999); //* Generate tracking number
 
                     //* Insert order for the current category
-                    $placeOrder_query = "INSERT INTO orders(orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_region, orders_province, orders_city, orders_barangay,
+                    $placeOrder_query = "INSERT INTO orders(orders_category_id, orders_tracking_no, orders_user_ID, orders_full_name, orders_email, orders_phone, orders_address, orders_region, orders_province, orders_city, orders_barangay,
                     orders_total_price, orders_payment_mode, orders_payment_id)
-                    VALUES('$tracking_no','$user_ID', '$fName','$email','$cpNum','$encryptedfAddr', '$region', '$province','$city','$barangay','$totalPrice', '$pay_mode', '$payment_id')";
+                    VALUES('$category_id','$tracking_no','$user_ID', '$fName','$email','$cpNum','$encryptedfAddr', '$region', '$province','$city','$barangay','$totalPrice', '$pay_mode', '$payment_id')";
                     $placeOrder_query_run = mysqli_query($con, $placeOrder_query);
 
                     if ($placeOrder_query_run) {

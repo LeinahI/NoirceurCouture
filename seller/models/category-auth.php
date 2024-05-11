@@ -47,6 +47,10 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
 
+        //Generate unique slug using id
+        $uniqueIdentifier = time();
+        $slug_new = generateSlug($slug, $uniqueIdentifier);
+
         $categ_query = "INSERT INTO categories (category_user_ID, category_name, category_slug, category_description, category_image,
                 category_meta_title, category_meta_description)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -56,7 +60,7 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             "issssss",
             $user_ID,
             $name,
-            $slug,
+            $slug_new,
             $desc,
             $fileName,
             $meta_title,
@@ -79,9 +83,6 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     $category_id = $_POST['categoryID'];
     $name = $_POST['nameInput'];
     $slug = $_POST['slugInput'];
-    $slug = strtolower($slug);
-    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
-    $slug = str_replace(' ', '', $slug);
     $desc = $_POST['descriptionInput'];
     $meta_title = $_POST['metaTitleInput'];
     $meta_desc = $_POST['metaDescriptionInput'];
@@ -116,10 +117,10 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE categories SET category_name = ?, category_slug = ?, category_description = ?, category_onVacation = ?,
+        $categ_query = "UPDATE categories SET category_name = ?, category_description = ?, category_onVacation = ?,
                         category_image = ?, category_meta_title = ?, category_meta_description = ? WHERE category_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
-        mysqli_stmt_bind_param($stmt, "sssisssi", $name, $slug, $desc, $visibility, $fileName, $meta_title, $meta_desc, $category_id);
+        mysqli_stmt_bind_param($stmt, "ssisssi", $name, $desc, $visibility, $fileName, $meta_title, $meta_desc, $category_id);
         $categ_query_run = mysqli_stmt_execute($stmt);
 
         if ($categ_query_run) {

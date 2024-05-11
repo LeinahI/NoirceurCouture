@@ -76,18 +76,6 @@
             ?>
                 <div class="container">
                     <p class='fs-2 fw-bold text-accent text-center'>"<?= $category['category_name'] ?>" is permanently banned</p>
-                    <div class="modal" id="onload" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                            <div class="modal-content bg-main">
-                                <div class="modal-header text-center">
-                                    <span class='fs-3 fw-bold text-accent modal-title w-100'><?= $category['category_name'] ?> has been permanently banned.</span>
-                                </div>
-                                <div class="modal-footer">
-                                    <a href="storelist.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             <?php
             } else {

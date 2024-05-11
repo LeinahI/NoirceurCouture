@@ -166,7 +166,7 @@ if (isset($_GET['category'])) {
                                 $category_onVacation = $row['category_onVacation'];
                                 $category_isBan = $row['category_isBan'];
                             } else {
-                                echo "<span class='fs-4 fw-bold text-accent'>This store currently have not posted a product yet.</span>";
+                                echo "<span class='fs-4 fw-bold text-accent text-center'>This store currently have not posted a product yet.</span>";
                             }
 
                             mysqli_data_seek($products, 0); // Reset the result set pointer
@@ -187,27 +187,14 @@ if (isset($_GET['category'])) {
                                 // Display a message if the category is on vacation
                                 if ($category_onVacation) {
                             ?>
-                                    <span class='fs-4 fw-bold text-accent'>This store is currently on vacation. No products are available for purchase.</span>
+                                    <span class='fs-4 fw-bold text-accent text-center'>This store is currently on vacation. No products are available for purchase.</span>
                                 <?php
                                     break; // Exit the loop if the category is on vacation
                                 }
 
                                 if ($category_isBan) {
                                 ?>
-                                    <span class='fs-4 fw-bold text-accent'>This store has been permanently banned.</span>
-                                    <!-- Modal Initialize on load -->
-                                    <div class="modal" id="onload" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content bg-main">
-                                                <div class="modal-header text-center">
-                                                    <span class='fs-3 fw-bold text-accent modal-title w-100'>This store has been permanently banned.</span>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a href="storelist.php" type="button" class="btn btn-accent col-md-12">Proceed</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <span class='fs-4 fw-bold text-accent text-center'>This store has been permanently banned.</span>
                                 <?php
                                     break; // Exit the loop if the category is banned
                                 }

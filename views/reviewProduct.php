@@ -94,7 +94,7 @@ if (isset($_GET['trck'])) {
                                 $groupedItems = [];
                                 $totalPrice = 0;
                                 $itemQty = getOrderedItemQty($tracking_no);
-                                $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name, c.category_slug
+                                $order_query = "SELECT o.orders_id as oid, o.orders_tracking_no, o.orders_user_ID, oi.*, p.*, c.category_name, c.category_slug, c.category_isBan
                                                 FROM orders o
                                                 INNER JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
                                                 INNER JOIN products p ON p.product_id = oi.orderItems_product_id
@@ -122,7 +122,7 @@ if (isset($_GET['trck'])) {
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -169,66 +169,77 @@ if (isset($_GET['trck'])) {
 
                                     ?>
                                 </div>
-                                <hr>
-                                <div class="mt-2">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <h2>Product Quality</h2>
-                                            <div class="stars">
-                                                <?php
-                                                $reviews_query = "SELECT * FROM `products_reviews` WHERE `orders_tracking_no` = '$tracking_no'";
-                                                $reviews_query_run = mysqli_query($con, $reviews_query);
+                                <?php
+                                if ($item['category_isBan'] == 1) {
+                                ?>
+                                    <p class='fs-2 fw-bold text-accent text-center'>"<?= $item['category_name'] ?>" is permanently banned</p>
+                                <?php
+                                } else {
+                                ?>
+                                    <hr>
+                                    <div class="mt-2">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <h2>Product Quality</h2>
+                                                <div class="stars">
+                                                    <?php
+                                                    $reviews_query = "SELECT * FROM `products_reviews` WHERE `orders_tracking_no` = '$tracking_no'";
+                                                    $reviews_query_run = mysqli_query($con, $reviews_query);
 
-                                                //+ Fetch all reviews and store them in an associative array with product_id as the key
-                                                $product_reviews = [];
-                                                while ($row = mysqli_fetch_assoc($reviews_query_run)) {
-                                                    $product_reviews[$row['product_id']] = $row;
-                                                }
-                                                ?>
+                                                    //+ Fetch all reviews and store them in an associative array with product_id as the key
+                                                    $product_reviews = [];
+                                                    while ($row = mysqli_fetch_assoc($reviews_query_run)) {
+                                                        $product_reviews[$row['product_id']] = $row;
+                                                    }
+                                                    ?>
 
-                                                <form action="../models/rateProduct.php" method="POST">
-                                                    <input type="hidden" name="trackingNumber" value="<?= $tracking_no; ?>">
-                                                    <input type="hidden" name="userID" value="<?= $user_id; ?>">
+                                                    <form action="../models/rateProduct.php" method="POST">
+                                                        <input type="hidden" name="trackingNumber" value="<?= $tracking_no; ?>">
+                                                        <input type="hidden" name="userID" value="<?= $user_id; ?>">
 
-                                                    <div class="mb-3">
-                                                        <select name="prodID" class="form-select" onchange="updateReviewAndStars()">
-                                                            <?php foreach ($items as $item) : ?>
-                                                                <option value="<?= $item['product_id'] ?>"><?= $item['product_name'] ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="float-left">
-                                                        <?php for ($i = 5; $i >= 1; $i--) : ?>
-                                                            <input class="star" id="star<?= $i ?>" type="radio" name="star" value="<?= $i ?>" />
-                                                            <label class="star" for="star<?= $i ?>"></label>
-                                                        <?php endfor; ?>
-                                                    </div>
-
-                                                    <div class="mb-5">
-                                                        <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border border-accent" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
-                                                        <div id="the-count">
-                                                            <span id="current">0</span>
-                                                            <span id="maximum">/ 600</span>
+                                                        <div class="mb-3">
+                                                            <select name="prodID" class="form-select" onchange="updateReviewAndStars()">
+                                                                <?php foreach ($items as $item) : ?>
+                                                                    <option value="<?= $item['product_id'] ?>"><?= $item['product_name'] ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
                                                         </div>
-                                                    </div>
 
-                                                    <?php if (isset($product_reviews[$item['product_id']]) && $product_reviews[$item['product_id']]['review_isReviewed'] == 1) { ?>
-                                                        <?php
-                                                        $review_id = $product_reviews[$item['product_id']]['review_id'];
-                                                        ?>
-                                                        <input type="hidden" name="reviewID" value="<?= $review_id ?>">
-                                                        <button type="submit" name="editRateProductBtn" class="btn btn-accent col-md-12">
-                                                            Edit Rating
-                                                        </button>
-                                                    <?php } else { ?>
-                                                        <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
-                                                    <?php } ?>
-                                                </form>
+                                                        <div class="float-left">
+                                                            <?php for ($i = 5; $i >= 1; $i--) : ?>
+                                                                <input class="star" id="star<?= $i ?>" type="radio" name="star" value="<?= $i ?>" />
+                                                                <label class="star" for="star<?= $i ?>"></label>
+                                                            <?php endfor; ?>
+                                                        </div>
+
+                                                        <div class="mb-5">
+                                                            <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border border-accent" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
+                                                            <div id="the-count">
+                                                                <span id="current">0</span>
+                                                                <span id="maximum">/ 600</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <?php if (isset($product_reviews[$item['product_id']]) && $product_reviews[$item['product_id']]['review_isReviewed'] == 1) { ?>
+                                                            <?php
+                                                            $review_id = $product_reviews[$item['product_id']]['review_id'];
+                                                            ?>
+                                                            <input type="hidden" name="reviewID" value="<?= $review_id ?>">
+                                                            <button type="submit" name="editRateProductBtn" class="btn btn-accent col-md-12">
+                                                                Edit Rating
+                                                            </button>
+                                                        <?php } else { ?>
+                                                            <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
+                                                        <?php } ?>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php
+                                }
+                                ?>
+
                             </div>
                         </div>
                     </div>
