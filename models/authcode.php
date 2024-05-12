@@ -45,7 +45,7 @@ if (isset($_POST['userRegisterBtn'])) {
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
 
             //Insert User Data
-            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_token, user_activation_code)
+            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_code, user_activation_token)
                 VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass', '$veri_code', '$acti_code')";
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
@@ -81,20 +81,20 @@ if (isset($_POST['verifyBtn'])) {
 
         $veri_code = $code1 . $code2 . $code3 . $code4 . $code5 . $code6;
 
-        $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$acti_code'";
+        $selectQuery = "SELECT * FROM users WHERE user_activation_token = '$acti_code'";
         $result_check_acti_code = mysqli_query($con, $selectQuery);
 
         if (mysqli_num_rows($result_check_acti_code) > 0) {
             $row = mysqli_fetch_assoc($result_check_acti_code);
 
-            $verification_code = $row['user_verification_token'];
+            $verification_code = $row['user_verification_code'];
             $accountCreated = $row['user_accCreatedAt'];
 
             if ($verification_code !== $veri_code) {
                 header("Location: ../views/verifyAccount.php?tkn=$acti_code");
                 $_SESSION['Errormsg'] = "Please provide the correct verification code";
             } else {
-                $updateQuery = "UPDATE users SET user_verification_token = '', user_activation_code = '', user_isVerified = '1' WHERE user_verification_token = '$veri_code' AND user_activation_code = '$acti_code'";
+                $updateQuery = "UPDATE users SET user_verification_code = '', user_activation_token = '', user_isVerified = '1' WHERE user_verification_code = '$veri_code' AND user_activation_token = '$acti_code'";
                 $resultUpdateQuery = mysqli_query($con, $updateQuery);
                 if ($resultUpdateQuery) {
 
@@ -120,10 +120,10 @@ if (isset($_POST['resendCodeBtn'])) {
     $veri_code = verificationCode();
     $acti_code = mysqli_real_escape_string($con, $_POST['tkn']);
     //Insert User Data
-    $insert_query = "UPDATE users SET user_verification_token = '$veri_code' WHERE user_activation_code = '$acti_code'";
+    $insert_query = "UPDATE users SET user_verification_code = '$veri_code' WHERE user_activation_token = '$acti_code'";
     $insert_query_run = mysqli_query($con, $insert_query);
     if ($insert_query_run) {
-        $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$acti_code'";
+        $selectQuery = "SELECT * FROM users WHERE user_activation_token = '$acti_code'";
         $result_check_acti_code = mysqli_query($con, $selectQuery);
         $row = mysqli_fetch_assoc($result_check_acti_code);
 

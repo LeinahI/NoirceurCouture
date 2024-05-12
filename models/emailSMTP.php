@@ -35,7 +35,7 @@ function send_otp($email, $subject, $veri_code, $fname, $lname)
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = $subject;
-        $mail->Body = emailBodyVerificationCode($veri_code, $fname, $lname);
+        $mail->Body = emailBodyVerificationCode($veri_code, $fname, $lname, $subject);
 
         $mail->send();
     } catch (Exception $e) {

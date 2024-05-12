@@ -9,6 +9,9 @@
 Customers can enjoy an easy, safe, and fast shopping experience at NoirceurCouture. Customers are able to find and buy the goods they need on our platform, which connects buyers and sellers in a seamless and efficient way. We offer a platform for C2C transactions, enabling users to sell their own goods and increase their customer base. Our user-friendly platform gives sellers everything they need to keep up with their listings and connect with potential customers.
 
 
+Steal this ui look
+https://dribbble.com/shots/20794911-Ecommerce-Mobile-app
+
 ## 🏗 Application Structure
 <details><summary><b>Folder Structure</b></summary>
   
