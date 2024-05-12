@@ -7,7 +7,7 @@ if (isset($_SESSION['auth'])) {
 }
 ?>
 
-<div class="py-5">
+<div class="d-flex align-items-center justify-content-center" style="min-height: 600px">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -21,15 +21,15 @@ if (isset($_SESSION['auth'])) {
                             <div class="container-fluid">
                                 <div class="row">
                                     
-                                    <?php if (isset($_GET['actc']) && !empty($_GET['actc'])) {
-                                        $activation_code = $_GET['actc'];
+                                    <?php if (isset($_GET['tkn']) && !empty($_GET['tkn'])) {
+                                        $activation_code = $_GET['tkn'];
 
                                         $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$activation_code'";
                                         $result_check_acti_code = mysqli_query($con, $selectQuery);
 
                                         if (mysqli_num_rows($result_check_acti_code) > 0) {
                                     ?>
-                                            <input type="hidden" name="actc" value="<?= $activation_code ?>">
+                                            <input type="hidden" name="tkn" value="<?= $activation_code ?>">
                                             <div class="text-center">
                                                 <p>We have sent the verification code to your email</p>
                                                 <?php
@@ -48,7 +48,7 @@ if (isset($_SESSION['auth'])) {
                                         }
                                         ?>
                                     <?php
-                                    } elseif(empty($_GET['actc'])) {
+                                    } elseif(empty($_GET['tkn'])) {
                                         header("Location: ../views/login.php");
                                         $_SESSION['Errormsg'] = "Activation code not found";
                                         exit; // Stop further execution

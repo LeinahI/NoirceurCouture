@@ -29,7 +29,7 @@ function verificationCode($length = 6)
     return $otp;
 }
 
-function generateActivationCode($length = 32)
+function generateToken($length = 32)
 {
     $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $Acode = '';

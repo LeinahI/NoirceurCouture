@@ -7,7 +7,7 @@ session_start();
 /* User Registration statement */
 if (isset($_POST['userRegisterBtn'])) {
     $veri_code = verificationCode();
-    $acti_code = generateActivationCode();
+    $acti_code = generateToken();
 
     $fname = mysqli_real_escape_string($con, $_POST['firstName']);
     $lname = mysqli_real_escape_string($con, $_POST['lastName']);
@@ -45,7 +45,7 @@ if (isset($_POST['userRegisterBtn'])) {
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
 
             //Insert User Data
-            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_code, user_activation_code)
+            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_token, user_activation_code)
                 VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass', '$veri_code', '$acti_code')";
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
@@ -57,7 +57,7 @@ if (isset($_POST['userRegisterBtn'])) {
                 $hiddenEmail = hideEmailCharacters($email);
 
                 $_SESSION['email'] = $hiddenEmail;
-                header("Location: ../views/verifyAccount.php?actc=$acti_code");
+                header("Location: ../views/verifyAccount.php?tkn=$acti_code");
                 $_SESSION['Successmsg'] = "Please check your email for Verification Code";
             } else {
                 redirect("../views/register.php", "something went wrong");
@@ -69,8 +69,8 @@ if (isset($_POST['userRegisterBtn'])) {
 }
 
 if (isset($_POST['verifyBtn'])) {
-    if (isset($_POST['actc'])) {
-        $acti_code = mysqli_real_escape_string($con, $_POST['actc']);
+    if (isset($_POST['tkn'])) {
+        $acti_code = mysqli_real_escape_string($con, $_POST['tkn']);
 
         $code1 = mysqli_real_escape_string($con, $_POST['code1']);
         $code2 = mysqli_real_escape_string($con, $_POST['code2']);
@@ -87,17 +87,21 @@ if (isset($_POST['verifyBtn'])) {
         if (mysqli_num_rows($result_check_acti_code) > 0) {
             $row = mysqli_fetch_assoc($result_check_acti_code);
 
-            $verification_code = $row['user_verification_code'];
+            $verification_code = $row['user_verification_token'];
             $accountCreated = $row['user_accCreatedAt'];
 
             if ($verification_code !== $veri_code) {
-                header("Location: ../views/verifyAccount.php?actc=$acti_code");
+                header("Location: ../views/verifyAccount.php?tkn=$acti_code");
                 $_SESSION['Errormsg'] = "Please provide the correct verification code";
             } else {
-                $updateQuery = "UPDATE users SET user_verification_code = '', user_activation_code = '', user_isVerified = '1' WHERE user_verification_code = '$veri_code' AND user_activation_code = '$acti_code'";
+                $updateQuery = "UPDATE users SET user_verification_token = '', user_activation_code = '', user_isVerified = '1' WHERE user_verification_token = '$veri_code' AND user_activation_code = '$acti_code'";
                 $resultUpdateQuery = mysqli_query($con, $updateQuery);
                 if ($resultUpdateQuery) {
-                    $_SESSION['account_verified'] = true;
+
+                    /* Send OTP to EMAIL SMTP */
+                    $subj = "Congratulations! Your Account is Now Verified";
+                    greetVerifiedUser($row['user_email'], $subj, $row['user_firstName'], $row['user_lastName']);
+
                     header("Location: ../views/login.php");
                     $_SESSION['Successmsg'] = "Your account has been activated. You can log in now.";
                 } else {
@@ -114,9 +118,9 @@ if (isset($_POST['verifyBtn'])) {
 if (isset($_POST['resendCodeBtn'])) {
 
     $veri_code = verificationCode();
-    $acti_code = mysqli_real_escape_string($con, $_POST['actc']);
+    $acti_code = mysqli_real_escape_string($con, $_POST['tkn']);
     //Insert User Data
-    $insert_query = "UPDATE users SET user_verification_code = '$veri_code' WHERE user_activation_code = '$acti_code'";
+    $insert_query = "UPDATE users SET user_verification_token = '$veri_code' WHERE user_activation_code = '$acti_code'";
     $insert_query_run = mysqli_query($con, $insert_query);
     if ($insert_query_run) {
         $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$acti_code'";
@@ -131,8 +135,112 @@ if (isset($_POST['resendCodeBtn'])) {
 
         send_otp($email, $subj, $veri_code, $fname, $lname);
 
-        header("Location: ../views/verifyAccount.php?actc=$acti_code");
+        header("Location: ../views/verifyAccount.php?tkn=$acti_code");
         $_SESSION['Successmsg'] = "New verification code has been sent to your email";
+    }
+}
+
+if (isset($_POST['resetSendLink'])) {
+
+    $reset_token = generateToken();
+
+    $email = mysqli_real_escape_string($con, $_POST['emailInput']);
+    $resetPassUrl = mysqli_real_escape_string($con, $_POST['resetPassUrl']);
+
+    $selectQuery = "SELECT * FROM users WHERE user_email = '$email' AND user_isVerified = '1'";
+    $check_email_query = mysqli_query($con, $selectQuery);
+    $row = mysqli_fetch_assoc($check_email_query);
+    if (!empty($row['user_reset_token'])) {
+        header("Location: ../views/reset.php");
+        $_SESSION['Errormsg'] = "Reset Password link has already been sent to your email";
+    } elseif (mysqli_num_rows($check_email_query) > 0) {
+        $subject = "Reset Password Link for your NoirceurCouture Account";
+        $fname = $row['user_firstName'];
+        $lname = $row['user_lastName'];
+        $resetPassUrl .= "?tkn=" . $reset_token;
+
+        //Insert User Data
+        $insert_query = "UPDATE users SET user_reset_token = '$reset_token' WHERE user_email = '$email'";
+        $insert_query_run = mysqli_query($con, $insert_query);
+        if ($insert_query_run) {
+            userResetPassword($email, $subject, $fname, $lname, $resetPassUrl);
+
+            header("Location: ../views/login.php");
+            $_SESSION['Successmsg'] = "Reset password link has been sent to your email";
+        }
+    } else {
+        header("Location: ../views/reset.php");
+        $_SESSION['Errormsg'] = "No account found with this email";
+    }
+}
+
+if (isset($_POST['resendResetSendLink'])) {
+
+    $reset_token = generateToken();
+
+    $email = mysqli_real_escape_string($con, $_POST['emailInput']);
+    $resetPassUrl = mysqli_real_escape_string($con, $_POST['resetPassUrl']);
+
+    $selectQuery = "SELECT * FROM users WHERE user_email = '$email' AND user_isVerified = '1'";
+    $check_email_query = mysqli_query($con, $selectQuery);
+    $row = mysqli_fetch_assoc($check_email_query);
+
+    if (mysqli_num_rows($check_email_query) > 0) {
+        $subject = "Resending Your Reset Password Link for your NoirceurCouture Account";
+        $fname = $row['user_firstName'];
+        $lname = $row['user_lastName'];
+        $resetPassUrl .= "?tkn=" . $reset_token;
+
+
+        //Insert User Data
+        $insert_query = "UPDATE users SET user_reset_token = '$reset_token' WHERE user_email = '$email'";
+        $insert_query_run = mysqli_query($con, $insert_query);
+        if ($insert_query_run) {
+            userResetPassword($email, $subject, $fname, $lname, $resetPassUrl);
+
+            header("Location: ../views/login.php");
+            $_SESSION['Successmsg'] = "New Reset password link has been sent to your email";
+        }
+    } else {
+        header("Location: ../views/reset.php");
+        $_SESSION['Errormsg'] = "No account found with this email";
+    }
+}
+
+if (isset($_POST['resetPassBtn'])) {
+    $reset_token = mysqli_real_escape_string($con, $_POST['tkn']);
+
+    $uPass = mysqli_real_escape_string($con, $_POST['NewPasswordInput']);
+    $uCPass = mysqli_real_escape_string($con, $_POST['ConfirmPasswordInput']);
+
+    $selectQuery = "SELECT user_password FROM users WHERE user_reset_token = '$reset_token'";
+    $check_pass_query = mysqli_query($con, $selectQuery);
+    $row = mysqli_fetch_assoc($check_pass_query);
+
+    $bcryptOldPass = $row['user_password'];
+
+    if (password_verify($uPass, $bcryptOldPass)) {
+        header("Location: ../views/resetPassword.php?tkn=$reset_token");
+        $_SESSION['Errormsg'] = "New password cannot be the same as old password";
+        exit;
+    } else if ($uPass != $uCPass) {
+        header("Location: ../views/resetPassword.php?tkn=$reset_token");
+        $_SESSION['Errormsg'] = "Passwords doesn't match";
+        exit;
+    } else {
+        //Hash Password
+        $bcryptnewPass = password_hash($uPass, PASSWORD_BCRYPT);
+
+        //Update Password
+        $update_query = "UPDATE users SET user_password = '$bcryptnewPass', user_reset_token = '' WHERE user_reset_token = '$reset_token'";
+        $update_query_run = mysqli_query($con, $update_query);
+        if ($update_query_run) {
+            header("Location: ../views/login.php");
+            $_SESSION['Successmsg'] = "Your password has been changed. You can log in now";
+        } else {
+            header("Location: ../views/login.php");
+            $_SESSION['Errormsg'] = "Error updating your password. Please try again later or contact our support.";
+        }
     }
 }
 

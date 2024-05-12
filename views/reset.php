@@ -33,31 +33,30 @@ if (isset($_SESSION['auth'])) {
                 <?php include('../partials/sessionMessage.php') ?>
                 <div class="card bg-main">
                     <div class="card-header text-center">
-                        <h4>Log in</h4>
+                        <h4>Reset Password</h4>
                     </div>
                     <div class="card-body">
                         <form action="../models/authcode.php" method="POST">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <!-- Fname and Lname start -->
+                                    <?php
+                                    $bn = basename($_SERVER['HTTP_REFERER']);
+                                    $bn_replace = str_replace($bn, "resetPassword.php", $_SERVER['HTTP_REFERER']);
+                                    $resetPassUrl = $bn_replace;
+                                    ?>
+                                    <input type="hidden" name="resetPassUrl" value="<?= $resetPassUrl ?>">
                                     <div class="form-floating mb-3 col-md-12 ps-0">
-                                        <input type="text" class="form-control" id="login_input" name="loginInput" required placeholder="name@example.com">
-                                        <label for="floatingInput">Username / Email / Phone Number</label>
+                                        <input type="email" class="form-control" name="emailInput" required placeholder="name@example.com">
+                                        <label for="floatingInput">Email</label>
                                     </div>
-
-                                    <div class="input-group ps-0 mb-3">
-                                        <div class="form-floating">
-                                            <input type="password" class="form-control" id="password_input" name="loginPasswordInput" required placeholder="Password">
-                                            <label for="code1">Password</label>
-                                        </div>
-                                        <span class="input-group-text" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
-                                    </div>
-                                    <!-- Pass and CPass end -->
 
                                     <div class="text-center ps-0">
-                                        <button type="submit" name="loginBtn" class="btn mb-1 btn-primary col-md-12">Log In</button>
+                                        <button type="submit" name="resetSendLink" class="btn mb-1 btn-primary col-md-12">Next</button>
                                     </div>
-                                    <a href="reset.php" class="mb-3 ps-0 text-accent text-decoration-none w-auto">Forgot Password</a>
+
+                                    <div class="text-center ps-0">
+                                        <h6>Didn't receive the code? <button type="submit" name="resendResetSendLink" class="btn btn-link text-accent px-0 text-decoration-none">Send Code Again</button></h6>
+                                    </div>
 
                                     <div class="NleHE1 ps-0">
                                         <div class="rEVZJ2"></div>
@@ -66,7 +65,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-accent">Register</a></h6>
+                                        <h6><a href="login.php" class="btn mb-1 btn-accent col-md-12">Go Back</a></h6>
                                     </div>
                                 </div>
                             </div>
