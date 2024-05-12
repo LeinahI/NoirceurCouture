@@ -1,5 +1,44 @@
 <?php
 include('dbcon.php');
+
+function hideEmailCharacters($email)
+{
+    $parts = explode('@', $email);
+    $username = $parts[0];
+    $domain = $parts[1];
+    
+    // Get the first character of the username
+    $firstChar = substr($username, 0, 1);
+    
+    // Get the last character of the username
+    $lastChar = substr($username, -1);
+    
+    // Replace characters between the first and last characters with asterisks
+    $hiddenUsername = $firstChar . str_repeat('*', strlen($username) - 2) . $lastChar;
+    
+    return $hiddenUsername . '@' . $domain;
+}
+
+//Generate OTP for Buyer account
+function verificationCode($length = 6)
+{
+    $otp = '';
+    for ($i = 0; $i < $length; $i++) {
+        $otp .= mt_rand(0, 9);
+    }
+    return $otp;
+}
+
+function generateActivationCode($length = 32)
+{
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $Acode = '';
+    for ($i = 0; $i < $length; $i++) {
+        $Acode .= $characters[mt_rand(0, strlen($characters) - 1)];
+    }
+    return $Acode;
+}
+
 function getAll($table)
 {
     global $con;

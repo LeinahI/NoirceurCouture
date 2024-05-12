@@ -1,10 +1,14 @@
 <?php
 include('dbcon.php');
 include('myFunctions.php');
+include('emailSMTP.php');
 session_start();
 
 /* User Registration statement */
 if (isset($_POST['userRegisterBtn'])) {
+    $veri_code = verificationCode();
+    $acti_code = generateActivationCode();
+
     $fname = mysqli_real_escape_string($con, $_POST['firstName']);
     $lname = mysqli_real_escape_string($con, $_POST['lastName']);
     $email = mysqli_real_escape_string($con, $_POST['email']);
@@ -41,18 +45,94 @@ if (isset($_POST['userRegisterBtn'])) {
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
 
             //Insert User Data
-            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password)
-                VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass')";
+            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_code, user_activation_code)
+                VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass', '$veri_code', '$acti_code')";
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
-                /* Swal */
-                redirectSwal("../views/login.php", "New account added", "success");
+
+                /* Send OTP to EMAIL SMTP */
+                $subj = "Your Verification Code from NoirceurCouture Account";
+                send_otp($email, $subj, $veri_code, $fname, $lname);
+
+                $hiddenEmail = hideEmailCharacters($email);
+
+                $_SESSION['email'] = $hiddenEmail;
+                header("Location: ../views/verifyAccount.php?actc=$acti_code");
+                $_SESSION['Successmsg'] = "Please check your email for Verification Code";
             } else {
                 redirect("../views/register.php", "something went wrong");
             }
         } else {
             redirect("../views/register.php", "Passwords doesn't match");
         }
+    }
+}
+
+if (isset($_POST['verifyBtn'])) {
+    if (isset($_POST['actc'])) {
+        $acti_code = mysqli_real_escape_string($con, $_POST['actc']);
+
+        $code1 = mysqli_real_escape_string($con, $_POST['code1']);
+        $code2 = mysqli_real_escape_string($con, $_POST['code2']);
+        $code3 = mysqli_real_escape_string($con, $_POST['code3']);
+        $code4 = mysqli_real_escape_string($con, $_POST['code4']);
+        $code5 = mysqli_real_escape_string($con, $_POST['code5']);
+        $code6 = mysqli_real_escape_string($con, $_POST['code6']);
+
+        $veri_code = $code1 . $code2 . $code3 . $code4 . $code5 . $code6;
+
+        $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$acti_code'";
+        $result_check_acti_code = mysqli_query($con, $selectQuery);
+
+        if (mysqli_num_rows($result_check_acti_code) > 0) {
+            $row = mysqli_fetch_assoc($result_check_acti_code);
+
+            $verification_code = $row['user_verification_code'];
+            $accountCreated = $row['user_accCreatedAt'];
+
+            if ($verification_code !== $veri_code) {
+                header("Location: ../views/verifyAccount.php?actc=$acti_code");
+                $_SESSION['Errormsg'] = "Please provide the correct verification code";
+            } else {
+                $updateQuery = "UPDATE users SET user_verification_code = '', user_activation_code = '', user_isVerified = '1' WHERE user_verification_code = '$veri_code' AND user_activation_code = '$acti_code'";
+                $resultUpdateQuery = mysqli_query($con, $updateQuery);
+                if ($resultUpdateQuery) {
+                    $_SESSION['account_verified'] = true;
+                    header("Location: ../views/login.php");
+                    $_SESSION['Successmsg'] = "Your account has been activated. You can log in now.";
+                } else {
+                    header("Location: ../views/login.php");
+                    $_SESSION['Errormsg'] = "Your account cannot be activated. Please try again.";
+                }
+            }
+        }
+    } else {
+        echo "Activation code didn't get";
+    }
+}
+
+if (isset($_POST['resendCodeBtn'])) {
+
+    $veri_code = verificationCode();
+    $acti_code = mysqli_real_escape_string($con, $_POST['actc']);
+    //Insert User Data
+    $insert_query = "UPDATE users SET user_verification_code = '$veri_code' WHERE user_activation_code = '$acti_code'";
+    $insert_query_run = mysqli_query($con, $insert_query);
+    if ($insert_query_run) {
+        $selectQuery = "SELECT * FROM users WHERE user_activation_code = '$acti_code'";
+        $result_check_acti_code = mysqli_query($con, $selectQuery);
+        $row = mysqli_fetch_assoc($result_check_acti_code);
+
+        $email = $row['user_email'];
+        $subj = "Resending Your Verification Code from NoirceurCouture Account";
+        $fname = $row['user_firstName'];
+        $lname = $row['user_lastName'];
+
+
+        send_otp($email, $subj, $veri_code, $fname, $lname);
+
+        header("Location: ../views/verifyAccount.php?actc=$acti_code");
+        $_SESSION['Successmsg'] = "New verification code has been sent to your email";
     }
 }
 
@@ -143,11 +223,14 @@ if (isset($_POST['loginBtn'])) {
         $userid = $userdata['user_ID'];
         $userRole = $userdata['user_role'];
         $isAccountBanned = $userdata['user_isBan'];
+        $isAccountVerified = $userdata['user_isVerified'];
 
         if (!password_verify($loginPass, $bcryptuPass)) {
             redirect('../views/login.php', 'Invalid Credentials. Try again');
         } else if ($isAccountBanned == 1) {
             redirect('../views/login.php', 'This account has been banned permanently');
+        } else if ($isAccountVerified != 1) {
+            redirect('../views/login.php', 'This account is not verified yet');
         } else {
             $_SESSION['auth'] = true;
 
@@ -262,8 +345,6 @@ if (isset($_POST['userAddAddrBtn'])) {
         $stmt->close();
     }
 }
-
-
 
 /* User Address Update statement */
 if (isset($_POST['userUpdateAddrBtn'])) {

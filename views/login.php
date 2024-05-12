@@ -10,19 +10,7 @@ if (isset($_SESSION['auth'])) {
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <?php
-                if (isset($_SESSION['Errormsg'])) {
-                ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
-                        <?= $_SESSION['Errormsg']; ?>.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php
-                    /* Alert popup will show here */
-                    unset($_SESSION['Errormsg']);
-                }
-                ?>
+                <?php include('../partials/sessionMessage.php') ?>
                 <div class="card bg-main">
                     <div class="card-header text-center">
                         <h4>Log in</h4>
