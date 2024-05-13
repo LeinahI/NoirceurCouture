@@ -193,7 +193,7 @@
         </div>
     </div>
 
-    <div class="position-absolute w-100 bottom-0">
+    <div class="mt-5">
         <?php include('footer.php'); ?>
     </div>
 

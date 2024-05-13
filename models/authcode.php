@@ -45,7 +45,7 @@ if (isset($_POST['userRegisterBtn'])) {
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
 
             //Insert User Data
-            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_code, user_general_token)
+            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_verification_code, user_activation_token)
                 VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass', '$veri_code', '$acti_code')";
             $insert_query_run = mysqli_query($con, $insert_query);
             if ($insert_query_run) {
@@ -81,7 +81,7 @@ if (isset($_POST['verifyBtn'])) {
 
         $veri_code = $code1 . $code2 . $code3 . $code4 . $code5 . $code6;
 
-        $selectQuery = "SELECT * FROM users WHERE user_general_token = '$acti_code'";
+        $selectQuery = "SELECT * FROM users WHERE user_activation_token = '$acti_code'";
         $result_check_acti_code = mysqli_query($con, $selectQuery);
 
         if (mysqli_num_rows($result_check_acti_code) > 0) {
@@ -94,7 +94,7 @@ if (isset($_POST['verifyBtn'])) {
                 header("Location: ../views/verifyAccount.php?tkn=$acti_code");
                 $_SESSION['Errormsg'] = "Please provide the correct verification code";
             } else {
-                $updateQuery = "UPDATE users SET user_verification_code = '', user_general_token = '', user_isVerified = '1' WHERE user_verification_code = '$veri_code' AND user_general_token = '$acti_code'";
+                $updateQuery = "UPDATE users SET user_verification_code = '', user_activation_token = '', user_isVerified = '1' WHERE user_verification_code = '$veri_code' AND user_activation_token = '$acti_code'";
                 $resultUpdateQuery = mysqli_query($con, $updateQuery);
                 if ($resultUpdateQuery) {
 
@@ -120,10 +120,10 @@ if (isset($_POST['resendCodeBtn'])) {
     $veri_code = verificationCode();
     $acti_code = mysqli_real_escape_string($con, $_POST['tkn']);
     //Insert User Data
-    $insert_query = "UPDATE users SET user_verification_code = '$veri_code' WHERE user_general_token = '$acti_code'";
+    $insert_query = "UPDATE users SET user_verification_code = '$veri_code' WHERE user_activation_token = '$acti_code'";
     $insert_query_run = mysqli_query($con, $insert_query);
     if ($insert_query_run) {
-        $selectQuery = "SELECT * FROM users WHERE user_general_token = '$acti_code'";
+        $selectQuery = "SELECT * FROM users WHERE user_activation_token = '$acti_code'";
         $result_check_acti_code = mysqli_query($con, $selectQuery);
         $row = mysqli_fetch_assoc($result_check_acti_code);
 
@@ -150,7 +150,7 @@ if (isset($_POST['resetSendLink'])) {
     $selectQuery = "SELECT * FROM users WHERE user_email = '$email' AND user_isVerified = '1'";
     $check_email_query = mysqli_query($con, $selectQuery);
     $row = mysqli_fetch_assoc($check_email_query);
-    if (!empty($row['user_general_token'])) {
+    if (!empty($row['user_reset_token'])) {
         header("Location: ../views/reset.php");
         $_SESSION['Errormsg'] = "Reset Password link has already been sent to your email";
     } elseif (mysqli_num_rows($check_email_query) > 0) {
@@ -160,7 +160,7 @@ if (isset($_POST['resetSendLink'])) {
         $resetPassUrl .= "?tkn=" . $reset_token;
 
         //Insert User Data
-        $insert_query = "UPDATE users SET user_general_token = '$reset_token' WHERE user_email = '$email'";
+        $insert_query = "UPDATE users SET user_reset_token = '$reset_token' WHERE user_email = '$email'";
         $insert_query_run = mysqli_query($con, $insert_query);
         if ($insert_query_run) {
             userResetPassword($email, $subject, $fname, $lname, $resetPassUrl);
@@ -193,7 +193,7 @@ if (isset($_POST['resendResetSendLink'])) {
 
 
         //Insert User Data
-        $insert_query = "UPDATE users SET user_general_token = '$reset_token' WHERE user_email = '$email'";
+        $insert_query = "UPDATE users SET user_reset_token = '$reset_token' WHERE user_email = '$email'";
         $insert_query_run = mysqli_query($con, $insert_query);
         if ($insert_query_run) {
             userResetPassword($email, $subject, $fname, $lname, $resetPassUrl);
@@ -213,7 +213,7 @@ if (isset($_POST['resetPassBtn'])) {
     $uPass = mysqli_real_escape_string($con, $_POST['NewPasswordInput']);
     $uCPass = mysqli_real_escape_string($con, $_POST['ConfirmPasswordInput']);
 
-    $selectQuery = "SELECT user_password FROM users WHERE user_general_token = '$reset_token'";
+    $selectQuery = "SELECT user_password FROM users WHERE user_reset_token = '$reset_token'";
     $check_pass_query = mysqli_query($con, $selectQuery);
     $row = mysqli_fetch_assoc($check_pass_query);
 
@@ -232,7 +232,7 @@ if (isset($_POST['resetPassBtn'])) {
         $bcryptnewPass = password_hash($uPass, PASSWORD_BCRYPT);
 
         //Update Password
-        $update_query = "UPDATE users SET user_password = '$bcryptnewPass', user_general_token = '' WHERE user_general_token = '$reset_token'";
+        $update_query = "UPDATE users SET user_password = '$bcryptnewPass', user_reset_token = '' WHERE user_reset_token = '$reset_token'";
         $update_query_run = mysqli_query($con, $update_query);
         if ($update_query_run) {
             header("Location: ../views/login.php");

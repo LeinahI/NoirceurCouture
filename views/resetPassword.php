@@ -24,7 +24,7 @@ if (isset($_SESSION['auth'])) {
                                     <?php if (isset($_GET['tkn']) && !empty($_GET['tkn'])) {
                                         $token = $_GET['tkn'];
 
-                                        $selectQuery = "SELECT * FROM users WHERE user_general_token = '$token'";
+                                        $selectQuery = "SELECT * FROM users WHERE user_reset_token = '$token'";
                                         $result_check_acti_code = mysqli_query($con, $selectQuery);
 
                                         if (mysqli_num_rows($result_check_acti_code) > 0) {
