@@ -18,20 +18,24 @@ if (isset($_GET['trck'])) {
 
     $orderData = checkTrackingNumValid($tracking_no);
     if (mysqli_num_rows($orderData) <= 0) {
+        header("Location: ../views/myOrders.php?");
+        $_SESSION['Errormsg'] = "You have no orders yet!";
 ?>
         <div class="text-center">
             <h1>Something went wrong.</h1>
         </div>
     <?php
-        die();
+      
     }
 } else {
+    header("Location: ../views/myOrders.php?");
+    $_SESSION['Errormsg'] = "You have no orders yet!";
     ?>
     <div class="text-center">
         <h1>Something went wrong.</h1>
     </div>
 <?php
-    die();
+   
 }
 
 $data = mysqli_fetch_array($orderData);
@@ -102,7 +106,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                 $totalPrice = 0;
                                 $itemQty = getOrderedItemQty($tracking_no);
 
-                                
+
                                 $order_query = "SELECT
                                 o.orders_id as oid, 
                                 o.orders_tracking_no, 
