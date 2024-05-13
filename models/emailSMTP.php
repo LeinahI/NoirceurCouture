@@ -4,9 +4,9 @@ include('emailBody.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$emailService = 'smtp.gmail.com';
-$emailUsername = 'noir.smtp@gmail.com';
-$emailPassword = 'wwppxrjeoxgnzubc';
+$emailService = '';
+$emailUsername = '';
+$emailPassword = '';
 
 function send_otp($email, $subject, $veri_code, $fname, $lname)
 {
