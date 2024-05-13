@@ -45,10 +45,14 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                 <!-- Wish List end -->
 
                 <?php
+                $user = getUserDetails();
+                $data = mysqli_fetch_array($user);
+                $profilePic = $data['user_profile_image'];
                 if (isset($_SESSION['auth'])) {
                 ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-brown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../assets/uploads/userProfile/<?= ($profilePic) ? $profilePic : 'defaultProfile.jpg' ?>" height="20" width="20" class="rounded-circle" alt="">
                             <?= $_SESSION['auth_user']['user_username'] ?>
                         </a>
                         <ul class="dropdown-menu bg-primary">
