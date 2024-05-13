@@ -30,7 +30,7 @@ include('../middleware/userMW.php');
 
                 <div class="card border rounded-3 shadow bg-main">
                     <div class="card-header">
-                        <h5 class="card-title ">
+                        <h5 class="card-title">
                             <span>Add New Address</span>
                             <span class="float-end">
                                 <a href="myAddress.php" class="btn btn-primary">

@@ -51,6 +51,9 @@ include('../middleware/userMW.php');
                 if (mysqli_num_rows($user) > 0) {
                     $data = mysqli_fetch_array($user);
                     $profilePic = $data['user_profile_image'];
+
+                    $hiddenEmail = hideEmailCharacters($data['user_email']);
+                    $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
                 ?>
                     <div class="card border rounded-3 shadow bg-main">
                         <div class="card-header">
@@ -85,15 +88,17 @@ include('../middleware/userMW.php');
 
                                         <!-- Email and Number start -->
                                         <div class="row">
-                                            <div class="form-floating col-md-6 ps-0 mb-3">
-                                                <input type="email" class="form-control" id="user_email" name="email" value="<?= $data['user_email'] ?>" required placeholder="name@example.com">
-                                                <label for="floatingInput">Email address</label>
+                                            <div class="col">
+                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a href="#">Change</a></p>
                                             </div>
-                                            <div class="form-floating col-md-6 ps-0 mb-3">
-                                                <input type="number" class="form-control" id="user_email" name="phoneNumber" value="<?= $data['user_phone'] ?>" required placeholder="09" onkeypress="inpNum(event)">
-                                                <label for="floatingInput">Phone Number</label>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p>Phone number: <span><?= $hiddenPhoneNumber; ?> <a href="changePhoneNumber.php">Change</a></span></p>
                                             </div>
                                         </div>
+
                                         <!-- Email and Number end -->
 
                                         <div class="row">
@@ -155,34 +160,7 @@ include('../middleware/userMW.php');
         }
     }
 
-    /* Prevent user to write letter or symbols in phone number */
-    function inpNum(e) {
-        e = e || window.event;
-        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
-        var charStr = String.fromCharCode(charCode);
-
-        // Allow only numeric characters
-        if (!charStr.match(/^[0-9]+$/)) {
-            e.preventDefault();
-        }
-
-        // Allow a maximum of 11 digits
-        var inputValue = e.target.value || '';
-        var numericValue = inputValue.replace(/[^0-9]/g, '');
-
-        if (numericValue.length >= 11) {
-            e.preventDefault();
-        }
-
-        // Apply Philippine phone number format (optional)
-        if (numericValue.length === 1 && numericValue !== '0') {
-            // Add '0' at the beginning if the first digit is not '0'
-            e.target.value = '0' + numericValue;
-        } else if (numericValue.length >= 2 && !numericValue.startsWith('09')) {
-            // Ensure it starts with '09'
-            e.target.value = '09' + numericValue.substring(2);
-        }
-    }
+    
 </script>
 
 <div style="margin-top:5%;">

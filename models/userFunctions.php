@@ -4,6 +4,43 @@ include('dbcon.php');
 ob_start(); //Ouput buffering
 date_default_timezone_set('Asia/Manila');
 
+
+function hideEmailCharacters($email)
+{
+    $parts = explode('@', $email);
+
+    $username = $parts[0];
+    $domain = $parts[1];
+
+    // Get the first character of the username
+    $firstChar = substr($username, 0, 1);
+
+    // Get the last character of the username
+    $lastChar = substr($username, -1);
+
+    // Replace characters between the first and last characters with asterisks
+    $hiddenUsername = $firstChar . str_repeat('*', strlen($username) - 2) . $lastChar;
+
+    return $hiddenUsername . '@' . $domain;
+}
+
+function maskPhoneNumber($phoneNumber)
+{
+    // Get the length of the phone number
+    $length = strlen($phoneNumber);
+
+    // Get the last four digits
+    $lastFourDigits = substr($phoneNumber, -4);
+
+    // Mask the remaining digits with asterisks
+    $maskedDigits = str_repeat('*', $length - 3); // Replace digits with asterisks except the last four
+
+    // Concatenate the masked digits and the last four digits
+    $maskedPhoneNumber = $maskedDigits . $lastFourDigits;
+
+    return $maskedPhoneNumber;
+}
+
 function getAllViews($table)
 {
     global $con;
