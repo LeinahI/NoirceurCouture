@@ -14,13 +14,14 @@ function emailBodyVerificationCode($veri_code, $fname, $lname, $subject)
         <div style='width: 550px;'>
         <h1 style='font-size: 16px; text-align: left;'>$subject</h1>
 
-        <p style='font-size: 14px; text-align: left;'>Hi $fname $lname,</p>
-        <p style='font-size: 14px; text-align: left;'>Thanks for starting the new NoirceurCouture creation process. We want to make sure it's really you. Please enter the following verification code when prompted.</p>
+        <p style='font-size: 14px; text-align: left;'>Dear $fname $lname,</p>
+        <p style='font-size: 14px; text-align: left;'>Thanks for joining NoirceurCouture. We want to make sure it's really you. Please enter the following verification code when prompted.</p>
 
         <div style='padding: 1px; margin: 0px 80px 0px 80px; background-color: #816ACC'>
             <p style='font-size: 14px; color: white; font-weight: bold;'>Verification Code</p>
             <h1 style='color:white; font-size: 36px; margin-top: 0px'>$veri_code</h1>
         </div>
+        <p style='font-size: 12px;'> This is valid for 15 mins. NEVER share this code with others, including NoirceurCouture staff. </p>
 
         <p style='font-size: 14px; text-align: left; font-weight: bold;'>Thank you!</p>
         <p style='font-size: 14px; text-align: left; font-weight: bold;'>Noirceur Couture Support Team</p>
@@ -98,6 +99,9 @@ function emailBodyResetPassword($fname, $lname, $resetPassUrl, $subject)
         <div style='padding: 1px; margin: 0px 80px 0px 80px; background-color: #816ACC'>
             <h1><a href='$resetPassUrl' style='font-size: 16px; font-weight: bold; color:white;'>[Reset Password Link]</a></h1>
         </div>
+        <p style='font-size: 12px;'> This is valid for 15 mins. NEVER share this link with others, including
+                    NoirceurCouture staff. </p>
+        
 
         <p style='font-size: 14px; text-align: left;'>If you did not request this password reset, you can safely ignore this email. Your password will remain unchanged.</p>
         <p style='font-size: 14px; text-align: left; font-weight: bold;'>Thank you for using NoirceurCouture.</p>
@@ -108,6 +112,110 @@ function emailBodyResetPassword($fname, $lname, $resetPassUrl, $subject)
     </div>
 </div>
 </center>
+    ";
+
+    return $body;
+}
+
+function emailBodyChangeEmailVerifyIdentityOTP($veri_code, $fname, $lname, $subject)
+{
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+        <div style='margin-top: 30px; width: 600px;'>
+            <div style='padding: 20px; background-color: #816ACC;'>
+                <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+            </div>
+
+            <div style='width: 550px;'>
+                <h1 style='font-size: 16px; text-align: left;'>$subject</h1>
+
+                <p style='font-size: 14px; text-align: left;'>Dear $fname $lname,</p>
+                <p style='font-size: 14px; text-align: left;'>We received a request to change your email address for
+                    your account on NoirceurCouture. To proceed with changing your email, please copy this One-Time Password:</p>
+
+                <div style='padding: 1px; margin: 0px 80px 0px 80px; background-color: #816ACC'>
+                    <p style='font-size: 14px; color: white; font-weight: bold;'>One-Time Password</p>
+                    <h1 style='color:white; font-size: 36px; margin-top: 0px'>$veri_code</h1>
+                </div>
+                <p style='font-size: 12px;'> This is valid for 15 mins. NEVER share this code with others, including
+                    NoirceurCouture staff. </p>
+
+                <p style='font-size: 14px; text-align: left;'>If you did not request this email change, you can safely
+                    ignore this email. Your email will remain unchanged.</p>
+                <p style='font-size: 14px; text-align: left; font-weight: bold;'>Thank you for using NoirceurCouture.
+                </p>
+
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Best Regards,</p>
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Noirceur Couture Support Team</p>
+            </div>
+    </center>
+    ";
+
+    return $body;
+}
+
+function emailBodyEmailChangeSendToOld($fname, $lname, $subject, $oldEmail, $newEmail) 
+{
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+        <div style='margin-top: 30px; width: 600px;'>
+            <div style='padding: 20px; background-color: #816ACC;'>
+                <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+            </div>
+
+            <div style='width: 550px;'>
+                <h1 style='font-size: 16px; text-align: left;'>$subject</h1>
+
+                <p style='font-size: 14px; text-align: left;'>Dear $fname $lname,</p>
+                <p style='font-size: 14px; text-align: left;'>We want to inform you that the email address associated with NoirceurCouture has been successfully updated.</p>
+
+                <b><p style='font-size: 14px; text-align: left;'>Old Email: $oldEmail</p></b>
+                <p style='font-size: 14px; text-align: left;'>New Email: $newEmail</p>
+
+                <p style='font-size: 14px; text-align: left;'>From now on, all future email notifications from NoirceurCouture will be sent to your new email address.</p>
+                <p style='font-size: 14px; text-align: left;'>Thank you for choosing NoirceurCouture. If you have any questions or need further assistance, feel free to contact us at any time.</p>
+
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Best Regards,</p>
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Noirceur Couture Support Team</p>
+            </div>
+    </center>
+    ";
+
+    return $body;
+}
+
+function emailBodyEmailChangeSendToNew($fname, $lname, $subject, $oldEmail, $newEmail) 
+{
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+        <div style='margin-top: 30px; width: 600px;'>
+            <div style='padding: 20px; background-color: #816ACC;'>
+                <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+            </div>
+
+            <div style='width: 550px;'>
+                <h1 style='font-size: 16px; text-align: left;'>$subject</h1>
+
+                <p style='font-size: 14px; text-align: left;'>Dear $fname $lname,</p>
+                <p style='font-size: 14px; text-align: left;'>We want to inform you that the email address associated with NoirceurCouture has been successfully updated.</p>
+
+                <p style='font-size: 14px; text-align: left;'>Old Email: $oldEmail</p>
+                <b><p style='font-size: 14px; text-align: left;'>New Email: $newEmail</p></b>
+
+                <p style='font-size: 14px; text-align: left;'>From now on, all future email notifications from NoirceurCouture will be sent to this new email address.</p>
+                <p style='font-size: 14px; text-align: left;'>Thank you for choosing NoirceurCouture. If you have any questions or need further assistance, feel free to contact us at any time.
+                </p>
+
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Best Regards,</p>
+                <p style='font-size: 14px; font-weight: bold; text-align: left;'>Noirceur Couture Support Team</p>
+            </div>
+    </center>
     ";
 
     return $body;

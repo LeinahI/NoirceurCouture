@@ -89,7 +89,7 @@ include('../middleware/userMW.php');
                                         <!-- Email and Number start -->
                                         <div class="row">
                                             <div class="col">
-                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a href="#">Change</a></p>
+                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a href="changeEmailAddress.php">Change</a></p>
                                             </div>
 
                                         </div>

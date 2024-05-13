@@ -21,7 +21,7 @@ include('../middleware/userMW.php');
                 ?>
                     <div class="card border rounded-3 shadow bg-main">
                         <div class="card-header">
-                            <h5 class="card-title">Change Phone Number
+                            <h5 class="card-title">Change Email Address
                                 <span class="float-end">
                                     <a href="myAccount.php" class="btn btn-primary">
                                         Go Back
@@ -37,21 +37,21 @@ include('../middleware/userMW.php');
                                         <!-- Username start -->
                                         <div class="row">
                                             <div class="form-floating col-md-12 ps-0 mb-3">
-                                                <input type="number" class="form-control" id="user_phone" name="oldPhoneNumber" required placeholder="0945" onkeypress="inpNum(event)">
-                                                <label for="floatingInput">Current Phone Number</label>
+                                                <input type="email" class="form-control" id="user_phone" name="oldEmail" required placeholder="0945" onkeypress="inpNum(event)">
+                                                <label for="floatingInput">Current Email Address</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-floating col-md-12 ps-0 mb-3">
-                                                <input type="number" class="form-control" id="user_phone" name="newPhoneNumber" required placeholder="0945" onkeypress="inpNum(event)">
-                                                <label for="floatingInput">New Phone Number</label>
+                                                <input type="email" class="form-control" id="user_phone" name="newEmail" required placeholder="0945" onkeypress="inpNum(event)">
+                                                <label for="floatingInput">New Email Address</label>
                                             </div>
                                         </div>
                                         <!-- Username end -->
 
                                         <div class="row">
                                             <div class="text-center ps-0">
-                                                <button type="submit" name="userPhoneNumber" class="btn btn-accent col-md-12">Submit</button>
+                                                <button type="submit" name="userChangeEmail" class="btn btn-accent col-md-12">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,36 +66,6 @@ include('../middleware/userMW.php');
         </div>
     </div>
 </div>
-<script>
-    /* Prevent user to write letter or symbols in phone number */
-    function inpNum(e) {
-        e = e || window.event;
-        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
-        var charStr = String.fromCharCode(charCode);
-
-        // Allow only numeric characters
-        if (!charStr.match(/^[0-9]+$/)) {
-            e.preventDefault();
-        }
-
-        // Allow a maximum of 11 digits
-        var inputValue = e.target.value || '';
-        var numericValue = inputValue.replace(/[^0-9]/g, '');
-
-        if (numericValue.length >= 11) {
-            e.preventDefault();
-        }
-
-        // Apply Philippine phone number format (optional)
-        if (numericValue.length === 1 && numericValue !== '0') {
-            // Add '0' at the beginning if the first digit is not '0'
-            e.target.value = '0' + numericValue;
-        } else if (numericValue.length >= 2 && !numericValue.startsWith('09')) {
-            // Ensure it starts with '09'
-            e.target.value = '09' + numericValue.substring(2);
-        }
-    }
-</script>
 
 <div style="margin-top:5%;">
     <?php include('footer.php'); ?>

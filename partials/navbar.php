@@ -11,11 +11,11 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item" <?php if (in_array($currentFilename, ['storelist.php', 'verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                <li class="nav-item" <?php if (in_array($currentFilename, ['storelist.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                     <a class="nav-link text-brown" href="../views/storelist.php">Collections</a>
                 </li>
                 <!-- myCart start -->
-                <li class="nav-item" <?php if (in_array($currentFilename, ['myCart.php', 'verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                <li class="nav-item" <?php if (in_array($currentFilename, ['myCart.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                     <!-- user cart qty -->
                     <a class="nav-link" href="../views/myCart.php"><i class="fa-solid fa-cart-shopping text-accent"></i>&nbsp;
                         <?php if (isset($_SESSION['auth'])) {
@@ -30,7 +30,7 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                 <!-- myCart end -->
 
                 <!-- Wish List start -->
-                <li class="nav-item" <?php if (in_array($currentFilename, ['myLikes.php', 'verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                <li class="nav-item" <?php if (in_array($currentFilename, ['myLikes.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                     <!-- user cart qty -->
                     <a class="nav-link" href="../views/myLikes.php"><i class="fa-solid fa-heart text-accent"></i>&nbsp;
                         <?php if (isset($_SESSION['auth'])) {
@@ -64,13 +64,13 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                 <?php
                 } else {
                 ?>
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                         <a class="nav-link text-brown" href="../seller/seller-registration.php">Start Selling</a>
                     </li>
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                         <a class="nav-link text-brown" href="../views/register.php">Register</a>
                     </li>
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                         <a class="nav-link text-brown" href="../views/login.php">Log in</a>
                     </li>
                 <?php

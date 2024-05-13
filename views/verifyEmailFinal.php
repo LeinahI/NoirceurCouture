@@ -1,10 +1,4 @@
 <?php include('../partials/__header.php');
-if (isset($_SESSION['auth'])) {
-    $_SESSION['Errormsg'] = "You're already Logged in";
-    header("Location:index.php");
-    exit();
-    /* Alert popup will show at index.php */
-}
 ?>
 
 <div class="d-flex align-items-center justify-content-center" style="min-height: 600px">
@@ -17,40 +11,44 @@ if (isset($_SESSION['auth'])) {
                         <h4>Verify Your Account</h4>
                     </div>
                     <div class="card-body">
-                        <form action="../models/authcode.php" method="POST">
+                        <form action="../models/profileUpdate.php" method="POST">
                             <div class="container-fluid">
                                 <div class="row">
 
-                                    <?php if (isset($_GET['tkn']) && !empty($_GET['tkn'])) {
-                                        $activation_code = $_GET['tkn'];
+                                    <?php if (isset($_GET['fnlv']) && !empty($_GET['fnlv'])) {
+                                        $activation_code = $_GET['fnlv'];
 
                                         $selectQuery = "SELECT * FROM users WHERE user_general_token = '$activation_code'";
                                         $result_check_acti_code = mysqli_query($con, $selectQuery);
 
                                         if (mysqli_num_rows($result_check_acti_code) > 0) {
                                     ?>
-                                            <input type="hidden" name="tkn" value="<?= $activation_code ?>">
+                                            <input type="hidden" name="fnlv" value="<?= $activation_code ?>">
+                                            <input type="hidden" name="oldEmail" value="<?= $_SESSION['oldEmail'] ?>">
+                                            <input type="hidden" name="newEmail" value="<?= $_SESSION['newEmail'] ?>">
                                             <div class="text-center">
-                                                <p>We have sent the verification code to your email</p>
+                                                <p>We have sent the One-Time Password to your email as <br>
+                                                    <b><?= $_SESSION['finalVerification'] ?></b>.
+                                                </p>
                                                 <?php
-                                                if (isset($_SESSION['email'])) {
+                                                if (isset($_SESSION['newEmail'])) {
                                                 ?>
-                                                    <p class="text-accent"><?= $_SESSION['email'] ?></p>
+                                                    <p class="text-accent"><?= $_SESSION['newEmail'] ?></p>
                                                 <?php
                                                 }
                                                 ?>
                                             </div>
                                         <?php
                                         } else {
-                                            header("Location: ../views/login.php");
-                                            $_SESSION['Errormsg'] = "Activation code not found";
+                                            header("Location: ../views/changeEmailAddress.php");
+                                            $_SESSION['Errormsg'] = "Token expired. Please try again";
                                             exit; // Stop further execution
                                         }
                                         ?>
                                     <?php
-                                    } elseif (empty($_GET['tkn'])) {
-                                        header("Location: ../views/login.php");
-                                        $_SESSION['Errormsg'] = "Activation code not found";
+                                    } elseif (empty($_GET['fnlv'])) {
+                                        header("Location: ../views/changeEmailAddress.php");
+                                        $_SESSION['Errormsg'] = "Token expired. Please try again";
                                         exit; // Stop further execution
                                     }
                                     ?>
@@ -65,11 +63,11 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center mb-3 ps-0">
-                                        <button type="submit" name="verifyBtn" class="btn btn-primary col-md-12">Verify & Continue</button>
+                                        <button type="submit" name="verifyFinalOTPFromEmail" class="btn btn-primary col-md-12">Verify & Accept Changes</button>
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>Didn't receive the code? <button type="submit" name="resendCodeBtn" class="btn btn-link text-accent px-0 text-decoration-none">Send Code Again</button></h6>
+                                        <h6>Didn't receive the code? <button type="submit" name="resendCodeFinalEmailChange" class="btn btn-link text-accent px-0 text-decoration-none">Send Code Again</button></h6>
                                     </div>
                                 </div>
                             </div>

@@ -26,10 +26,10 @@ $profilePic = $data['user_profile_image'];
                     <a class="nav-link hoverstate" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                         <span class="fw-bold">My Account</span>
                     </a>
-                    <div class="collapse <?= in_array(basename($_SERVER['PHP_SELF']), ["myAccount.php", "myAddress.php", "myAddressAddNew.php", "myAddressEdit.php", "changePassword.php", "requestDeleteAccount.php"]) ? 'show' : ''; ?>" id="ui-basic">
+                    <div class="collapse <?= in_array(basename($_SERVER['PHP_SELF']), ["myAccount.php", "changePhoneNumber.php","changeEmailAddress.php", "myAddress.php", "myAddressAddNew.php", "myAddressEdit.php", "changePassword.php", "requestDeleteAccount.php"]) ? 'show' : ''; ?>" id="ui-basic">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a href="myAccount.php" class="nav-link <?= basename($_SERVER['PHP_SELF']) === 'myAccount.php' ? 'text-accent' : 'text-dark'; ?>">My Profile</a>
+                                <a href="myAccount.php" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']), ["myAccount.php", "changePhoneNumber.php", "changeEmailAddress.php"]) ? 'text-accent' : 'text-dark'; ?>">My Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a href="myAddress.php" class="nav-link <?= in_array(basename($_SERVER['PHP_SELF']), ["myAddress.php", "myAddressAddNew.php", "myAddressEdit.php"]) ? 'text-accent' : 'text-dark'; ?>">My Address</a>
