@@ -55,9 +55,9 @@ if (isset($_SESSION['auth'])) {
                                     <!-- Pass and CPass end -->
 
                                     <div class="text-center ps-0">
-                                        <button type="submit" name="loginBtn" class="btn mb-1 btn-primary col-md-12">Log In</button>
+                                        <button type="submit" name="loginBtn" class="btn mb-1 btn-main col-md-12">Log In</button>
                                     </div>
-                                    <a href="reset.php" class="mb-3 ps-0 text-accent text-decoration-none w-auto">Forgot Password</a>
+                                    <a href="reset.php" class="mb-3 ps-0 text-dark-4 text-decoration-none w-auto">Forgot Password</a>
 
                                     <div class="NleHE1 ps-0">
                                         <div class="rEVZJ2"></div>
@@ -66,7 +66,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-accent">Register</a></h6>
+                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-dark-4">Register</a></h6>
                                     </div>
                                 </div>
                             </div>

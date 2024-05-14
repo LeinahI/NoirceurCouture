@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php include('../partials/sessionMessage.php') ?>
-                <div class="card bg-main">
+                <div class="card bg-tertiary">
                     <div class="card-header text-center">
                         <h4>Verify Your Account</h4>
                     </div>
@@ -63,11 +63,11 @@
                                     </div>
 
                                     <div class="text-center mb-3 ps-0">
-                                        <button type="submit" name="verifyInitialOTPFromEmail" class="btn btn-primary col-md-12">Verify & Continue</button>
+                                        <button type="submit" name="verifyInitialOTPFromEmail" class="btn btn-main col-md-12">Verify & Continue</button>
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>Didn't receive the code? <button type="submit" name="resendCodeinitialEmailChange" class="btn btn-link text-accent px-0 text-decoration-none">Send Code Again</button></h6>
+                                        <h6>Didn't receive the code? <button type="submit" name="resendCodeinitialEmailChange" class="btn btn-link text-dark-4 px-0 text-decoration-none">Send Code Again</button></h6>
                                     </div>
                                 </div>
                             </div>

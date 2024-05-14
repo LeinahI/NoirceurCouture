@@ -18,11 +18,11 @@
         }
 
         .fa-star {
-            color: #bb6c54;
+            color: #212529;
         }
 
         .fa-star-half-stroke {
-            color: #bb6c54;
+            color: #212529;
         }
     </style>
 
@@ -45,15 +45,15 @@
             $category = mysqli_fetch_array($category_data);
 
     ?>
-            <div class="py-3 bg-primary">
+            <div class="py-3 bg-main">
                 <div class="container">
                     <h6 class="text-dark">
-                        <a href="storelist.php" class="text-dark">Home /</a>
-                        <a href="storelist.php" class="text-dark">Collections /</a>
+                        <a href="index.php" class="text-dark">Home</a> /
+                        <a href="storelist.php" class="text-dark">Collections</a> /
                         <?php
                         if ($category) {
                         ?>
-                            <a href="store.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?> /</a>
+                            <a href="store.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?></a> /
                         <?php } ?>
                         <?= $product['product_name'] ?>
                     </h6>
@@ -125,11 +125,6 @@
                                         echo '<br>'; // Add line break if there are more than 5 words
                                         echo implode(' ', array_slice($words, 5)); // Display the remaining words on the next line
                                     } ?>
-                                    <span class="float-end text-accent">
-                                        <?php if ($product['product_popular']) {
-                                            echo "Trending";
-                                        } ?>
-                                    </span>
                                 </h4>
 
                                 <div class="row">
@@ -190,12 +185,12 @@
 
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-                                        <button class="btn btn-primary px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
-                                            <?= ($product['product_qty'] == 0) ? 'Sold Out' : '<i class="fa fa-shopping-cart me-2"></i>Add to cart' ?>
+                                        <button class="btn btn-main px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
+                                            <?= ($product['product_qty'] == 0) ? 'Sold Out' : 'Add to cart' ?>
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-danger px-4 addToLikesBtn" value="<?= $product['product_id'] ?>"><i class="fa fa-heart me-2"></i>Add to Likes</button>
+                                        <button class="btn btn-tertiary px-4 addToLikesBtn" value="<?= $product['product_id'] ?>">Add to Likes</button>
                                     </div>
                                 </div>
                                 <hr>
@@ -207,7 +202,7 @@
                 </div>
                 <!-- //+Product Ratings -->
                 <div class="mt-3">
-                    <div class="container card bg-main">
+                    <div class="container card bg-tertiary border-0">
                         <div class="row">
                             <div class="col-md-12 p-3">
                                 <div class="card-title">
@@ -220,7 +215,7 @@
                                     if (mysqli_num_rows($product_ratings) > 0) {
                                         while ($rating = mysqli_fetch_array($product_ratings)) {
                                     ?>
-                                            <div class="card p-2 bg-main mb-3">
+                                            <div class="card p-2 bg-main border-0 mb-3">
                                                 <div class="d-flex flex-row">
                                                     <img src="../assets/uploads/userProfile/<?= ($rating['user_profile_image']) ? $rating['user_profile_image'] : 'defaultProfile.jpg' ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
                                                     <div class="d-flex flex-column pl-2">

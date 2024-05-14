@@ -21,7 +21,6 @@ if (isset($_GET['category'])) {
 
             .card {
                 height: 100%;
-
             }
 
             .card-body {
@@ -37,29 +36,17 @@ if (isset($_GET['category'])) {
                 justify-content: center;
             }
 
-            .bg-darker {
-                background-color: #d8cbc3 !important;
-            }
-
             .fa-solid {
                 height: 20px;
                 width: 20px;
             }
-
-            .rating .fa-star {
-                color: #bb6c54;
-            }
-
-            .rating .fa-star-half-stroke {
-                color: #bb6c54;
-            }
         </style>
 
-        <div class="py-3 bg-primary">
+        <div class="py-3 bg-main">
             <div class="container">
                 <h6 class="text-dark">
-                    <a href="storelist.php" class="text-dark">Home /</a>
-                    <a href="storelist.php" class="text-dark">Collections /</a>
+                    <a href="index.php" class="text-dark">Home</a> /
+                    <a href="storelist.php" class="text-dark">Collections</a> /
                     <?= $category['category_name'] ?>
                 </h6>
             </div>
@@ -72,10 +59,10 @@ if (isset($_GET['category'])) {
                         <div class="row">
                             <!-- Profile -->
                             <div class="col-md-4">
-                                <div class="card border border-0 bg-primary p-3 mb-2">
+                                <div class="card border-0 bg-tertiary p-3 mb-2">
                                     <div class="d-flex justify-content-between">
                                         <div class="d-flex flex-row align-items-center">
-                                            <div class="icon bg-darker rounded-circle">
+                                            <div class="icon rounded-circle">
                                                 <img src="../assets/uploads/brands/<?= $category['category_image'] ?>" alt="Store Image" class="object-fit-cover rounded-circle" width="90" height="90">
                                             </div>
                                             <div class="ms-2 c-details">
@@ -177,10 +164,10 @@ if (isset($_GET['category'])) {
                                     $item['product_name'] = substr($item['product_name'], 0, 30) . '...'; //! If it is, truncate it to 30 characters and append '...'
                                 }
                                 $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
-                                
+
                                 // Calculate average rating for the product
                                 $average_rating = calculateAverageRating($product_ratings);
-                                
+
                                 $soldCount = getSoldCountByProductID($item['product_id']); //+ Catch product sold
                                 $sold = mysqli_fetch_array($soldCount);
 
@@ -203,16 +190,16 @@ if (isset($_GET['category'])) {
                                 ?>
                                 <div class="col-md-3 mb-3">
                                     <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                        <div class="card shadow">
-                                            <div class="card-body d-flex flex-column justify-content-between bg-primary">
+                                        <div class="card border-0">
+                                            <div class="card-body d-flex flex-column justify-content-between bg-tertiary rounded">
                                                 <div>
-                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
+                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="img-fixed-height mb-2">
                                                     <h6><?= $item['product_name'] ?></h6>
                                                     <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
-                                                    <div class="rating">
+                                                    <!-- <div class="rating">
                                                         <?php
                                                         // Display stars based on average rating
-                                                        $wholeStars = floor($average_rating); // Whole star count
+                                                        /*  $wholeStars = floor($average_rating); // Whole star count
                                                         $halfStar = $average_rating - $wholeStars; // Fractional part for half star
 
                                                         for ($i = 1; $i <= 5; $i++) {
@@ -224,10 +211,10 @@ if (isset($_GET['category'])) {
                                                             } else {
                                                                 echo '<i class="fa-regular fa-star"></i>'; // Empty star
                                                             }
-                                                        }
+                                                        } */
                                                         ?>
-                                                        <span><?= $sold['itemSold'] ?> sold</span>
-                                                    </div>
+                                                        <span><?php /* $sold['itemSold'] */ ?> sold</span>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -256,8 +243,8 @@ include('../assets/js/ph-address-selector.php');
         $('#onload').modal('show');
     }
 </script>
-<?php
+<div style="margin-top:9%;">
 
-include('footer.php');
-
-include('../partials/__footer.php'); ?>
+    <?php include('footer.php'); ?>
+</div>
+<?php include('../partials/__footer.php'); ?>

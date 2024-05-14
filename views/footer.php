@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="text-center text-lg-start bg-primary text-muted">
+<footer class="text-center text-lg-start bg-secondary text-muted">
     <hr>
     <!-- Section: Links  -->
     <section class="">
@@ -12,17 +12,16 @@
 
                 if (mysqli_num_rows($categories) > 0) {
                 ?>
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-light">
-
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                         <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4 text-dark">
+                        <h6 class="text-uppercase fw-bold mb-4 text-white">
                             Collections
                         </h6>
                         <?php
                         foreach ($categories as $item) {
                         ?>
                             <div class="col-md-12 mb-3">
-                                <a class="text-dark" href="store.php?category=<?= $item['category_slug'] ?>">
+                                <a class="text-white" href="store.php?category=<?= $item['category_slug'] ?>">
                                     <h6></h6><?= $item['category_name'] ?></h6>
                                 </a>
                             </div>
@@ -37,15 +36,11 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3  mx-auto mb-md-0 mb-4 text-dark">
+                <div class="col-md-3  mx-auto mb-md-0 mb-4 text-white">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold mb-4 ">Contact</h6>
-                    <p><i class="fas fa-home me-3"></i>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
-                    <p>
-                        <i class="fas fa-envelope me-3"></i>
-                        nctr@proton.mail
-                    </p>
-                    <p><i class="fas fa-phone me-3"></i> 09193554999</p>
+                    <p>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
+                    <p>nctr@proton.mail</p>
                 </div>
                 <!-- Grid column -->
 
@@ -62,9 +57,9 @@
     <!-- Section: Links  -->
 
     <!-- Copyright -->
-    <div class="text-center p-4 text-dark">
+    <div class="text-center p-4 text-white">
         © <?= date('Y') ?>
-        <a class="text-dark fw-bold" href="index.php">Noirceur Couture.</a>
+        <a class="text-white fw-bold" href="index.php">Noirceur Couture.</a>
         All rights reserved.
     </div>
     <!-- Copyright -->

@@ -55,7 +55,7 @@ include('../middleware/userMW.php');
                     $hiddenEmail = hideEmailCharacters($data['user_email']);
                     $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 shadow bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">My Profile</h5>
                         </div>
@@ -89,13 +89,13 @@ include('../middleware/userMW.php');
                                         <!-- Email and Number start -->
                                         <div class="row">
                                             <div class="col">
-                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a href="changeEmailAddress.php">Change</a></p>
+                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a class="text-dark-4" href="changeEmailAddress.php">Change</a></p>
                                             </div>
 
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <p>Phone number: <span><?= $hiddenPhoneNumber; ?> <a href="changePhoneNumber.php">Change</a></span></p>
+                                                <p>Phone number: <span><?= $hiddenPhoneNumber; ?> <a class="text-dark-4" href="changePhoneNumber.php">Change</a></span></p>
                                             </div>
                                         </div>
 
@@ -103,7 +103,7 @@ include('../middleware/userMW.php');
 
                                         <div class="row">
                                             <div class="text-center ps-0">
-                                                <button type="submit" name="userUpdateAccBtn" class="btn btn-accent col-md-12">Update Credentials</button>
+                                                <button type="submit" name="userUpdateAccBtn" class="btn btn-main col-md-12">Update Credentials</button>
                                             </div>
                                         </div>
                                     </div>
@@ -126,10 +126,8 @@ include('../middleware/userMW.php');
                                         <?php
                                         if ($profilePic > 0) {
                                         ?>
-                                            <div class="row">
-                                                <div class="text-center ps-0">
-                                                    <button type="submit" name="profileDeleteBtn" class="btn btn-accent col-md-12">Delete Profile Image</button>
-                                                </div>
+                                            <div class="position-absolute bottom-0 end-0 d-flex col-md-12">
+                                                <button type="submit" name="profileDeleteBtn" class="btn btn-tertiary col-md-12">Delete Profile Image</button>
                                             </div>
                                         <?php
                                         }
@@ -159,11 +157,9 @@ include('../middleware/userMW.php');
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 

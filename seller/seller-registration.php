@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-            <?php include('../partials/sessionMessage.php') ?>
+                <?php include('../partials/sessionMessage.php') ?>
                 <?php
                 if (isset($_SESSION['Errormsg'])) {
                 ?>
@@ -89,7 +89,11 @@
                                     </div>
 
                                     <div class="text-center mb-3 ps-0 mb-3">
-                                        <button type="submit" name="sellerRegisterBtn" class="btn btn-primary col-md-12">Register</button>
+                                        <button type="submit" name="sellerRegisterBtn" class="btn btn-main col-md-12">Register</button>
+                                    </div>
+
+                                    <div class="text-center ps-0">
+                                        <h6>Have an account? <a href="../views/login.php" class="text-dark-4">Log in</a></h6>
                                     </div>
                                 </div>
                             </div>

@@ -15,12 +15,12 @@ include('../middleware/userMW.php');
         <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">
             <div>
-                <div class="card border rounded-3 shadow bg-main">
+                <div class="card border rounded-3 shadow bg-tertiary">
                     <div class="card-header">
                         <h5 class="card-title ">
                             <span>My Addresses</span>
                             <span class="float-end">
-                                <a href="myAddressAddNew.php" class="btn btn-primary">
+                                <a href="myAddressAddNew.php" class="btn btn-main">
                                     Add New Address
                                 </a>
                             </span>
@@ -148,7 +148,7 @@ include('../middleware/userMW.php');
                                                 if ($isDefault == 1) {
                                                 ?>
                                                     <div id="isDefault" class="mt-2">
-                                                        <span class="text-accent border border-accent p-1">Default</span>
+                                                        <span class="border-0 btn-main rounded-3 p-1">Default</span>
                                                     </div>
                                                 <?php
                                                 }
@@ -156,12 +156,12 @@ include('../middleware/userMW.php');
                                             </div>
                                             <div class="col-md-2">
                                                 <span class="float-end mb-2">
-                                                    <a href="myAddressEdit.php?addrID=<?= $addrid ?>" class="text-accent">Edit</a>
+                                                    <a href="myAddressEdit.php?addrID=<?= $addrid ?>" class="text-dark">Edit</a>
 
                                                     <?php
                                                     if ($isDefault != 1 || $isDefault == 1 && $addrQTY == 1) {
                                                     ?>
-                                                        <a href="#" class="text-accent" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
+                                                        <a href="#" class="text-dark-4" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="deleteAddrModal<?= $addrid ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
@@ -173,8 +173,8 @@ include('../middleware/userMW.php');
                                                                             Are you sure you want to delete this Address?
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                                                            <button name="deleteAddrBtn" class="btn btn-accent">Delete Address</button>
+                                                                            <button type="button" class="btn btn-tertiary" data-bs-dismiss="modal">Close</button>
+                                                                            <button name="deleteAddrBtn" class="btn btn-main">Delete Address</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -189,7 +189,7 @@ include('../middleware/userMW.php');
                                                 <form action="../models/authcode.php" method="POST">
                                                     <input type="hidden" name="addrID" value="<?= $addrid ?>">
                                                     <input type="hidden" name="userID" value="<?= $userid ?>">
-                                                    <button name="setDefaultAddrBtn" class="btn btn-accent float-end" <?= ($isDefault == 1) ? 'disabled' : '' ?>>Set as Default</button>
+                                                    <button name="setDefaultAddrBtn" class="btn btn-main float-end" <?= ($isDefault == 1) ? 'hidden' : '' ?>>Set as Default</button>
                                                 </form>
 
                                             </div>
@@ -238,7 +238,7 @@ include('../middleware/userMW.php');
     }
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 

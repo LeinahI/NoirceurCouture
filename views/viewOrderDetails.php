@@ -2,11 +2,11 @@
 include('../partials/__header.php');
 include('../middleware/userMW.php');/* Authenticate.php */
 ?>
-<div class="py-3 bg-primary">
+<div class="py-3 bg-main">
     <div class="container">
         <h6>
-            <a href="#" class="text-dark">Home /</a>
-            <a href="myOrders.php" class="text-dark">My Purchase /</a>
+            <a href="#" class="text-dark">Home</a> /
+            <a href="myOrders.php" class="text-dark">My Purchase</a> /
             <a href="#" class="text-dark">Your Order Details</a>
         </h6>
     </div>
@@ -50,28 +50,27 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header bg-main">
+                <div class="card border-0">
+                    <div class="card-header bg-tertiary">
                         <?php
                         $returnURL = isset($_GET['return']) ? $_GET['return'] : 'myOrders.php';
                         ?>
-                        <a href="<?= $returnURL ?>" class="btn btn-primary float-start">Back</a>
+                        <a href="<?= $returnURL ?>" class="btn btn-tertiary float-start">Back</a>
                         <span class="fs-6 float-end">
                             <span class="float-end">NRCRXpress</span>
                             <br>
                             <?= $data['orders_tracking_no']; ?>
                         </span>
                     </div>
-                    <div class="card-body bg-main">
+                    <div class="card-body bg-tertiary">
                         <div class="row">
                             <!-- Deliver Address -->
                             <div class="col-md-12">
                                 <h2>Delivery Address</h2>
-                                <hr>
                                 <div class="row">
                                     <div>
                                         <div class="col-md-12 ps-0">
-                                            <h3><?= $data['orders_full_name']; ?></h3>
+                                            <h4><?= $data['orders_full_name']; ?></h4>
                                         </div>
                                     </div>
                                     <div>
@@ -99,7 +98,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                             <!-- Order Item Details -->
                             <div class="col-md-12 mt-4">
                                 <h2>Order Item Details</h2>
-                                <hr>
                                 <?php
                                 $user_id = $_SESSION['auth_user']['user_ID'];
                                 $groupedItems = [];
@@ -153,11 +151,11 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
                                         foreach ($groupedItems as $categoryName => $items) {
                                     ?>
-                                            <div class="card mb-3 rounded-3 bg-primary">
+                                            <div class="card mb-3 rounded-3 bg-main">
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-main">View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -178,13 +176,13 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                                         <?php
                                                                         if ($item['product_srp'] == $item['product_original_price']) {
                                                                         ?>
-                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-dark">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         } else {
                                                                         ?>
-                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['orderItems_Initprice'], 2) ?></span>
+                                                                            <span class="text-white-5 text-decoration-line-through">₱<?= number_format($item['orderItems_Initprice'], 2) ?></span>
                                                                             &nbsp;
-                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-dark">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         }
                                                                         ?>
@@ -206,7 +204,6 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
                                     ?>
                                 </div>
-                                <hr>
                                 <div class="mt-2">
                                     <div class="col-md-12">
                                         <div class="col-md-6 float-end">
@@ -240,7 +237,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 ?>
                                                     <div class="mt-3">
                                                         <!-- Button trigger modal -->
-                                                        <button type="button" class="btn btn-accent float-end col-md-10" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
+                                                        <button type="button" class="btn btn-main float-end col-md-10" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
                                                             Cancel Order
                                                         </button>
 
@@ -249,7 +246,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                         <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <form action="../models/orderStatus.php" method="post">
-                                                                    <div class="modal-content bg-main">
+                                                                    <div class="modal-content bg-tertiary">
                                                                         <div class="modal-header text-center">
                                                                             <p class="modal-title w-100 fs-3" id="cancelOrderModalLabel">Select Cancellation Reason</p>
                                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -288,7 +285,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="submit" name="cancelOrderBtn" class="btn btn-accent">Confirm</button>
+                                                                            <button type="submit" name="cancelOrderBtn" class="btn btn-main">Confirm</button>
                                                                         </div>
                                                                     </div>
                                                                 </form>
@@ -304,7 +301,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                         <form action="../models/orderStatus.php" method="post">
                                                             <input type="hidden" name="trackingNumber" value="<?= $data['orders_tracking_no']; ?>" readonly>
                                                             <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
-                                                            <button type="submit" name="orderRcvBtn" class="btn btn-accent float-end col-md-10">Order Received</button>
+                                                            <button type="submit" name="orderRcvBtn" class="btn btn-main float-end col-md-10">Order Received</button>
                                                         </form>
                                                     </div>
                                                 <?php
@@ -316,7 +313,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
                                                 ?>
                                                     <div class="mt-3">
                                                         <input type="hidden" name="ordersID" value="<?= $data['orders_id']; ?>" readonly>
-                                                        <a href="reviewProduct.php?trck=<?= $data['orders_tracking_no'] ?>" class="btn btn-accent float-end col-md-10">Rate</a>
+                                                        <a href="reviewProduct.php?trck=<?= $data['orders_tracking_no'] ?>" class="btn btn-main float-end col-md-10">Rate</a>
                                                     </div>
                                                 <?php
                                                 }

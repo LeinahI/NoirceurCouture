@@ -21,7 +21,7 @@ include('../middleware/userMW.php');
                         <p><span class="fs-3">•</span> After successful deletion of this account, you will not be able to log in to a deleted account and view previous account history.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-accent col-md-12" data-bs-dismiss="modal">Proceed</button>
+                        <button type="button" class="btn btn-main col-md-12" data-bs-dismiss="modal">Proceed</button>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@ include('../middleware/userMW.php');
                                         </div>
 
                                         <div class="text-center ps-0">
-                                            <button type="submit" name="SubmitDelAccReq" id="submitReq" class="btn btn-accent col-md-12">Submit Request</button>
+                                            <button type="submit" name="SubmitDelAccReq" id="submitReq" class="btn btn-main col-md-12">Submit Request</button>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@ include('../middleware/userMW.php');
     }
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 

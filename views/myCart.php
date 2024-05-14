@@ -3,11 +3,11 @@
 
     include('../middleware/userMW.php');
     ?>
-    <div class="py-3 bg-primary">
+    <div class="py-3 bg-main">
         <div class="container">
             <h6>
-                <a href="#" class="text-dark">Home /</a>
-                <a href="#" class="text-dark">Cart</a>
+                <a href="index.php" class="text-dark">Home</a> /
+                <a href="myCart.php" class="text-dark">Cart</a>
             </h6>
         </div>
     </div>
@@ -17,59 +17,60 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card p-3 border rounded-3 shadow bg-main">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <h6>Product</h6>
-                                </div>
-                                <div class="col-md-2 pl-2 d-flex justify-content-center">
-                                    <h6>Unit Price</h6>
-                                </div>
-                                <div class="col-md-2 pl-0 d-flex justify-content-center">
-                                    <h6>Quantity</h6>
-                                </div>
-                                <div class="col-md-2">
-                                    <h6>Total Price</h6>
-                                </div>
-                                <div class="col-md-1">
-                                    <h6>Action</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <?php
-                            $items = getCartItems();
-                            $groupedItems = [];
-                            $itemArray = [];
-                            $totalPrice = 0;
+                        <?php
+                        $items = getCartItems();
+                        $groupedItems = [];
+                        $itemArray = [];
+                        $totalPrice = 0;
 
-                            // Fetch data from the result set and store it in an array
+                        // Fetch data from the result set and store it in an array
 
-                            while ($cItem = mysqli_fetch_assoc($items)) {
-                                $itemArray[] = $cItem;
+                        while ($cItem = mysqli_fetch_assoc($items)) {
+                            $itemArray[] = $cItem;
+                        }
+
+                        // Group items by category_name
+                        foreach ($items as $cItem) {
+                            $categoryName = $cItem['category_name'];
+                            $categslug = $cItem['category_slug'];
+
+                            if (!isset($groupedItems[$categoryName])) {
+                                $groupedItems[$categoryName] = [
+                                    'items' => [],
+                                    'categslug' => $categslug,
+                                ];
                             }
 
-                            // Group items by category_name
-                            foreach ($items as $cItem) {
-                                $categoryName = $cItem['category_name'];
-                                $categslug = $cItem['category_slug'];
+                            $groupedItems[$categoryName]['items'][] = $cItem;
+                        }
+                        if (count($itemArray) > 0) {
+                            // Display grouped items
+                            foreach ($groupedItems as $categoryName => $categoryData) {
+                                $categslug = $categoryData['categslug'];
 
-                                if (!isset($groupedItems[$categoryName])) {
-                                    $groupedItems[$categoryName] = [
-                                        'items' => [],
-                                        'categslug' => $categslug,
-                                    ];
-                                }
+                        ?>
+                                <div class="card p-3 border rounded-3 shadow bg-tertiary">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <h6>Product</h6>
+                                        </div>
+                                        <div class="col-md-2 pl-2 d-flex justify-content-center">
+                                            <h6>Unit Price</h6>
+                                        </div>
+                                        <div class="col-md-2 pl-0 d-flex justify-content-center">
+                                            <h6>Quantity</h6>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <h6>Total Price</h6>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <h6>Action</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
 
-                                $groupedItems[$categoryName]['items'][] = $cItem;
-                            }
-                            if (count($itemArray) > 0) {
-                                // Display grouped items
-                                foreach ($groupedItems as $categoryName => $categoryData) {
-                                    $categslug = $categoryData['categslug'];
-
-                            ?>
-                                    <div class="card my-4 border rounded-3 shadow bg-main">
+                                    <div class="card my-4 border rounded-3 shadow bg-tertiary">
                                         <div class="card-header">
                                             <h5 class="card-title">
                                                 <a href="store.php?category=<?= $categslug ?>" class="text-dark">
@@ -144,23 +145,24 @@
                                                     </div>
                                                     <!-- Delete Btn -->
                                                     <div class="col-md-1">
-                                                        <button class="btn btn-accent deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
+                                                        <button class="btn btn-main deleteItem" value="<?= $cItem['cid'] ?>">Delete</button>
                                                     </div>
                                                 </div>
                                             <?php } ?>
                                         </div>
                                     </div>
                                 <?php
-                                }
-                            } else {
+                            }
+                        } else {
                                 ?>
-                                <div class="mt-5 text-center">
-                                    <h1>Your cart is empty</h1>
+                                <div class="text-center">
+                                    <h1 class="mb-3">Cart</h1>
+                                    <p>Currently, there are no goods in your Cart.</p>
                                 </div>
                             <?php
-                            }
+                        }
                             ?>
-                        </div>
+                                </div>
                     </div>
                 </div>
             </div>
@@ -171,7 +173,7 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- Footer -->
-                <footer class="bg-main text-center text-white shadow">
+                <footer class="bg-tertiary text-center text-white shadow">
                     <div class="p-4">
                         <section class="pb-5">
                             <div class="float-end text-dark">
@@ -182,7 +184,7 @@
                                     </span>
                                     items):
                                     <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
-                                    <a href="checkOut.php" class="ml-3 btn btn-accent text-white chkOutBtn">Check out</a>
+                                    <a href="checkOut.php" class="ml-3 btn btn-main">Check out</a>
                                 </h5>
                             </div>
                         </section>
@@ -193,7 +195,7 @@
         </div>
     </div>
 
-    <div class="mt-5">
+    <div style="margin-top:20%;">
         <?php include('footer.php'); ?>
     </div>
 

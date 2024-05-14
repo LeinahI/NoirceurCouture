@@ -16,12 +16,12 @@ include('../middleware/userMW.php');
         <div class="col-md-9">
             <div>
 
-                <div class="card border rounded-3 shadow bg-main">
+                <div class="card border rounded-3 shadow bg-tertiary">
                     <div class="card-header">
                         <h5 class="card-title ">
                             <span>Edit Address</span>
                             <span class="float-end">
-                                <a href="myAddress.php" class="btn btn-primary">
+                                <a href="myAddress.php" class="btn btn-tertiary">
                                     Go Back
                                 </a>
                             </span>
@@ -152,7 +152,7 @@ include('../middleware/userMW.php');
                                 } ?>
 
                                     <div>
-                                        <button name="userUpdateAddrBtn" class="btn btn-accent col-md-12">Edit Address</button>
+                                        <button name="userUpdateAddrBtn" class="btn btn-main col-md-12">Edit Address</button>
                                     </div>
                                     </div>
                                 </div>

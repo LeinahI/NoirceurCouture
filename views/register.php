@@ -75,11 +75,11 @@
                                     <!-- Pass and CPass end -->
 
                                     <div class="text-center mb-3 ps-0 mb-3">
-                                        <button type="submit" name="userRegisterBtn" class="btn btn-primary col-md-12">Register</button>
+                                        <button type="submit" name="userRegisterBtn" class="btn btn-main col-md-12">Register</button>
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>Have an account? <a href="login.php" class="text-accent">Log in</a></h6>
+                                        <h6>Have an account? <a href="login.php" class="text-dark-4">Log in</a></h6>
                                     </div>
                                 </div>
                             </div>

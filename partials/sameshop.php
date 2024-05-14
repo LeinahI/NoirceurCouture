@@ -1,6 +1,6 @@
 <style>
     /* Owl Carousel */
-    .owl-two {
+    /* .owl-two {
         position: relative;
     }
 
@@ -33,15 +33,15 @@
 
     .owl-two .owl-theme .custom-nav .owl-next {
         right: 0;
-    }
+    } */
 
-    .rating .fa-star {
+   /*  .rating .fa-star {
         color: #bb6c54;
     }
 
     .rating .fa-star-half-stroke {
         color: #bb6c54;
-    }
+    } */
 </style>
 <div class="mt-3">
     <div class="container">
@@ -58,29 +58,29 @@
                             if (mysqli_num_rows($ftss) > 0) {
                                 foreach ($ftss as $item) {
                                     $product_name = $item['product_name'];
-                                    if (strlen($product_name) > 33) {
-                                        $product_name = substr($product_name, 0, 30) . '...';
+                                    if (strlen($product_name) > 30) {
+                                        $product_name = substr($product_name, 0, 27) . '...';
                                     }
-                                    $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
+                                   /*  $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
 
                                     // Calculate average rating for the product
                                     $average_rating = calculateAverageRating($product_ratings);
 
                                     $soldCount = getSoldCountByProductID($item['product_id']); //+ Catch product sold
-                                    $sold = mysqli_fetch_array($soldCount);
+                                    $sold = mysqli_fetch_array($soldCount); */
                             ?>
                                     <div class="item">
                                         <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                            <div class="card itemproduct">
-                                                <div class="card-body d-flex flex-column justify-content-between bg-primary">
+                                            <div class="card border-0">
+                                                <div class="card-body d-flex flex-column justify-content-between bg-tertiary rounded">
                                                     <div>
                                                         <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" height="217.2px" class="w-100">
                                                         <h6 class="text-dark"><?= $product_name; ?></h6>
                                                         <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
-                                                        <div class="rating">
+                                                       <!--  <div class="rating"> -->
                                                             <?php
                                                             // Display stars based on average rating
-                                                            $wholeStars = floor($average_rating); // Whole star count
+                                                            /* $wholeStars = floor($average_rating); // Whole star count
                                                             $halfStar = $average_rating - $wholeStars; // Fractional part for half star
 
                                                             for ($i = 1; $i <= 5; $i++) {
@@ -92,10 +92,10 @@
                                                                 } else {
                                                                     echo '<i class="fa-regular fa-star"></i>'; // Empty star
                                                                 }
-                                                            }
+                                                            } */
                                                             ?>
-                                                            <span><?= $sold['itemSold'] ?> sold</span>
-                                                        </div>
+                                                           <!--  <span><?php /* $sold['itemSold'] */ ?> sold</span>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -106,11 +106,11 @@
                             }
                             ?>
                         </div>
-                        <div class="owl-theme">
+                        <!-- <div class="owl-theme">
                             <div class="owl-controls">
                                 <div class="custom-nav owl-nav"></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

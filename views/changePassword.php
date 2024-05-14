@@ -95,7 +95,7 @@ include('../middleware/userMW.php');
 
                                         <div class="row">
                                             <div class="text-center ps-0">
-                                                <button type="submit" name="changePasswordBtn" class="btn btn-accent col-md-12">Confirm Change Password</button>
+                                                <button type="submit" name="changePasswordBtn" class="btn btn-main col-md-12">Confirm Change Password</button>
                                             </div>
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@ include('../middleware/userMW.php');
     });
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 
