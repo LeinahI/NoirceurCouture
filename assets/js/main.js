@@ -1,6 +1,5 @@
 $(document).ready(function () {
   /* Increment QTY Function */
-  /* Increment QTY Function */
   $(".incrementProductBtn").click(function (e) {
     e.preventDefault();
 
@@ -87,7 +86,8 @@ $(document).ready(function () {
     $(this).val(value);
   });
 
-  /* Add to Cart function */
+  //!--------------Add and Delete item to Cart----------------
+  //* Add to Cart function
   $(".addToCartBtn").click(function (e) {
     e.preventDefault();
 
@@ -161,7 +161,7 @@ $(document).ready(function () {
     });
   });
 
-  /* Update cart qty */
+  //* Update cart QTY
   function updateCartQty() {
     $.ajax({
       url: "/NoirceurCouture/models/getCartQty.php",
@@ -177,7 +177,7 @@ $(document).ready(function () {
     });
   }
 
-  /* Update item QTY cart function that display on C */
+  //* Update item QTY cart function that display on productView & myCart
   $(document).on("click", ".updateQty", function (e) {
     var prod_qty = $(this).closest(".productData").find(".inputQty").val();
     var prod_id = $(this).closest(".productData").find(".productID").val();
@@ -194,24 +194,57 @@ $(document).ready(function () {
     });
   });
 
-  /* Update Cart Items */
-  function updateCartItemsOnDelete() {
-    var cartItemsContainer = $("#mycart");
+  //* Check if there are any items in the cart initially
+  checkCartItems();
 
-    // Clear the existing content inside the .cart-items container
-    cartItemsContainer.empty();
+  $(document).on("click", "#deleteItem", function (e) {
+    var cart_id = $(this).val(); // Get the cart ID from the clicked button's value
+    var $productToDelete = $(this).closest("#productList"); // Find the closest parent element with the ID 'productList' from the clicked button
+    var $itemsContainer = $productToDelete.closest("#itemsContainer"); // Find the closest parent element with the ID 'itemsContainer' from the product to delete
+    var $categoryCard = $itemsContainer.closest("#categoryCard"); // Find the closest parent element with the ID 'categoryCard' from the items container
 
-    // Reload the content inside the .cart-items container
+    // Make an AJAX POST request to handleCart.php to delete the item
     $.ajax({
-      type: "GET",
-      url: "#", // Replace with the actual file path
-      success: function (newContent) {
-        cartItemsContainer.html(newContent);
+      type: "POST",
+      url: "/NoirceurCouture/models/handleCart.php",
+      data: {
+        cart_id: cart_id, // Send the cart ID
+        scope: "delete", // Specify the scope as 'delete'
+      },
+      success: function (response) {
+        // If the response indicates success (status 200)
+        if (response == 200) {
+          // Fade out the product to delete over 300ms
+          $productToDelete.fadeOut(300, function () {
+            $(this).remove(); // Remove the product from the DOM after fading out
+
+            // Check if the items container is empty
+            if ($itemsContainer.children().length === 0) {
+              // If empty, fade out the category card over 300ms
+              $categoryCard.fadeOut(300, function () {
+                $(this).remove(); // Remove the category card from the DOM after fading out
+                checkCartItems(); // Check the cart items to update the visibility of the empty cart message
+              });
+            } else {
+              checkCartItems(); // If the items container is not empty, just check the cart items
+            }
+          });
+        }
       },
     });
+  });
+
+  function checkCartItems() {
+    var isExist = $("#categoryCard").length > 0; // Check if there are any elements with the ID 'categoryCard'
+    if (isExist) {
+      $("#nocartItems").hide();
+    } else {
+      $("#nocartItems").show();
+    }
   }
 
-  /* Add item to Likes function */
+  //!--------------Add and Delete item to Wishlist----------------
+  //* Add to wishlist function
   $(".addToLikesBtn").click(function (e) {
     e.preventDefault();
 
@@ -229,11 +262,6 @@ $(document).ready(function () {
       success: function (response) {
         if (response == 201) {
           updateLikeQty();
-          /* swal({
-            title: "Product added to Likes",
-            icon: "success",
-            button: "OK",
-          }); */
         } else if (response == "existing") {
           swal({
             title: "Product already in your Likes",
@@ -260,7 +288,7 @@ $(document).ready(function () {
     });
   });
 
-  /* Update like QTY */
+  //* Update like QTY
   function updateLikeQty() {
     $.ajax({
       url: "/NoirceurCouture/models/getLikeQty.php",
@@ -276,37 +304,9 @@ $(document).ready(function () {
     });
   }
 
-  /* Delete Item Cart function */
-  $(document).on("click", ".deleteItem", function (e) {
-    var cart_id = $(this).val();
-
-    $.ajax({
-      type: "POST",
-      url: "/NoirceurCouture/models/handleCart.php",
-      data: {
-        cart_id: cart_id,
-        scope: "delete",
-      },
-      success: function (response) {
-        if (response == 200) {
-          updateCartItemsOnDelete();
-        } else {
-          /* swal({
-            title: response,
-            icon: "error",
-            button: "OK",
-          }); */
-        }
-      },
-    });
-  });
-});
-
-$(document).ready(function () {
-  // Call checkLikedItems() after DOM is fully loaded
   checkLikedItems();
 
-  // AJAX call to delete liked item
+  //* AJAX call to delete wishlist item
   $(document).on("click", "#deleteItemLike", function (e) {
     var like_id = $(this).val();
     var $itemToDelete = $(this).closest(".card");
@@ -338,13 +338,12 @@ $(document).ready(function () {
     });
   });
 
-  // Function to check liked items using AJAX
+  //* Function to check wishlist items using AJAX
   function checkLikedItems() {
     $.ajax({
       url: "/NoirceurCouture/models/checkLikedItems.php", // PHP script to check liked items
       type: "GET",
       success: function (response) {
-        console.log("Response from checkLikedItems:", response);
         if (parseInt(response) > 0) {
           $("#noLikedItems").hide();
         } else {

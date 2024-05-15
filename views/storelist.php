@@ -43,7 +43,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                     ?>
                             <div class="col-md-6 mb-3">
                                 <a href="store.php?category=<?= $item['category_slug'] ?>" class="text-decoration-none">
-                                    <div class="card shadow">
+                                    <div class="card border-0">
                                         <div class="card-body bg-tertiary col-md-12">
                                             <div class="row">
                                                 <div class="col-md-9">
