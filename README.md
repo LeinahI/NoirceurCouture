@@ -1,7 +1,7 @@
 Known Current Bugs
 - error rating shows when click review after selecting next item on dropdown after review
 - cant click dropdown after deleting to cart a product
-- cant click dropdown after liki a product
+- cant click dropdown after liking a product
 
 # NoirceurCouture
 ![NoirceurCouture](https://github.com/LeinahI/NoirceurCouture/assets/53577436/04d31568-5d84-4ba2-a2f0-bf95d0ed596c)
