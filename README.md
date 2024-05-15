@@ -1,6 +1,3 @@
-Known Current Bugs
-- error rating shows when click review after selecting next item on dropdown after review
-
 # NoirceurCouture
 ![NoirceurCouture](https://github.com/LeinahI/NoirceurCouture/assets/53577436/04d31568-5d84-4ba2-a2f0-bf95d0ed596c)
 

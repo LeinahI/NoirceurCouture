@@ -118,11 +118,11 @@ if (isset($_GET['trck'])) {
 
                                         foreach ($groupedItems as $categoryName => $items) {
                                     ?>
-                                            <div class="card mb-3 rounded-3 bg-main">
+                                            <div class="card mb-3 border-0 rounded-3 bg-main">
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-main"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -147,7 +147,7 @@ if (isset($_GET['trck'])) {
                                                                         <?php
                                                                         } else {
                                                                         ?>
-                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-dark">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         }
                                                                         ?>
@@ -172,7 +172,7 @@ if (isset($_GET['trck'])) {
                                 <?php
                                 if ($item['category_isBan'] == 1) {
                                 ?>
-                                    <p class='fs-2 fw-bold text-accent text-center'>"<?= $item['category_name'] ?>" is permanently banned</p>
+                                    <p class='fs-2 fw-bold text-dark text-center'>"<?= $item['category_name'] ?>" is permanently banned</p>
                                 <?php
                                 } else {
                                 ?>
@@ -213,7 +213,7 @@ if (isset($_GET['trck'])) {
                                                         </div>
 
                                                         <div class="mb-5">
-                                                            <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border border-accent" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
+                                                            <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border-0" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
                                                             <div id="the-count">
                                                                 <span id="current">0</span>
                                                                 <span id="maximum">/ 600</span>

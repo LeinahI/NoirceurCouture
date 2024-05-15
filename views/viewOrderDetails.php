@@ -151,7 +151,7 @@ $barangayCode = isset($data['orders_barangay']) ? $data['orders_barangay'] : '';
 
                                         foreach ($groupedItems as $categoryName => $items) {
                                     ?>
-                                            <div class="card mb-3 rounded-3 bg-main">
+                                            <div class="card mb-3 border-0 rounded-3 bg-main">
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
