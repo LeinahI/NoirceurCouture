@@ -26,7 +26,7 @@ include('../middleware/userMW.php');
                                 $cItem['product_name'] = substr($cItem['product_name'], 0, 24) . '...';
                             }
                     ?>
-                            <div class="card border-0" style="width: 18rem;">
+                            <div class="card border-0" style="width: 18rem;" id="likedCard">
                                 <div class="card-body bg-tertiary rounded">
                                     <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
                                         <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
@@ -34,19 +34,16 @@ include('../middleware/userMW.php');
                                     </a>
 
                                     <h6><b>₱<?= number_format($cItem['product_srp'], 2) ?></b></h6>
-                                    <button class="btn btn-danger deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="fa-solid fa-trash" style="color: #ffffff;"></i></button>
+                                    <button class="btn btn-danger" id="deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="fa-solid fa-trash" style="color: #ffffff;"></i></button>
                                 </div>
                             </div>
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <div class="text-center">
-                            <p>There are no items in your Wish List.</p>
-                        </div>
                     <?php
+                        }
                     }
                     ?>
+                    <div class="text-center" id="noLikedItems">
+                        <p>There are no items in your Wish List.</p>
+                    </div>
                 </div>
             </div>
         </div>

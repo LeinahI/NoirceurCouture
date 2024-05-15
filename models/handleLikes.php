@@ -31,13 +31,13 @@ if (isset($_SESSION['auth'])) {
                 break;
             case "deleteLike":
                 $user_id = $_SESSION['auth_user']['user_ID'];
-                $cart_id = $_POST['cart_id'];
+                $like_id = $_POST['like_id'];
 
-                $chk_existing_cart = "SELECT * FROM likes WHERE likes_id='$cart_id' AND user_ID='$user_id' ";
+                $chk_existing_cart = "SELECT * FROM likes WHERE likes_id='$like_id' AND user_ID='$user_id' ";
                 $chk_existing_cart_run = mysqli_query($con, $chk_existing_cart);
 
                 if (mysqli_num_rows($chk_existing_cart_run) > 0) {
-                    $delete_query = "DELETE FROM likes WHERE likes_id='$cart_id'";
+                    $delete_query = "DELETE FROM likes WHERE likes_id='$like_id'";
                     $delete_query_run = mysqli_query($con, $delete_query);
                     if ($delete_query_run) {
                         echo 200;

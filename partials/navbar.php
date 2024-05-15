@@ -61,10 +61,9 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                             <?php if (isset($_SESSION['auth'])) {
                                 $cartQty = getCartQty();
                             ?>
-                                <span class="itemCartQty text-dark"><?php echo $cartQty; ?></span>
-                            <?php } else { ?>
-                                <span class="itemCartQty text-dark"></span>
+                                <span class="text-dark" id="itemCartQty"><?php echo $cartQty; ?></span>
                             <?php } ?>
+
                         </a>
                     </li>
                     <!-- myCart end -->
@@ -76,9 +75,7 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                             <?php if (isset($_SESSION['auth'])) {
                                 $cartQty = getLikesQty();
                             ?>
-                                <span class="itemCartQty text-dark"><?php echo $cartQty; ?></span>
-                            <?php } else { ?>
-                                <span class="itemCartQty text-dark"></span>
+                                <span class="text-dark" id="itemLikeQty"><?php echo $cartQty; ?></span>
                             <?php } ?>
                         </a>
                     </li>
