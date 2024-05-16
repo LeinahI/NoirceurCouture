@@ -77,11 +77,11 @@ if (isset($_GET['category'])) {
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="row">
-                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2">Brand Name: </p>
+                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2 text-end">Brand Name: </p>
                                             <p class="col-12 fs-4 fw-bold text-dark col-md-9 col-sm-3 col-lg-10"><?= $category['category_name'] ?></p>
                                         </div>
                                         <div class="row">
-                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2">Description: </p>
+                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2 text-end">Description: </p>
                                             <p class="col-12 text-dark-4 col-md-9 col-sm-9 col-lg-10"><?= $category['category_description'] ?></p>
                                         </div>
                                     </div>
@@ -141,7 +141,7 @@ if (isset($_GET['category'])) {
                                 ?>
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-6 mb-3 ">
                                     <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                        <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 mb-2">
+                                        <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
                                         <div class="p-2 col-md-12 bg-tertiary">
                                             <div class="row">
                                                 <div class="col-md-9 col-lg-8 col-xl-8">
