@@ -18,6 +18,20 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
         #offcanvasNavbar2 {
             width: 40% !important;
         }
+
+        .navbar-brand {
+            margin-left: 20px;
+        }
+
+        .navbar-toggler {
+            margin-right: 20px;
+        }
+    }
+
+    @media (max-width: 320px) {
+        #offcanvasNavbar2 {
+            width: 50% !important;
+        }
     }
 
     a.text-dark-dropdown:focus,
@@ -41,7 +55,7 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
             <img src="../assets/images/logo/NoirceurCouture_BK.png" height="30" alt="Logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
-            <i class="fa-solid fa-bars"></i>
+            <i class="bi bi-list"></i>
         </button>
         <div class="offcanvas offcanvas-end bg-main" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
             <div class="offcanvas-header">
@@ -102,10 +116,7 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                     } else {
                     ?>
                         <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
-                            <a class="nav-link text-dark" href="../seller/seller-registration.php">Start Selling</a>
-                        </li>
-                        <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
-                            <a class="nav-link text-dark" href="../views/register.php">Register</a>
+                            <a class="nav-link text-dark" href="../views/register.php">Registration</a>
                         </li>
                         <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
                             <a class="nav-link text-dark" href="../views/login.php">Log in</a>

@@ -51,7 +51,7 @@ include('../middleware/userMW.php');
                 if (mysqli_num_rows($user) > 0) {
                     $data = mysqli_fetch_array($user);
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">Change Password</h5>
                         </div>
@@ -68,7 +68,7 @@ include('../middleware/userMW.php');
                                                     <input type="password" class="form-control" id="oldpass" name="oldpass" value="" required placeholder="Password">
                                                     <label for="code1">Old Password</label>
                                                 </div>
-                                                <span class="input-group-text" id="toggleOldPass"><i class="fa-regular fa-eye"></i></span>
+                                                <span class="input-group-text" id="toggleOldPass"><i class="bi bi-eye"></i></span>
                                             </div>
                                         </div>
 
@@ -78,7 +78,7 @@ include('../middleware/userMW.php');
                                                     <input type="password" class="form-control" id="newpass" name="newpass" value="" required placeholder="Password">
                                                     <label for="code1">New Password</label>
                                                 </div>
-                                                <span class="input-group-text" id="toggleNewPass"><i class="fa-regular fa-eye"></i></span>
+                                                <span class="input-group-text" id="toggleNewPass"><i class="bi bi-eye"></i></span>
                                             </div>
                                         </div>
 
@@ -88,7 +88,7 @@ include('../middleware/userMW.php');
                                                     <input type="password" class="form-control" id="cnewpass" name="cnewpass" value="" required placeholder="Password">
                                                     <label for="code1">Confirm New Password</label>
                                                 </div>
-                                                <span class="input-group-text" id="toggleCNewPass"><i class="fa-regular fa-eye"></i></span>
+                                                <span class="input-group-text" id="toggleCNewPass"><i class="bi bi-eye"></i></span>
                                             </div>
                                         </div>
                                         <!-- Pass and CPass end -->
@@ -126,8 +126,8 @@ include('../middleware/userMW.php');
 
             // Toggle the eye icon class
             var eyeIconA = togglePasswordBtnA.querySelector("i");
-            eyeIconA.classList.toggle("fa-eye");
-            eyeIconA.classList.toggle("fa-eye-slash");
+            eyeIconA.classList.toggle("bi-eye");
+            eyeIconA.classList.toggle("bi-eye-slash");
         });
 
         togglePasswordBtnB.addEventListener("click", function() {
@@ -136,8 +136,8 @@ include('../middleware/userMW.php');
 
             // Toggle the eye icon class
             var eyeIconB = togglePasswordBtnB.querySelector("i");
-            eyeIconB.classList.toggle("fa-eye");
-            eyeIconB.classList.toggle("fa-eye-slash");
+            eyeIconB.classList.toggle("bi-eye");
+            eyeIconB.classList.toggle("bi-eye-slash");
         });
 
         togglePasswordBtnC.addEventListener("click", function() {
@@ -146,8 +146,8 @@ include('../middleware/userMW.php');
 
             // Toggle the eye icon class
             var eyeIconC = togglePasswordBtnC.querySelector("i");
-            eyeIconC.classList.toggle("fa-eye");
-            eyeIconC.classList.toggle("fa-eye-slash");
+            eyeIconC.classList.toggle("bi-eye");
+            eyeIconC.classList.toggle("bi-eye-slash");
         });
 
     });

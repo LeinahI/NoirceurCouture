@@ -1,13 +1,6 @@
-<!-- Link Swiper's CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-
 <!-- Demo styles -->
 <style>
-    .swiper {
-        position: relative;
-        width: 1296px;
-        height: 729px;
-    }
+   
 
     @media (max-width: 1399px) {
         .swiper {
@@ -54,17 +47,12 @@
                     </div>
             <?php
                 }
-            } else {
-                // Handle case where there are no slideshow images
-                /* echo 'No slideshow images available.'; */
             }
             ?>
         </div>
     </div>
 </div>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
 <!-- Initialize Swiper -->
 <script>

@@ -50,7 +50,7 @@ if (isset($_SESSION['auth'])) {
                                             <input type="password" class="form-control" id="password_input" name="loginPasswordInput" required placeholder="Password">
                                             <label for="code1">Password</label>
                                         </div>
-                                        <span class="input-group-text" id="togglePassword"><i class="fa-regular fa-eye"></i></span>
+                                        <span class="input-group-text" id="togglePassword"><i class="bi bi-eye"></i></span>
                                     </div>
                                     <!-- Pass and CPass end -->
 
@@ -100,7 +100,8 @@ include('../partials/__footer.php');
 
             // Toggle the eye icon class
             var eyeIcon = togglePasswordBtn.find("i");
-            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+            eyeIcon.toggleClass("bi bi-eye");
+            eyeIcon.toggleClass("bi bi-eye-slash");
         });
     });
 

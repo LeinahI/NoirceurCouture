@@ -8,6 +8,9 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
     <?php include('../partials/sessionMessage.php') ?>
 </div>
 
+<p class="fs-6 my-4 text-center">Brands</p>
+<?php include('../partials/brands.php') ?>
+
 <?php
 $img = getAllViews("slideshow");
 if (mysqli_num_rows($img) > 0) {
@@ -16,8 +19,8 @@ if (mysqli_num_rows($img) > 0) {
 
 $popular = getAllPopular();
 if (mysqli_num_rows($popular) > 0) {
-    include('../partials/trending.php');
 }
+include('../partials/recommendedItems.php');
 ?>
 
 <style>
@@ -29,7 +32,7 @@ if (mysqli_num_rows($popular) > 0) {
 </style>
 
 
-<div class="mt-5 mb-5">
+<div class="my-5">
     <div class="container">
         <div class="position-absolute z-2 text-display" style="translate: 800px 300px;">
             <div class="card" style="width: 24rem;">

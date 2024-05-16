@@ -136,9 +136,9 @@
                                                 <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
                                                 <div class="d-flex justify-content-center">
                                                     <div class="input-group mb-2" style="width:120px;">
-                                                        <button class="input-group-text decrementProductBtn updateQty">-</button>
+                                                        <button class="input-group-text decrementProductBtn updateQty btn-main">-</button>
                                                         <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>" data-remain="<?= $cItem['product_remain'] ?>">
-                                                        <button class="input-group-text incrementProductBtn updateQty">+</button>
+                                                        <button class="input-group-text incrementProductBtn updateQty btn-main">+</button>
                                                     </div>
                                                 </div>
                                                 <span class="d-flex justify-content-center text-accent itemLeft">
@@ -175,10 +175,9 @@
                     <div class="p-4">
                         <section class="pb-5">
                             <div class="float-end text-dark">
-                                <h5>Total (<span>
-                                        <?php if (isset($_SESSION['auth'])) {
-                                            echo getCartQty();
-                                        } ?>
+                                <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
+                                                        echo getCartQty();
+                                                    } ?>
                                     </span>
                                     items):
                                     <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>

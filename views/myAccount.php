@@ -55,7 +55,7 @@ include('../middleware/userMW.php');
                     $hiddenEmail = hideEmailCharacters($data['user_email']);
                     $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
                 ?>
-                    <div class="card border rounded-3 shadow bg-tertiary">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">My Profile</h5>
                         </div>
@@ -111,7 +111,6 @@ include('../middleware/userMW.php');
                                     <div class="col-md-4 text-center">
                                         <label for="profileUpload">
                                             <div class="profile-pic user-select-none" style="background-image: url('../assets/uploads/userProfile/<?= ($profilePic) ? $profilePic : 'defaultProfile.jpg' ?>')">
-                                                <i class="fa-solid fa-camera"></i>
                                                 <span>Change Image</span>
                                             </div>
                                         </label>

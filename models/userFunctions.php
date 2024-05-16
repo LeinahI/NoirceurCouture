@@ -67,10 +67,12 @@ function getAllPopular() /* Trending */
     return $query_run; // Return the query result, not the query itself
 }
 
-function getAllSameShop($id) /* Trending */
+function getAllSameShop($id, $slug) /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE category_id='$id' AND product_visibility != '1'";
+    $query = "SELECT p.*, c.category_image FROM products p
+        JOIN categories c ON p.category_id = c.category_id
+     WHERE c.category_id='$id' AND p.product_visibility != '1' AND p.product_slug != '$slug'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -78,7 +80,7 @@ function getAllSameShop($id) /* Trending */
 function getProdByCategory($category_id)
 {
     global $con;
-    $query = "SELECT p.*, c.category_onVacation, c.category_isBan FROM products p
+    $query = "SELECT p.*, c.category_image, c.category_onVacation, c.category_isBan FROM products p
     JOIN categories c ON p.category_id = c.category_id
     WHERE p.category_id = '$category_id' AND p.product_visibility='0'";
     $result = mysqli_query($con, $query);

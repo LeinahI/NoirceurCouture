@@ -40,7 +40,7 @@ include('../middleware/adminMW.php'); ?>
                             </div>
 
                             <div class="text-center col-md-12 mb-3">
-                                <button type="submit" name="changePassBtn" class="col-md-12 btn btn-primary">Confirm Change Password</button>
+                                <button type="submit" name="changeAdminPassBtn" class="col-md-12 btn btn-primary">Confirm Change Password</button>
                             </div>
                         </div>
                     </form>

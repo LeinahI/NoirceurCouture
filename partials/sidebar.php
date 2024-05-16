@@ -6,6 +6,12 @@
     .hoverstate:hover {
         color: var(--text-dark) !important;
     }
+
+    @media (max-width: 768px) {
+        .sidebar {
+            margin-bottom: 15px;
+        }
+    }
 </style>
 
 <?php
@@ -14,7 +20,7 @@ $data = mysqli_fetch_array($user);
 $profilePic = $data['user_profile_image'];
 ?>
 
-<div class="col-md-3">
+<div class="col-md-3 sidebar">
     <div class="card p-3 border-0 rounded-3 bg-tertiary">
         <div class="row">
             <div class="card-title text-dark d-flex align-items-center">

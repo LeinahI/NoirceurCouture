@@ -59,7 +59,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 
                                 <!-- Update Details -->
                                 <div class="text-center col-md-12 mb-3">
-                                    <button type="submit" name="updateUserBtn" class="col-md-12 btn btn-primary">Update Account Details</button>
+                                    <button type="submit" name="updateSellerDetailsBtn" class="col-md-12 btn btn-primary">Update Account Details</button>
                                 </div>
                             </form>
                         </div>

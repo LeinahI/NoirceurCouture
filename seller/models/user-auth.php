@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Manila');
 include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
 
-if (isset($_POST['updateUserBtn'])) { //!Update User Details
+if (isset($_POST['updateSellerDetailsBtn'])) { //!Update User Details
     $userId =  mysqli_real_escape_string($con, $_POST['userID']);
     $firstName =  mysqli_real_escape_string($con, $_POST['firstName']);
     $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
@@ -40,7 +40,7 @@ if (isset($_POST['updateUserBtn'])) { //!Update User Details
     }
 }
 
-if (isset($_POST['changePassBtn'])) { //!Update User Password
+if (isset($_POST['changeSellerPassBtn'])) { //!Update User Password
     $userId =  mysqli_real_escape_string($con, $_POST['userID']);
     $oldPassword =  mysqli_real_escape_string($con, $_POST['oldpass']);
     $newPassword =  mysqli_real_escape_string($con, $_POST['newpass']);

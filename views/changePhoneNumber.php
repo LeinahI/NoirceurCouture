@@ -19,7 +19,7 @@ include('../middleware/userMW.php');
                     $hiddenEmail = hideEmailCharacters($data['user_email']);
                     $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">Change Phone Number
                                 <span class="float-end">

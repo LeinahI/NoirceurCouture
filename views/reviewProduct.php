@@ -122,7 +122,7 @@ if (isset($_GET['trck'])) {
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-main"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-main">View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">

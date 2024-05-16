@@ -6,19 +6,6 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <?php include('../partials/sessionMessage.php') ?>
-                <?php
-                if (isset($_SESSION['Errormsg'])) {
-                ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
-                        <?= $_SESSION['Errormsg']; ?>.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php
-                    /* Alert popup will show here */
-                    unset($_SESSION['Errormsg']);
-                }
-                ?>
                 <div class="card bg-main">
                     <div class="card-header text-center">
                         <h4>Registration Form</h4>
@@ -62,7 +49,7 @@
                                             <input type="password" class="form-control" id="user_password" name="userPassword" required placeholder="Password">
                                             <label for="floatingPassword">Password</label>
                                         </div>
-                                        <span class="input-group-text" id="togglePass"><i class="fa-regular fa-eye"></i></span>
+                                        <span class="input-group-text" id="togglePass"><i class="bi bi-eye"></i></span>
                                     </div>
 
                                     <div class="input-group mb-3 col-md-6 ps-0 mb-3">
@@ -70,7 +57,7 @@
                                             <input type="password" class="form-control" id="user_cpassword" name="userConfirmPassword" required placeholder="Password">
                                             <label for="floatingPassword">Confirm Password</label>
                                         </div>
-                                        <span class="input-group-text" id="toggleCPass"><i class="fa-regular fa-eye"></i></span>
+                                        <span class="input-group-text" id="toggleCPass"><i class="bi bi-eye"></i></span>
                                     </div>
                                     <!-- Pass and CPass end -->
 
@@ -115,7 +102,8 @@ include('../partials/__footer.php');
 
             // Toggle the eye icon class
             var eyeIcon = togglePasswordBtn.find("i");
-            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+            eyeIcon.toggleClass("bi bi-eye");
+            eyeIcon.toggleClass("bi bi-eye-slash");
         });
 
         toggleCPasswordBtn.on("click", function() {
@@ -126,7 +114,8 @@ include('../partials/__footer.php');
 
             // Toggle the eye icon class
             var eyeIcon = toggleCPasswordBtn.find("i");
-            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+            eyeIcon.toggleClass("bi bi-eye");
+            eyeIcon.toggleClass("bi bi-eye-slash");
         });
     });
 

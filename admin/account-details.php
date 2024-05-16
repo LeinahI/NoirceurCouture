@@ -43,21 +43,9 @@ include('../middleware/adminMW.php');
                                         <label for="floatingPassword" class="ps-3">Last Name</label>
                                     </div>
                                 </div>
-                                <!-- Email and Phone Number -->
-                                <div class="row">
-                                    <div class="form-floating col-md-6 mb-3">
-                                        <input type="email" class="form-control ps-3" value="<?= $data['user_email']; ?>" name="email" required placeholder="email@email.com">
-                                        <label for="floatingInput" class="ps-3">Email Address</label>
-                                    </div>
-                                    <div class="form-floating col-md-6 mb-3">
-                                        <input type="number" class="form-control ps-3" value="<?= $data['user_phone']; ?>" name="phoneNumber" required placeholder="09">
-                                        <label for="floatingPassword" class="ps-3">Phone Number</label>
-                                    </div>
-                                </div>
-
                                 <!-- Update Details -->
                                 <div class="text-center col-md-12 mb-3">
-                                    <button type="submit" name="updateUserBtn" class="col-md-12 btn btn-primary">Update Account Details</button>
+                                    <button type="submit" name="updateAdminDetailsBtn" class="col-md-12 btn btn-primary">Update Account Details</button>
                                 </div>
                             </form>
                         </div>

@@ -27,13 +27,14 @@ include('../middleware/userMW.php');
                 ?>
                         <div class="card border-0" style="width: 18rem;" id="likedCard">
                             <div class="card-body bg-tertiary rounded">
-                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
+                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="card-link text-dark">
                                     <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
-                                    <h5 class="card-title"><?= $cItem['product_name'] ?></h5>
+                                    <p class="card-title"><?= $cItem['product_name'] ?></p>
                                 </a>
-
-                                <h6><b>₱<?= number_format($cItem['product_srp'], 2) ?></b></h6>
-                                <button class="btn btn-danger" id="deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="fa-solid fa-trash" style="color: #ffffff;"></i></button>
+                                <p class="fs-6 text-dark">₱<?= number_format($cItem['product_srp'], 2) ?></p>
+                                <div class="">
+                                    <button class="btn btn-main" id="deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="bi bi-trash"></i></button>
+                                </div>
                             </div>
                         </div>
                 <?php

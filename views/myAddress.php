@@ -15,7 +15,7 @@ include('../middleware/userMW.php');
         <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">
             <div>
-                <div class="card border rounded-3 shadow bg-tertiary">
+                <div class="card border rounded-3 bg-tertiary">
                     <div class="card-header">
                         <h5 class="card-title ">
                             <span>My Addresses</span>
@@ -127,9 +127,9 @@ include('../middleware/userMW.php');
 
                                 <div class="card-body">
                                     <!-- Display user addresses in cards -->
-                                    <div class="card bg-main">
+                                    <div class="card bg-main border-0">
                                         <div class="row card-body col-md-12 ">
-                                            <div class="col-md-10">
+                                            <div class="col-md-9">
                                                 <div id="namePhoneEmail">
                                                     <span class="fw-bold"><?= $fname ?></span> |
                                                     <span class="fw-normal"><?= $phone ?></span> |
@@ -154,14 +154,14 @@ include('../middleware/userMW.php');
                                                 }
                                                 ?>
                                             </div>
-                                            <div class="col-md-2">
+                                            <div class="col-md-3">
                                                 <span class="float-end mb-2">
-                                                    <a href="myAddressEdit.php?addrID=<?= $addrid ?>" class="text-dark">Edit</a>
+                                                    <a href="myAddressEdit.php?addrID=<?= $addrid ?>" class="btn btn-main">Edit</a>
 
                                                     <?php
                                                     if ($isDefault != 1 || $isDefault == 1 && $addrQTY == 1) {
                                                     ?>
-                                                        <a href="#" class="text-dark-4" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
+                                                        <a href="#" class="btn btn-tertiary" data-bs-toggle="modal" data-bs-target="#deleteAddrModal<?= $addrid ?>">Delete</a>
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="deleteAddrModal<?= $addrid ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
