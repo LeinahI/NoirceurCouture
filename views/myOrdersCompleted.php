@@ -95,7 +95,7 @@ include('../middleware/userMW.php');/* Authenticate.php */
                                                 $rated = mysqli_fetch_array($isRated);
                                 ?>
                                                 <!-- If it's the first item, open a new card -->
-                                                <div class='card mb-3 border rounded-3 shadow bg-main'>
+                                                <div class='card mb-3 border-0 rounded-3 bg-main'>
                                                     <div class='card-header'>
                                                         <h5 class='card-title'>
                                                             <a href='store.php?category=<?= $cItem['category_slug'] ?>' class='fs-5 text-dark'><?= $cItem['category_name'] ?></a> <!-- Category Name -->

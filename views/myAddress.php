@@ -1,6 +1,7 @@
 <?php
 include('../partials/__header.php');
 include('../middleware/userMW.php');
+include('../models/dataEncryption.php');
 ?>
 
 <style>

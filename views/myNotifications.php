@@ -79,7 +79,7 @@ include('../middleware/userMW.php');
         </div>
     </div>
 </div>
-<div style="margin-top:14.5%;">
+<div style="margin-top:17%;">
     <?php include('footer.php'); ?>
 </div>
 

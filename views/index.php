@@ -8,19 +8,18 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
     <?php include('../partials/sessionMessage.php') ?>
 </div>
 
-<p class="fs-6 my-4 text-center">Brands</p>
-<?php include('../partials/brands.php') ?>
-
 <?php
-$img = getAllViews("slideshow");
-if (mysqli_num_rows($img) > 0) {
-    include('../partials/slider.php');
+$categories = getAllActive("categories");
+if (mysqli_num_rows($categories) > 0) {
+?>
+    <p class="fs-6 my-4 text-center">Brands</p>
+<?php
+    include('../partials/brands.php');
 }
-
 $popular = getAllPopular();
 if (mysqli_num_rows($popular) > 0) {
+    include('../partials/recommendedItems.php');
 }
-include('../partials/recommendedItems.php');
 ?>
 
 <style>

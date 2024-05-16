@@ -1,6 +1,7 @@
 <?php
 include('../partials/__header.php');
 include('../middleware/userMW.php');/* Authenticate.php */
+include('../models/dataEncryption.php');
 ?>
 <div class="py-3 bg-main">
     <div class="container">

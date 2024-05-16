@@ -1,6 +1,7 @@
 <?php include('../partials/__header.php');
 include('../middleware/userMW.php');
 include('../models/dbcon.php');
+include('../models/dataEncryption.php');
 
 $cartCheck = checkItemExists();
 if (mysqli_num_rows($cartCheck) < 1) {

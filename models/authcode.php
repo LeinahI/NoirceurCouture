@@ -2,6 +2,7 @@
 include('dbcon.php');
 include('myFunctions.php');
 include('emailSMTP.php');
+include('dataEncryption.php');
 session_start();
 
 /* User Registration statement */

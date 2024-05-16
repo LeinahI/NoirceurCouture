@@ -3,6 +3,7 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
+include('../../models/addBGToPng.php');
 
 if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     $user_ID = $_POST['userID'];
@@ -36,16 +37,18 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
 
         $path = "../../assets/uploads/brands/";
         $image_ext = strtolower(pathinfo($image, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+        $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
         if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
+            redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG files are allowed.", "error");
         }
 
         /* Set the file name */
         $date = date("m-d-Y-H-i-s");
         $fileName = $slug . '-' . $date . '.' . $image_ext;
         $destination = $path . $fileName;
+
+        addBackgroundToPng($destination, $image);
 
         //Generate unique slug using id
         $uniqueIdentifier = time();
@@ -102,16 +105,24 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $new_image = $_FILES['uploadImageInput']['name'];
         $image_tmp = $_FILES['uploadImageInput']['tmp_name'];
 
-        if ($new_image != "") {
+        $image_ext = strtolower(pathinfo($new_image, PATHINFO_EXTENSION));
+        $allowed_extensions = ['jpg', 'jpeg', 'png'];
+
+        if (!in_array($image_ext, $allowed_extensions)) {
+            redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG files are allowed.", "error");
+        } else if ($new_image != "") {
             // Set the file name if a new image is uploaded
             $date = date("m-d-Y-H-i-s");
-            $fileName = $slug . '-' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
+            $extension = pathinfo($new_image, PATHINFO_EXTENSION);
+            $fileName = $slug . '-' . $date . '.' . $extension;
             $destination = "../../assets/uploads/brands/" . $fileName;
 
             if (file_exists("../../assets/uploads/brands/" . $old_image)) {
                 unlink("../../assets/uploads/brands/" . $old_image); // Delete Old Image
             }
             move_uploaded_file($image_tmp, $destination);
+
+            addBackgroundToPng($destination, $extension);
         } else {
             // Keep the original file name if no new image is uploaded
             $fileName = $old_image;
