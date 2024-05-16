@@ -9,14 +9,16 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 </div>
 
 <?php
-$img = getAllViews("slideshow");
-if (mysqli_num_rows($img) > 0) {
-    include('../partials/slider.php');
+$categories = getAllActive("categories");
+if (mysqli_num_rows($categories) > 0) {
+?>
+    <p class="fs-6 my-4 text-center">Brands</p>
+<?php
+    include('../partials/brands.php');
 }
-
 $popular = getAllPopular();
 if (mysqli_num_rows($popular) > 0) {
-    include('../partials/trending.php');
+    include('../partials/recommendedItems.php');
 }
 ?>
 
@@ -29,7 +31,7 @@ if (mysqli_num_rows($popular) > 0) {
 </style>
 
 
-<div class="mt-5 mb-5">
+<div class="my-5">
     <div class="container">
         <div class="position-absolute z-2 text-display" style="translate: 800px 300px;">
             <div class="card" style="width: 24rem;">
@@ -39,7 +41,7 @@ if (mysqli_num_rows($popular) > 0) {
                         As a trusted distributor, we bring you an extensive collection of curated pieces from top fashion brands around the world. <br>
                         From chic clothing to accessories, Noirceur Couture caters to diverse tastes, providing a seamless shopping experience for those looking for quality and exclusivity.</p>
                     <center>
-                        <a href="storelist.php" class="btn btn-primary">Shop Now</a>
+                        <a href="storelist.php" class="btn btn-main">Shop Now</a>
                     </center>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 session_start();
 include('dbcon.php');
 include('myFunctions.php');
+include('dataEncryption.php');
 /* require */
 
 if (isset($_SESSION['auth'])) {

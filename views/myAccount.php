@@ -36,6 +36,30 @@ include('../middleware/userMW.php');
         display: none;
         cursor: pointer;
     }
+
+    @media (max-width: 991px) {
+        .deleteContainer {
+            position: relative !important;
+        }
+
+        .profileNotice {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .d-flex {
+            display: block !important;
+        }
+
+        .profile {
+            margin-top: 1rem;
+        }
+
+        .profileNotice {
+            display: inherit !important;
+        }
+    }
 </style>
 
 <div class="container mt-5">
@@ -54,16 +78,18 @@ include('../middleware/userMW.php');
 
                     $hiddenEmail = hideEmailCharacters($data['user_email']);
                     $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
+
+                    $userId = $data['user_ID'];
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">My Profile</h5>
                         </div>
                         <div class="card-body">
                             <form action="../models/profileUpdate.php" method="POST" enctype="multipart/form-data">
-                                <div class="container-fluid d-flex">
-                                    <div class="col-md-8">
-                                        <input type="hidden" name="userID" value="<?= $data['user_ID'] ?>">
+                                <div class="container d-flex">
+                                    <div class="col-md-8 col-12">
+                                        <input type="hidden" name="userID" value="<?= $userId; ?>">
                                         <!-- Username start -->
                                         <div class="row">
                                             <div class="form-floating col-md-12 ps-0 mb-3">
@@ -89,13 +115,13 @@ include('../middleware/userMW.php');
                                         <!-- Email and Number start -->
                                         <div class="row">
                                             <div class="col">
-                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a href="changeEmailAddress.php">Change</a></p>
+                                                <p>Email: <span><?= $hiddenEmail;  ?></span> <a class="text-dark-4" href="changeEmailAddress.php">Change</a></p>
                                             </div>
 
                                         </div>
                                         <div class="row">
                                             <div class="col">
-                                                <p>Phone number: <span><?= $hiddenPhoneNumber; ?> <a href="changePhoneNumber.php">Change</a></span></p>
+                                                <p>Phone number: <span><?= $hiddenPhoneNumber; ?> <a class="text-dark-4" href="changePhoneNumber.php">Change</a></span></p>
                                             </div>
                                         </div>
 
@@ -103,15 +129,14 @@ include('../middleware/userMW.php');
 
                                         <div class="row">
                                             <div class="text-center ps-0">
-                                                <button type="submit" name="userUpdateAccBtn" class="btn btn-accent col-md-12">Update Credentials</button>
+                                                <button type="submit" name="userUpdateAccBtn" class="btn btn-main col-md-12">Update Credentials</button>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Profile Picture -->
-                                    <div class="col-md-4 text-center">
+                                    <div class="profile col-md-4 col-12 text-center">
                                         <label for="profileUpload">
                                             <div class="profile-pic user-select-none" style="background-image: url('../assets/uploads/userProfile/<?= ($profilePic) ? $profilePic : 'defaultProfile.jpg' ?>')">
-                                                <i class="fa-solid fa-camera"></i>
                                                 <span>Change Image</span>
                                             </div>
                                         </label>
@@ -120,17 +145,34 @@ include('../middleware/userMW.php');
                                             <input class="profileUp" type="file" name="profileUpload" accept=".jpg, .jpeg, .png" id="profileUpload" onchange="displayImage(this)">
                                         </div>
                                         <div>
-                                            <p>File size: maximum 5 MB <br>
-                                                File extension: .JPEG, .PNG</p>
+                                            <p class="profileNotice">File size: maximum 5 MB <br>
+                                                File extension: .JPEG, .PNG
+                                            </p>
                                         </div>
                                         <?php
                                         if ($profilePic > 0) {
                                         ?>
-                                            <div class="row">
-                                                <div class="text-center ps-0">
-                                                    <button type="submit" name="profileDeleteBtn" class="btn btn-accent col-md-12">Delete Profile Image</button>
+
+                                            <div class="deleteContainer position-absolute bottom-0 start-0 col-12">
+                                                <a href="#" class="btn btn-tertiary col-12" data-bs-toggle="modal" data-bs-target="#deleteProfileModal<?= $userId ?>">Delete Profile Image</a>
+                                                <div class="modal fade" id="deleteProfileModal<?= $userId ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content bg-main">
+                                                            <form action="../models/authcode.php" method="POST">
+                                                                <div class="modal-body fs-5">
+                                                                    <input type="hidden" name="deleteAddruserID" value="<?= $userid ?>">
+                                                                    Are you sure you want to delete your Profile Image?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-tertiary" data-bs-dismiss="modal">Close</button>
+                                                                    <button name="profileDeleteBtn" class="btn btn-main">Confirm Delete</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                         <?php
                                         }
                                         ?>
@@ -159,11 +201,9 @@ include('../middleware/userMW.php');
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:8.5%;">
     <?php include('footer.php'); ?>
 </div>
 

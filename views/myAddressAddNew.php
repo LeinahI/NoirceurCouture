@@ -33,7 +33,7 @@ include('../middleware/userMW.php');
                         <h5 class="card-title">
                             <span>Add New Address</span>
                             <span class="float-end">
-                                <a href="myAddress.php" class="btn btn-primary">
+                                <a href="myAddress.php" class="btn btn-tertiary">
                                     Go Back
                                 </a>
                             </span>
@@ -102,7 +102,7 @@ include('../middleware/userMW.php');
                                     </div>
 
                                     <div class="form-floating col-md-12 ps-0">
-                                        <button type="submit" name="userAddAddrBtn" class="btn btn-accent col-md-12">Add New Address</button>
+                                        <button type="submit" name="userAddAddrBtn" class="btn btn-main col-md-12">Add New Address</button>
                                     </div>
                                 </div>
                             </div>

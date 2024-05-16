@@ -41,14 +41,6 @@ function maskPhoneNumber($phoneNumber)
     return $maskedPhoneNumber;
 }
 
-function getAllViews($table)
-{
-    global $con;
-    $query = "SELECT * FROM $table";
-    $query_run = mysqli_query($con, $query);
-    return $query_run; // Return the query result, not the query itself
-}
-
 function getAllActive($table)
 {
     global $con;
@@ -67,10 +59,12 @@ function getAllPopular() /* Trending */
     return $query_run; // Return the query result, not the query itself
 }
 
-function getAllSameShop($id) /* Trending */
+function getAllSameShop($id, $slug) /* Trending */
 {
     global $con;
-    $query = "SELECT * FROM products WHERE category_id='$id' AND product_visibility != '1'";
+    $query = "SELECT p.*, c.category_image FROM products p
+        JOIN categories c ON p.category_id = c.category_id
+     WHERE c.category_id='$id' AND p.product_visibility != '1' AND p.product_slug != '$slug'";
     $query_run = mysqli_query($con, $query);
     return $query_run; // Return the query result, not the query itself
 }
@@ -78,7 +72,7 @@ function getAllSameShop($id) /* Trending */
 function getProdByCategory($category_id)
 {
     global $con;
-    $query = "SELECT p.*, c.category_onVacation, c.category_isBan FROM products p
+    $query = "SELECT p.*, c.category_image, c.category_onVacation, c.category_isBan FROM products p
     JOIN categories c ON p.category_id = c.category_id
     WHERE p.category_id = '$category_id' AND p.product_visibility='0'";
     $result = mysqli_query($con, $query);
@@ -498,36 +492,3 @@ function redirectSwal($url, $status, $status_code)
     exit();
 }
 
-
-// Function to encrypt data
-function encryptData($data)
-{
-    $cipher_algo = 'aes-256-cbc'; //+ Set the cipher algorithm to AES-256-CBC
-    $key = 'NZhJtqrGwocU9CHdBP6tHYB0CUaiX8UJ'; //+ Set the encryption key 
-    $options = 0; //+ Choose the cipher method and options
-    $iv_length = openssl_cipher_iv_length($cipher_algo); //+ Get the length of the initialization vector (IV) for the chosen cipher algorithm
-    $iv = openssl_random_pseudo_bytes($iv_length); //+ // Generate a random IV (Initialization Vector)
-
-    $encryptedData = openssl_encrypt($data, $cipher_algo, $key, $options, $iv); //+ Encrypt the data using OpenSSL encrypt function
-
-    $encryptedDataWithIV = base64_encode($iv . $encryptedData); //+ Combine IV and encrypted data and encode it using base64
-
-    return $encryptedDataWithIV; //+ Return the encrypted data with IV
-}
-
-// Function to decrypt data
-function decryptData($encryptedData)
-{
-    $cipher_algo = 'aes-256-cbc'; //+ Set the cipher algorithm to AES-256-CBC
-    $key = 'NZhJtqrGwocU9CHdBP6tHYB0CUaiX8UJ'; //+ Set the encryption key
-    $options = 0; //+ Choose the cipher method and options
-    $encryptedDataWithIV = base64_decode($encryptedData);  //+ Decode the base64-encoded string to extract IV and encrypted data
-    $iv_length = openssl_cipher_iv_length($cipher_algo); //+ Get the length of the initialization vector (IV) for the chosen cipher algorithm
-    $iv = substr($encryptedDataWithIV, 0, $iv_length); //+ Extract IV from the combined IV and encrypted data string
-
-    $encrptedDataWithoutIV = substr($encryptedDataWithIV, $iv_length); //+ Extract encrypted data after IV
-
-    $decryptedData = openssl_decrypt($encrptedDataWithoutIV, $cipher_algo, $key, $options, $iv); //+ Decrypt the data using OpenSSL decrypt function
-
-    return $decryptedData; //+ Return the decrypted data
-}

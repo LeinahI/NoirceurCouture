@@ -1,7 +1,6 @@
 <?php include('partials/header.php');
 include('../middleware/sellerMW.php');
 include('../models/checkSession.php');
-include('models/check-seller-addr.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
 ?>
 <div class="container">
@@ -45,7 +44,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 </div>
 
                                 <div class="text-center col-md-12 mb-3">
-                                    <button type="submit" name="changePassBtn" class="col-md-12 btn btn-primary">Confirm Change Password</button>
+                                    <button type="submit" name="changeSellerPassBtn" class="col-md-12 btn btn-primary">Confirm Change Password</button>
                                 </div>
 
                             </div>

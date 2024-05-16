@@ -15,7 +15,7 @@ include('../middleware/userMW.php');
     <div class="row">
         <?php include('../partials/sidebar.php') ?>
         <div class="col-md-9">
-            <div class="card border rounded-3 shadow bg-main">
+            <div class="card border rounded-3 bg-tertiary">
                 <div class="card-header">
                     <h5 class="card-title">My Notifications</h5>
                 </div>
@@ -79,7 +79,7 @@ include('../middleware/userMW.php');
         </div>
     </div>
 </div>
-<div style="margin-top:5%;">
+<div style="margin-top:17%;">
     <?php include('footer.php'); ?>
 </div>
 

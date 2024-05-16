@@ -1,6 +1,5 @@
 $(document).ready(function () {
   /* Increment QTY Function */
-  /* Increment QTY Function */
   $(".incrementProductBtn").click(function (e) {
     e.preventDefault();
 
@@ -62,7 +61,9 @@ $(document).ready(function () {
     var total = 0;
 
     $(".productPrice").each(function () {
-      var price = parseFloat($(this).text().replace("₱", "").replace(",", "").replace(",", ""));
+      var price = parseFloat(
+        $(this).text().replace("₱", "").replace(",", "").replace(",", "")
+      );
       total += price;
     });
 
@@ -85,7 +86,8 @@ $(document).ready(function () {
     $(this).val(value);
   });
 
-  /* Add to Cart function */
+  //!--------------Add and Delete item to Cart----------------
+  //* Add to Cart function
   $(".addToCartBtn").click(function (e) {
     e.preventDefault();
 
@@ -114,7 +116,8 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 201) {
-          updateCartItemsOnAdd();
+          /*  updateCartItemsOnAdd(); */
+          updateCartQty();
           swal({
             title: "Product added to cart",
             icon: "success",
@@ -158,23 +161,23 @@ $(document).ready(function () {
     });
   });
 
-  /* Update cart qty */
-  function updateCartItemsOnAdd() {
-    var productViewContainer = $("#productView");
-
-    // Clear the existing content inside the .cart-items container
-    productViewContainer.empty();
-
-    // Reload the content inside the .cart-items container
+  //* Update cart QTY
+  function updateCartQty() {
     $.ajax({
-      url: "#", // Replace with the actual file path
-      success: function (newContent) {
-        productViewContainer.html(newContent);
+      url: "/NoirceurCouture/models/getCartQty.php",
+      method: "GET",
+      success: function (response) {
+        if (response.cartQty !== undefined) {
+          $("#itemCartQty").text(response.cartQty);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching cart quantity: " + error);
       },
     });
   }
 
-  /* Update item QTY cart function that display on C */
+  //* Update item QTY cart function that display on productView & myCart
   $(document).on("click", ".updateQty", function (e) {
     var prod_qty = $(this).closest(".productData").find(".inputQty").val();
     var prod_id = $(this).closest(".productData").find(".productID").val();
@@ -191,49 +194,57 @@ $(document).ready(function () {
     });
   });
 
-  /* Delete Item Cart function */
-  $(document).on("click", ".deleteItem", function (e) {
-    var cart_id = $(this).val();
+  //* Check if there are any items in the cart initially
+  checkCartItems();
 
+  $(document).on("click", "#deleteItem", function (e) {
+    var cart_id = $(this).val(); // Get the cart ID from the clicked button's value
+    var $productToDelete = $(this).closest("#productList"); // Find the closest parent element with the ID 'productList' from the clicked button
+    var $itemsContainer = $productToDelete.closest("#itemsContainer"); // Find the closest parent element with the ID 'itemsContainer' from the product to delete
+    var $categoryCard = $itemsContainer.closest("#categoryCard"); // Find the closest parent element with the ID 'categoryCard' from the items container
+
+    // Make an AJAX POST request to handleCart.php to delete the item
     $.ajax({
       type: "POST",
       url: "/NoirceurCouture/models/handleCart.php",
       data: {
-        cart_id: cart_id,
-        scope: "delete",
+        cart_id: cart_id, // Send the cart ID
+        scope: "delete", // Specify the scope as 'delete'
       },
       success: function (response) {
+        // If the response indicates success (status 200)
         if (response == 200) {
-          updateCartItemsOnDelete();
-        } else {
-          /* swal({
-            title: response,
-            icon: "error",
-            button: "OK",
-          }); */
+          // Fade out the product to delete over 300ms
+          $productToDelete.fadeOut(300, function () {
+            $(this).remove(); // Remove the product from the DOM after fading out
+
+            // Check if the items container is empty
+            if ($itemsContainer.children().length === 0) {
+              // If empty, fade out the category card over 300ms
+              $categoryCard.fadeOut(300, function () {
+                $(this).remove(); // Remove the category card from the DOM after fading out
+                checkCartItems(); // Check the cart items to update the visibility of the empty cart message
+              });
+            } else {
+              checkCartItems(); // If the items container is not empty, just check the cart items
+            }
+          });
         }
       },
     });
   });
 
-  /* Update Cart Items */
-  function updateCartItemsOnDelete() {
-    var cartItemsContainer = $("#mycart");
-
-    // Clear the existing content inside the .cart-items container
-    cartItemsContainer.empty();
-
-    // Reload the content inside the .cart-items container
-    $.ajax({
-      type: "GET",
-      url: "#", // Replace with the actual file path
-      success: function (newContent) {
-        cartItemsContainer.html(newContent);
-      },
-    });
+  function checkCartItems() {
+    var isExist = $("#categoryCard").length > 0; // Check if there are any elements with the ID 'categoryCard'
+    if (isExist) {
+      $("#nocartItems").hide();
+    } else {
+      $("#nocartItems").show();
+    }
   }
 
-  /* Add item to Likes function */
+  //!--------------Add and Delete item to Wishlist----------------
+  //* Add to wishlist function
   $(".addToLikesBtn").click(function (e) {
     e.preventDefault();
 
@@ -250,12 +261,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response == 201) {
-          updateLikeItemsOnAdd();
-          /* swal({
-            title: "Product added to Likes",
-            icon: "success",
-            button: "OK",
-          }); */
+          updateLikeQty();
         } else if (response == "existing") {
           swal({
             title: "Product already in your Likes",
@@ -282,36 +288,42 @@ $(document).ready(function () {
     });
   });
 
-  /* Update cart qty */
-  function updateLikeItemsOnAdd() {
-    var productViewContainer = $("#productView");
-
-    // Clear the existing content inside the .cart-items container
-    productViewContainer.empty();
-
-    // Reload the content inside the .cart-items container
+  //* Update like QTY
+  function updateLikeQty() {
     $.ajax({
-      url: "#", // Replace with the actual file path
-      success: function (newContent) {
-        productViewContainer.html(newContent);
+      url: "/NoirceurCouture/models/getLikeQty.php",
+      method: "GET",
+      success: function (response) {
+        if (response.likeQty !== undefined) {
+          $("#itemLikeQty").text(response.likeQty);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching like quantity: " + error);
       },
     });
   }
 
-  /* Delete Item Like function */
-  $(document).on("click", ".deleteItemLike", function (e) {
-    var cart_id = $(this).val();
+  checkLikedItems();
+
+  //* AJAX call to delete wishlist item
+  $(document).on("click", "#deleteItemLike", function (e) {
+    var like_id = $(this).val();
+    var $itemToDelete = $(this).closest(".card");
 
     $.ajax({
       type: "POST",
       url: "/NoirceurCouture/models/handleLikes.php",
       data: {
-        cart_id: cart_id,
+        like_id: like_id,
         scope: "deleteLike",
       },
       success: function (response) {
         if (response == 200) {
-          $("#mylikes").load(location.href + " #mylikes");
+          $itemToDelete.fadeOut(300, function () {
+            $(this).remove(); // Remove the deleted item from the DOM
+            checkLikedItems();
+          });
         } else {
           swal({
             title: response,
@@ -320,8 +332,24 @@ $(document).ready(function () {
           });
         }
       },
+      error: function (xhr, status, error) {
+        console.error("Error deleting item from Likes: " + error);
+      },
     });
   });
 
-  
+  //* Function to check wishlist items using AJAX
+  function checkLikedItems() {
+    $.ajax({
+      url: "/NoirceurCouture/models/checkLikedItems.php", // PHP script to check liked items
+      type: "GET",
+      success: function (response) {
+        if (parseInt(response) > 0) {
+          $("#noLikedItems").hide();
+        } else {
+          $("#noLikedItems").show();
+        }
+      },
+    });
+  }
 });

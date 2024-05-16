@@ -1,90 +1,142 @@
 <?php include('../partials/__header.php');
 ?>
+<style>
+    .rEVZJ2 {
+        background-color: #CBC3BE;
+        flex: 1;
+        height: 1px;
+        width: 100%;
+    }
 
-<div class="d-flex align-items-center justify-content-center" style="min-height: 700px">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <?php include('../partials/sessionMessage.php') ?>
-                <?php
-                if (isset($_SESSION['Errormsg'])) {
-                ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-triangle-exclamation" style="color: #58151C;"></i>
-                        <?= $_SESSION['Errormsg']; ?>.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php
-                    /* Alert popup will show here */
-                    unset($_SESSION['Errormsg']);
-                }
-                ?>
-                <div class="card bg-main">
-                    <div class="card-header text-center">
-                        <h4>Registration Form</h4>
-                    </div>
-                    <div class="card-body">
-                        <form action="../models/authcode.php" method="POST">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <!-- Fname and Lname start -->
-                                    <div class="form-floating col-md-6 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_fname" name="firstName" required placeholder="name@example.com">
-                                        <label for="floatingInput">First Name</label>
-                                    </div>
-                                    <div class="form-floating mb-3 col-md-6 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_lname" name="lastName" required placeholder="name@example.com">
-                                        <label for="floatingInput">Last Name</label>
-                                    </div>
-                                    <!-- Fname and Lname end -->
+    .EMof35 {
+        color: #212529;
+        font-size: .75rem;
+        padding: 0 16px;
+        text-transform: uppercase;
+    }
 
-                                    <!-- Email and Number start -->
-                                    <div class="form-floating mb-3 col-md-6 ps-0 mb-3">
-                                        <input type="email" class="form-control" id="user_email" name="email" required placeholder="name@example.com">
-                                        <label for="floatingInput">Email address</label>
-                                    </div>
-                                    <div class="form-floating mb-3 col-md-6 ps-0 mb-3">
-                                        <input type="number" class="form-control" id="user_phone" name="phoneNumber" required placeholder="0945" onkeypress="inpNum(event)">
-                                        <label for="floatingInput">Phone Number</label>
-                                    </div>
-                                    <!-- Email and Number end -->
+    .NleHE1 {
+        padding-bottom: 14px;
+        align-items: center;
+        display: flex;
+    }
 
-                                    <!-- Username start -->
-                                    <div class="form-floating col-md-12 ps-0 mb-3">
-                                        <input type="text" class="form-control" id="user_uname" name="username" required placeholder="name@example.com">
-                                        <label for="floatingInput">Username</label>
+    /* Responsive layout adjustments for 320px width */
+    @media (max-width: 480px) {
+        .col-3 {
+            display: none;
+        }
+    }
+</style>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <?php include('../partials/sessionMessage.php') ?>
+            <div class="text-center">
+                <p>Account Registration</p>
+                <p>Please fill in all fields</p>
+            </div>
+            <form method="POST" action="../models/authcode.php">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td class="col-3 bg-tertiary py-3 align-middle">
+                                <p class="text-end">Name</p>
+                            </td>
+                            <td class="col-9 bg-main py-3">
+                                <div class="col-md-12 row gy-2">
+                                    <div class="form-floating col-lg-6 col-sm-12">
+                                        <input type="text" class="form-control" id="user_fname" name="firstName" required placeholder="fname">
+                                        <label for="floatingInput" class="ms-2 text-dark-4">First Name</label>
                                     </div>
-                                    <!-- Username end -->
-
-                                    <!-- Pass and CPass start -->
-                                    <div class="input-group mb-3 ps-0 mb-3">
-                                        <div class="form-floating">
-                                            <input type="password" class="form-control" id="user_password" name="userPassword" required placeholder="Password">
-                                            <label for="floatingPassword">Password</label>
-                                        </div>
-                                        <span class="input-group-text" id="togglePass"><i class="fa-regular fa-eye"></i></span>
-                                    </div>
-
-                                    <div class="input-group mb-3 col-md-6 ps-0 mb-3">
-                                        <div class="form-floating">
-                                            <input type="password" class="form-control" id="user_cpassword" name="userConfirmPassword" required placeholder="Password">
-                                            <label for="floatingPassword">Confirm Password</label>
-                                        </div>
-                                        <span class="input-group-text" id="toggleCPass"><i class="fa-regular fa-eye"></i></span>
-                                    </div>
-                                    <!-- Pass and CPass end -->
-
-                                    <div class="text-center mb-3 ps-0 mb-3">
-                                        <button type="submit" name="userRegisterBtn" class="btn btn-primary col-md-12">Register</button>
-                                    </div>
-
-                                    <div class="text-center ps-0">
-                                        <h6>Have an account? <a href="login.php" class="text-accent">Log in</a></h6>
+                                    <div class="form-floating col-lg-6 col-sm-12 ">
+                                        <input type="text" class="form-control" id="user_lname" name="lastName" required placeholder="lname">
+                                        <label for="floatingInput" class="ms-2 text-dark-4">Last Name</label>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-3 bg-tertiary py-3 align-middle">
+                                <p class="text-end">E-mail Address</p>
+                            </td>
+                            <td class="col-9 bg-main py-3">
+                                <div class="col-md-12 row">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="user_email" name="email" required placeholder="name@example.com">
+                                        <label for="floatingInput" class="ms-2 text-dark-4">Email address</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-3 bg-tertiary py-3 align-middle">
+                                <p class="text-end">Phone Number</p>
+                            </td>
+                            <td class="col-9 bg-main py-3">
+                                <div class="col-md-12 row">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="user_phone" name="phoneNumber" required placeholder="0945" onkeypress="inpNum(event)">
+                                        <label for="floatingInput" class="ms-2 text-dark-4">Phone Number</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-3 bg-tertiary py-3 align-middle">
+                                <p class="text-end">Username</p>
+                            </td>
+                            <td class="col-9 bg-main py-3">
+                                <div class="col-md-12 row">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="user_uname" name="username" required placeholder="name@example.com">
+                                        <label for="floatingInput" class="ms-2 text-dark-4">Username</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-3 bg-tertiary py-3 align-middle">
+                                <p class="text-end">Password</p>
+                            </td>
+                            <td class="col-9 bg-main py-3">
+                                <div class="col-md-12 row gy-2">
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,30}$" class="form-control" id="user_password" name="userPassword" required placeholder="Password">
+                                            <label for="floatingPassword" class="text-dark-4">Password</label>
+                                        </div>
+                                        <span class="input-group-text" id="togglePass"><i class="bi bi-eye"></i></span>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="form-floating">
+                                            <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,30}$" class="form-control" id="user_cpassword" name="userConfirmPassword" required placeholder="Password">
+                                            <label for="floatingPassword" class="text-dark-4">Confirm Password</label>
+                                        </div>
+                                        <span class="input-group-text" id="toggleCPass"><i class="bi bi-eye"></i></span>
+                                    </div>
+                                    <small class="mb-0 text-dark-4">1 lowercase, 1 uppercase, 1 numeric, 1 symbol. Min: 8, Max: 30 characters is required.
+                                    </small>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <div class="text-center mb-3">
+                        <button type="submit" name="userRegisterBtn" class="btn btn-main col-md-12">Register</button>
                     </div>
+                </div>
+            </form>
+            <div>
+                <div class="NleHE1 ps-0">
+                    <div class="rEVZJ2"></div>
+                    <span class="EMof35">or</span>
+                    <div class="rEVZJ2"></div>
+                </div>
+                <div class="text-center ps-0">
+                    <h6>Have an account? <a href="login.php" class="text-dark-4">Log in</a></h6>
                 </div>
             </div>
         </div>
@@ -115,7 +167,8 @@ include('../partials/__footer.php');
 
             // Toggle the eye icon class
             var eyeIcon = togglePasswordBtn.find("i");
-            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+            eyeIcon.toggleClass("bi bi-eye");
+            eyeIcon.toggleClass("bi bi-eye-slash");
         });
 
         toggleCPasswordBtn.on("click", function() {
@@ -126,7 +179,8 @@ include('../partials/__footer.php');
 
             // Toggle the eye icon class
             var eyeIcon = toggleCPasswordBtn.find("i");
-            eyeIcon.toggleClass("fa-eye fa-eye-slash");
+            eyeIcon.toggleClass("bi bi-eye");
+            eyeIcon.toggleClass("bi bi-eye-slash");
         });
     });
 

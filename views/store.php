@@ -21,7 +21,6 @@ if (isset($_GET['category'])) {
 
             .card {
                 height: 100%;
-
             }
 
             .card-body {
@@ -37,29 +36,29 @@ if (isset($_GET['category'])) {
                 justify-content: center;
             }
 
-            .bg-darker {
-                background-color: #d8cbc3 !important;
+            @media (max-width: 991px) {
+                .topBrandImg {
+                    margin-bottom: 2rem;
+                }
             }
 
-            .fa-solid {
-                height: 20px;
-                width: 20px;
+            .brandImage {
+                display: flex;
+                justify-content: end;
             }
 
-            .rating .fa-star {
-                color: #bb6c54;
-            }
-
-            .rating .fa-star-half-stroke {
-                color: #bb6c54;
+            @media (max-width: 767px) {
+                .brandImage {
+                    justify-content: start;
+                }
             }
         </style>
 
-        <div class="py-3 bg-primary">
+        <div class="py-3 bg-main">
             <div class="container">
                 <h6 class="text-dark">
-                    <a href="storelist.php" class="text-dark">Home /</a>
-                    <a href="storelist.php" class="text-dark">Collections /</a>
+                    <a href="index.php" class="text-dark">Home</a> /
+                    <a href="storelist.php" class="text-dark">Collections</a> /
                     <?= $category['category_name'] ?>
                 </h6>
             </div>
@@ -71,89 +70,25 @@ if (isset($_GET['category'])) {
                     <div class="col-md-12">
                         <div class="row">
                             <!-- Profile -->
-                            <div class="col-md-4">
-                                <div class="card border border-0 bg-primary p-3 mb-2">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex flex-row align-items-center">
-                                            <div class="icon bg-darker rounded-circle">
-                                                <img src="../assets/uploads/brands/<?= $category['category_image'] ?>" alt="Store Image" class="object-fit-cover rounded-circle" width="90" height="90">
-                                            </div>
-                                            <div class="ms-2 c-details">
-                                                <p class="fs-5 mb-0 fw-bold"><?= $category['category_name'] ?><span class="fw-normal desc fs-6"><br><?= $category['category_description'] ?></span></p>
-                                            </div>
-                                        </div>
+                            <div class="col-md-12 p-3 mb-2">
+                                <div class="row">
+                                    <div class="topBrandImg col-lg-3 col-md-12 text-center">
+                                        <img src="../assets/uploads/brands/<?= $category['category_image'] ?>" alt="Store Image" class="object-fit-cover" height="150">
                                     </div>
-                                </div>
-                            </div>
-                            <!-- Details -->
-                            <div class="col-md-8">
-                                <div class="px-3 pt-3 h-100">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="col-md-12 d-flex flex-row align-items-center">
-                                            <?php
-                                            /* Get Product Count */
-                                            $prodCount = getProductsCountByCategoryByID($cid);
-                                            $count = mysqli_fetch_array($prodCount);
-
-                                            /* Get Seller Province & City */
-                                            $getaddr = getSellerStateCityByCategoryByID($cid);
-                                            $addr = mysqli_fetch_array($getaddr);
-
-                                            $regionCode = isset($addr['address_region']) ? $addr['address_region'] : '';
-                                            $provinceCode = isset($addr['address_province']) ? $addr['address_province'] : '';
-                                            $cityCode = isset($addr['address_city']) ? $addr['address_city'] : '';
-                                            $barangayCode = isset($addr['address_barangay']) ? $addr['address_barangay'] : '';
-
-                                            /* Get Ratings */
-                                            $storeRatings = getSellerProductRatingsByCategoryByID($cid);
-                                            $rating = mysqli_fetch_array($storeRatings);
-                                            ?>
-                                            <div class="row col-md-6">
-                                                <div class="d-flex mb-4">
-                                                    <div class="pr-2"><i class="fa-solid fa-store text-center"></i></div>
-                                                    <div>Products:&nbsp;<span class="text-accent"><?= $count['allproduct'] ?></span></div>
-                                                </div>
-
-                                                <div class="d-flex mb-4">
-                                                    <div class="pr-2"><i class="fa-solid fa-location-dot text-center"></i></div>
-                                                    <div>Location:&nbsp;
-                                                        <span class="text-accent">
-                                                            <select hidden name="city" class="form-control form-control-md" id="city" required></select>
-                                                            <span name="city-txt" id="city-txt"></span>,&nbsp;<select hidden name="province" class="form-control form-control-md" id="province" required></select><span name="province-txt" id="province-txt"></span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row col-md-6">
-                                                <div class="d-flex mb-4">
-                                                    <div class="pr-2"><i class="fa-solid fa-star text-center"></i></div>
-                                                    <div>Ratings:
-                                                        <?php
-                                                        if ($rating && $rating['overall_rating'] !== null) {
-                                                        ?>
-                                                            <span class="text-accent"><?= $rating['overall_rating'] ?></span>
-                                                            <span class="text-accent">(<?= $rating['ratings_count'] ?> Rating)</span>
-
-                                                        <?php
-                                                        } else {
-                                                            echo "<span class='text-accent'>No ratings yet</span>";
-                                                        }
-
-                                                        ?>
-                                                    </div>
-                                                </div>
-
-                                                <div class="d-flex mb-4">
-                                                    <div class="pr-2"><i class="fa-solid fa-person-circle-check text-center"></i></div>
-                                                    <div>Joined:&nbsp;<span class="text-accent"><?= (new DateTime($category['category_createdAt']))->format('M d Y') ?></span></div>
-                                                </div>
-                                            </div>
+                                    <div class="col-lg-9">
+                                        <div class="row">
+                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2 text-end">Brand Name: </p>
+                                            <p class="col-12 fs-4 fw-bold text-dark col-md-9 col-sm-3 col-lg-10"><?= $category['category_name'] ?></p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="col-12 fw-bold text-dark-4 col-md-3 col-sm-3 col-lg-2 text-end">Description: </p>
+                                            <p class="col-12 text-dark-4 col-md-9 col-sm-9 col-lg-10"><?= $category['category_description'] ?></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <!-- Display Products Here -->
                         <div class="row">
                             <?php
                             $products = getProdByCategory($cid);
@@ -166,68 +101,55 @@ if (isset($_GET['category'])) {
                                 $category_onVacation = $row['category_onVacation'];
                                 $category_isBan = $row['category_isBan'];
                             } else {
-                                echo "<span class='fs-4 fw-bold text-accent text-center'>This store currently have not posted a product yet.</span>";
+                            ?>
+                                <span class='fs-6 text-dark text-center'>This store currently have not posted a product yet.</span>
+                                <?php
                             }
 
                             mysqli_data_seek($products, 0); // Reset the result set pointer
 
                             // Fetch the products using mysqli_fetch_array
                             while ($item = mysqli_fetch_array($products)) {
-                                if (strlen($item['product_name']) > 33) { //! Check if the length of the product name is greater than 33 characters
-                                    $item['product_name'] = substr($item['product_name'], 0, 30) . '...'; //! If it is, truncate it to 30 characters and append '...'
+                                $product_name = $item['product_name'];
+                                if (strlen($product_name) > 20) { //! Check if the length of the product name is greater than 33 characters
+                                    $product_name = substr($product_name, 0, 17) . '...'; //! If it is, truncate it to 30 characters and append '...'
                                 }
                                 $product_ratings = getProductRatingsByProductID($item['product_id']); //+ Catch product ratings
-                                
+
                                 // Calculate average rating for the product
                                 $average_rating = calculateAverageRating($product_ratings);
-                                
+
                                 $soldCount = getSoldCountByProductID($item['product_id']); //+ Catch product sold
                                 $sold = mysqli_fetch_array($soldCount);
 
                                 // Display a message if the category is on vacation
                                 if ($category_onVacation) {
-                            ?>
-                                    <span class='fs-4 fw-bold text-accent text-center'>This store is currently on vacation. No products are available for purchase.</span>
+                                ?>
+                                    <span class='fs-6 text-dark text-center'>This store is currently on vacation. No products are available for purchase.</span>
                                 <?php
                                     break; // Exit the loop if the category is on vacation
                                 }
 
                                 if ($category_isBan) {
                                 ?>
-                                    <span class='fs-4 fw-bold text-accent text-center'>This store has been permanently banned.</span>
+                                    <span class='fs-6 text-dark text-center'>This store has been permanently banned.</span>
                                 <?php
                                     break; // Exit the loop if the category is banned
                                 }
 
                                 // Display the product card
                                 ?>
-                                <div class="col-md-3 mb-3">
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-6 mb-3 ">
                                     <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
-                                        <div class="card shadow">
-                                            <div class="card-body d-flex flex-column justify-content-between bg-primary">
-                                                <div>
-                                                    <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100 img-fixed-height">
-                                                    <h6><?= $item['product_name'] ?></h6>
-                                                    <h6 class="text-start fw-bold text-accent">₱<?= number_format($item['product_srp'], 2) ?></h6>
-                                                    <div class="rating">
-                                                        <?php
-                                                        // Display stars based on average rating
-                                                        $wholeStars = floor($average_rating); // Whole star count
-                                                        $halfStar = $average_rating - $wholeStars; // Fractional part for half star
-
-                                                        for ($i = 1; $i <= 5; $i++) {
-                                                            if ($i <= $wholeStars) {
-                                                                echo '<i class="fa-solid fa-star"></i>'; // Full star
-                                                            } elseif ($halfStar >= 0.5) {
-                                                                echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
-                                                                $halfStar = 0; // Reset for next iteration
-                                                            } else {
-                                                                echo '<i class="fa-regular fa-star"></i>'; // Empty star
-                                                            }
-                                                        }
-                                                        ?>
-                                                        <span><?= $sold['itemSold'] ?> sold</span>
-                                                    </div>
+                                        <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
+                                        <div class="p-2 col-md-12 bg-tertiary">
+                                            <div class="row">
+                                                <div class="col-md-9 col-lg-8 col-xl-8">
+                                                    <p class="fs-6 text-dark"><?= $product_name; ?></p>
+                                                    <p class="fs-6 text-dark">₱<?= number_format($item['product_srp'], 2) ?></p>
+                                                </div>
+                                                <div class="col-md-3 col-lg-4 col-xl-4 brandImage">
+                                                    <img height="50" width="50" src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image">
                                                 </div>
                                             </div>
                                         </div>
@@ -256,8 +178,8 @@ include('../assets/js/ph-address-selector.php');
         $('#onload').modal('show');
     }
 </script>
-<?php
+<div style="margin-top:11.4%;">
 
-include('footer.php');
-
-include('../partials/__footer.php'); ?>
+    <?php include('footer.php'); ?>
+</div>
+<?php include('../partials/__footer.php'); ?>

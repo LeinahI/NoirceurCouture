@@ -51,11 +51,11 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <button type="submit" name="resetSendLink" class="btn mb-1 btn-primary col-md-12">Next</button>
+                                        <button type="submit" name="resetSendLink" class="btn mb-1 btn-main col-md-12">Next</button>
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>Didn't receive the code? <button type="submit" name="resendResetSendLink" class="btn btn-link text-accent px-0 text-decoration-none">Send Code Again</button></h6>
+                                        <h6>Didn't receive the code? <button type="submit" name="resendResetSendLink" class="btn btn-link text-dark-4 px-0 text-decoration-none">Send Code Again</button></h6>
                                     </div>
 
                                     <div class="NleHE1 ps-0">
@@ -65,7 +65,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6><a href="login.php" class="btn mb-1 btn-accent col-md-12">Go Back</a></h6>
+                                        <h6><a href="login.php" class="btn mb-1 btn-secondary col-md-12">Go Back</a></h6>
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,14 @@
 <!-- Footer -->
-<footer class="text-center text-lg-start bg-primary text-muted">
+<footer class="text-left text-lg-start bg-secondary text-muted">
+    <!-- Copyright -->
+    <div class="border-bottom border-secondary">
+        <div class="container py-1">
+            <div class="text-start text-white">
+                © 2023&nbsp;Noirceur Couture
+            </div>
+        </div>
+    </div>
+    <!-- Copyright -->
     <hr>
     <!-- Section: Links  -->
     <section class="">
@@ -12,18 +21,13 @@
 
                 if (mysqli_num_rows($categories) > 0) {
                 ?>
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-light">
-
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4 text-dark">
-                            Collections
-                        </h6>
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-start">
                         <?php
                         foreach ($categories as $item) {
                         ?>
                             <div class="col-md-12 mb-3">
-                                <a class="text-dark" href="store.php?category=<?= $item['category_slug'] ?>">
-                                    <h6></h6><?= $item['category_name'] ?></h6>
+                                <a class="text-white" href="store.php?category=<?= $item['category_slug'] ?>">
+                                    <h6><?= $item['category_name'] ?></h6>
                                 </a>
                             </div>
                         <?php
@@ -37,22 +41,21 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3  mx-auto mb-md-0 mb-4 text-dark">
-                    <!-- Links -->
-                    <h6 class="text-uppercase fw-bold mb-4 ">Contact</h6>
-                    <p><i class="fas fa-home me-3"></i>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
-                    <p>
-                        <i class="fas fa-envelope me-3"></i>
-                        nctr@proton.mail
-                    </p>
-                    <p><i class="fas fa-phone me-3"></i> 09193554999</p>
+                <div class="col-md-3 mx-auto mb-md-0 mb-4 text-white text-start">
+                    <div class="col-md-12">
+                        <p>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
+                        <p>nctr@proton.mail</p>
+                    </div>
                 </div>
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-6  mx-auto mb-4">
+                <div class="col-md-6 mx-auto mb-4 text-white text-start">
                     <!-- Links -->
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d967.3423122401905!2d120.96095992851185!3d14.114369299759414!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd77610323083d%3A0x1fd18cb1bcbc6319!2sHillcrest%20Plaza!5e0!3m2!1sen!2sph!4v1687276603531!5m2!1sen!2sph" class="w-100 h-100" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <div class="col-md-12">
+                        <h6 class="text-uppercase fw-bold mb-4 ">Be One of us</h6>
+                        <p>Unleash your eccentric creation through NoirceurCouture</p>
+                    </div>
                 </div>
                 <!-- Grid column -->
             </div>
@@ -60,13 +63,5 @@
         </div>
     </section>
     <!-- Section: Links  -->
-
-    <!-- Copyright -->
-    <div class="text-center p-4 text-dark">
-        © <?= date('Y') ?>
-        <a class="text-dark fw-bold" href="index.php">Noirceur Couture.</a>
-        All rights reserved.
-    </div>
-    <!-- Copyright -->
 </footer>
 <!-- Footer -->

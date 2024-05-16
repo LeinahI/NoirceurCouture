@@ -10,9 +10,23 @@ if (isset($_POST['processSellerApplication'])) {
 
     if ($action === 'accept') {
         // Perform the update for acceptance
-        $updateQuery = "UPDATE users_seller_details SET seller_confirmed = 1 WHERE seller_user_ID = '$userId'";
-        mysqli_query($con, $updateQuery);
-        redirectSwal("../seller-application.php", "The seller application has been verified!", "success");
+        $updateQuerySellerDetails = "UPDATE users_seller_details SET seller_confirmed = 1 WHERE seller_user_ID = ?";
+        $stmtQuerySellerDetails = mysqli_prepare($con, $updateQuerySellerDetails);
+        mysqli_stmt_bind_param($stmtQuerySellerDetails, "i", $userId);
+        $update_query_stmtQuerySellerDetails_run = mysqli_stmt_execute($stmtQuerySellerDetails);
+
+        $updateQueryUsers = "UPDATE users SET user_isVerified = 1 WHERE user_ID = ?";
+        $stmtQueryUsers = mysqli_prepare($con, $updateQueryUsers);
+        mysqli_stmt_bind_param($stmtQueryUsers, "i", $userId);
+        $update_query_stmtQueryUsers_run = mysqli_stmt_execute($stmtQueryUsers);
+
+        if($update_query_stmtQueryUsers_run && $update_query_stmtQuerySellerDetails_run){
+            redirectSwal("../seller-application.php", "The seller application has been verified!", "success");
+        } else{
+            redirectSwal("../seller-application.php", "Something went wrong", "error");
+        }
+
+        
         // Additional logic or redirect if needed
     } elseif ($action === 'reject') {
         // Perform the update for rejection

@@ -3,6 +3,7 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 include('../../models/dbcon.php');
 include('../../models/myFunctions.php');
+include('../../models/addBGToPng.php');
 
 if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $category_id = mysqli_real_escape_string($con, $_POST['selectBrandCategoryID']);
@@ -30,33 +31,37 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
         $image = $_FILES['uploadProductImageInput']['name'];
         $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
 
-        $path = "../../assets/uploads/products/";
-        $image_ext = strtolower(pathinfo($image, PATHINFO_EXTENSION));
-        $allowed_extensions = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif'];
+        $file_extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
 
-        if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("../addProduct.php", "Invalid image file format. Only JPG, JPEG, PNG, WebP, AVIF, and GIF files are allowed.", "error");
-        }
+        $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
-        /* Set the file name */
-        $date = date("m-d-Y-H-i-s");
-        $fileName = $slug . '-' . $date . '.' . $image_ext;
-        $destination = $path . $fileName;
-
-        //Generate unique slug using id
-        $uniqueIdentifier = time();
-        $slug_new = generateSlug($slug, $uniqueIdentifier);
-
-        $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_description, product_original_price,
-                        product_discount, product_srp, product_image, product_qty, product_popular, product_meta_title, product_meta_description)
-                        VALUES('$category_id','$name','$slug_new','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
-                        '$meta_title','$meta_desc')";
-        $product_categ_query_run = mysqli_query($con, $product_categ_query);
-        if ($product_categ_query_run) {
-            move_uploaded_file($image_tmp, $destination);
-            redirectSwal("../addProduct.php", "Product added successfully!", "success");
+        if (!in_array($file_extension, $allowed_extensions)) {
+            redirectSwal("../addProduct.php", "Invalid image file format. Only JPEG and PNG files are allowed.", "error");
         } else {
-            redirectSwal("../addProduct.php", "Something went wrong. Please try again later.", "error");
+            /* Set the file name */
+            $date = date("m-d-Y-H-i-s");
+            $extension = pathinfo($image, PATHINFO_EXTENSION);
+            $fileName = $slug . '-' . $date . '.' . $extension;
+            $destination = "../../assets/uploads/products/" . $fileName;    
+
+            move_uploaded_file($image_tmp, $destination);
+            addBackgroundToPng($destination, $extension);
+
+            //Generate unique slug using id
+            $uniqueIdentifier = time();
+            $slug_new = generateSlug($slug, $uniqueIdentifier);
+
+            $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_description, product_original_price,
+                product_discount, product_srp, product_image, product_qty, product_popular, product_meta_title, product_meta_description)
+                VALUES('$category_id','$name','$slug_new','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
+                '$meta_title','$meta_desc')";
+            $product_categ_query_run = mysqli_query($con, $product_categ_query);
+            if ($product_categ_query_run) {
+                move_uploaded_file($image_tmp, $destination);
+                redirectSwal("../addProduct.php", "Product added successfully!", "success");
+            } else {
+                redirectSwal("../addProduct.php", "Something went wrong. Please try again later.", "error");
+            }
         }
     }
 } else if (isset($_POST['updateProductBtn'])) { //!Update product details
@@ -81,23 +86,31 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
+    $old_image = $_POST['oldProductImage'];
+    $new_image = $_FILES['uploadProductImageInput']['name'];
+    $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
+
+    $image_ext = strtolower(pathinfo($new_image, PATHINFO_EXTENSION));
+    $allowed_extensions = ['jpg', 'jpeg', 'png'];
+
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../editProduct.php?id=$product_id", "Product name already exists. Please choose a different name.", "error");
     } else {
-        $old_image = $_POST['oldProductImage'];
-        $new_image = $_FILES['uploadProductImageInput']['name'];
-        $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
 
         if ($new_image != "") {
             // Set the file name if a new image is uploaded
             $date = date("m-d-Y-H-i-s");
-            $fileName = $slug . '-' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
+            $pathinfo = pathinfo($new_image, PATHINFO_EXTENSION);
+            $fileName = $slug . '-' . $date . '.' . $pathinfo;
             $destination = "../../assets/uploads/products/" . $fileName;
-
-            if (file_exists("../../assets/uploads/products/" . $old_image)) {
+            if (!in_array($image_ext, $allowed_extensions)) {
+                redirectSwal("../editProduct.php?id=$product_id", "Invalid image file format. Only JPEG and PNG files are allowed.", "error");
+            } else if (file_exists("../../assets/uploads/products/" . $old_image)) {
                 unlink("../../assets/uploads/products/" . $old_image); // Delete Old Image
             }
+
             move_uploaded_file($image_tmp, $destination);
+            addBackgroundToPng($destination, $pathinfo);
         } else {
             // Keep the original file name if no new image is uploaded
             $fileName = $old_image;
@@ -158,13 +171,16 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $deletedImage = 'deleted_' . $prodImage;
 
     // Check if orders are preparing
-    $check_query = "SELECT * FROM orders WHERE orders_category_id = ? AND orders_status = 0";
+    $check_query = "SELECT o.* FROM orders o
+    JOIN order_items oi ON oi.orderItems_order_id = o.orders_id
+    JOIN products p ON p.product_id = oi.orderItems_product_id
+    WHERE p.product_id = ? AND orders_status = 0";
     $stmt = mysqli_prepare($con, $check_query);
-    mysqli_stmt_bind_param($stmt, "i", $categid);
+    mysqli_stmt_bind_param($stmt, "i", $prodid);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
-    if (mysqli_stmt_num_rows($stmt) >= 1) {
+    if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../product.php", "Product cannot be deleted, if orders are preparing.", "error");
     } else {
 

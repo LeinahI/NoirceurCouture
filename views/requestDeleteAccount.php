@@ -12,7 +12,7 @@ include('../middleware/userMW.php');
         <!-- Modal Initialize on load -->
         <div class="modal" id="onload" tabindex="-1" data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-main">
+                <div class="modal-content bg-tertiary">
                     <div class="modal-header text-center">
                         <h3 class="modal-title w-100" id="exampleModalLabel">Important</h3>
                     </div>
@@ -21,7 +21,7 @@ include('../middleware/userMW.php');
                         <p><span class="fs-3">•</span> After successful deletion of this account, you will not be able to log in to a deleted account and view previous account history.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-accent col-md-12" data-bs-dismiss="modal">Proceed</button>
+                        <button type="button" class="btn btn-main col-md-12" data-bs-dismiss="modal">Proceed</button>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@ include('../middleware/userMW.php');
                 if (mysqli_num_rows($user) > 0) {
                     $data = mysqli_fetch_array($user);
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">Request Account Deletion</h5>
                         </div>
@@ -70,7 +70,7 @@ include('../middleware/userMW.php');
                                         </div>
 
                                         <div class="text-center ps-0">
-                                            <button type="submit" name="SubmitDelAccReq" id="submitReq" class="btn btn-accent col-md-12">Submit Request</button>
+                                            <button type="submit" name="SubmitDelAccReq" id="submitReq" class="btn btn-main col-md-12">Submit Request</button>
                                         </div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@ include('../middleware/userMW.php');
     }
 </script>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 

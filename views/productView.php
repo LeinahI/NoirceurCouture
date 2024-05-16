@@ -18,11 +18,22 @@
         }
 
         .fa-star {
-            color: #bb6c54;
+            color: #212529;
         }
 
         .fa-star-half-stroke {
-            color: #bb6c54;
+            color: #212529;
+        }
+
+        .swiper-slide {
+            width: 300px !important;
+        }
+
+        .swiper-slide .product-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     </style>
 
@@ -45,15 +56,15 @@
             $category = mysqli_fetch_array($category_data);
 
     ?>
-            <div class="py-3 bg-primary">
+            <div class="py-3 bg-main">
                 <div class="container">
                     <h6 class="text-dark">
-                        <a href="storelist.php" class="text-dark">Home /</a>
-                        <a href="storelist.php" class="text-dark">Collections /</a>
+                        <a href="index.php" class="text-dark">Home</a> /
+                        <a href="storelist.php" class="text-dark">Collections</a> /
                         <?php
                         if ($category) {
                         ?>
-                            <a href="store.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?> /</a>
+                            <a href="store.php?category=<?= $category['category_slug'] ?>" class="text-dark"><?= $category['category_name'] ?></a> /
                         <?php } ?>
                         <?= $product['product_name'] ?>
                     </h6>
@@ -125,11 +136,6 @@
                                         echo '<br>'; // Add line break if there are more than 5 words
                                         echo implode(' ', array_slice($words, 5)); // Display the remaining words on the next line
                                     } ?>
-                                    <span class="float-end text-accent">
-                                        <?php if ($product['product_popular']) {
-                                            echo "Trending";
-                                        } ?>
-                                    </span>
                                 </h4>
 
                                 <div class="row">
@@ -142,12 +148,12 @@
 
                                                                 for ($i = 1; $i <= 5; $i++) {
                                                                     if ($i <= $wholeStars) {
-                                                                        echo '<i class="fa-solid fa-star"></i>'; // Full star
+                                                                        echo '<i class="bi bi-star-fill"></i>'; // Full star
                                                                     } elseif ($halfStar >= 0.5) {
-                                                                        echo '<i class="fa-solid fa-star-half-stroke"></i>'; // Half star
+                                                                        echo '<i class="bi bi-star-half"></i>'; // Half star
                                                                         $halfStar = 0; // Reset for next iteration
                                                                     } else {
-                                                                        echo '<i class="fa-regular fa-star"></i>'; // Empty star
+                                                                        echo '<i class="bi bi-star"></i>'; // Empty star
                                                                     }
                                                                 }
                                                             } else {
@@ -176,9 +182,9 @@
                                     <!-- Product QTY slider -->
                                     <div class="product-quantity-container">
                                         <div class="input-group mb-2" style="width:120px;">
-                                            <button class="input-group-text decrementProductBtn">-</button>
+                                            <button class="input-group-text decrementProductBtn btn-main">-</button>
                                             <input type="text" class="form-control bg-white inputQty text-center" value="1" readonly data-price="<?= $product['product_srp'] ?>" data-remain="<?= $product['product_qty'] ?>">
-                                            <button class="input-group-text incrementProductBtn">+</button>
+                                            <button class="input-group-text incrementProductBtn btn-main">+</button>
                                         </div>
                                         <div>
                                             <h5 class="fw-bold"><span class="prodRmn"><?= $product['product_qty'] ?></span>&nbsp;pieces available</h5>
@@ -190,24 +196,26 @@
 
                                 <div class="row mt-3">
                                     <div class="col-md-6">
-                                        <button class="btn btn-primary px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
-                                            <?= ($product['product_qty'] == 0) ? 'Sold Out' : '<i class="fa fa-shopping-cart me-2"></i>Add to cart' ?>
+                                        <button class="btn btn-main px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
+                                            <?= ($product['product_qty'] == 0) ? 'Sold Out' : 'Add to cart' ?>
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button class="btn btn-danger px-4 addToLikesBtn" value="<?= $product['product_id'] ?>"><i class="fa fa-heart me-2"></i>Add to Likes</button>
+                                        <button class="btn btn-tertiary px-4 addToLikesBtn" value="<?= $product['product_id'] ?>">Add to Likes</button>
                                     </div>
                                 </div>
                                 <hr>
-                                <h6>Product Description</h6>
-                                <h4 class="fw-normal"><?= $product['product_description'] ?></h4>
+                                <div>
+                                    <h6>Product Description</h6>
+                                    <p style="white-space: pre" class="fs-6 fw-normal"><?= preg_replace('#(\\\r\\\n|\\\n)#', "\n", $product['product_description']) ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- //+Product Ratings -->
                 <div class="mt-3">
-                    <div class="container card bg-main">
+                    <div class="container card bg-tertiary border-0">
                         <div class="row">
                             <div class="col-md-12 p-3">
                                 <div class="card-title">
@@ -220,7 +228,7 @@
                                     if (mysqli_num_rows($product_ratings) > 0) {
                                         while ($rating = mysqli_fetch_array($product_ratings)) {
                                     ?>
-                                            <div class="card p-2 bg-main mb-3">
+                                            <div class="card p-2 bg-main border-0 mb-3">
                                                 <div class="d-flex flex-row">
                                                     <img src="../assets/uploads/userProfile/<?= ($rating['user_profile_image']) ? $rating['user_profile_image'] : 'defaultProfile.jpg' ?>" alt="profile_image" height="40" width="40" class="rounded-circle object-fit-cover">
                                                     <div class="d-flex flex-column pl-2">
@@ -231,9 +239,9 @@
                                                             $ratingValue = $rating['product_rating'];
                                                             for ($i = 1; $i <= 5; $i++) {
                                                                 if ($i <= $ratingValue) {
-                                                                    echo '<i class="fa-solid fa-star"></i>';
+                                                                    echo '<i class="bi bi-star-fill"></i>';
                                                                 } else {
-                                                                    echo '<i class="fa-regular fa-star"></i>';
+                                                                    echo '<i class="bi bi-star"></i>';
                                                                 }
                                                             }
                                                             ?>
@@ -266,14 +274,56 @@
             ?>
 
             <?php
-            $img = getAllSameShop($product['category_id']);
-            if (mysqli_num_rows($img) > 0) {
-                include('../partials/sameshop.php');
+            $ftss = getAllSameShop($product['category_id'], $product_slug);
+            if (mysqli_num_rows($ftss) > 0) {
+            ?>
+                <div class="mt-3">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 class="text-center text-dark-4">More Items From <?= $category['category_name'] ?></h4>
+                                <div class="swiper swiperProductView">
+                                    <div class="swiper-wrapper">
+                                        <?php
+                                        if (mysqli_num_rows($ftss) > 0) {
+                                            foreach ($ftss as $item) {
+                                                $product_name = $item['product_name'];
+                                                if (strlen($product_name) > 20) {
+                                                    $product_name = substr($product_name, 0, 17) . '...';
+                                                }
+                                        ?>
+                                                <div class="swiper-slide">
+                                                    <a class="card-link" href="productView.php?product=<?= $item['product_slug'] ?>">
+                                                        <img class="product-image" src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image">
+                                                        <div class="col-md-12 p-2 bg-tertiary">
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <p class="fs-6 text-dark"><?= $product_name; ?></p>
+                                                                    <p class="fs-6 text-dark">₱<?= number_format($item['product_srp'], 2) ?></p>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <img height="50" width="50" src="../assets/uploads/brands/<?= $item['category_image'] ?>" alt="Brand Image">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php
             }
 
             $popular = getAllPopular();
             if (mysqli_num_rows($popular) > 0) {
-                include('../partials/trending.php');
+                include('../partials/recommendedItems.php');
             }
             ?>
 
@@ -300,4 +350,20 @@
     window.onload = () => {
         $('#onload').modal('show');
     }
+
+    var swiper = new Swiper(".swiperProductView", {
+        autoHeight: true,
+        spaceBetween: 10,
+        slidesPerView: "auto",
+        breakpoints: {
+            992: {
+                slidesPerView: "auto",
+                spaceBetween: 30
+            },
+            769: {
+                slidesPerView: "auto",
+                spaceBetween: 20
+            }
+        }
+    });
 </script>

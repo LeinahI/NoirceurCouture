@@ -35,14 +35,14 @@ if (isset($_GET['trck'])) {
         padding-left: 10px;
         padding-right: 10px;
         font-size: 36px;
-        color: #FED420;
+        color: var(--text-dark);
         transition: all .2s;
         float: right;
     }
 
     input.star:checked~label.star:before {
         content: '\f005';
-        color: #FD4;
+        color: var(--text-dark);
         transition: all .25s;
     }
 
@@ -52,7 +52,7 @@ if (isset($_GET['trck'])) {
     }
 
     input.star-1:checked~label.star:before {
-        color: #FED420;
+        color: var(--text-dark);
     }
 
     label.star:before {
@@ -66,10 +66,10 @@ if (isset($_GET['trck'])) {
         font-size: 0.875rem;
     }
 </style>
-<div class="py-3 bg-primary">
+<div class="py-3 bg-main">
     <div class="container">
         <h6>
-            <a href="#" class="text-dark">Home</a> /
+            <a href="index.php" class="text-dark">Home</a> /
             <a href="myOrders.php" class="text-dark">My Purchase</a> /
             <a href="viewOrderDetails.php?trck=<?= $tracking_no; ?>" class="text-dark">Your Order Details</a> /
             <a href="#" class="text-dark">Review Product</a>
@@ -82,10 +82,10 @@ if (isset($_GET['trck'])) {
             <div class="col-md-12">
                 <h2>Review Product</h2>
                 <div class="card">
-                    <div class="card-header bg-main">
-                        <a href="viewOrderDetails.php?trck=<?= $tracking_no; ?>" class="btn btn-primary float-start">Back</a>
+                    <div class="card-header bg-tertiary">
+                        <a href="viewOrderDetails.php?trck=<?= $tracking_no; ?>" class="btn btn-tertiary float-start">Back</a>
                     </div>
-                    <div class="card-body bg-main">
+                    <div class="card-body bg-tertiary">
                         <div class="row">
                             <!-- Order Item Details -->
                             <div class="col-md-12">
@@ -118,11 +118,11 @@ if (isset($_GET['trck'])) {
 
                                         foreach ($groupedItems as $categoryName => $items) {
                                     ?>
-                                            <div class="card mb-3 rounded-3 bg-primary">
+                                            <div class="card mb-3 border-0 rounded-3 bg-main">
                                                 <div class="card-header">
                                                     <h5 class="card-title fw-bold">
                                                         <span><?= $categoryName ?></span>
-                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-accent"><i class="fa-solid fa-store"></i>&nbsp;View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
+                                                        <span><a href="store.php?category=<?= $item['category_slug'] ?>" class="btn btn-main">View Store</a> <?= ($item['category_isBan'] == 1) ? "<span class='badge bg-danger'>Banned</span>" : "" ?></span>
                                                     </h5>
                                                 </div>
                                                 <div class="card-body">
@@ -143,11 +143,11 @@ if (isset($_GET['trck'])) {
                                                                         <?php
                                                                         if ($item['product_srp'] == $item['product_original_price']) {
                                                                         ?>
-                                                                            <span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-dark">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         } else {
                                                                         ?>
-                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-accent">₱<?= number_format($item['orderItems_price'], 2) ?></span>
+                                                                            <span class="text-secondary text-decoration-line-through">₱<?= number_format($item['product_original_price'], 2) ?></span>&nbsp;<span class="text-dark">₱<?= number_format($item['orderItems_price'], 2) ?></span>
                                                                         <?php
                                                                         }
                                                                         ?>
@@ -172,7 +172,7 @@ if (isset($_GET['trck'])) {
                                 <?php
                                 if ($item['category_isBan'] == 1) {
                                 ?>
-                                    <p class='fs-2 fw-bold text-accent text-center'>"<?= $item['category_name'] ?>" is permanently banned</p>
+                                    <p class='fs-2 fw-bold text-dark text-center'>"<?= $item['category_name'] ?>" is permanently banned</p>
                                 <?php
                                 } else {
                                 ?>
@@ -213,7 +213,7 @@ if (isset($_GET['trck'])) {
                                                         </div>
 
                                                         <div class="mb-5">
-                                                            <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border border-accent" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
+                                                            <textarea name="reviewText" id="reviewText" class="col-md-12 rounded rounded-3 border-0" maxlength="600" cols="30" placeholder="Write about this product" rows="4"></textarea>
                                                             <div id="the-count">
                                                                 <span id="current">0</span>
                                                                 <span id="maximum">/ 600</span>
@@ -225,11 +225,11 @@ if (isset($_GET['trck'])) {
                                                             $review_id = $product_reviews[$item['product_id']]['review_id'];
                                                             ?>
                                                             <input type="hidden" name="reviewID" value="<?= $review_id ?>">
-                                                            <button type="submit" name="editRateProductBtn" class="btn btn-accent col-md-12">
+                                                            <button type="submit" name="editRateProductBtn" class="btn btn-main col-md-12">
                                                                 Edit Rating
                                                             </button>
                                                         <?php } else { ?>
-                                                            <button type="submit" name="rateProductBtn" class="btn btn-accent col-md-12">Rate</button>
+                                                            <button type="submit" name="rateProductBtn" class="btn btn-main col-md-12">Rate</button>
                                                         <?php } ?>
                                                     </form>
                                                 </div>

@@ -69,7 +69,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                 </div>
                                 <div class="form-floating col-md-12 mb-3">
                                     <input type="file" class="form-control ps-3" id="uploadProductImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadProductImageInput" required>
-                                    <label for="floatingPassword" class="ps-3">Upload Product Image</label>
+                                    <label for="floatingPassword" class="ps-3">Upload Display Image</label>
                                 </div>
 
                                 <div class="col-md-12" style="display:flex;">

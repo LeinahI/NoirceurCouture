@@ -1,6 +1,7 @@
 <?php include('../partials/__header.php');
 include('../middleware/userMW.php');
 include('../models/dbcon.php');
+include('../models/dataEncryption.php');
 
 $cartCheck = checkItemExists();
 if (mysqli_num_rows($cartCheck) < 1) {
@@ -15,12 +16,12 @@ if (mysqli_num_rows($cartCheck) < 1) {
     }
 </style>
 
-<div class="py-3 bg-primary">
+<div class="py-3 bg-main">
     <div class="container">
         <h6>
-            <a href="#" class="text-dark">Home /</a>
-            <a href="myCart.php" class="text-dark">Cart /</a>
-            <a href="#" class="text-dark">Check out /</a>
+            <a href="index.php" class="text-dark">Home</a> /
+            <a href="myCart.php" class="text-dark">Cart</a> /
+            <a href="checkOut.php" class="text-dark">Check out</a>
         </h6>
     </div>
 </div>
@@ -29,8 +30,8 @@ if (mysqli_num_rows($cartCheck) < 1) {
     <div class="container">
         <?php include('../partials/sessionMessage.php') ?>
 
-        <div class="card shadow">
-            <div class="card-body bg-main rounded-3">
+        <div class="card border-0">
+            <div class="card-body bg-tertiary rounded-3">
                 <?php
                 $user = getDefaultUserAddress($_SESSION['auth_user']['user_ID']);
                 $data = mysqli_fetch_array($user);
@@ -304,8 +305,8 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                         ?>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-accent btn-confirm" data-bs-dismiss="modal">Confirm</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-accent btn-main" data-bs-dismiss="modal">Confirm</button>
                                     </div>
                                 </div>
                             </div>
@@ -317,7 +318,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                             <div class="mb-4">
                                 <span class="fs-5">Delivery Address
                                     <span class="float-end">
-                                        <a href="myCart.php" class="btn btn-primary">
+                                        <a href="myCart.php" class="btn btn-tertiary">
                                             Go back
                                         </a>
                                     </span>
@@ -358,12 +359,12 @@ if (mysqli_num_rows($cartCheck) < 1) {
 
                                     <div class="col-md-1 text-center">
                                         <input readonly type="hidden" id="hidden_default" value="<?php echo $isDefault ?>">
-                                        <span id="addr_isdefault" class="text-accent border border-accent p-1">Default</span>
+                                        <span id="addr_isdefault" class="border-0 btn-main rounded-3 p-1">Default</span>
                                     </div>
 
                                     <div class="col-md-1 mb-3 text-center">
                                         <!-- Modal Trigger -->
-                                        <a href="#" class="text-accent" data-bs-toggle="modal" data-bs-target="#changeAddressModal">Change</a>
+                                        <a href="#" class="text-dark-4" data-bs-toggle="modal" data-bs-target="#changeAddressModal">Change</a>
                                     </div>
                                 </div>
                             <?php } ?>
@@ -411,8 +412,8 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 // Display grouped items
                                 foreach ($groupedItems as $categoryName => $categoryItems) {
                                 ?>
-                                    <div class="card mb-3 border rounded-3">
-                                        <div class="card-header bg-primary">
+                                    <div class="card mb-3 border-0 rounded-3">
+                                        <div class="card-header bg-main">
                                             <h5 class="card-title">
                                                 <?= $categoryName ?>
                                                 <span class="fs-6 fw-bold">
@@ -424,7 +425,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                 </span>
                                             </h5>
                                         </div>
-                                        <div class="card-body bg-primary">
+                                        <div class="card-body bg-main rounded-3">
                                             <?php foreach ($categoryItems as $index => $cItem) {
                                                 $itemTotalPrice = $cItem['product_srp'] * $cItem['product_qty'];
                                                 $totalPrice += $itemTotalPrice;
@@ -479,18 +480,18 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                 }
                                 ?>
                             </div>
-                            <div class="card">
-                                <div class="card-body bg-primary text-end">
+                            <div class="card  border-0">
+                                <div class="card-body bg-main text-end rounded-top">
                                     <h5>Order Total&nbsp;(<span class="text-accent"><?= $itemQty ?>&nbsp;item</span>): <span class="text-accent">₱<?= number_format($totalPrice, 2) ?></span></h5>
                                 </div>
-                                <div class="card-body bg-primary">
+                                <div class="card-body bg-main rounded-bottom">
                                     <input type="hidden" name="paymentMode" value="Cash on Delivery">
                                     <input type="hidden" name="paymentID" value="" id="paymentIDInput">
 
                                     <?php
                                     if (!empty($data)) {
                                     ?>
-                                        <button type="submit" name="placeOrderBtn" class="btn btn-accent w-100 mb-3">COD | Place Order</button>
+                                        <button type="submit" name="placeOrderBtn" class="btn btn-main w-100 mb-3">COD | Place Order</button>
                                         <div id="paypal-button-container"></div>
                                     <?php
                                     }

@@ -2,6 +2,7 @@
 include('dbcon.php');
 include('myFunctions.php');
 include('emailSMTP.php');
+include('dataEncryption.php');
 session_start();
 
 /* User Registration statement */
@@ -147,7 +148,7 @@ if (isset($_POST['resetSendLink'])) {
     $email = mysqli_real_escape_string($con, $_POST['emailInput']);
     $resetPassUrl = mysqli_real_escape_string($con, $_POST['resetPassUrl']);
 
-    $selectQuery = "SELECT * FROM users WHERE user_email = '$email' AND user_isVerified = '1'";
+    $selectQuery = "SELECT * FROM users WHERE user_email = '$email' AND user_isVerified = '1' AND user_role != '1'";
     $check_email_query = mysqli_query($con, $selectQuery);
     $row = mysqli_fetch_assoc($check_email_query);
     if (!empty($row['user_general_token'])) {

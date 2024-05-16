@@ -12,7 +12,7 @@ if (isset($_SESSION['auth'])) {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php include('../partials/sessionMessage.php') ?>
-                <div class="card bg-main">
+                <div class="card bg-tertiary">
                     <div class="card-header text-center">
                         <h4>Reset Your Password</h4>
                     </div>
@@ -65,7 +65,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <button type="submit" name="resetPassBtn" class="btn btn-primary col-md-12">Reset Password</button>
+                                        <button type="submit" name="resetPassBtn" class="btn btn-main col-md-12">Reset Password</button>
                                     </div>
                                 </div>
                             </div>

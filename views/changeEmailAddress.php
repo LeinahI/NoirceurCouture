@@ -19,11 +19,11 @@ include('../middleware/userMW.php');
                     $hiddenEmail = hideEmailCharacters($data['user_email']);
                     $hiddenPhoneNumber = maskPhoneNumber($data['user_phone']);
                 ?>
-                    <div class="card border rounded-3 shadow bg-main">
+                    <div class="card border rounded-3 bg-tertiary">
                         <div class="card-header">
                             <h5 class="card-title">Change Email Address
                                 <span class="float-end">
-                                    <a href="myAccount.php" class="btn btn-primary">
+                                    <a href="myAccount.php" class="btn btn-main">
                                         Go Back
                                     </a>
                                 </span>
@@ -51,7 +51,7 @@ include('../middleware/userMW.php');
 
                                         <div class="row">
                                             <div class="text-center ps-0">
-                                                <button type="submit" name="userChangeEmail" class="btn btn-accent col-md-12">Submit</button>
+                                                <button type="submit" name="userChangeEmail" class="btn btn-main col-md-12">Submit</button>
                                             </div>
                                         </div>
                                     </div>
@@ -67,7 +67,7 @@ include('../middleware/userMW.php');
     </div>
 </div>
 
-<div style="margin-top:5%;">
+<div style="margin-top:6%;">
     <?php include('footer.php'); ?>
 </div>
 

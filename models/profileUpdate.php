@@ -2,6 +2,7 @@
 include('dbcon.php');
 include('myFunctions.php');
 include('emailSMTP.php');
+include('addBGToPng.php');
 session_start();
 
 /* User Profile Update statement */
@@ -13,35 +14,56 @@ if (isset($_POST['userUpdateAccBtn'])) {
     $fnameRegex = '/^[A-Za-z]+(?:\s+[A-Za-z]+)*(?:\s+[A-Za-z]+\.)?$/';
     $lnameRegex = '/^[A-Za-z]+(?:\s+[A-Za-z]+)*(?:\s+[A-Za-z]+\.)?$/';
 
+    // Image uploading code
+    $old_image = $_POST['oldImage'];
+    $new_image = $_FILES['profileUpload']['name'];
+    $image_tmp = $_FILES['profileUpload']['tmp_name'];
+    $maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+
+    // Allowed file types
+    $allowed_types = ['jpg', 'jpeg', 'png'];
+
+    // Get the file extension
+    $file_extension = strtolower(pathinfo($new_image, PATHINFO_EXTENSION));
+
     if (!preg_match($fnameRegex, $firstName) || !preg_match($lnameRegex, $lastName)) {
         header("Location: ../views/myAccount.php");
         $_SESSION['Errormsg'] = "First and Last Name can only contain letters and spaces";
+    } else if (!in_array($file_extension, $allowed_types)) {
+        header("Location: ../views/myAccount.php");
+        $_SESSION['Errormsg'] = "Invalid file type. Only JPG, JPEG, and PNG files are allowed.";
+    } else if ($_FILES['profileUpload']['size'] >= $maxFileSize) {
+        // Handle the case where the file size exceeds 5MB
+        header("Location: ../views/myAccount.php");
+        $_SESSION['Errormsg'] = "The uploaded image must be less than 5MB";
     } else {
-        // Image uploading code
-        $old_image = $_POST['oldImage'];
-        $new_image = $_FILES['profileUpload']['name'];
-        $image_tmp = $_FILES['profileUpload']['tmp_name'];
+
 
         if ($new_image != "") {
             // Set the file name if a new image is uploaded
             $date = date("m-d-Y-H-i-s");
-            $fileName = 'profile_' . $userId . '_' . $date . '.' . pathinfo($new_image, PATHINFO_EXTENSION);
+            $extension = pathinfo($new_image, PATHINFO_EXTENSION);
+            $fileName = 'profile_' . $userId . '_' . $date . '.' . $extension;
             $destination = "../assets/uploads/userProfile/" . $fileName;
 
             if (file_exists("../assets/uploads/userProfile/" . $old_image)) {
                 unlink("../assets/uploads/userProfile/" . $old_image); // Delete Old Image
             }
+
+            // Move the uploaded file to the destination
             move_uploaded_file($image_tmp, $destination);
+            addBackgroundToPng($destination, $extension);
         } else {
             // Keep the original file name if no new image is uploaded
             $fileName = $old_image;
         }
 
-        // If no new image uploaded, update user profile without changing the image
+        // Update user profile without changing the image if no new image uploaded
         $update_query = "UPDATE users SET user_firstName=?, user_lastName=?, user_profile_image=? WHERE user_ID=?";
         $stmt = mysqli_prepare($con, $update_query);
         mysqli_stmt_bind_param($stmt, "sssi", $firstName, $lastName, $fileName,  $userId);
         $update_query_run = mysqli_stmt_execute($stmt);
+
 
         if ($update_query_run) {
             header("Location: ../views/myAccount.php");
