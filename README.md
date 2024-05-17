@@ -97,5 +97,4 @@ Buyer UI Changes
 - ✅ on checkOut.php user can choose which adress they use to deliver the parcel and add new address.
 
 Serverside Changes
-- change MySQL connection to PHP Data Objects (PDO)
 - ✅ Implement email SMTP for forgot password and email OTP for checkout & log in
