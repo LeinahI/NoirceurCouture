@@ -1,12 +1,15 @@
 <?php
 include('emailBody.php');
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+require __DIR__ . '/../vendor/autoload.php';
+// Load environment variables from the .env file
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
 
-$emailService = '';
-$emailUsername = '';
-$emailPassword = '';
+$emailService = getenv('EMAIL_HOST_SERVICE');
+$emailUsername = getenv('EMAIL_SENDER_USERNAME');
+$emailPassword = getenv('EMAIL_SENDER_PASSWORD');
 
 function send_otp($email, $subject, $veri_code, $fname, $lname)
 {
