@@ -36,7 +36,7 @@ if (mysqli_num_rows($popular) > 0) {
         <div class="position-absolute z-2 text-display" style="translate: 800px 300px;">
             <div class="card" style="width: 24rem;">
                 <div class="card-body bg-main">
-                    <h5 class="card-title text-center fw-bold">Welcome to the Noirceur</h5>
+                    <h5 class="card-title text-center fw-bold">Welcome to NoirceurCouture</h5>
                     <p class="card-text text-center">Noirceur Couture is the go-to place for individuals who seek avant-garde and other subculture wear from well-known brands. <br>
                         As a trusted distributor, we bring you an extensive collection of curated pieces from top fashion brands around the world. <br>
                         From chic clothing to accessories, Noirceur Couture caters to diverse tastes, providing a seamless shopping experience for those looking for quality and exclusivity.</p>
