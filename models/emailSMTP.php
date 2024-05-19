@@ -2,10 +2,11 @@
 include('emailBody.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require __DIR__ . '/../vendor/autoload.php';
-// Load environment variables from the .env file
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
+use josegonzalez\Dotenv\Loader;
+$dotenv = new Loader(dirname(__DIR__) . '/.env');
+$dotenv->parse()->putenv()->toEnv();
 
 $emailService = getenv('EMAIL_HOST_SERVICE');
 $emailUsername = getenv('EMAIL_SENDER_USERNAME');

@@ -1,9 +1,9 @@
 <?php
+$overwriteENV = true;
 require __DIR__ . '/../vendor/autoload.php';
-
-// Load environment variables from the .env file
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
+use josegonzalez\Dotenv\Loader;
+$dotenv = new Loader(dirname(__DIR__) . '/.env');
+$dotenv->parse()->putenv($overwriteENV);
 
 // Access the encryption key from environment variables
 $encryption_key = getenv('ENCRYPTION_KEY');

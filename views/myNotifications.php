@@ -25,7 +25,9 @@ include('../middleware/userMW.php');
                     if (mysqli_num_rows($buyerNotification) == 0) {
                         // If there are no notifications
                     ?>
-                        <p class="fs-1 text-center">No notifications yet</p>
+                        <div class="text-center mt-3" id="nocartItems">
+                            <p>Currently, there are no notifications</p>
+                        </div>
                         <?php
                     } else {
                         // If there are notifications, display them

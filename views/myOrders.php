@@ -62,9 +62,9 @@ include('../middleware/userMW.php');/* Authenticate.php */
                             }
                             if (!$foundItems) {
                             ?>
-                                <p class="fs-1 text-center">
-                                    No orders yet
-                                </p>
+                                <div class="text-center mt-3" id="nocartItems">
+                                    <p>Currently, there are no purchase history</p>
+                                </div>
                                 <?php
                             } else {
                                 // Display grouped items

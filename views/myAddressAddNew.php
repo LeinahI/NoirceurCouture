@@ -28,7 +28,7 @@ include('../middleware/userMW.php');
                 $barangayCode = isset($data['address_barangay']);
                 ?>
 
-                <div class="card border rounded-3 shadow bg-main">
+                <div class="card border rounded-3 bg-tertiary">
                     <div class="card-header">
                         <h5 class="card-title">
                             <span>Add New Address</span>

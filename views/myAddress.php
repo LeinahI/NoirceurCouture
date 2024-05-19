@@ -41,7 +41,11 @@ include('../models/dataEncryption.php');
                         // Check if there are any addresses for the user
                         if (mysqli_num_rows($userAddressResult) == 0) {
                             // If no addresses exist, display a message
-                            echo "<p class='mt-3 fs-4 text-center'>No Address Existing Yet</p>";
+                    ?>
+                            <div class="text-center mt-3" id="nocartItems">
+                                <p>No address existing yet</p>
+                            </div>
+                            <?php
                         } else {
                             $addressesExist = true;
 
@@ -124,7 +128,7 @@ include('../models/dataEncryption.php');
                                     }
                                 }
 
-                    ?>
+                            ?>
 
                                 <div class="card-body">
                                     <!-- Display user addresses in cards -->
@@ -239,7 +243,7 @@ include('../models/dataEncryption.php');
     }
 </script>
 
-<div style="margin-top:6%;">
+<div style="margin-top:8.5%;">
     <?php include('footer.php'); ?>
 </div>
 

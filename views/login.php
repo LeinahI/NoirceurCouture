@@ -66,7 +66,7 @@ if (isset($_SESSION['auth'])) {
                                     </div>
 
                                     <div class="text-center ps-0">
-                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-dark-4">Register</a></h6>
+                                        <h6>New to Noirceur Couture? <a href="register.php" class="text-dark-4">Create a new account</a></h6>
                                     </div>
                                 </div>
                             </div>

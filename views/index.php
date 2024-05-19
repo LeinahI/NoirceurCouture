@@ -1,7 +1,8 @@
 <?php include('../partials/__header.php');
-
 include(__DIR__ . '/../models/checkSession.php');
 checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
+
+
 ?>
 
 <div class="container mt-3 position-absolute start-50 translate-middle-x z-2">
