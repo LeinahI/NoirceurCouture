@@ -109,9 +109,6 @@
         autoHeight: true,
         spaceBetween: 10,
         slidesPerView: "auto",
-        grid: {
-            rows: 1,
-        },
         breakpoints: {
             992: {
                 slidesPerView: "auto",

@@ -9,6 +9,9 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $category_id = mysqli_real_escape_string($con, $_POST['selectBrandCategoryID']);
     $name = mysqli_real_escape_string($con, $_POST['productnameInput']);
     $slug = mysqli_real_escape_string($con, $_POST['productslugInput']);
+    $slug = strtolower($slug);
+    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
+    $slug = str_replace(' ', '', $slug);
     $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
     $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
     $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
@@ -25,8 +28,17 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
+    // Check if product slug already exists
+    $check_product_slug_query = "SELECT * FROM products WHERE product_slug = ?";
+    $check_product_slug_stmt = mysqli_prepare($con, $check_product_slug_query);
+    mysqli_stmt_bind_param($check_product_slug_stmt, "s", $slug);
+    mysqli_stmt_execute($check_product_slug_stmt);
+    mysqli_stmt_store_result($check_product_slug_stmt);
+
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../addProduct.php", "Product name already exists. Please try a different name.", "error");
+    } else if (mysqli_stmt_num_rows($check_product_slug_stmt) > 0) {
+        redirectSwal("../addProduct.php", "Product slug already exists. Please choose a different slug.", "error");
     } else {
         $image = $_FILES['uploadProductImageInput']['name'];
         $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
@@ -42,18 +54,14 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $date = date("m-d-Y-H-i-s");
             $extension = pathinfo($image, PATHINFO_EXTENSION);
             $fileName = $slug . '-' . $date . '.' . $extension;
-            $destination = "../../assets/uploads/products/" . $fileName;    
+            $destination = "../../assets/uploads/products/" . $fileName;
 
             move_uploaded_file($image_tmp, $destination);
             addBackgroundToPng($destination, $extension);
 
-            //Generate unique slug using id
-            $uniqueIdentifier = time();
-            $slug_new = generateSlug($slug, $uniqueIdentifier);
-
             $product_categ_query = "INSERT INTO products (category_id, product_name, product_slug, product_description, product_original_price,
                 product_discount, product_srp, product_image, product_qty, product_popular, product_meta_title, product_meta_description)
-                VALUES('$category_id','$name','$slug_new','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
+                VALUES('$category_id','$name','$slug','$desc','$orig_price','$discount','$srp','$fileName','$qty','$product_popular',
                 '$meta_title','$meta_desc')";
             $product_categ_query_run = mysqli_query($con, $product_categ_query);
             if ($product_categ_query_run) {
@@ -69,6 +77,9 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $category_id = mysqli_real_escape_string($con, $_POST['selectBrandCategoryID']);
     $name = mysqli_real_escape_string($con, $_POST['productnameInput']);
     $slug = mysqli_real_escape_string($con, $_POST['productslugInput']);
+    $slug = strtolower($slug);
+    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
+    $slug = str_replace(' ', '', $slug);
     $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
     $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
     $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
@@ -86,6 +97,13 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
+    // Check if product slug already exists
+    $check_product_slug_query = "SELECT * FROM products WHERE product_slug = ?";
+    $check_product_slug_stmt = mysqli_prepare($con, $check_product_slug_query);
+    mysqli_stmt_bind_param($check_product_slug_stmt, "s", $slug);
+    mysqli_stmt_execute($check_product_slug_stmt);
+    mysqli_stmt_store_result($check_product_slug_stmt);
+
     $old_image = $_POST['oldProductImage'];
     $new_image = $_FILES['uploadProductImageInput']['name'];
     $image_tmp = $_FILES['uploadProductImageInput']['tmp_name'];
@@ -95,6 +113,8 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../editProduct.php?id=$product_id", "Product name already exists. Please choose a different name.", "error");
+    } else if (mysqli_stmt_num_rows($check_product_slug_stmt) > 0) {
+        redirectSwal("../editProduct.php?id=$product_id", "Product slug already exists. Please choose a different slug.", "error");
     } else {
 
         if ($new_image != "") {
@@ -116,15 +136,16 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_description = ?,
+        $categ_query = "UPDATE products SET category_id = ?, product_name = ?, product_slug = ?, product_description = ?,
         product_original_price = ?, product_discount = ?, product_srp = ?, product_image = ?, product_qty = ?, product_visibility = ?, product_popular = ?, product_meta_title = ?,
         product_meta_description = ? WHERE product_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
         mysqli_stmt_bind_param(
             $stmt,
-            "issdidsiiissi",
+            "isssdidsiiissi",
             $category_id,
             $name,
+            $slug,
             $desc,
             $orig_price,
             $discount,

@@ -6,15 +6,15 @@ include('../../models/myFunctions.php');
 include('../../models/addBGToPng.php');
 
 if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
-    $user_ID = $_POST['userID'];
-    $name = $_POST['nameInput'];
-    $slug = $_POST['slugInput'];
+    $user_ID = mysqli_real_escape_string($con, $_POST['userID']);
+    $name = mysqli_real_escape_string($con, $_POST['nameInput']);
+    $slug = mysqli_real_escape_string($con, $_POST['slugInput']);
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $desc = $_POST['descriptionInput'];
-    $meta_title = $_POST['metaTitleInput'];
-    $meta_desc = $_POST['metaDescriptionInput'];
+    $desc = mysqli_real_escape_string($con, $_POST['descriptionInput']);
+    $meta_title = mysqli_real_escape_string($con, $_POST['metaTitleInput']);
+    $meta_desc = mysqli_real_escape_string($con, $_POST['metaDescriptionInput']);
 
     // Check if category name already exists
     $check_query = "SELECT * FROM categories WHERE category_name = ?";
@@ -23,12 +23,21 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     mysqli_stmt_execute($stmt);
     mysqli_stmt_store_result($stmt);
 
+    // Check if category slug already exists
+    $check_category_slug_query = "SELECT * FROM categories WHERE category_slug = ?";
+    $check_category_slug_stmt = mysqli_prepare($con, $check_category_slug_query);
+    mysqli_stmt_bind_param($check_category_slug_stmt, "s", $slug);
+    mysqli_stmt_execute($check_category_slug_stmt);
+    mysqli_stmt_store_result($check_category_slug_stmt);
+
     /* Check if seller have pickup addr */
     $check_address_query = "SELECT * FROM addresses WHERE address_user_ID = '$user_ID' ";
     $check_address_query_run = mysqli_query($con, $check_address_query);
 
     if (mysqli_stmt_num_rows($stmt) > 0) {
         redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
+    } else if (mysqli_stmt_num_rows($check_category_slug_stmt) > 0) {
+        redirectSwal("../your-store.php", "Store slug already exists. Please choose a different slug.", "error");
     } else if (mysqli_num_rows($check_address_query_run) <= 0) {
         redirectSwal("../account-details.php", "Add your pickup address first before creating a store", "warning");
     } else {
@@ -50,10 +59,6 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
 
         addBackgroundToPng($destination, $image);
 
-        //Generate unique slug using id
-        $uniqueIdentifier = time();
-        $slug_new = generateSlug($slug, $uniqueIdentifier);
-
         $categ_query = "INSERT INTO categories (category_user_ID, category_name, category_slug, category_description, category_image,
                 category_meta_title, category_meta_description)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -63,7 +68,7 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
             "issssss",
             $user_ID,
             $name,
-            $slug_new,
+            $slug,
             $desc,
             $fileName,
             $meta_title,
@@ -83,23 +88,35 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         }
     }
 } else if (isset($_POST['updateCategoryBtn'])) { //!Update Brand Category details
-    $category_id = $_POST['categoryID'];
-    $name = $_POST['nameInput'];
-    $slug = $_POST['slugInput'];
-    $desc = $_POST['descriptionInput'];
-    $meta_title = $_POST['metaTitleInput'];
-    $meta_desc = $_POST['metaDescriptionInput'];
+    $category_id = mysqli_real_escape_string($con, $_POST['categoryID']);
+    $name = mysqli_real_escape_string($con, $_POST['nameInput']);
+    $slug = mysqli_real_escape_string($con, $_POST['slugInput']);
+    $slug = strtolower($slug);
+    $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
+    $slug = str_replace(' ', '', $slug);
+    $desc = mysqli_real_escape_string($con, $_POST['descriptionInput']);
+    $meta_title = mysqli_real_escape_string($con, $_POST['metaTitleInput']);
+    $meta_desc = mysqli_real_escape_string($con, $_POST['metaDescriptionInput']);
     $visibility = isset($_POST['visibilityCheckbox']) ? '1' : '0';
 
     // Check if category name already exists
-    $check_query = "SELECT * FROM categories WHERE category_name = ? AND category_id != ?";
-    $stmt = mysqli_prepare($con, $check_query);
-    mysqli_stmt_bind_param($stmt, "si", $name, $category_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
+    $check_categ_name_query = "SELECT * FROM categories WHERE category_name = ?";
+    $check_categ_name_stmt = mysqli_prepare($con, $check_categ_name_query);
+    mysqli_stmt_bind_param($check_categ_name_stmt, "s", $name);
+    mysqli_stmt_execute($check_categ_name_stmt);
+    mysqli_stmt_store_result($check_categ_name_stmt);
 
-    if (mysqli_stmt_num_rows($stmt) > 0) {
+    // Check if category slug already exists
+    $check_category_slug_query = "SELECT * FROM categories WHERE category_slug = ?";
+    $check_category_slug_stmt = mysqli_prepare($con, $check_category_slug_query);
+    mysqli_stmt_bind_param($check_category_slug_stmt, "s", $slug);
+    mysqli_stmt_execute($check_category_slug_stmt);
+    mysqli_stmt_store_result($check_category_slug_stmt);
+
+    if (mysqli_stmt_num_rows($check_categ_name_stmt) > 0) {
         redirectSwal("../your-store.php", "Store name already exists. Please choose a different name.", "error");
+    } else if (mysqli_stmt_num_rows($check_category_slug_stmt) > 0) {
+        redirectSwal("../your-store.php", "Store slug already exists. Please choose a different slug.", "error");
     } else {
         $old_image = $_POST['oldImage'];
         $new_image = $_FILES['uploadImageInput']['name'];
@@ -108,30 +125,32 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
         $image_ext = strtolower(pathinfo($new_image, PATHINFO_EXTENSION));
         $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
-        if (!in_array($image_ext, $allowed_extensions)) {
-            redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG files are allowed.", "error");
-        } else if ($new_image != "") {
-            // Set the file name if a new image is uploaded
-            $date = date("m-d-Y-H-i-s");
-            $extension = pathinfo($new_image, PATHINFO_EXTENSION);
-            $fileName = $slug . '-' . $date . '.' . $extension;
-            $destination = "../../assets/uploads/brands/" . $fileName;
+        if ($new_image != "") {
+            if (!in_array($image_ext, $allowed_extensions)) {
+                redirectSwal("../your-store.php", "Invalid image file format. Only JPEG, PNG files are allowed.", "error");
+            } else {
+                // Set the file name if a new image is uploaded
+                $date = date("m-d-Y-H-i-s");
+                $extension = pathinfo($new_image, PATHINFO_EXTENSION);
+                $fileName = $slug . '-' . $date . '.' . $extension;
+                $destination = "../../assets/uploads/brands/" . $fileName;
 
-            if (file_exists("../../assets/uploads/brands/" . $old_image)) {
-                unlink("../../assets/uploads/brands/" . $old_image); // Delete Old Image
+                if (file_exists("../../assets/uploads/brands/" . $old_image)) {
+                    unlink("../../assets/uploads/brands/" . $old_image); // Delete Old Image
+                }
+                move_uploaded_file($image_tmp, $destination);
+
+                addBackgroundToPng($destination, $extension);
             }
-            move_uploaded_file($image_tmp, $destination);
-
-            addBackgroundToPng($destination, $extension);
         } else {
             // Keep the original file name if no new image is uploaded
             $fileName = $old_image;
         }
 
-        $categ_query = "UPDATE categories SET category_name = ?, category_description = ?, category_onVacation = ?,
+        $categ_query = "UPDATE categories SET category_name = ?, category_description = ?, category_slug = ?, category_onVacation = ?,
                         category_image = ?, category_meta_title = ?, category_meta_description = ? WHERE category_id = ?";
         $stmt = mysqli_prepare($con, $categ_query);
-        mysqli_stmt_bind_param($stmt, "ssisssi", $name, $desc, $visibility, $fileName, $meta_title, $meta_desc, $category_id);
+        mysqli_stmt_bind_param($stmt, "sssisssi", $name, $desc, $slug, $visibility, $fileName, $meta_title, $meta_desc, $category_id);
         $categ_query_run = mysqli_stmt_execute($stmt);
 
         if ($categ_query_run) {

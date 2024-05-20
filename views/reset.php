@@ -31,9 +31,9 @@ if (isset($_SESSION['auth'])) {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php include('../partials/sessionMessage.php') ?>
-                <div class="card bg-main">
-                    <div class="card-header text-center">
-                        <h4>Reset Password</h4>
+                <div class="card border-0 bg-main">
+                    <div class="card-header border-0 bg-main text-center">
+                        <h6>Reset Password</h6>
                     </div>
                     <div class="card-body">
                         <form action="../models/authcode.php" method="POST">

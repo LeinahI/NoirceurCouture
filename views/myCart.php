@@ -1,3 +1,59 @@
+<style>
+    .bottomSummary {
+        display: none;
+    }
+
+    .delText {
+        display: none;
+    }
+
+    @media (max-width: 991px) {
+        .discount {
+            display: none !important;
+        }
+
+        .origprice {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .bottomSummary {
+            display: block;
+        }
+
+        .sideSummary {
+            display: none;
+        }
+    }
+
+    @media (max-width: 432px) {
+        .col-xs-12 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+
+        .ITPrice {
+            text-align: start;
+        }
+
+        .col-5 {
+            width: 66.66666667% !important;
+        }
+
+        .deleteBtn {
+            width: 100% !important;
+        }
+
+        .deleteIcon {
+            display: none;
+        }
+
+        .delText {
+            display: block;
+        }
+    }
+</style>
 <div id="mycart">
     <?php include('../partials/__header.php');
 
@@ -16,32 +72,12 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="text-center">
-                        <h1 class="mb-3">Cart</h1>
-                    </div>
+                <div class="text-center">
+                    <h1>Cart</h1>
+                </div>
+                <div class="col-sm-12 col-md-8">
 
-                    <div class="card p-3 border rounded-3 bg-tertiary">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <h6>Product</h6>
-                            </div>
-                            <div class="col-md-2 pl-2 d-flex justify-content-center">
-                                <h6>Unit Price</h6>
-                            </div>
-                            <div class="col-md-2 pl-0 d-flex justify-content-center">
-                                <h6>Quantity</h6>
-                            </div>
-                            <div class="col-md-2">
-                                <h6>Total Price</h6>
-                            </div>
-                            <div class="col-md-1">
-                                <h6>Action</h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-3" id="nocartItems">
+                    <div class="text-center" id="nocartItems">
                         <p>Currently, there are no goods in your Cart.</p>
                     </div>
                     <?php
@@ -77,15 +113,15 @@
                             $categslug = $categoryData['categslug'];
 
                     ?>
-                            <div id="categoryCard" class="card my-4 border rounded-3 bg-tertiary">
-                                <div class="card-header">
+                            <div id="categoryCard" class="card mb-4 border rounded-3 bg-tertiary border-0">
+                                <div class="card-header border-0 bg-tertiary">
                                     <h5 class="card-title">
                                         <a href="store.php?category=<?= $categslug ?>" class="text-dark">
                                             <?= $categoryName ?>
                                         </a>
                                     </h5>
                                 </div>
-                                <div id="itemsContainer" class="card-body overflow-x-auto">
+                                <div id="itemsContainer" class="card-body col-12">
                                     <?php
                                     foreach ($categoryData['items'] as $index => $cItem) {
 
@@ -95,64 +131,58 @@
                                         $orig_price = $cItem['product_original_price'];
                                         $discount = $cItem['product_discount'];
                                     ?>
-                                        <div id="productList" class="productData row align-items-center <?= ($index < count($categoryData['items']) - 1) ? 'mb-3' : '' ?>">
-
-
+                                        <div id="productList" class="productData row align-items-center <?= ($index < count($categoryData['items']) - 1) ? 'my-2 py-2 border-bottom' : '' ?>">
                                             <!-- Product Image -->
-                                            <div class="col-md-2">
-                                                <center>
-                                                    <a href="productView.php?product=<?= $cItem['product_slug'] ?>"><img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" width="100px"></a>
-                                                </center>
+                                            <div class="col-4 col-lg-3 col-md-4 col-sm-4">
+                                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>"><img class="w-100" src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image"></a>
                                             </div>
                                             <!-- Product Name -->
-                                            <div class="col-md-3">
-                                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark">
-                                                    <h5><?= $cItem['product_name'] ?></h5>
-                                                </a>
-                                            </div>
-                                            <!-- Product Price -->
-                                            <div class="col-md-2">
-                                                <?php
-                                                if ($srp == $orig_price) {
-                                                ?>
-                                                    <h6 class="d-flex justify-content-center">₱<?= number_format($srp, 2) ?></h6>
-                                                <?php
-                                                } else if ($srp != $orig_price) {
-                                                ?>
-                                                    <span class="d-flex justify-content-center">
-                                                        <h6 class="text-secondary text-decoration-line-through mr-2">₱<?= number_format($orig_price, 2) ?></h6>
-                                                        &nbsp;
-                                                        <h6>₱<?= number_format($srp, 2) ?></h6>
-                                                    </span>
-                                                    <span class="d-flex justify-content-center text-accent">
-                                                        Discount <?= $discount ?>%
-                                                    </span>
-                                                <?php
-                                                }
-                                                ?>
-                                            </div>
-                                            <!-- Product Quantity -->
-                                            <div class="col-md-2">
-                                                <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="input-group mb-2" style="width:120px;">
-                                                        <button class="input-group-text decrementProductBtn updateQty btn-main">-</button>
-                                                        <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>" data-remain="<?= $cItem['product_remain'] ?>">
-                                                        <button class="input-group-text incrementProductBtn updateQty btn-main">+</button>
-                                                    </div>
+                                            <div class="col-5 col-lg-6 col-md-5 col-sm-5 ">
+                                                <div>
+                                                    <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="text-dark fs-5">
+                                                        <?= $cItem['product_name'] ?>
+                                                    </a>
                                                 </div>
-                                                <span class="d-flex justify-content-center text-accent itemLeft">
-                                                    <?= $cItem['product_remain'] ?> items left
-                                                </span>
+                                                <div>
+                                                    <?php
+                                                    if ($srp == $orig_price) {
+                                                    ?>
+                                                        <h6>₱<?= number_format($srp, 2) ?></h6>
+
+                                                    <?php
+                                                    } else if ($srp != $orig_price) {
+                                                    ?>
+                                                        <span class="d-flex">
+                                                            <h6 class="text-secondary text-decoration-line-through mr-2 origprice">₱<?= number_format($orig_price, 2) ?></h6>
+                                                            <h6>₱<?= number_format($srp, 2) ?></h6>
+                                                        </span>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div>
+                                                    <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
+                                                    <div class="d-flex justify-content-start">
+                                                        <div class="input-group mb-2" style="width:120px;">
+                                                            <button class="input-group-text decrementProductBtn updateQty btn-main">-</button>
+                                                            <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>" data-remain="<?= $cItem['product_remain'] ?>">
+                                                            <button class="input-group-text incrementProductBtn updateQty btn-main">+</button>
+                                                        </div>
+                                                    </div>
+                                                    <span class="d-flex">
+                                                        <?= $cItem['product_remain'] ?> items left
+                                                    </span>
+                                                </div>
                                             </div>
 
-                                            <!-- Total Price -->
-                                            <div class="col-md-2 text-accent">
-                                                <h5>₱<span class="productPrice"><?= number_format($itemTotalPrice, 2) ?></span></h5>
-                                            </div>
                                             <!-- Delete Btn -->
-                                            <div class="col-md-1">
-                                                <button id="deleteItem" class="btn btn-main" value="<?= $cItem['cid'] ?>">Delete</button>
+                                            <div class="col-3 col-xs-12 text-end">
+                                                <div class="ITPrice">
+                                                    <h5 class="sticky-sm-top">₱<span class="text-accent productPrice"><?= number_format($itemTotalPrice, 2) ?></span></h5>
+                                                </div>
+                                                <div>
+                                                    <button id="deleteItem" class="btn btn-main deleteBtn" value="<?= $cItem['cid'] ?>"><i class="bi bi-trash deleteIcon"></i> <span class="delText">Delete Product</span></button>
+                                                </div>
                                             </div>
                                         </div>
                                     <?php } ?>
@@ -163,31 +193,58 @@
                     }
                     ?>
                 </div>
+                <!-- Side -->
+                <div class="col-4 sideSummary">
+                    <div class="card bg-tertiary border-0">
+                        <div class="card-body col-12">
+                            <h5 class="card-title">Cart Details</h5>
+                            <div class="text-dark">
+                                <div class="row">
+                                    <div class="col-10 text-start">
+                                        Product Count
+                                    </div>
+                                    <div class="col-2 text-end">
+                                        <?php if (isset($_SESSION['auth'])) {
+                                            echo getCartQty();
+                                        } ?>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row fw-bold fs-6">
+                                    <div class="col-6 text-start mr-0">
+                                        Total Price
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <span class="">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <a href="checkOut.php" class="btn btn-main col-12">Proceed To checkout</a>
+                                <a href="storelist.php" class="mt-2 btn btn-tertiary col-12">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="container fixed-bottom">
+    <!-- Bottom -->
+    <div class="container fixed-bottom bottomSummary">
         <div class="row">
-            <div class="col-md-12">
-                <!-- Footer -->
-                <footer class="bg-tertiary text-center text-white shadow">
-                    <div class="p-4">
-                        <section class="pb-5">
-                            <div class="float-end text-dark">
-                                <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
-                                                        echo getCartQty();
-                                                    } ?>
-                                    </span>
-                                    items):
-                                    <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
-                                    <a href="checkOut.php" class="ml-3 btn btn-main">Check out</a>
-                                </h5>
-                            </div>
-                        </section>
+            <div class="col-12">
+                <div class="card py-4 px-3 border-0 bg-tertiary rounded-0">
+                    <div class="float-end text-dark">
+                        <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
+                                                echo getCartQty();
+                                            } ?>
+                            </span>
+                            items):
+                            <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
+                        </h5>
+                        <a href="checkOut.php" class="btn btn-main col-12">Proceed To checkout</a>
                     </div>
-                </footer>
-                <!-- Footer -->
+                </div>
             </div>
         </div>
     </div>

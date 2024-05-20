@@ -292,7 +292,7 @@ if (mysqli_num_rows($cartCheck) < 1) {
                                                     if ($Default == 1) {
                                                     ?>
                                                         <div style="margin-top: 5px;">
-                                                            <span class="text-accent border border-accent p-1">Default</span>
+                                                            <span class="border-0 btn-main rounded-3 p-1">Default</span>
                                                         </div>
                                                     <?php
                                                     }

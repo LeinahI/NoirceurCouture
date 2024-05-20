@@ -13,9 +13,9 @@ include('../middleware/userMW.php');
 
 <div id="mylikes">
     <div class="container">
-        <div class="col-md-12">
+        <div class="row">
             <h1 class="text-center mb-3">Wish List</h1>
-            <div class="row">
+            <div class="col-12 row ">
                 <?php
                 $items = getLikesItems();
 
@@ -25,15 +25,17 @@ include('../middleware/userMW.php');
                             $cItem['product_name'] = substr($cItem['product_name'], 0, 24) . '...';
                         }
                 ?>
-                        <div class="card border-0" style="width: 18rem;" id="likedCard">
-                            <div class="card-body bg-tertiary rounded">
-                                <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="card-link text-dark">
-                                    <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
-                                    <p class="card-title"><?= $cItem['product_name'] ?></p>
-                                </a>
-                                <p class="fs-6 text-dark">₱<?= number_format($cItem['product_srp'], 2) ?></p>
-                                <div class="">
-                                    <button class="btn btn-main" id="deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="bi bi-trash"></i></button>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 mb-3 d-flex align-items-stretch">
+                            <div class="card border-0 bg-tertiary" id="likedCard">
+                                <div class="card-body">
+                                    <a href="productView.php?product=<?= $cItem['product_slug'] ?>" class="card-link text-dark">
+                                        <img src="../assets/uploads/products/<?= $cItem['product_image'] ?>" alt="Product Image" class="w-100">
+                                        <p class="card-title"><?= $cItem['product_name'] ?></p>
+                                    </a>
+                                    <p class="fs-6 text-dark">₱<?= number_format($cItem['product_srp'], 2) ?></p>
+                                    <div class="">
+                                        <button class="btn btn-main" id="deleteItemLike" value="<?= $cItem['lid'] ?>"><i class="bi bi-trash"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

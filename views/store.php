@@ -139,7 +139,7 @@ if (isset($_GET['category'])) {
 
                                 // Display the product card
                                 ?>
-                                <div class="col-lg-3 col-md-6 col-sm-6 col-6 mb-3 ">
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-6 mb-3">
                                     <a href="productView.php?product=<?= $item['product_slug'] ?>" class="card-link">
                                         <img src="../assets/uploads/products/<?= $item['product_image'] ?>" alt="Product Image" class="w-100">
                                         <div class="p-2 col-md-12 bg-tertiary">

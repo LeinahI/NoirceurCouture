@@ -19,6 +19,7 @@ if (isset($_POST['userRegisterBtn'])) {
     $uCPass = mysqli_real_escape_string($con, $_POST['userConfirmPassword']);
     $phonePatternPH = '/^09\d{9}$/';
     $emailPattern = '/^[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z_+])*@(([0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$/';
+    $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,30}$/';
 
     $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
     $check_email_query_run = mysqli_query($con, $check_email_query);
@@ -29,7 +30,9 @@ if (isset($_POST['userRegisterBtn'])) {
     $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum'";
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
-    if (!preg_match($phonePatternPH, $phoneNum)) {
+    if (!preg_match($passwordPattern, $uPass)) {
+        redirect("../views/register.php", "Password must be between 8 to 30 characters and must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character");
+    } else if (!preg_match($phonePatternPH, $phoneNum)) {
         redirect("../views/register.php", "Invalid Philippine phone number format");
     } else if (!preg_match($emailPattern, $email)) {
         redirect("../views/register.php", "Invalid email format");

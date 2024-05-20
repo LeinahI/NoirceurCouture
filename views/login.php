@@ -31,13 +31,14 @@ if (isset($_SESSION['auth'])) {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php include('../partials/sessionMessage.php') ?>
-                <div class="card bg-main">
-                    <div class="card-header text-center">
-                        <h4>Log in</h4>
-                    </div>
+                <div class="card bg-main border-0">
                     <div class="card-body">
                         <form action="../models/authcode.php" method="POST">
                             <div class="container-fluid">
+                                <div class="text-center mt-2 mb-4">
+                                    <img src="../assets/images/logo/NoirceurCouture_BK.png" height="40" alt="Logo">
+                                    <p class="fs-6 mt-1">Welcome Back</p>
+                                </div>
                                 <div class="row">
                                     <!-- Fname and Lname start -->
                                     <div class="form-floating mb-3 col-md-12 ps-0">

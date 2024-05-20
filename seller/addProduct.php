@@ -126,7 +126,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
         // Function to generate a slug from the given string
         function generateSlug(str) {
             // Replace spaces with dashes and convert to lowercase
-            return str.trim().toLowerCase().replace(/\s+/g, '-');
+            return str.trim().toLowerCase().replace(/\s+/g, '');
         }
     });
 

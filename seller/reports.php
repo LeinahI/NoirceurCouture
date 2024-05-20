@@ -138,7 +138,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                     <section class="store-user mt-3 px-3">
                         <div class="logo d-flex align-items-center">
                             <img src="../assets/uploads/brands/<?= $categImage; ?>" alt="brand_image" style="margin-right: 15px;" height="50px">
-                            <h2 class="text-primary" alt="brand_name"><?= $categName ?></h2>
+                            <h2 style="color: #060001;" alt="brand_name"><?= $categName ?></h2>
                         </div>
                     </section>
                     <!-- Main Reports -->

@@ -103,7 +103,7 @@
                                 <div class="col-md-12 row gy-2">
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,30}$" class="form-control" id="user_password" name="userPassword" required placeholder="Password">
+                                            <input type="password" class="form-control" id="user_password" name="userPassword" required placeholder="Password">
                                             <label for="floatingPassword" class="text-dark-4">Password</label>
                                         </div>
                                         <span class="input-group-text" id="togglePass"><i class="bi bi-eye"></i></span>
@@ -111,7 +111,7 @@
 
                                     <div class="input-group">
                                         <div class="form-floating">
-                                            <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,30}$" class="form-control" id="user_cpassword" name="userConfirmPassword" required placeholder="Password">
+                                            <input type="password" class="form-control" id="user_cpassword" name="userConfirmPassword" required placeholder="Password">
                                             <label for="floatingPassword" class="text-dark-4">Confirm Password</label>
                                         </div>
                                         <span class="input-group-text" id="toggleCPass"><i class="bi bi-eye"></i></span>

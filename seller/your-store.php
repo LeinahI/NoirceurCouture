@@ -56,7 +56,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <label for="floatingInput" class="ps-3">Store Name</label>
                                     </div>
                                     <div class="form-floating col-md-6 mb-3">
-                                        <input type="text" class="form-control ps-3" id="<?= ($categSlug) ? '' : 'slug_input' ?>" value="<?= $categSlug; ?>" name="slugInput" <?= ($categSlug) ? 'readonly' : '' ?> required placeholder="Slug">
+                                        <input type="text" class="form-control ps-3" id="slug_input" value="<?= $categSlug; ?>" name="slugInput" required placeholder="Slug">
                                         <label for="floatingPassword" class="ps-3">Store Slug</label>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
         // Function to generate a slug from the given string
         function generateSlug(str) {
             // Replace spaces with dashes and convert to lowercase
-            return str.trim().toLowerCase().replace(/\s+/g, '-');
+            return str.trim().toLowerCase().replace(/\s+/g, '');
         }
     });
 </script>

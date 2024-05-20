@@ -51,8 +51,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                             <label for="floatingInput" class="ps-3">Product Name</label>
                                         </div>
                                         <div class="form-floating col-md-6 mb-3">
-                                            <input type="text" class="form-control ps-3" value="<?= $data['product_slug'] ?>" disabled placeholder="Slug">
-                                            <input type="hidden" class="form-control ps-3" value="<?= $data['product_slug'] ?>" name="productslugInput" readonly placeholder="Slug">
+                                            <input type="text" class="form-control ps-3" id="slugInput" value="<?= $data['product_slug'] ?>" name="productslugInput" placeholder="Slug">
                                             <label for="floatingPassword" class="ps-3">Product Slug</label>
                                         </div>
                                         <div class="form-floating col-md-12 mb-3">
@@ -141,12 +140,14 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
     document.addEventListener("DOMContentLoaded", function() {
         var nameInput = document.getElementById("name_input");
         var metaTitle = document.getElementById("metaTitle_input");
+        var slug = document.getElementById("slugInput");
         var descriptionInput = document.getElementById("description_input");
         var metaDescription = document.getElementById("metaDescription_input");
 
         /* For slug and meta title */
         nameInput.addEventListener("input", function() {
             metaTitle.value = nameInput.value;
+            slug.value = nameInput.value;
         });
 
         /* for meta description */
