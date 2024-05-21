@@ -258,3 +258,73 @@ function emailBodySellerRegistration($email, $subject, $registrationUrl)
 
     return $body;
 }
+
+function emailBodySellerAccepted($brandName)
+{
+
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+    <div style='margin-top: 30px; width: 600px'>
+        <div style='padding: 20px; background-color: #816ACC;'>
+            <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+        </div>
+
+        <div style='width: 550px;'>
+            <p style='font-size: 16px; font-weight: bold; text-align: left;'>Dear $brandName,</p>
+            <p style='font-size: 16px; font-weight: bold; text-align: left;'>We are excited to inform you that your account on NoirceurCouture has been successfully verified as a seller. 🎉</p>
+            <p style='font-size: 16px; text-align: left;'>With your verified account, you now have access to a range of benefits, including:</p>
+
+            <ol style='text-align: left;'>
+                <li>
+                    <p style='font-size: 16px; font-weight: bold;'>Increased visibility: Showcase your products to a larger audience.</p>
+                </li>
+                <li>
+                    <p style='font-size: 16px; font-weight: bold;'>Priority support: Receive dedicated assistance for any queries or issues.</p>
+                </li>
+                <li>
+                    <p style='font-size: 16px; font-weight: bold;'>Advanced analytics: Gain insights into your sales.</p>
+                </li>
+            </ol>
+            <p style='font-size: 16px; text-align: left;'>Thank you for choosing NoirceurCouture. We're dedicated to providing you with the best selling experience possible.</p>
+
+            <p style='font-size: 16px; text-align: left;'>Happy selling! 🛍️</p>
+
+
+            <p style='font-size: 16px; text-align: left; font-weight: bold;'>Best Regards,</p>
+            <p style='font-size: 16px; text-align: left; font-weight: bold;'>Noirceur Couture Support Team</p>
+        </div>
+    </div>
+</center>
+    ";
+
+    return $body;
+}
+function emailBodySellerRejected($brandName)
+{
+
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+    <div style='margin-top: 30px; width: 600px'>
+        <div style='padding: 20px; background-color: #816ACC;'>
+            <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+        </div>
+
+        <div style='width: 550px;'>
+            <p style='font-size: 16px; font-weight: bold; text-align: left;'>Dear $brandName,</p>
+            <p style='font-size: 16px; text-align: left;'>Thank you for your interest in joining NoirceurCouture as a seller. We appreciate the time and effort you invested in your application.</p>
+            <p style='font-size: 16px; text-align: left;'>After careful consideration, we regret to inform you that your account has not been approved. Unfortunately, the vision and values of Noirceur Couture are not fully aligned with $brandName.</p>
+            <p style='font-size: 16px; text-align: left;'>We encourage you to continue pursuing excellence in your brand, and we hope to have the opportunity to collaborate in the future under more aligned circumstances.</p>
+            <p style='font-size: 16px; text-align: left;'>Thank you once again for considering NoirceurCouture. If you have any questions or require further information, please do not hesitate to reach out to our support team.</p>
+            <p style='font-size: 16px; text-align: left;'>Best Regards,</p>
+            <p style='font-size: 16px; text-align: left; font-weight: bold;'>Noirceur Couture Support Team</p>
+        </div>
+    </div>
+</center>
+    ";
+
+    return $body;
+}

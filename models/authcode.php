@@ -310,6 +310,7 @@ if (isset($_POST['sellerRegisterBtn'])) {
 
                 if ($seller_details_query_run && $category_details_query_run) {
                     // Redirect with success message
+                    
                     redirectSwal("../views/login.php", "Seller account added. Wait for administrator confirmation.", "success");
                 } else {
                     // Handle the error and redirect
