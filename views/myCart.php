@@ -205,7 +205,7 @@
                                     <div class="col-2 text-end">
                                         <?php if (isset($_SESSION['auth'])) {
                                             $cartQty = getCartQty(); ?>
-                                            <span class="text-dark" id="productCount"><?php echo $cartQty; ?></span>
+                                            <span class="text-dark" id="productCountSide"><?php echo $cartQty; ?></span>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -235,11 +235,7 @@
             <div class="col-12">
                 <div class="card py-4 px-3 border-0 bg-tertiary rounded-0">
                     <div class="float-end text-dark">
-                        <h5>Total (<span><?php if (isset($_SESSION['auth'])) {
-                                                echo getCartQty();
-                                            } ?>
-                            </span>
-                            items):
+                        <h5>Total (<span class="text-dark" id="productCountBottom"><?php echo $cartQty; ?></span>&nbsp;items):
                             <span class="fs-4 fw-bold text-accent">₱<span class="overallPrice"><?= number_format($totalPrice, 2) ?></span></span>
                         </h5>
                         <a href="checkOut.php" class="btn btn-main col-12">Proceed To checkout</a>

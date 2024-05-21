@@ -236,6 +236,7 @@ $(document).ready(function () {
 
             // Update the cart quantity
             updateMyCartQty();
+            updateOverallPrice();
           });
         }
       },
@@ -250,11 +251,10 @@ $(document).ready(function () {
       url: "/NoirceurCouture/models/getCartQty.php",
       method: "GET",
       success: function (response) {
-        console.log("Cart quantity response:", response); // Log the response for debugging
         if (response.cartQty !== undefined) {
-          $("#productCount").text(response.cartQty);
-        } else {
-          console.error("cartQty is undefined in the response");
+          $("#productCountSide").text(response.cartQty);
+          $("#productCountBottom").text(response.cartQty);
+
         }
       },
       error: function (xhr, status, error) {
@@ -267,10 +267,8 @@ $(document).ready(function () {
     var isExist = $("#categoryCard").length > 0; // Check if there are any elements with the ID 'categoryCard'
     if (isExist) {
       $("#nocartItems").hide();
-      $("#sideSummary").show();
     } else {
       $("#nocartItems").show();
-      $("#sideSummary").hide();
     }
   }
 
