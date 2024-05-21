@@ -12,14 +12,14 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
+    $desc = trim($_POST['productdescriptionInput']);
     $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
     $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
     $srp = mysqli_real_escape_string($con, $_POST['suggestedRetailPriceInput']);
     $qty = mysqli_real_escape_string($con, $_POST['quantityInput']);
     $product_popular = mysqli_real_escape_string($con, isset($_POST['productpopularCheckbox']) ? '1' : '0');
     $meta_title = mysqli_real_escape_string($con, $_POST['productmetaTitleInput']);
-    $meta_desc = mysqli_real_escape_string($con, $_POST['productmetaDescriptionInput']);
+    $meta_desc = trim($_POST['productmetaDescriptionInput']);
 
     // Check if product name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ?";
@@ -80,7 +80,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $desc = mysqli_real_escape_string($con, $_POST['productdescriptionInput']);
+    $desc = trim($_POST['productdescriptionInput']);
     $orig_price = mysqli_real_escape_string($con, $_POST['originalPriceInput']);
     $discount = mysqli_real_escape_string($con, $_POST['priceDiscount']);
     $srp = mysqli_real_escape_string($con, $_POST['suggestedRetailPriceInput']);
@@ -88,7 +88,7 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     $product_visibility = mysqli_real_escape_string($con, isset($_POST['productstatusCheckbox']) ? '1' : '0');
     $product_popular = mysqli_real_escape_string($con, isset($_POST['productpopularCheckbox']) ? '1' : '0');
     $meta_title = mysqli_real_escape_string($con, $_POST['productmetaTitleInput']);
-    $meta_desc = mysqli_real_escape_string($con, $_POST['productmetaDescriptionInput']);
+    $meta_desc = trim($_POST['productmetaDescriptionInput']);
 
     // Check if category name already exists
     $check_query = "SELECT * FROM products WHERE product_name = ? AND product_id != ?";
@@ -98,9 +98,9 @@ if (isset($_POST['addProductBtn'])) { //!Add Product into specific category
     mysqli_stmt_store_result($stmt);
 
     // Check if product slug already exists
-    $check_product_slug_query = "SELECT * FROM products WHERE product_slug = ?";
+    $check_product_slug_query = "SELECT * FROM products WHERE product_slug = ? AND product_id != ?";
     $check_product_slug_stmt = mysqli_prepare($con, $check_product_slug_query);
-    mysqli_stmt_bind_param($check_product_slug_stmt, "s", $slug);
+    mysqli_stmt_bind_param($check_product_slug_stmt, "si", $slug, $product_id);
     mysqli_stmt_execute($check_product_slug_stmt);
     mysqli_stmt_store_result($check_product_slug_stmt);
 

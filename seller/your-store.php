@@ -60,19 +60,20 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                         <label for="floatingPassword" class="ps-3">Store Slug</label>
                                     </div>
                                 </div>
-                                <div class="form-floating col-md-12 mb-3">
-                                    <textarea class="form-control ps-3" placeholder="d" id="description_input" name="descriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= $categDesc; ?></textarea>
-                                    <label for="floatingPassword" class="ps-3">Store Description</label>
+                                <div class="col-md-6 mb-3">
+                                    <label for="">Store Logo:</label>
+                                    <input type="hidden" name="oldImage" value="<?= $categImage; ?>">
+                                    <img src="../assets/uploads/brands/<?= $categImage; ?>" height="100px" alt="Store Image">
                                 </div>
-                                <div class="form-floating col-md-6 mb-3">
+                                <div class="form-floating col-md-12 mb-3">
                                     <input type="file" class="form-control ps-3" id="uploadImage_input" accept=".jpg, .jpeg, .png, .webp, .avif, .gif" name="uploadImageInput">
                                     <label for="floatingPassword" class="ps-3">Upload Image</label>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="">Current image:</label>
-                                    <input type="hidden" name="oldImage" value="<?= $categImage; ?>">
-                                    <img src="../assets/uploads/brands/<?= $categImage; ?>" height="50px" alt="Store Image">
+                                <div class="form-floating col-md-12 mb-3">
+                                    <textarea class="form-control ps-3" placeholder="d" id="description_input" name="descriptionInput" style="height:100px; min-height: 57px; max-height: 100px;" rows="3"><?= htmlspecialchars($categDesc, ENT_QUOTES, 'UTF-8'); ?></textarea>
+                                    <label for="floatingPassword" class="ps-3">Store Description</label>
                                 </div>
+
                                 <div class="form-floating col-md-12 mb-3">
                                     <input type="text" class="form-control ps-3" id="metaTitle_input" value="<?= $categMetaTitle; ?>" name="metaTitleInput" required placeholder="Slug">
                                     <label for="floatingPassword" class="ps-3">Store Meta Title</label>

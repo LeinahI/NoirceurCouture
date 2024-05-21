@@ -94,22 +94,22 @@ if (isset($_POST['addCategoryBtn'])) { //!Add Brand Category
     $slug = strtolower($slug);
     $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
     $slug = str_replace(' ', '', $slug);
-    $desc = mysqli_real_escape_string($con, $_POST['descriptionInput']);
+    $desc = trim($_POST['descriptionInput']);
     $meta_title = mysqli_real_escape_string($con, $_POST['metaTitleInput']);
-    $meta_desc = mysqli_real_escape_string($con, $_POST['metaDescriptionInput']);
+    $meta_desc = trim($_POST['metaDescriptionInput']);
     $visibility = isset($_POST['visibilityCheckbox']) ? '1' : '0';
 
     // Check if category name already exists
-    $check_categ_name_query = "SELECT * FROM categories WHERE category_name = ?";
+    $check_categ_name_query = "SELECT * FROM categories WHERE category_name = ? AND category_id != ?";
     $check_categ_name_stmt = mysqli_prepare($con, $check_categ_name_query);
-    mysqli_stmt_bind_param($check_categ_name_stmt, "s", $name);
+    mysqli_stmt_bind_param($check_categ_name_stmt, "si", $name, $category_id);
     mysqli_stmt_execute($check_categ_name_stmt);
     mysqli_stmt_store_result($check_categ_name_stmt);
 
     // Check if category slug already exists
-    $check_category_slug_query = "SELECT * FROM categories WHERE category_slug = ?";
+    $check_category_slug_query = "SELECT * FROM categories WHERE category_slug = ? AND category_id != ?";
     $check_category_slug_stmt = mysqli_prepare($con, $check_category_slug_query);
-    mysqli_stmt_bind_param($check_category_slug_stmt, "s", $slug);
+    mysqli_stmt_bind_param($check_category_slug_stmt, "si", $slug, $category_id);
     mysqli_stmt_execute($check_category_slug_stmt);
     mysqli_stmt_store_result($check_category_slug_stmt);
 

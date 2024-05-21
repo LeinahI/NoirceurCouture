@@ -65,11 +65,11 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['storelist.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['storelist.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php", "seller-registration.php"])) echo 'hidden'; ?>>
                         <a class="nav-link text-dark" href="../views/storelist.php">Collections</a>
                     </li>
                     <!-- myCart start -->
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['myCart.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['myCart.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php", "seller-registration.php"])) echo 'hidden'; ?>>
                         <!-- user cart qty -->
                         <a class="nav-link" href="../views/myCart.php"><i class="bi bi-bag text-dark"></i>&nbsp;<span class="text-dark d-inline d-lg-none">Cart</span>
                             <?php if (isset($_SESSION['auth'])) {
@@ -83,7 +83,7 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                     <!-- myCart end -->
 
                     <!-- Wish List start -->
-                    <li class="nav-item" <?php if (in_array($currentFilename, ['myLikes.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                    <li class="nav-item" <?php if (in_array($currentFilename, ['myLikes.php', 'verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php", "seller-registration.php"])) echo 'hidden'; ?>>
                         <!-- user cart qty -->
                         <a class="nav-link" href="../views/myLikes.php"><i class="bi bi-heart"></i>&nbsp;<span class="text-dark d-inline d-lg-none">Wishlist</span>
                             <?php if (isset($_SESSION['auth'])) {
@@ -115,10 +115,10 @@ $currentFilename = basename($_SERVER['PHP_SELF']);
                     <?php
                     } else {
                     ?>
-                        <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                        <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php", "seller-registration.php"])) echo 'hidden'; ?>>
                             <a class="nav-link text-dark" href="../views/register.php">Registration</a>
                         </li>
-                        <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php"])) echo 'hidden'; ?>>
+                        <li class="nav-item" <?php if (in_array($currentFilename, ['verifyAccount.php', 'verifyEmailFinal.php', "reset.php", "resetPassword.php", "seller-registration.php"])) echo 'hidden'; ?>>
                             <a class="nav-link text-dark" href="../views/login.php">Log in</a>
                         </li>
                     <?php
