@@ -1,5 +1,5 @@
 <style>
-    .bottomSummary {
+    #bottomSummary {
         display: none;
     }
 
@@ -18,11 +18,11 @@
     }
 
     @media (max-width: 767px) {
-        .bottomSummary {
+        #bottomSummary {
             display: block;
         }
 
-        .sideSummary {
+        #sideSummary {
             display: none;
         }
     }
@@ -69,17 +69,16 @@
     </div>
 
     <div class="cart-items">
-
         <div class="container">
             <div class="row">
                 <div class="text-center">
                     <h1>Cart</h1>
                 </div>
+                <div class="text-center" id="nocartItems">
+                    <p>Currently, there are no goods in your Cart.</p>
+                </div>
                 <div class="col-sm-12 col-md-8">
 
-                    <div class="text-center" id="nocartItems">
-                        <p>Currently, there are no goods in your Cart.</p>
-                    </div>
                     <?php
                     $items = getCartItems();
                     $groupedItems = [];
@@ -163,15 +162,15 @@
                                                 <div>
                                                     <input type="hidden" class="productID" value="<?= $cItem['product_id'] ?>">
                                                     <div class="d-flex justify-content-start">
-                                                        <div class="input-group mb-2" style="width:120px;">
+                                                        <div class="input-group" style="width:120px;">
                                                             <button class="input-group-text decrementProductBtn updateQty btn-main">-</button>
                                                             <input type="text" class="form-control bg-white inputQty text-center" value="<?= $cItem['product_qty'] ?>" readonly data-price="<?= $cItem['product_srp'] ?>" data-remain="<?= $cItem['product_remain'] ?>">
                                                             <button class="input-group-text incrementProductBtn updateQty btn-main">+</button>
                                                         </div>
                                                     </div>
-                                                    <span class="d-flex">
+                                                    <small>
                                                         <?= $cItem['product_remain'] ?> items left
-                                                    </span>
+                                                    </small>
                                                 </div>
                                             </div>
 
@@ -194,7 +193,7 @@
                     ?>
                 </div>
                 <!-- Side -->
-                <div class="col-4 sideSummary">
+                <div class="col-4" id="sideSummary">
                     <div class="card bg-tertiary border-0">
                         <div class="card-body col-12">
                             <h5 class="card-title">Cart Details</h5>
@@ -205,8 +204,9 @@
                                     </div>
                                     <div class="col-2 text-end">
                                         <?php if (isset($_SESSION['auth'])) {
-                                            echo getCartQty();
-                                        } ?>
+                                            $cartQty = getCartQty(); ?>
+                                            <span class="text-dark" id="productCount"><?php echo $cartQty; ?></span>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <hr>
@@ -230,7 +230,7 @@
         </div>
     </div>
     <!-- Bottom -->
-    <div class="container fixed-bottom bottomSummary">
+    <div class="container fixed-bottom" id="bottomSummary">
         <div class="row">
             <div class="col-12">
                 <div class="card py-4 px-3 border-0 bg-tertiary rounded-0">

@@ -167,8 +167,11 @@ $(document).ready(function () {
       url: "/NoirceurCouture/models/getCartQty.php",
       method: "GET",
       success: function (response) {
+        console.log("Cart quantity response:", response); // Log the response for debugging
         if (response.cartQty !== undefined) {
           $("#itemCartQty").text(response.cartQty);
+        } else {
+          console.error("cartQty is undefined in the response");
         }
       },
       error: function (xhr, status, error) {
@@ -198,6 +201,8 @@ $(document).ready(function () {
   checkCartItems();
 
   $(document).on("click", "#deleteItem", function (e) {
+    e.preventDefault(); // Prevent default action if it's a button or link
+
     var cart_id = $(this).val(); // Get the cart ID from the clicked button's value
     var $productToDelete = $(this).closest("#productList"); // Find the closest parent element with the ID 'productList' from the clicked button
     var $itemsContainer = $productToDelete.closest("#itemsContainer"); // Find the closest parent element with the ID 'itemsContainer' from the product to delete
@@ -228,18 +233,44 @@ $(document).ready(function () {
             } else {
               checkCartItems(); // If the items container is not empty, just check the cart items
             }
+
+            // Update the cart quantity
+            updateMyCartQty();
           });
         }
       },
+      error: function (xhr, status, error) {
+        console.error("AJAX error: " + status + " - " + error);
+      },
     });
   });
+
+  function updateMyCartQty() {
+    $.ajax({
+      url: "/NoirceurCouture/models/getCartQty.php",
+      method: "GET",
+      success: function (response) {
+        console.log("Cart quantity response:", response); // Log the response for debugging
+        if (response.cartQty !== undefined) {
+          $("#productCount").text(response.cartQty);
+        } else {
+          console.error("cartQty is undefined in the response");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching cart quantity: " + error);
+      },
+    });
+  }
 
   function checkCartItems() {
     var isExist = $("#categoryCard").length > 0; // Check if there are any elements with the ID 'categoryCard'
     if (isExist) {
       $("#nocartItems").hide();
+      $("#sideSummary").show();
     } else {
       $("#nocartItems").show();
+      $("#sideSummary").hide();
     }
   }
 

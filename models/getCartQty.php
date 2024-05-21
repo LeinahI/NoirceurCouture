@@ -2,7 +2,7 @@
 session_start();
 include('dbcon.php');
 
-function getCartQty($con)
+function getCartQuantity($con)
 {
     $userId = $_SESSION['auth_user']['user_ID'];
 
@@ -26,7 +26,7 @@ function getCartQty($con)
 header('Content-Type: application/json');
 
 if (isset($_SESSION['auth_user'])) {
-    $cartQty = getCartQty($con); // Assuming $con is your database connection
+    $cartQty = getCartQuantity($con); // Assuming $con is your database connection
     echo json_encode(['cartQty' => $cartQty]);
 } else {
     echo json_encode(['cartQty' => 0]);

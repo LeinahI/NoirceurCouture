@@ -14,8 +14,13 @@ include('../middleware/userMW.php');
 <div id="mylikes">
     <div class="container">
         <div class="row">
-            <h1 class="text-center mb-3">Wish List</h1>
-            <div class="col-12 row ">
+            <div>
+                <h1 class="text-center mb-3">Wish List</h1>
+            </div>
+            <div class="text-center hidden" id="noLikedItems">
+                <p>There are no items in your Wish List.</p>
+            </div>
+            <div class="col-12 row">
                 <?php
                 $items = getLikesItems();
 
@@ -43,9 +48,7 @@ include('../middleware/userMW.php');
                     }
                 }
                 ?>
-                <div class="text-center hidden" id="noLikedItems">
-                    <p>There are no items in your Wish List.</p>
-                </div>
+
             </div>
         </div>
     </div>
