@@ -21,7 +21,7 @@
 
                 if (mysqli_num_rows($categories) > 0) {
                 ?>
-                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4 text-start">
+                    <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-4 text-start">
                         <?php
                         foreach ($categories as $item) {
                         ?>
@@ -41,7 +41,7 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-3 mx-auto mb-md-0 mb-4 text-white text-start">
+                <div class="col-md-4 mx-auto mb-md-0 mb-4 text-white text-start">
                     <div class="col-md-12">
                         <p>Emilio Aguinaldo Hwy, Crossing Silang East, Tagaytay, 4120 Cavite</p>
                         <p>nctr@proton.mail</p>
@@ -50,11 +50,19 @@
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-6 mx-auto mb-4 text-white text-start">
+                <div class="col-md-4 mx-auto mb-4 text-white text-start">
                     <!-- Links -->
-                    <div class="col-md-12">
-                        <h6 class="text-uppercase fw-bold mb-4 ">Be One of us</h6>
-                        <p>Unleash your eccentric creation through NoirceurCouture</p>
+                    <div class="col-12">
+                        <div>
+                            <h6 class="text-uppercase fw-bold mb-4 ">Be One of us</h6>
+                            <p>Unleash your eccentric creation through NoirceurCouture</p>
+                        </div>
+                        <div>
+                            <form action="../models/authcode.php" method="POST">
+                                <input type="text" class="form-control col-xl-9 col-lg-10 col-md-12 col-sm-10 col-12" id="user_uname" name="email" required placeholder="email@example.com">
+                                <button type="submit" name="joinSellerConfirmEmail" class="mt-2 btn btn-tertiary">Submit</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <!-- Grid column -->

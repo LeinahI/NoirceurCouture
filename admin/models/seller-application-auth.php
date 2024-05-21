@@ -31,9 +31,10 @@ if (isset($_POST['processSellerApplication'])) {
     } elseif ($action === 'reject') {
         // Perform the update for rejection
         $deleteQuery = "
-        DELETE users, users_seller_details
+        DELETE users, users_seller_details, categories
         FROM users
         LEFT JOIN users_seller_details ON users.user_ID = users_seller_details.seller_user_ID
+        LEFT JOIN categories ON users.user_ID = categories.category_user_ID
         WHERE users.user_ID = '$userId'";
 
         mysqli_query($con, $deleteQuery);

@@ -156,7 +156,7 @@ function emailBodyChangeEmailVerifyIdentityOTP($veri_code, $fname, $lname, $subj
     return $body;
 }
 
-function emailBodyEmailChangeSendToOld($fname, $lname, $subject, $oldEmail, $newEmail) 
+function emailBodyEmailChangeSendToOld($fname, $lname, $subject, $oldEmail, $newEmail)
 {
     $image_url = 'https://i.imgur.com/ELe78u6.png';
 
@@ -188,7 +188,7 @@ function emailBodyEmailChangeSendToOld($fname, $lname, $subject, $oldEmail, $new
     return $body;
 }
 
-function emailBodyEmailChangeSendToNew($fname, $lname, $subject, $oldEmail, $newEmail) 
+function emailBodyEmailChangeSendToNew($fname, $lname, $subject, $oldEmail, $newEmail)
 {
     $image_url = 'https://i.imgur.com/ELe78u6.png';
 
@@ -216,6 +216,44 @@ function emailBodyEmailChangeSendToNew($fname, $lname, $subject, $oldEmail, $new
                 <p style='font-size: 14px; font-weight: bold; text-align: left;'>Noirceur Couture Support Team</p>
             </div>
     </center>
+    ";
+
+    return $body;
+}
+
+function emailBodySellerRegistration($email, $subject, $registrationUrl)
+{
+    $image_url = 'https://i.imgur.com/ELe78u6.png';
+
+    $body = "
+    <center>
+    <div style='margin-top: 30px; width: 600px;'>
+        <div style='padding: 20px; background-color: #816ACC;'>
+        <img src='$image_url' alt='Noirceur Couture Logo' height='75px' width='auto'>
+        </div>
+
+    <div style='width: 550px;'>
+        <h1 style='font-size: 16px; text-align: left;'>$subject</h1>
+
+        <p style='font-size: 14px; text-align: left;'>Dear $email,</p>
+        <p style='font-size: 14px; text-align: left;'>We received a request that you wanted to join on NoirceurCouture as a seller. To proceed with seller registration, please click the link below:</p>
+
+        <div style='padding: 1px; margin: 0px 80px 0px 80px; background-color: #816ACC'>
+            <h1><a href='$registrationUrl' style='font-size: 16px; font-weight: bold; color:white;'>[Seller Registration Link]</a></h1>
+        </div>
+        <p style='font-size: 12px;'> This is valid for 15 mins. NEVER share this link with others, including
+                    NoirceurCouture staff. </p>
+        
+
+        <p style='font-size: 14px; text-align: left;'>If you did not request this registraion, you can safely ignore this email.</p>
+        <p style='font-size: 14px; text-align: left; font-weight: bold;'>Thank you for using NoirceurCouture.</p>
+
+        <p style='font-size: 14px; font-weight: bold; text-align: left;'>Best Regards,</p>
+        <p style='font-size: 14px; font-weight: bold; text-align: left;'>Noirceur Couture Support Team</p>
+        
+    </div>
+</div>
+</center>
     ";
 
     return $body;

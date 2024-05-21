@@ -6,16 +6,16 @@ function hideEmailCharacters($email)
     $parts = explode('@', $email);
     $username = $parts[0];
     $domain = $parts[1];
-    
+
     // Get the first character of the username
     $firstChar = substr($username, 0, 1);
-    
+
     // Get the last character of the username
     $lastChar = substr($username, -1);
-    
+
     // Replace characters between the first and last characters with asterisks
     $hiddenUsername = $firstChar . str_repeat('*', strlen($username) - 2) . $lastChar;
-    
+
     return $hiddenUsername . '@' . $domain;
 }
 
@@ -141,9 +141,10 @@ function getAllConfirmedDeletedUsers()
 function GetAllSellerApplication()
 {
     global $con;
-    $query = "SELECT usd.*, u.user_firstName, u.user_lastName
+    $query = "SELECT usd.*, u.user_lastName, c.category_name
     FROM users_seller_details usd
     INNER JOIN users u ON usd.seller_user_ID = u.user_ID
+    INNER JOIN categories c ON u.user_ID = c.category_user_ID
     WHERE usd.seller_confirmed = '0'";
     $query_run = mysqli_query($con, $query);
     return $query_run;

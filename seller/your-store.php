@@ -90,7 +90,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
                                     <div class="col-md-12 btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                         <input type="checkbox" class="btn-check" <?= $data['category_onVacation'] ? "checked" : "" ?> id="visibility_cb" name="visibilityCheckbox" autocomplete="off" />
                                         <label id="visibility_label" class="btn btn-outline-primary " for="visibility_cb">
-                                            <?= $data['category_onVacation'] ? "Set Visible" : "Set On Vacation" ?>
+                                            <?= $data['category_onVacation'] ? "Set Visible" : "Set Invisible" ?>
                                         </label>
                                     </div>
                                     <!-- If existing details exist -->
@@ -123,7 +123,7 @@ checkUserValidityAndRedirect($_SESSION['auth_user']['user_ID'] ?? null);
         var label = document.getElementById("visibility_label");
 
         checkbox.addEventListener("change", function() {
-            label.textContent = checkbox.checked ? "Set On Vacation" : "Set Visible";
+            label.textContent = checkbox.checked ? "Set Invisible" : "Set Visible";
         });
     });
 

@@ -18,7 +18,7 @@ include('../middleware/adminMW.php');
                         <thead>
                             <tr class="text-center">
                                 <th>User ID</th>
-                                <th>Full Name</th>
+                                <th>Brand Name</th>
                                 <th>Business Type</th>
                                 <th>Confirmation</th>
                             </tr>
@@ -33,7 +33,7 @@ include('../middleware/adminMW.php');
                             ?>
                                     <tr>
                                         <td class="text-start"> <?= $item['seller_user_ID'] ?> </td>
-                                        <td class="text-start"> <?= $item['user_firstName'] ?>&nbsp;<?= $item['user_lastName'] ?> </td>
+                                        <td class="text-start"> <?= $item['category_name'] ?></td>
                                         <td class="text-start"><?= $item['seller_seller_type'] ?> </td>
                                         <td class="text-center">
                                             <form action="models/seller-application-auth.php" method="POST" class="text-start">

@@ -255,6 +255,7 @@ if (isset($_POST['sellerRegisterBtn'])) {
     $email = mysqli_real_escape_string($con, $_POST['email']);
     $phoneNum = mysqli_real_escape_string($con, $_POST['phoneNumber']);
     $uname = mysqli_real_escape_string($con, $_POST['username']);
+    $brandName = mysqli_real_escape_string($con, $_POST['brandName']);
     $uPass = mysqli_real_escape_string($con, $_POST['userPassword']);
     $uCPass = mysqli_real_escape_string($con, $_POST['userConfirmPassword']);
     $role = 2;/* 0 = buyer, 1 = admin, 2 seller */
@@ -262,44 +263,52 @@ if (isset($_POST['sellerRegisterBtn'])) {
     $sellerType = isset($_POST['sellerType']) ? mysqli_real_escape_string($con, $_POST['sellerType']) : 'individual';
     $emailPattern = '/^[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z_+])*@(([0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$/';
 
-    $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
-    $check_email_query_run = mysqli_query($con, $check_email_query);
-
     $check_uname_query = "SELECT user_username FROM users WHERE user_username = '$uname'";
     $check_uname_query_run = mysqli_query($con, $check_uname_query);
+
+    $check_brand_query = "SELECT category_name FROM categories WHERE category_name = '$brandName'";
+    $check_brand_query_run = mysqli_query($con, $check_brand_query);
 
     $check_phoneNum_query = "SELECT user_phone FROM users WHERE user_phone = '$phoneNum'";
     $check_phoneNum_query_run = mysqli_query($con, $check_phoneNum_query);
 
     if (!preg_match($phonePatternPH, $phoneNum)) {
         redirect("../seller/seller-registration.php", "Invalid Philippine phone number format");
-    } else if (!preg_match($emailPattern, $email)) {
-        redirect("../seller/seller-registration.php", "Invalid email format");
-    } else if (mysqli_num_rows($check_email_query_run) > 0) {
-        redirect("../seller/seller-registration.php", "Email already in use try something different");
     } else if (mysqli_num_rows($check_uname_query_run) > 0) {
-        redirect("../seller/seller-registration.php", "username already in use try something different");
+        redirect("../seller/seller-registration.php", "Username already in use try something different");
+    } else if (mysqli_num_rows($check_brand_query_run) > 0) {
+        redirect("../seller/seller-registration.php", "Brand Name already in use try something different");
     } else if (mysqli_num_rows($check_phoneNum_query_run) > 0) {
-        redirect("../seller/seller-registration.php", "phone number already in use try something different");
+        redirect("../seller/seller-registration.php", "Phone Number already in use try something different");
     } else {
         if ($uPass == $uCPass) {
             //Hash Password
             $bcryptuPass = password_hash($uPass, PASSWORD_BCRYPT);
+            $reset_token = "";
+            // Prepare and bind the parameters
+            $stmt = $con->prepare("UPDATE users SET user_general_token = ?, user_firstName = ?, user_lastName = ?, user_phone =?, user_username = ?, user_password = ?, user_role = ? WHERE user_email = ?");
+            $stmt->bind_param("ssssssis", $reset_token, $fname, $lname, $phoneNum, $uname, $bcryptuPass, $role, $email);
 
-            //Insert User Data
-            $insert_query = "INSERT INTO users (user_firstName, user_lastName, user_email, user_phone, user_username, user_password, user_role)
-                VALUES('$fname','$lname','$email','$phoneNum','$uname','$bcryptuPass','$role')";
-
-            $insert_query_run = mysqli_query($con, $insert_query);
-            if ($insert_query_run) {
+            if ($stmt->execute()) {
                 // Get the last inserted user ID of user
-                $lastUserID = mysqli_insert_id($con);
+                $selectQuery = "SELECT * FROM users WHERE user_email = '$email'";
+                $select_email_Query = mysqli_query($con, $selectQuery);
+                $row = mysqli_fetch_assoc($select_email_Query);
 
                 // Insert into users_seller_details
-                $seller_details_query = "INSERT INTO users_seller_details (seller_user_ID, seller_seller_type) VALUES ('$lastUserID', '$sellerType')";
+                $seller_details_query = "INSERT INTO users_seller_details (seller_user_ID, seller_seller_type) VALUES ('$row[user_ID]', '$sellerType')";
                 $seller_details_query_run = mysqli_query($con, $seller_details_query);
 
-                if ($seller_details_query_run) {
+                $slug = $brandName;
+                $slug = strtolower($slug);
+                $slug = preg_replace('/[^a-zA-Z0-9]/', '', $slug);
+                $slug = str_replace(' ', '', $slug);
+
+                // Insert into users_seller_details
+                $category_details_query = "INSERT INTO categories (category_user_ID, category_name, category_slug, category_onVacation) VALUES ('$row[user_ID]', '$brandName', '$slug', '1')";
+                $category_details_query_run = mysqli_query($con, $category_details_query);
+
+                if ($seller_details_query_run && $category_details_query_run) {
                     // Redirect with success message
                     redirectSwal("../views/login.php", "Seller account added. Wait for administrator confirmation.", "success");
                 } else {
@@ -311,6 +320,38 @@ if (isset($_POST['sellerRegisterBtn'])) {
             }
         } else {
             redirect("../seller/seller-registration.php", "Passwords doesn't match");
+        }
+    }
+}
+
+if (isset($_POST['joinSellerConfirmEmail'])) {
+    $acti_code = generateToken();
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $role = 2;/* 0 = buyer, 1 = admin, 2 seller */
+    $emailPattern = '/^[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z_+])*@(([0-9a-zA-Z][-\w]*\.)+[a-zA-Z]{2,9})$/';
+
+    $check_email_query = "SELECT user_email FROM users WHERE user_email = '$email'";
+    $check_email_query_run = mysqli_query($con, $check_email_query);
+
+    if (!preg_match($emailPattern, $email)) {
+        redirect("../views/index.php", "Invalid email format");
+    } else if (mysqli_num_rows($check_email_query_run) > 0) {
+        redirect("../views/index.php", "Email already in use try something different");
+    } else {
+
+        //Insert User Data
+        $insert_query = "INSERT INTO users (user_email, user_role, user_general_token) VALUES('$email','$role','$acti_code')";
+
+        $insert_query_run = mysqli_query($con, $insert_query);
+        if ($insert_query_run) {
+            $subj = "Your Seller Registration Link from NoirceurCouture Account";
+            $baseUrl = "http://localhost/NoirceurCouture";
+            $pageUrl = "/seller/seller-registration.php";
+            $registrationUrl = $baseUrl .= $pageUrl .= "?tkn=" . $acti_code;
+            sellerRegistration($email, $subj, $registrationUrl);
+            redirectSwal("../views/index.php", "Check your email for registration link", "success");
+        } else {
+            redirect("../views/index.php", "something went wrong");
         }
     }
 }
