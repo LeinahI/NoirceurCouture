@@ -41,6 +41,14 @@
                 margin-bottom: 20px;
             }
         }
+        @media (max-width: 400px) {
+            .addToLikesBtn{
+                width: 100%;
+            }
+            .addToCartBtn{
+                width: 100%;
+            }
+        }
     </style>
 
     <?php
@@ -199,13 +207,13 @@
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-6">
-                                        <button class="btn btn-main px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
+                                    <div class="col-12 col-sm-6 mb-3">
+                                        <button class=" btn btn-main px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
                                             <?= ($product['product_qty'] == 0) ? 'Sold Out' : 'Add to cart' ?>
                                         </button>
                                     </div>
-                                    <div class="col-6">
-                                        <button class="btn btn-tertiary px-4 addToLikesBtn" value="<?= $product['product_id'] ?>">Add to Likes</button>
+                                    <div class="col-12 col-sm-6">
+                                        <button class=" btn btn-tertiary px-4 addToLikesBtn" value="<?= $product['product_id'] ?>">Add to Likes</button>
                                     </div>
                                 </div>
                                 <hr>
