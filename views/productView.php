@@ -35,6 +35,12 @@
             height: 100%;
             object-fit: cover;
         }
+
+        @media (max-width: 767px) {
+            .col-md-6 {
+                margin-bottom: 20px;
+            }
+        }
     </style>
 
     <?php
@@ -94,8 +100,8 @@
                 <div class="bg-main py-4">
                     <div class="container productData mt-3">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="shadow imgBox">
+                            <div class="col-12 col-xxl-4 col-xl-5 col-lg-5 col-md-6 col-sm-12">
+                                <div class="imgBox">
                                     <img src="../assets/uploads/products/<?= $product['product_image'] ?>" data-origin="../assets/uploads/products/<?= $product['product_image'] ?>" alt="Product Image" height="416" class="w-100">
                                     <?php
                                     if ($product['product_qty'] == 0) {
@@ -108,7 +114,7 @@
                                     ?>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-12 col-xxl-8 col-xl-7 col-lg-7 col-md-6 col-sm-12">
                                 <h4 class="fw-bold">
                                     <?php
                                     $getTotalRating = getProductRatingsByProductID($product['product_id']); //+ Catch product ratings
@@ -190,17 +196,15 @@
                                             <h5 class="fw-bold"><span class="prodRmn"><?= $product['product_qty'] ?></span>&nbsp;pieces available</h5>
                                         </div>
                                     </div>
-
-
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <button class="btn btn-main px-4 addToCartBtn" value="<?= $product['product_id'] ?>" <?= ($product['product_qty'] == 0) ? 'disabled' : '' ?>>
                                             <?= ($product['product_qty'] == 0) ? 'Sold Out' : 'Add to cart' ?>
                                         </button>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-6">
                                         <button class="btn btn-tertiary px-4 addToLikesBtn" value="<?= $product['product_id'] ?>">Add to Likes</button>
                                     </div>
                                 </div>

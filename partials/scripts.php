@@ -4,11 +4,25 @@
 
 <!-- imgZoom -->
 <script>
-    $('.imgBox').imgZoom({
-        boxWidth: 416,
-        boxHeight: 416,
-        marginLeft: 5,
-    });
+    // Check if the viewport width is less than or equal to 767px
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    // Function to handle the media query change
+    function handleMediaQueryChange(event) {
+        if (event.matches) {
+            $('.imgBox').imgZoom({
+                boxWidth: 350,
+                boxHeight: 400,
+                marginLeft: 2,
+            });
+        } 
+    }
+
+    // Add event listener for media query change
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
+
+    // Call the function initially to set the initial styles
+    handleMediaQueryChange(mediaQuery);
 </script>
 
 <?php
